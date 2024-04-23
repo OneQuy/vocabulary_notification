@@ -3,6 +3,9 @@ const eng = {
     level: 'Level',
     test_notification: 'Test notification',
     show_every: 'Show every',
+    show_from: 'Show from',
+    show_to: 'Show to',
+    save: 'Save',
 } as const
 
 export type LocalText = typeof eng

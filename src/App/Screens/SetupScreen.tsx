@@ -8,7 +8,7 @@ import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
 import { GetDayHourMinSecFromMs_ToString } from '../../Common/UtilsTS'
 import HairLine from '../../Common/Components/HairLine'
-import { WindowSize_Max } from '../../Common/CommonConstants'
+import { CommonStyles, WindowSize_Max } from '../../Common/CommonConstants'
 
 const SetupScreen = () => {
   const theme = useTheme()
@@ -21,6 +21,9 @@ const SetupScreen = () => {
     return StyleSheet.create({
       master: { flex: 1, padding: Outline.Normal, },
       scrollView: { gap: Gap.Small, },
+
+      workTimeView: { flexDirection: 'row', gap: Gap.Normal, },
+      workTimeChildView: { gap: Gap.Small, flex: 1, },
 
       header: { fontWeight: FontBold.Bold, fontSize: FontSize.Normal, color: theme.primary },
 
@@ -35,6 +38,14 @@ const SetupScreen = () => {
       }
     })
   }, [theme])
+
+  const workFromTxt = useMemo(() => {
+    return '10:30'
+  }, [])
+
+  const workToTxt = useMemo(() => {
+    return '20:00'
+  }, [])
 
   return (
     <View style={style.master}>
@@ -71,6 +82,40 @@ const SetupScreen = () => {
           iconProps={{ name: 'Clock', size: FontSize.Normal, }}
         />
 
+        {/* work time */}
+
+        <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
+
+        <View style={style.workTimeView}>
+          {/* work from */}
+          <View style={style.workTimeChildView}>
+            <Text style={style.header}>{texts.show_from}</Text>
+
+            <LucideIconTextEffectButton
+              unselectedColorOfTextAndIcon={theme.counterBackground}
+              notChangeToSelected
+              style={style.normalBtn}
+
+              title={workFromTxt}
+              titleProps={{ style: style.normalBtnTxt }}
+            />
+          </View>
+
+          {/* work to */}
+          <View style={style.workTimeChildView}>
+            <Text style={style.header}>{texts.show_to}</Text>
+
+            <LucideIconTextEffectButton
+              unselectedColorOfTextAndIcon={theme.counterBackground}
+              notChangeToSelected
+              style={style.normalBtn}
+
+              title={workToTxt}
+              titleProps={{ style: style.normalBtnTxt }}
+            />
+          </View>
+        </View>
+
         {/* test noti */}
 
         <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
@@ -84,6 +129,26 @@ const SetupScreen = () => {
           titleProps={{ style: style.normalBtnTxt }}
 
           iconProps={{ name: 'Bell', size: FontSize.Normal, }}
+        />
+
+        {/* save */}
+
+        <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
+
+        <LucideIconTextEffectButton
+          selectedBackgroundColor={theme.primary}
+          selectedColorOfTextAndIcon={theme.counterPrimary}
+          unselectedColorOfTextAndIcon={theme.counterBackground}
+
+          notChangeToSelected
+          manuallySelected={true}
+
+          style={style.normalBtn}
+
+          title={texts.save}
+          titleProps={{ style: style.normalBtnTxt }}
+
+          iconProps={{ name: 'Check', size: FontSize.Normal, }}
         />
       </ScrollView>
     </View>
