@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import useTheme from '../Hooks/useTheme'
 import useLocalText from '../Hooks/useLocalText'
@@ -18,6 +18,8 @@ const SetupScreen = () => {
 
   const [showPopupPopularity, set_showPopupPopularity] = useState(false)
   const [displayPopularityLevelIdx, set_displayPopularityLevelIdx] = useState(0)
+  const popupPopularityCloseCallbackRef = useRef<() => void>()
+
   const [loopMin, set_loopMin] = useState(30)
 
   const style = useMemo(() => {
@@ -56,6 +58,13 @@ const SetupScreen = () => {
     return '20:00'
   }, [])
 
+  const onPressPopularityLevel = useCallback((index: number) => {
+    set_displayPopularityLevelIdx(index)
+
+    if (popupPopularityCloseCallbackRef.current)
+      popupPopularityCloseCallbackRef.current()
+  }, [])
+
   const onPressShowPopupPopularityLevel = useCallback(() => {
     set_showPopupPopularity(true)
   }, [])
@@ -79,7 +88,7 @@ const SetupScreen = () => {
                 selectedColorOfTextAndIcon={theme.primary}
                 unselectedColorOfTextAndIcon={theme.counterPrimary}
 
-                // notChangeToSelected
+                onPress={() => onPressPopularityLevel(index)}
 
                 manuallySelected={isSelected}
 
@@ -220,6 +229,7 @@ const SetupScreen = () => {
           blurBackgroundColorInHex={theme.background}
           onPressClose={set_showPopupPopularity}
           childMaxHeight={'60%'}
+          setCloseCallbackRef={popupPopularityCloseCallbackRef}
         />
       }
     </View>

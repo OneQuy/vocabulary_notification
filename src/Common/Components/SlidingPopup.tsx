@@ -9,6 +9,26 @@ const DefaultBorderRadiusPercent = 0.02
 
 const DefaultSlideHandlePaddingPercent = 0.005
 
+/**
+ * ## Usage:
+```tsx
+const [showPopup, set_showPopup] = useState(false)
+
+const popupCloseCallbackRef = useRef<() => void>()
+
+{
+    showPopup &&
+    <SlidingPopup
+      backgroundColor={theme.primary}
+      child={renderContent()}
+      blurBackgroundColorInHex={theme.background}
+      onPressClose={set_showPopup}
+      childMaxHeight={'60%'}
+      setCloseCallbackRef={popupCloseCallbackRef}
+    />
+}
+```
+ */
 const SlidingPopup = ({
   child,
 
@@ -21,7 +41,10 @@ const SlidingPopup = ({
   blurBackgroundColorInHex = '#000000',
   blurBackgroundOpacity = 0.8,
 
+  closeAnimatedDuration = 200,
+
   onPressClose,
+  setCloseCallbackRef,
 }: {
   child?: React.JSX.Element,
 
@@ -34,7 +57,10 @@ const SlidingPopup = ({
   blurBackgroundColorInHex?: string,
   blurBackgroundOpacity?: number,
 
+  closeAnimatedDuration?: number,
+
   onPressClose?: (active: boolean) => void,
+  setCloseCallbackRef?: React.MutableRefObject<undefined | (() => void)>,
 }) => {
   const { windowHeight } = useWindowOrientation()
   const [masterLayout, set_masterLayout] = useState<undefined | LayoutRectangle>(undefined)
@@ -67,7 +93,7 @@ const SlidingPopup = ({
         position: 'absolute',
         justifyContent: 'flex-end',
       },
-      
+
       blurView: {
         backgroundColor: HexToRgb(blurBackgroundColorInHex, blurBackgroundOpacity),
         width: '100%', height: '100%',
@@ -134,7 +160,7 @@ const SlidingPopup = ({
         Animated.timing(heightAnimatedRef, {
           toValue: to,
           useNativeDriver: false,
-          duration: 200,
+          duration: closeAnimatedDuration,
         }).start(() => {
           if (typeof onFinished === 'function')
             onFinished()
@@ -149,7 +175,7 @@ const SlidingPopup = ({
     }
 
     heightCached.current = to
-  }, [masterLayout, maxHeight])
+  }, [masterLayout, closeAnimatedDuration, maxHeight])
 
   const toggleShow = useCallback((
     isShowOrClose: boolean,
@@ -163,6 +189,9 @@ const SlidingPopup = ({
         onPressClose(false)
     })
   }, [toggleShow, onPressClose])
+
+  if (setCloseCallbackRef)
+    setCloseCallbackRef.current = onPressCloseThis
 
   // move gesture
 
