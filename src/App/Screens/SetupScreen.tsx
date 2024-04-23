@@ -306,7 +306,7 @@ const SetupScreen = () => {
           child={contentToRenderInPopup()}
           blurBackgroundColorInHex={theme.background}
           onPressClose={() => set_showPopup(undefined)}
-          childMaxHeight={'60%'}
+          childMaxHeight={'80%'}
           setCloseCallbackRef={popupCloseCallbackRef}
         />
       }
