@@ -1,13 +1,11 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React, { useMemo, useState } from 'react'
-import { CommonStyles } from '../../Common/CommonConstants'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import useTheme from '../Hooks/useTheme'
 import useLocalText from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { IconSize } from '../Constants/Constants_Size'
 
 const SetupScreen = () => {
   const theme = useTheme()
