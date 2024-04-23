@@ -4,6 +4,7 @@ import useWindowOrientation from '../Hooks/usePortraitOrLandscape'
 import { CommonStyles, DefaultSlideHandle_AspectRatio, DefaultSlideHandle_BorderRadius, DefaultSlideHandle_Size, WindowSize_Max } from '../CommonConstants'
 import useSingleMoveGesture from '../Hooks/useSingleMoveGesture'
 import { ExtractAllNumbersInText, HexToRgb, SafeGetArrayElement, SafeGetArrayElement_ForceValue } from '../UtilsTS'
+import { SwipeResult, useSimpleGesture } from '../Hooks/useSimpleGesture'
 
 const DefaultBorderRadiusPercent = 0.02
 
@@ -207,6 +208,29 @@ const SlidingPopup = ({
 
   const { viewResponsers: handleViewResponsers } = useSingleMoveGesture(onStartMove, onMovingHandle, undefined)
 
+  // swipe
+
+  const onSwiped = useCallback((result: SwipeResult) => {
+    if (result.primaryDirectionIsHorizontalOrVertical)
+      return
+
+    // swiped down
+
+    if (result.primaryDirectionIsPositive) {
+      onPressCloseThis()
+    }
+
+    // swipe up
+
+    else {
+      toggleShow(true)
+    }
+  }, [onPressCloseThis, toggleShow])
+
+  const [onBigViewStartTouch, onBigViewEndTouch] = useSimpleGesture(undefined, undefined, onSwiped)
+
+  // use effect
+
   useEffect(() => {
     if (!masterLayout)
       return
@@ -222,7 +246,12 @@ const SlidingPopup = ({
       {/* popup */}
       <Animated.View style={[styles.animatedHeightView, { height: heightAnimatedRef }]}>
         {/* handle */}
-        <View {...handleViewResponsers} style={styles.slideView}>
+        <View
+          {...handleViewResponsers}
+          onTouchStart={onBigViewStartTouch}
+          onTouchEnd={onBigViewEndTouch}
+          style={styles.slideView}
+        >
           <View style={styles.slideHanlde} />
         </View>
 
