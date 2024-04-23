@@ -1,7 +1,7 @@
-import { View, StyleSheet, ColorValue, Animated, LayoutRectangle, DimensionValue } from 'react-native'
+import { View, StyleSheet, ColorValue, Animated, LayoutRectangle, DimensionValue, TouchableOpacity } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import useWindowOrientation from '../Hooks/usePortraitOrLandscape'
-import { DefaultSlideHandle_AspectRatio, DefaultSlideHandle_BorderRadius, DefaultSlideHandle_Size, WindowSize_Max } from '../CommonConstants'
+import { CommonStyles, DefaultSlideHandle_AspectRatio, DefaultSlideHandle_BorderRadius, DefaultSlideHandle_Size, WindowSize_Max } from '../CommonConstants'
 import useSingleMoveGesture from '../Hooks/useSingleMoveGesture'
 import { ExtractAllNumbersInText, HexToRgb, SafeGetArrayElement, SafeGetArrayElement_ForceValue } from '../UtilsTS'
 
@@ -63,10 +63,14 @@ const SlidingPopup = ({
   const styles = useMemo(() => {
     return StyleSheet.create({
       master: {
-        backgroundColor: HexToRgb(blurBackgroundColorInHex, blurBackgroundOpacity),
         width: '100%', height: '100%',
         position: 'absolute',
         justifyContent: 'flex-end',
+      },
+      
+      blurView: {
+        backgroundColor: HexToRgb(blurBackgroundColorInHex, blurBackgroundOpacity),
+        width: '100%', height: '100%',
       },
 
       animatedHeightView: {
@@ -182,7 +186,11 @@ const SlidingPopup = ({
   }, [masterLayout])
 
   return (
-    <View onTouchEnd={onPressCloseThis} onLayout={(e) => set_masterLayout(e.nativeEvent.layout)} style={styles.master}>
+    <View onLayout={(e) => set_masterLayout(e.nativeEvent.layout)} style={styles.master}>
+      {/* blur bg */}
+      <TouchableOpacity activeOpacity={0.9} onPress={onPressCloseThis} style={styles.blurView} />
+
+      {/* popup */}
       <Animated.View style={[styles.animatedHeightView, { height: heightAnimatedRef }]}>
         {/* handle */}
         <View {...handleViewResponsers} style={styles.slideView}>
