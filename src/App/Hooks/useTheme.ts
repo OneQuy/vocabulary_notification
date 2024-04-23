@@ -4,6 +4,8 @@ const Light_Default = {
     
     primary: '#ffaabb',
     counterPrimary: '#1c1c1c',
+
+    isDarkTheme: false,
 }
 
 const Dark_Default: Theme = {
@@ -12,6 +14,8 @@ const Dark_Default: Theme = {
     
     primary: '#ffaabb',
     counterPrimary: '#1c1c1c',
+
+    isDarkTheme: true,
 } as const
 
 type Theme = typeof Light_Default

@@ -1,4 +1,4 @@
-import { View, SafeAreaView, StyleSheet } from 'react-native'
+import { View, SafeAreaView, StyleSheet, StatusBar } from 'react-native'
 import React, { useMemo } from 'react'
 import SetupScreen from './src/App/Screens/SetupScreen'
 import useTheme from './src/App/Hooks/useTheme'
@@ -14,6 +14,7 @@ const App = () => {
 
   return (
     <SafeAreaView style={style.master}>
+      <StatusBar backgroundColor={theme.background} barStyle={theme.isDarkTheme ? 'light-content' : 'dark-content'}/>
       <View style={style.master}>
         <SetupScreen />
       </View>
