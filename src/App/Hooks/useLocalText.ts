@@ -1,6 +1,7 @@
 const eng = {
     popularity_level: 'Popuplarity level',
-    level: 'Level'
+    level: 'Level',
+    test_notification: 'Test notification',
 } as const
 
 export type LocalText = typeof eng

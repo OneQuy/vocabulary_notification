@@ -19,9 +19,9 @@ const SetupScreen = () => {
 
       header: { fontWeight: FontBold.Bold, fontSize: FontSize.Normal, color: theme.primary },
 
-      popularityLevelBtnTxt: { fontSize: FontSize.Normal, },
+      normalBtnTxt: { fontSize: FontSize.Normal, },
 
-      popularityLevelBtn: {
+      normalBtn: {
         borderWidth: 0,
         borderRadius: BorderRadius.Medium,
         padding: Outline.Normal,
@@ -40,12 +40,25 @@ const SetupScreen = () => {
       <LucideIconTextEffectButton
         unselectedColorOfTextAndIcon={theme.counterBackground}
         notChangeToSelected
-        style={style.popularityLevelBtn}
+        style={style.normalBtn}
 
         title={texts.level + ' ' + (displayPopularityLevelIdx + 1)}
-        titleProps={{ style: style.popularityLevelBtnTxt }}
+        titleProps={{ style: style.normalBtnTxt }}
 
         iconProps={{ name: 'BookAIcon', size: FontSize.Normal, }}
+      />
+     
+      {/* test noti */}
+
+      <LucideIconTextEffectButton
+        unselectedColorOfTextAndIcon={theme.counterBackground}
+        notChangeToSelected
+        style={style.normalBtn}
+
+        title={texts.test_notification}
+        titleProps={{ style: style.normalBtnTxt }}
+
+        iconProps={{ name: 'Bell', size: FontSize.Normal, }}
       />
     </View>
   )
