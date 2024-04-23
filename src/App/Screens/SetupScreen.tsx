@@ -12,15 +12,35 @@ import { WindowSize_Max } from '../../Common/CommonConstants'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { PopuplarityLevelNumber } from '../Constants/AppConstants'
 
+const IntervalInMinPresets: number[] = [
+  30,
+  60,
+  120,
+  180,
+  240,
+  300,
+  360,
+  420,
+  480,
+  540,
+  600,
+  660,
+  720,
+  60 * 24,
+]
+
+type PopupType = 'popularity' | 'interval' | undefined
+
 const SetupScreen = () => {
   const theme = useTheme()
   const texts = useLocalText()
 
-  const [showPopupPopularity, set_showPopupPopularity] = useState(false)
-  const [displayPopularityLevelIdx, set_displayPopularityLevelIdx] = useState(0)
-  const popupPopularityCloseCallbackRef = useRef<() => void>()
+  const [showPopup, set_showPopup] = useState<PopupType>(undefined)
+  const popupCloseCallbackRef = useRef<() => void>()
 
-  const [loopMin, set_loopMin] = useState(30)
+  const [displayPopularityLevelIdx, set_displayPopularityLevelIdx] = useState(0)
+
+  const [displayIntervalInMin, set_displayIntervalInMin] = useState(30)
 
   const style = useMemo(() => {
     return StyleSheet.create({
@@ -58,15 +78,17 @@ const SetupScreen = () => {
     return '20:00'
   }, [])
 
+  // popularity
+
   const onPressPopularityLevel = useCallback((index: number) => {
     set_displayPopularityLevelIdx(index)
 
-    if (popupPopularityCloseCallbackRef.current)
-      popupPopularityCloseCallbackRef.current()
+    if (popupCloseCallbackRef.current)
+      popupCloseCallbackRef.current()
   }, [])
 
-  const onPressShowPopupPopularityLevel = useCallback(() => {
-    set_showPopupPopularity(true)
+  const onPressShowPopup = useCallback((type: PopupType) => {
+    set_showPopup(type)
   }, [])
 
   const renderPopularityLevels = useCallback(() => {
@@ -113,6 +135,60 @@ const SetupScreen = () => {
     )
   }, [displayPopularityLevelIdx, theme, style])
 
+  // interval
+
+  const onPressInterval = useCallback((min: number) => {
+    set_displayIntervalInMin(min)
+
+    if (popupCloseCallbackRef.current)
+      popupCloseCallbackRef.current()
+  }, [])
+
+  const renderIntervals = useCallback(() => {
+    return (
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={style.scrollViewSlidingPopup}
+      >
+        {
+          IntervalInMinPresets.map((min: number) => {
+            const isSelected = min === displayIntervalInMin
+
+            return (
+              <LucideIconTextEffectButton
+                key={min}
+
+                selectedColorOfTextAndIcon={theme.primary}
+                unselectedColorOfTextAndIcon={theme.counterPrimary}
+
+                onPress={() => onPressInterval(min)}
+
+                manuallySelected={isSelected}
+
+                style={isSelected ? style.normalBtn : style.normalBtn_NoBorder}
+
+                title={GetDayHourMinSecFromMs_ToString(min * 60 * 1000)}
+
+                titleProps={{ style: style.normalBtnTxt }}
+              />
+            )
+          })
+        }
+      </ScrollView>
+    )
+  }, [displayIntervalInMin, theme, style])
+
+  // common
+
+  let contentToRenderInPopup = undefined
+
+  if (showPopup === 'popularity')
+    contentToRenderInPopup = renderPopularityLevels
+  else if (showPopup === 'interval')
+    contentToRenderInPopup = renderIntervals
+
+  // render
+
   return (
     <View style={style.master}>
       <ScrollView contentContainerStyle={style.scrollView} showsVerticalScrollIndicator={false}>
@@ -130,7 +206,7 @@ const SetupScreen = () => {
 
           iconProps={{ name: 'BookAIcon', size: FontSize.Normal, }}
 
-          onPress={onPressShowPopupPopularityLevel}
+          onPress={() => onPressShowPopup('popularity')}
         />
 
         {/* loop interval */}
@@ -144,10 +220,12 @@ const SetupScreen = () => {
           notChangeToSelected
           style={style.normalBtn}
 
-          title={GetDayHourMinSecFromMs_ToString(loopMin * 60 * 1000)}
+          title={GetDayHourMinSecFromMs_ToString(displayIntervalInMin * 60 * 1000)}
           titleProps={{ style: style.normalBtnTxt }}
 
           iconProps={{ name: 'Clock', size: FontSize.Normal, }}
+
+          onPress={() => onPressShowPopup('interval')}
         />
 
         {/* work time */}
@@ -222,14 +300,14 @@ const SetupScreen = () => {
       </ScrollView>
 
       {
-        showPopupPopularity &&
+        contentToRenderInPopup &&
         <SlidingPopup
           backgroundColor={theme.primary}
-          child={renderPopularityLevels()}
+          child={contentToRenderInPopup()}
           blurBackgroundColorInHex={theme.background}
-          onPressClose={set_showPopupPopularity}
+          onPressClose={() => set_showPopup(undefined)}
           childMaxHeight={'60%'}
-          setCloseCallbackRef={popupPopularityCloseCallbackRef}
+          setCloseCallbackRef={popupCloseCallbackRef}
         />
       }
     </View>
