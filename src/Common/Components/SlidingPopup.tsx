@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import useWindowOrientation from '../Hooks/usePortraitOrLandscape'
 import { DefaultSlideHandle_AspectRatio, DefaultSlideHandle_BorderRadius, DefaultSlideHandle_Size, WindowSize_Max } from '../CommonConstants'
 import useSingleMoveGesture from '../Hooks/useSingleMoveGesture'
-import { ExtractAllNumbersInText, HexToRgb, SafeGetArrayElement } from '../UtilsTS'
+import { ExtractAllNumbersInText, HexToRgb, SafeGetArrayElement, SafeGetArrayElement_ForceValue } from '../UtilsTS'
 
 const DefaultBorderRadiusPercent = 0.02
 
@@ -53,7 +53,7 @@ const SlidingPopup = ({
     }
     else if (masterLayout) {
       const numArr = ExtractAllNumbersInText(childMaxHeight)
-      const percent = SafeGetArrayElement(numArr, 100) as number / 100
+      const percent = SafeGetArrayElement_ForceValue(numArr, 100) / 100
       return Math.min(masterLayout.height * percent, masterLayout.height)
     }
     else

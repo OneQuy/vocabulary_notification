@@ -368,7 +368,11 @@ export function SafeArrayLength<T>(arr: T[] | any): number {
     return arr.length
 }
 
-export function SafeGetArrayElement<T, R>(arr: T[] | any, defaultValue: undefined | R = undefined, index = 0): undefined | R | T {
+export function SafeGetArrayElement_ForceValue<T>(arr: T[] | any, defaultValue: T): T {
+    return SafeGetArrayElement(arr, defaultValue) as T
+}
+
+export function SafeGetArrayElement<T>(arr: T[] | any, defaultValue: T | undefined = undefined, index = 0): undefined | T {
     if (!Array.isArray(arr))
         return defaultValue
 
