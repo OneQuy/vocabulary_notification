@@ -6,6 +6,8 @@ const eng = {
     show_from: 'Show from',
     show_to: 'Show to',
     save: 'Save',
+    most_popular: 'Most Popular',
+    rarest: 'Rarest',
 } as const
 
 export type LocalText = typeof eng

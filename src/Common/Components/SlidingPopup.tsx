@@ -1,8 +1,9 @@
-import { View, StyleSheet, ColorValue, Animated, LayoutRectangle } from 'react-native'
+import { View, StyleSheet, ColorValue, Animated, LayoutRectangle, DimensionValue } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import useWindowOrientation from '../Hooks/usePortraitOrLandscape'
 import { DefaultSlideHandle_AspectRatio, DefaultSlideHandle_BorderRadius, DefaultSlideHandle_Size, WindowSize_Max } from '../CommonConstants'
 import useSingleMoveGesture from '../Hooks/useSingleMoveGesture'
+import { ExtractAllNumbersInText, HexToRgb, SafeGetArrayElement } from '../UtilsTS'
 
 const DefaultBorderRadiusPercent = 0.02
 
@@ -10,24 +11,59 @@ const DefaultSlideHandlePaddingPercent = 0.005
 
 const SlidingPopup = ({
   child,
+
+  childMaxHeight = '100%',
+
   backgroundColor = 'black',
+
   handleColor = 'white',
+
+  blurBackgroundColorInHex = '#000000',
+  blurBackgroundOpacity = 0.8,
+
+  onPressClose,
 }: {
-  child: React.JSX.Element,
+  child?: React.JSX.Element,
+
+  childMaxHeight?: DimensionValue,
+
   backgroundColor?: ColorValue,
+
   handleColor?: ColorValue,
+
+  blurBackgroundColorInHex?: string,
+  blurBackgroundOpacity?: number,
+
+  onPressClose?: (active: boolean) => void,
 }) => {
   const { windowHeight } = useWindowOrientation()
   const [masterLayout, set_masterLayout] = useState<undefined | LayoutRectangle>(undefined)
 
   const heightAnimatedRef = useRef(new Animated.Value(0)).current
   const heightCached = useRef(0)
+
   const startMoveHeightCached = useRef(0)
+
+  const maxHeight = useMemo(() => {
+    if (typeof childMaxHeight === 'number') {
+      if (masterLayout && masterLayout.height < childMaxHeight)
+        return masterLayout.height
+      else
+        return childMaxHeight
+    }
+    else if (masterLayout) {
+      const numArr = ExtractAllNumbersInText(childMaxHeight)
+      const percent = SafeGetArrayElement(numArr, 100) as number / 100
+      return Math.min(masterLayout.height * percent, masterLayout.height)
+    }
+    else
+      return 0
+  }, [masterLayout, childMaxHeight])
 
   const styles = useMemo(() => {
     return StyleSheet.create({
       master: {
-        // backgroundColor: 'gray',
+        backgroundColor: HexToRgb(blurBackgroundColorInHex, blurBackgroundOpacity),
         width: '100%', height: '100%',
         position: 'absolute',
         justifyContent: 'flex-end',
@@ -55,45 +91,74 @@ const SlidingPopup = ({
 
       contentContainerView: { flex: 1 },
     })
-  }, [backgroundColor, windowHeight])
+  }, [backgroundColor, blurBackgroundColorInHex, windowHeight])
 
   /**
    * -1 for set max height
    */
-  const setHeight = useCallback((to: number, isAnimated: boolean) => {
+  const setHeight = useCallback((
+    to: number,
+    isAnimated: boolean,
+    onFinished?: () => void) => {
     if (!masterLayout)
       return
 
     if (to === -1)
-      to = masterLayout.height
+      to = maxHeight
 
     if (heightCached.current === to) {
+      if (typeof onFinished === 'function')
+        onFinished()
+
       return
     }
 
-    if (to > masterLayout.height)
-      to = masterLayout.height
+    if (to > maxHeight)
+      to = maxHeight
 
     if (isAnimated) {
-      Animated.spring(heightAnimatedRef, {
-        toValue: to,
-        useNativeDriver: false,
-      }).start()
+      if (to > 0) {
+        Animated.spring(heightAnimatedRef, {
+          toValue: to,
+          useNativeDriver: false,
+        }).start(() => {
+          if (typeof onFinished === 'function')
+            onFinished()
+        })
+      }
+      else {
+        Animated.timing(heightAnimatedRef, {
+          toValue: to,
+          useNativeDriver: false,
+          duration: 200,
+        }).start(() => {
+          if (typeof onFinished === 'function')
+            onFinished()
+        })
+      }
     }
     else {
       heightAnimatedRef.setValue(to)
+
+      if (typeof onFinished === 'function')
+        onFinished()
     }
 
     heightCached.current = to
-  }, [masterLayout])
+  }, [masterLayout, maxHeight])
 
-  const toggleShow = useCallback((isShowOrClose: boolean) => {
-    setHeight(-1, true)
+  const toggleShow = useCallback((
+    isShowOrClose: boolean,
+    onFinished?: () => void) => {
+    setHeight(isShowOrClose ? -1 : 0, true, onFinished)
   }, [setHeight])
 
-  const onPressClose = useCallback(() => {
-    // runShowEffect(RandomInt(1, 10) > 5)
-  }, [toggleShow])
+  const onPressCloseThis = useCallback(() => {
+    toggleShow(false, () => {
+      if (typeof onPressClose === 'function')
+        onPressClose(false)
+    })
+  }, [toggleShow, onPressClose])
 
   // move gesture
 
@@ -117,7 +182,7 @@ const SlidingPopup = ({
   }, [masterLayout])
 
   return (
-    <View pointerEvents='box-none' onLayout={(e) => set_masterLayout(e.nativeEvent.layout)} style={styles.master}>
+    <View onTouchEnd={onPressCloseThis} onLayout={(e) => set_masterLayout(e.nativeEvent.layout)} style={styles.master}>
       <Animated.View style={[styles.animatedHeightView, { height: heightAnimatedRef }]}>
         {/* handle */}
         <View {...handleViewResponsers} style={styles.slideView}>

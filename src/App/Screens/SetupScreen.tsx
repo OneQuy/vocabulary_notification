@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
-import React, { useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import useTheme from '../Hooks/useTheme'
 import useLocalText from '../Hooks/useLocalText'
@@ -8,19 +8,24 @@ import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
 import { GetDayHourMinSecFromMs_ToString } from '../../Common/UtilsTS'
 import HairLine from '../../Common/Components/HairLine'
-import { CommonStyles, WindowSize_Max } from '../../Common/CommonConstants'
+import { WindowSize_Max } from '../../Common/CommonConstants'
+import SlidingPopup from '../../Common/Components/SlidingPopup'
+import { PopuplarityLevelNumber } from '../Constants/AppConstants'
 
 const SetupScreen = () => {
   const theme = useTheme()
   const texts = useLocalText()
 
+  const [showPopupPopularity, set_showPopupPopularity] = useState(false)
   const [displayPopularityLevelIdx, set_displayPopularityLevelIdx] = useState(0)
   const [loopMin, set_loopMin] = useState(30)
 
   const style = useMemo(() => {
     return StyleSheet.create({
-      master: { flex: 1, padding: Outline.Normal, },
-      scrollView: { gap: Gap.Small, },
+      master: { flex: 1, },
+      scrollView: { gap: Gap.Small, padding: Outline.Normal, },
+
+      scrollViewSlidingPopup: { gap: Gap.Small, padding: Outline.Normal, },
 
       workTimeView: { flexDirection: 'row', gap: Gap.Normal, },
       workTimeChildView: { gap: Gap.Small, flex: 1, },
@@ -35,6 +40,10 @@ const SetupScreen = () => {
         padding: Outline.Normal,
         flexDirection: 'row',
         gap: Gap.Normal,
+      },
+
+      normalBtn_NoBorder: {
+        padding: Outline.Normal,
       }
     })
   }, [theme])
@@ -46,6 +55,54 @@ const SetupScreen = () => {
   const workToTxt = useMemo(() => {
     return '20:00'
   }, [])
+
+  const onPressShowPopupPopularityLevel = useCallback(() => {
+    set_showPopupPopularity(true)
+  }, [])
+
+  const renderPopularityLevels = useCallback(() => {
+    const arr = Array(PopuplarityLevelNumber).fill(undefined)
+
+    return (
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={style.scrollViewSlidingPopup}
+      >
+        {
+          arr.map((i: any, index: number) => {
+            const isSelected = displayPopularityLevelIdx === index
+
+            return (
+              <LucideIconTextEffectButton
+                key={index}
+
+                selectedColorOfTextAndIcon={theme.primary}
+                unselectedColorOfTextAndIcon={theme.counterPrimary}
+
+                // notChangeToSelected
+
+                manuallySelected={isSelected}
+
+                style={isSelected ? style.normalBtn : style.normalBtn_NoBorder}
+
+                title={
+                  texts.level +
+                  ' ' +
+                  (index + 1) +
+                  (index === 0 ?
+                    ` (${texts.most_popular})` :
+                    (index === PopuplarityLevelNumber - 1 ? ` (${texts.rarest})` : '')
+                  )
+                }
+
+                titleProps={{ style: style.normalBtnTxt }}
+              />
+            )
+          })
+        }
+      </ScrollView>
+    )
+  }, [displayPopularityLevelIdx, theme, style])
 
   return (
     <View style={style.master}>
@@ -63,6 +120,8 @@ const SetupScreen = () => {
           titleProps={{ style: style.normalBtnTxt }}
 
           iconProps={{ name: 'BookAIcon', size: FontSize.Normal, }}
+
+          onPress={onPressShowPopupPopularityLevel}
         />
 
         {/* loop interval */}
@@ -137,6 +196,7 @@ const SetupScreen = () => {
 
         <LucideIconTextEffectButton
           selectedBackgroundColor={theme.primary}
+
           selectedColorOfTextAndIcon={theme.counterPrimary}
           unselectedColorOfTextAndIcon={theme.counterBackground}
 
@@ -151,6 +211,17 @@ const SetupScreen = () => {
           iconProps={{ name: 'Check', size: FontSize.Normal, }}
         />
       </ScrollView>
+
+      {
+        showPopupPopularity &&
+        <SlidingPopup
+          backgroundColor={theme.primary}
+          child={renderPopularityLevels()}
+          blurBackgroundColorInHex={theme.background}
+          onPressClose={set_showPopupPopularity}
+          childMaxHeight={'60%'}
+        />
+      }
     </View>
   )
 }

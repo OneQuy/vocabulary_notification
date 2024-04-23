@@ -674,9 +674,12 @@ export const SplitNumberInText = (text: string) => {
     return Number.parseFloat(numS)
 }
 
-export const ExtractAllNumbersInText = (text: string): number[] => {
+export const ExtractAllNumbersInText = (textOrAnthing: any): number[] => {
+    if (typeof textOrAnthing !== 'string')
+        return []
+    
     const regex = /[+-]?\d+(\.\d+)?/g;
-    let floats = text.match(regex)?.map(function (v) { return parseFloat(v); });
+    let floats = textOrAnthing.match(regex)?.map(function (v) { return parseFloat(v); });
 
     if (!floats)
         return []
