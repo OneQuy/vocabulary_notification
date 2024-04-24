@@ -485,6 +485,13 @@ export function ArrayRemove<T>(arr: T[], value: T): boolean {
 
 // string utils ---------------------------
 
+export function AddS(word: string, count: number): string {
+    if (count > 1)
+        return word + 's'
+    else
+        return word
+}
+
 export function RemoveHTMLTags(text: string): string {
     const regex = /<[^>]*>/mgi
     return text.replace(regex, "")

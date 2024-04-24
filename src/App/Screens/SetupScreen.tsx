@@ -6,7 +6,7 @@ import useLocalText from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString } from '../../Common/UtilsTS'
+import { AddS, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString } from '../../Common/UtilsTS'
 import HairLine from '../../Common/Components/HairLine'
 import { WindowSize_Max } from '../../Common/CommonConstants'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
@@ -27,7 +27,26 @@ const IntervalInMinPresets: (undefined | number)[] = [
   undefined // custom
 ]
 
-type PopupType = 'popularity' | 'interval' | undefined
+const LimitWordPresets: (number)[] = [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+]
+
+type PopupType = 'popularity' | 'interval' | 'limit-word' | undefined
 
 const SetupScreen = () => {
   const theme = useTheme()
@@ -39,6 +58,8 @@ const SetupScreen = () => {
   const [displayPopularityLevelIdx, set_displayPopularityLevelIdx] = useState(0)
 
   const [displayIntervalInMin, set_displayIntervalInMin] = useState<number>(60)
+
+  const [displayWordLimitNumber, set_displayWordLimitNumber] = useState<number>(5)
 
   const [showTimePicker, set_showTimePicker] = useState(false)
 
@@ -113,6 +134,8 @@ const SetupScreen = () => {
                 onPress={() => onPressPopularityLevel(index)}
 
                 manuallySelected={isSelected}
+                notChangeToSelected
+                canHandlePressWhenSelected
 
                 style={isSelected ? style.normalBtn : style.normalBtn_NoBorder}
 
@@ -189,6 +212,52 @@ const SetupScreen = () => {
     )
   }, [displayIntervalInMin, theme, style])
 
+  // limit words
+
+  const onPressLimitWord = useCallback((wordNum: number) => {
+    if (wordNum !== undefined)
+      set_displayWordLimitNumber(wordNum)
+
+    if (popupCloseCallbackRef.current)
+      popupCloseCallbackRef.current()
+  }, [])
+
+  const renderWordLimits = useCallback(() => {
+    return (
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={style.scrollViewSlidingPopup}
+      >
+        {
+          LimitWordPresets.map((wordNum: number) => {
+            const isSelected = wordNum === displayWordLimitNumber
+
+            return (
+              <LucideIconTextEffectButton
+                key={wordNum}
+
+                selectedColorOfTextAndIcon={theme.primary}
+                unselectedColorOfTextAndIcon={theme.counterPrimary}
+
+                onPress={() => onPressLimitWord(wordNum)}
+
+                manuallySelected={isSelected}
+                notChangeToSelected
+                canHandlePressWhenSelected
+
+                style={isSelected ? style.normalBtn : style.normalBtn_NoBorder}
+
+                title={wordNum === 0 ? texts.no_limit : (wordNum + ' ' + AddS(texts.word, wordNum))}
+
+                titleProps={{ style: style.normalBtnTxt }}
+              />
+            )
+          })
+        }
+      </ScrollView>
+    )
+  }, [displayWordLimitNumber, theme, style])
+
   // common
 
   let contentToRenderInPopup = undefined
@@ -197,6 +266,8 @@ const SetupScreen = () => {
     contentToRenderInPopup = renderPopularityLevels
   else if (showPopup === 'interval')
     contentToRenderInPopup = renderIntervals
+  else if (showPopup === 'limit-word')
+    contentToRenderInPopup = renderWordLimits
 
   const curIntervalArr = GetDayHourMinSecFromMs(displayIntervalInMin * 60 * 1000)
 
@@ -252,12 +323,12 @@ const SetupScreen = () => {
           notChangeToSelected
           style={style.normalBtn}
 
-          title={GetDayHourMinSecFromMs_ToString(displayIntervalInMin * 60 * 1000)}
+          title={displayWordLimitNumber === 0 ? texts.no_limit : (displayWordLimitNumber + ' ' + AddS(texts.word, displayWordLimitNumber))}
           titleProps={{ style: style.normalBtnTxt }}
 
-          iconProps={{ name: 'Clock', size: FontSize.Normal, }}
+          iconProps={{ name: 'Repeat', size: FontSize.Normal, }}
 
-          onPress={() => onPressShowPopup('interval')}
+          onPress={() => onPressShowPopup('limit-word')}
         />
 
         {/* work time */}
