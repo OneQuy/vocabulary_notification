@@ -7,7 +7,7 @@ import React from 'react'
 import { TimerPickerModal } from "react-native-timer-picker";
 import { GetDayHourMinSecFromMs, HexToRgb } from '../../Common/UtilsTS';
 
-type TimePickerResult = {
+export type TimePickerResult = {
     hours: number,
     minutes: number,
     seconds: number,
