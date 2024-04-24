@@ -13,7 +13,7 @@ import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { PopuplarityLevelNumber } from '../Constants/AppConstants'
 import TimePicker from '../Components/TimePicker'
 
-const IntervalInMinPresets: number[] = [
+const IntervalInMinPresets: (undefined | number)[] = [
   30,
   60,
   120,
@@ -24,6 +24,7 @@ const IntervalInMinPresets: number[] = [
   420,
   480,
   60 * 24,
+  undefined // custom
 ]
 
 type PopupType = 'popularity' | 'interval' | undefined
@@ -37,7 +38,7 @@ const SetupScreen = () => {
 
   const [displayPopularityLevelIdx, set_displayPopularityLevelIdx] = useState(0)
 
-  const [displayIntervalInMin, set_displayIntervalInMin] = useState(30)
+  const [displayIntervalInMin, set_displayIntervalInMin] = useState<number>(60)
 
   const [showTimePicker, set_showTimePicker] = useState(false)
 
@@ -136,12 +137,14 @@ const SetupScreen = () => {
 
   // interval
 
-  const onPressInterval = useCallback((min: number) => {
-    set_displayIntervalInMin(min)
+  const onPressInterval = useCallback((minutesOrCustom: number | undefined) => {
+    if (minutesOrCustom !== undefined)
+      set_displayIntervalInMin(minutesOrCustom)
 
     if (popupCloseCallbackRef.current)
       popupCloseCallbackRef.current(() => {
-        set_showTimePicker(true)
+        if (minutesOrCustom === undefined) // custom
+          set_showTimePicker(true)
       })
   }, [])
 
@@ -152,12 +155,14 @@ const SetupScreen = () => {
         contentContainerStyle={style.scrollViewSlidingPopup}
       >
         {
-          IntervalInMinPresets.map((min: number) => {
-            const isSelected = min === displayIntervalInMin
+          IntervalInMinPresets.map((min: number | undefined) => {
+            const isSelected = min === undefined ?
+              (!IntervalInMinPresets.includes(displayIntervalInMin)) : // custom
+              (min === displayIntervalInMin) // minutes
 
             return (
               <LucideIconTextEffectButton
-                key={min}
+                key={min ?? 'custom'}
 
                 selectedColorOfTextAndIcon={theme.primary}
                 unselectedColorOfTextAndIcon={theme.counterPrimary}
@@ -168,7 +173,10 @@ const SetupScreen = () => {
 
                 style={isSelected ? style.normalBtn : style.normalBtn_NoBorder}
 
-                title={GetDayHourMinSecFromMs_ToString(min * 60 * 1000)}
+                title={min === undefined ?
+                  texts.custom :
+                  GetDayHourMinSecFromMs_ToString(min * 60 * 1000)
+                }
 
                 titleProps={{ style: style.normalBtnTxt }}
               />
@@ -337,7 +345,7 @@ const SetupScreen = () => {
         showTimePicker &&
         <TimePicker
           setIsVisible={set_showTimePicker}
-          onConfirm={(s) => { }}
+          onConfirm={(time) => set_displayIntervalInMin(time.hours * 60 + time.minutes)}
         />
       }
     </View>

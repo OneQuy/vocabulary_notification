@@ -10,6 +10,7 @@ const eng = {
     rarest: 'Rarest',
     limit_words_per_day: 'Limit words per day',
     no_limit: 'No limit',
+    custom: 'Custom',
 } as const
 
 export type LocalText = typeof eng
