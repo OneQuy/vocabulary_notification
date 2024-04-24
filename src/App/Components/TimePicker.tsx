@@ -1,3 +1,5 @@
+// https://github.com/troberts-28/react-native-timer-picker
+
 import { StyleSheet, View } from 'react-native'
 import React from 'react'
 
@@ -28,6 +30,13 @@ const TimePicker = ({
                 }}
                 onCancel={() => setIsVisible(false)}
                 closeOnOverlayPress
+                styles={{
+                    confirmButton: {
+                        backgroundColor: 'black',
+                        borderWidth: undefined,
+                        color: 'white',
+                    }
+                }}
                 // modalTitle="Set Alarm"
             />
         </View>
