@@ -5,7 +5,7 @@ import { StyleSheet, View } from 'react-native'
 import React from 'react'
 
 import { TimerPickerModal } from "react-native-timer-picker";
-import { HexToRgb } from '../../Common/UtilsTS';
+import { GetDayHourMinSecFromMs, HexToRgb } from '../../Common/UtilsTS';
 
 type TimePickerResult = {
     hours: number,
@@ -14,9 +14,13 @@ type TimePickerResult = {
 }
 
 const TimePicker = ({
+    initialHour,
+    initialMinute,
     setIsVisible,
     onConfirm
 }: {
+    initialHour: number,
+    initialMinute: number,
     setIsVisible: (visible: boolean) => void,
     onConfirm: (time: TimePickerResult) => void,
 }) => {
@@ -31,18 +35,25 @@ const TimePicker = ({
                 }}
                 onCancel={() => setIsVisible(false)}
                 closeOnOverlayPress
+                initialHours={initialHour}
+                initialMinutes={initialMinute}
                 hideSeconds
                 hourLabel={'H'}
-                // hourLimit={}
+                hourLimit={{ min: 0, max: 12 }}
                 minuteLabel={'M'}
                 styles={{
                     confirmButton: {
                         backgroundColor: 'black',
                         borderWidth: undefined,
                         color: 'white',
+                    },
+
+                    cancelButton: {
+                        borderColor: 'black',
+                        color: 'black',
                     }
                 }}
-                // modalTitle="Set Alarm"
+            // modalTitle="Set Alarm"
             />
         </View>
     )

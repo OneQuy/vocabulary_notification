@@ -6,7 +6,7 @@ import useLocalText from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { GetDayHourMinSecFromMs_ToString } from '../../Common/UtilsTS'
+import { GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString } from '../../Common/UtilsTS'
 import HairLine from '../../Common/Components/HairLine'
 import { WindowSize_Max } from '../../Common/CommonConstants'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
@@ -196,6 +196,8 @@ const SetupScreen = () => {
   else if (showPopup === 'interval')
     contentToRenderInPopup = renderIntervals
 
+  const curIntervalArr = GetDayHourMinSecFromMs(displayIntervalInMin * 60 * 1000)
+
   // render
 
   return (
@@ -347,6 +349,8 @@ const SetupScreen = () => {
         <TimePicker
           setIsVisible={set_showTimePicker}
           onConfirm={(time) => set_displayIntervalInMin(time.hours * 60 + time.minutes)}
+          initialHour={curIntervalArr[1]}
+          initialMinute={curIntervalArr[2]}
         />
       }
     </View>
