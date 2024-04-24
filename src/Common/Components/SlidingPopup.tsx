@@ -27,7 +27,7 @@ const [showPopup, set_showPopup] = useState(false)
       blurBackgroundColorInHex={theme.background}
       onFinishedHide={set_showPopup}
       childMaxHeight={'60%'}
-      setCloseCallbackRef={popupCloseCallbackRef}
+      // setCloseCallbackRef={popupCloseCallbackRef}
     />
 }
 ```
