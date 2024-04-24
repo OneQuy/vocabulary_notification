@@ -15,7 +15,9 @@ const DefaultSlideHandlePaddingPercent = 0.005
 ```tsx
 const [showPopup, set_showPopup] = useState(false)
 
-const popupCloseCallbackRef = useRef<() => void>()
+// const popupCloseCallbackRef = useRef<(onFinished?: () => void) => void>()
+// if (popupCloseCallbackRef.current)
+//    popupCloseCallbackRef.current(() => console.log('Closed'))
 
 {
     showPopup &&
@@ -23,7 +25,7 @@ const popupCloseCallbackRef = useRef<() => void>()
       backgroundColor={theme.primary}
       child={renderContent()}
       blurBackgroundColorInHex={theme.background}
-      onPressClose={set_showPopup}
+      onFinishedHide={set_showPopup}
       childMaxHeight={'60%'}
       setCloseCallbackRef={popupCloseCallbackRef}
     />
@@ -42,9 +44,9 @@ const SlidingPopup = ({
   blurBackgroundColorInHex = '#000000',
   blurBackgroundOpacity = 0.8,
 
-  closeAnimatedDuration = 200,
+  hideAnimatedDuration = 200,
 
-  onPressClose,
+  onFinishedHide,
   setCloseCallbackRef,
 }: {
   child?: React.JSX.Element,
@@ -58,10 +60,10 @@ const SlidingPopup = ({
   blurBackgroundColorInHex?: string,
   blurBackgroundOpacity?: number,
 
-  closeAnimatedDuration?: number,
+  hideAnimatedDuration?: number,
 
-  onPressClose?: (active: boolean) => void,
-  setCloseCallbackRef?: React.MutableRefObject<undefined | (() => void)>,
+  onFinishedHide?: (active: boolean) => void,
+  setCloseCallbackRef?: React.MutableRefObject<undefined | ((onFinished?: () => void) => void)>,
 }) => {
   const { windowHeight } = useWindowOrientation()
   const [masterLayout, set_masterLayout] = useState<undefined | LayoutRectangle>(undefined)
@@ -161,7 +163,7 @@ const SlidingPopup = ({
         Animated.timing(heightAnimatedRef, {
           toValue: to,
           useNativeDriver: false,
-          duration: closeAnimatedDuration,
+          duration: hideAnimatedDuration,
         }).start(() => {
           if (typeof onFinished === 'function')
             onFinished()
@@ -176,7 +178,7 @@ const SlidingPopup = ({
     }
 
     heightCached.current = to
-  }, [masterLayout, closeAnimatedDuration, maxHeight])
+  }, [masterLayout, hideAnimatedDuration, maxHeight])
 
   const toggleShow = useCallback((
     isShowOrClose: boolean,
@@ -184,12 +186,15 @@ const SlidingPopup = ({
     setHeight(isShowOrClose ? -1 : 0, true, onFinished)
   }, [setHeight])
 
-  const onPressCloseThis = useCallback(() => {
+  const onPressCloseThis = useCallback((onFinished?: () => void) => {
     toggleShow(false, () => {
-      if (typeof onPressClose === 'function')
-        onPressClose(false)
+      if (typeof onFinishedHide === 'function')
+        onFinishedHide(false)
+
+      if (typeof onFinished === 'function')
+        onFinished()
     })
-  }, [toggleShow, onPressClose])
+  }, [toggleShow, onFinishedHide])
 
   if (setCloseCallbackRef)
     setCloseCallbackRef.current = onPressCloseThis
@@ -241,7 +246,7 @@ const SlidingPopup = ({
   return (
     <View onLayout={(e) => set_masterLayout(e.nativeEvent.layout)} style={styles.master}>
       {/* blur bg */}
-      <TouchableOpacity activeOpacity={0.9} onPress={onPressCloseThis} style={styles.blurView} />
+      <TouchableOpacity activeOpacity={0.9} onPress={() => onPressCloseThis()} style={styles.blurView} />
 
       {/* popup */}
       <Animated.View style={[styles.animatedHeightView, { height: heightAnimatedRef }]}>

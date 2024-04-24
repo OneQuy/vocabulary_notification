@@ -11,6 +11,7 @@ import HairLine from '../../Common/Components/HairLine'
 import { WindowSize_Max } from '../../Common/CommonConstants'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { PopuplarityLevelNumber } from '../Constants/AppConstants'
+import TimePicker from '../Components/TimePicker'
 
 const IntervalInMinPresets: number[] = [
   30,
@@ -22,10 +23,6 @@ const IntervalInMinPresets: number[] = [
   360,
   420,
   480,
-  540,
-  600,
-  660,
-  720,
   60 * 24,
 ]
 
@@ -36,7 +33,7 @@ const SetupScreen = () => {
   const texts = useLocalText()
 
   const [showPopup, set_showPopup] = useState<PopupType>(undefined)
-  const popupCloseCallbackRef = useRef<() => void>()
+  const popupCloseCallbackRef = useRef<(onFinished?: () => void) => void>()
 
   const [displayPopularityLevelIdx, set_displayPopularityLevelIdx] = useState(0)
 
@@ -141,7 +138,8 @@ const SetupScreen = () => {
     set_displayIntervalInMin(min)
 
     if (popupCloseCallbackRef.current)
-      popupCloseCallbackRef.current()
+      popupCloseCallbackRef.current(() => {
+      })
   }, [])
 
   const renderIntervals = useCallback(() => {
@@ -227,7 +225,7 @@ const SetupScreen = () => {
 
           onPress={() => onPressShowPopup('interval')}
         />
-      
+
         {/* limit words */}
 
         <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
@@ -324,11 +322,17 @@ const SetupScreen = () => {
           backgroundColor={theme.primary}
           child={contentToRenderInPopup()}
           blurBackgroundColorInHex={theme.background}
-          onPressClose={() => set_showPopup(undefined)}
+          onFinishedHide={() => set_showPopup(undefined)}
           childMaxHeight={'80%'}
           setCloseCallbackRef={popupCloseCallbackRef}
         />
       }
+
+      {/* {
+        <View style={StyleSheet.absoluteFill}>
+          <TimePicker />
+        </View>
+      } */}
     </View>
   )
 }
