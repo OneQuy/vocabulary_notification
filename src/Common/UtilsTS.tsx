@@ -485,6 +485,13 @@ export function ArrayRemove<T>(arr: T[], value: T): boolean {
 
 // string utils ---------------------------
 
+export function PrependZero(num: number): string {
+    if (num < 10 && num >= 0)
+        return '0' + num;
+    else
+        return num.toString();
+}
+
 export function AddS(word: string, count: number): string {
     if (count > 1)
         return word + 's'

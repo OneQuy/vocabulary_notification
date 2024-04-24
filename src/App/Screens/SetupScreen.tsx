@@ -6,12 +6,12 @@ import useLocalText from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString } from '../../Common/UtilsTS'
+import { AddS, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PrependZero } from '../../Common/UtilsTS'
 import HairLine from '../../Common/Components/HairLine'
 import { WindowSize_Max } from '../../Common/CommonConstants'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { PopuplarityLevelNumber } from '../Constants/AppConstants'
-import TimePicker from '../Components/TimePicker'
+import TimePicker, { TimePickerResult } from '../Components/TimePicker'
 
 const IntervalInMinPresets: (undefined | number)[] = [
   30,
@@ -46,6 +46,8 @@ const LimitWordPresets: (number)[] = [
   15,
 ]
 
+type PairTime = TimePickerResult[]
+
 type PopupType = 'popularity' | 'interval' | 'limit-word' | undefined
 
 const SetupScreen = () => {
@@ -60,6 +62,21 @@ const SetupScreen = () => {
   const [displayIntervalInMin, set_displayIntervalInMin] = useState<number>(60)
 
   const [displayWordLimitNumber, set_displayWordLimitNumber] = useState<number>(5)
+
+  const [displayExcludeTimePairs, set_displayExcludeTimePairs] = useState<PairTime[]>([
+    [
+      {
+        hours: 22,
+        minutes: 0,
+        seconds: 0,
+      },
+      {
+        hours: 7,
+        minutes: 0,
+        seconds: 0,
+      }
+    ]
+  ])
 
   const [showTimePicker, set_showTimePicker] = useState(false)
 
@@ -90,14 +107,6 @@ const SetupScreen = () => {
       }
     })
   }, [theme])
-
-  const workFromTxt = useMemo(() => {
-    return '10:30'
-  }, [])
-
-  const workToTxt = useMemo(() => {
-    return '20:00'
-  }, [])
 
   // popularity
 
@@ -258,6 +267,42 @@ const SetupScreen = () => {
     )
   }, [displayWordLimitNumber, theme, style])
 
+  // exclude time
+
+  const renderExcludeTimes = useCallback(() => {
+    return (
+      displayExcludeTimePairs.map((pair: PairTime) => {
+        return (
+          <View style={style.workTimeView}>
+            {/* from */}
+            <View style={style.workTimeChildView}>
+              <LucideIconTextEffectButton
+                unselectedColorOfTextAndIcon={theme.counterBackground}
+                notChangeToSelected
+                style={style.normalBtn}
+
+                title={`${PrependZero(pair[0].hours)}:${PrependZero(pair[0].minutes)}`}
+                titleProps={{ style: style.normalBtnTxt }}
+              />
+            </View>
+
+            {/* to */}
+            <View style={style.workTimeChildView}>
+              <LucideIconTextEffectButton
+                unselectedColorOfTextAndIcon={theme.counterBackground}
+                notChangeToSelected
+                style={style.normalBtn}
+
+                title={`${PrependZero(pair[1].hours)}:${PrependZero(pair[1].minutes)}`}
+                titleProps={{ style: style.normalBtnTxt }}
+              />
+            </View>
+          </View>
+        )
+      })
+    )
+  }, [displayExcludeTimePairs, theme, style])
+
   // common
 
   let contentToRenderInPopup = undefined
@@ -331,39 +376,15 @@ const SetupScreen = () => {
           onPress={() => onPressShowPopup('limit-word')}
         />
 
-        {/* work time */}
+        {/* exclude time */}
 
         <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
 
-        <View style={style.workTimeView}>
-          {/* work from */}
-          <View style={style.workTimeChildView}>
-            <Text style={style.header}>{texts.show_from}</Text>
+        <Text style={style.header}>{texts.not_show}</Text>
 
-            <LucideIconTextEffectButton
-              unselectedColorOfTextAndIcon={theme.counterBackground}
-              notChangeToSelected
-              style={style.normalBtn}
-
-              title={workFromTxt}
-              titleProps={{ style: style.normalBtnTxt }}
-            />
-          </View>
-
-          {/* work to */}
-          <View style={style.workTimeChildView}>
-            <Text style={style.header}>{texts.show_to}</Text>
-
-            <LucideIconTextEffectButton
-              unselectedColorOfTextAndIcon={theme.counterBackground}
-              notChangeToSelected
-              style={style.normalBtn}
-
-              title={workToTxt}
-              titleProps={{ style: style.normalBtnTxt }}
-            />
-          </View>
-        </View>
+        {
+          renderExcludeTimes()
+        }
 
         {/* test noti */}
 
@@ -380,7 +401,7 @@ const SetupScreen = () => {
           iconProps={{ name: 'Bell', size: FontSize.Normal, }}
         />
 
-        {/* save */}
+        {/* set notification */}
 
         <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
 
