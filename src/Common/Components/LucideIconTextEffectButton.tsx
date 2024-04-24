@@ -21,6 +21,8 @@ interface Props extends React.ComponentProps<typeof TouchableOpacity> {
      * keep unselected state as always
      */
     notChangeToSelected?: boolean,
+    
+    canHandlePressWhenSelected?: boolean,
 
     effectDuration?: number,
     effectType?: 'scale' | 'fade',
@@ -95,6 +97,7 @@ const LucideIconTextEffectButton = ({
     selectedBackgroundColor = 'black',
 
     notChangeToSelected,
+    canHandlePressWhenSelected,
     manuallySelected,
 
     effectDuration = 100,
@@ -327,7 +330,7 @@ const LucideIconTextEffectButton = ({
     }, [effectDuration, effectType, effectDelay])
 
     const onPress = useCallback((e: GestureResponderEvent) => {
-        if (manuallySelected === true && isSelected)
+        if (manuallySelected === true && isSelected && canHandlePressWhenSelected !== true)
             return
 
         if (typeof masterRestProps.onPress === 'function')
@@ -344,6 +347,7 @@ const LucideIconTextEffectButton = ({
         isSelected,
         playEffect,
         notChangeToSelected,
+        canHandlePressWhenSelected,
         masterRestProps.onPress
     ])
 

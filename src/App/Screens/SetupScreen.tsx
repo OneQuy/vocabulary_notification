@@ -170,6 +170,8 @@ const SetupScreen = () => {
                 onPress={() => onPressInterval(min)}
 
                 manuallySelected={isSelected}
+                notChangeToSelected
+                canHandlePressWhenSelected
 
                 style={isSelected ? style.normalBtn : style.normalBtn_NoBorder}
 
