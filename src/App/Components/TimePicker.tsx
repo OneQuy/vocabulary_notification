@@ -30,6 +30,9 @@ const TimePicker = ({
                 }}
                 onCancel={() => setIsVisible(false)}
                 closeOnOverlayPress
+                hideSeconds
+                hourLabel={'H'}
+                minuteLabel={'M'}
                 styles={{
                     confirmButton: {
                         backgroundColor: 'black',
