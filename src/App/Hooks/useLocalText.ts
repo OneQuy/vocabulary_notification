@@ -5,9 +5,11 @@ const eng = {
     show_every: 'Show every',
     show_from: 'Show from',
     show_to: 'Show to',
-    save: 'Save',
+    set_notification: 'Set notification',
     most_popular: 'Most Popular',
     rarest: 'Rarest',
+    limit_words_per_day: 'Limit words per day',
+    no_limit: 'No limit',
 } as const
 
 export type LocalText = typeof eng

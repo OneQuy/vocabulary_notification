@@ -209,11 +209,30 @@ const SetupScreen = () => {
           onPress={() => onPressShowPopup('popularity')}
         />
 
-        {/* loop interval */}
+        {/* interval */}
 
         <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
 
         <Text style={style.header}>{texts.show_every}</Text>
+
+        <LucideIconTextEffectButton
+          unselectedColorOfTextAndIcon={theme.counterBackground}
+          notChangeToSelected
+          style={style.normalBtn}
+
+          title={GetDayHourMinSecFromMs_ToString(displayIntervalInMin * 60 * 1000)}
+          titleProps={{ style: style.normalBtnTxt }}
+
+          iconProps={{ name: 'Clock', size: FontSize.Normal, }}
+
+          onPress={() => onPressShowPopup('interval')}
+        />
+      
+        {/* limit words */}
+
+        <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
+
+        <Text style={style.header}>{texts.limit_words_per_day}</Text>
 
         <LucideIconTextEffectButton
           unselectedColorOfTextAndIcon={theme.counterBackground}
@@ -292,10 +311,10 @@ const SetupScreen = () => {
 
           style={style.normalBtn}
 
-          title={texts.save}
+          title={texts.set_notification}
           titleProps={{ style: style.normalBtnTxt }}
 
-          iconProps={{ name: 'Check', size: FontSize.Normal, }}
+          iconProps={{ name: 'Rocket', size: FontSize.Normal, }}
         />
       </ScrollView>
 
