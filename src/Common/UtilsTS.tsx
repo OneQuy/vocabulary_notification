@@ -27,6 +27,9 @@ export const TempDirName = 'temp_dir';
 
 const DayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
+const TimeUnitNames_Short = ['d', 'h', 'm', 's'] as const
+const TimeUnitNames_Full = ['Day', 'Hour', 'Minute', 'Second'] as const
+
 // color ------------------------
 
 export const colorNameToHexDefines = {
@@ -681,7 +684,7 @@ export const SplitNumberInText = (text: string) => {
 export const ExtractAllNumbersInText = (textOrAnthing: any): number[] => {
     if (typeof textOrAnthing !== 'string')
         return []
-    
+
     const regex = /[+-]?\d+(\.\d+)?/g;
     let floats = textOrAnthing.match(regex)?.map(function (v) { return parseFloat(v); });
 
@@ -802,34 +805,25 @@ export const DayName = (date?: Date, is3Char?: boolean): string => {
         return name
 }
 
-export const GetDayHourMinSecFromMs_ToString = (ms: number, separator = '_', removeZeroElement = true): string => {
+export const GetDayHourMinSecFromMs_ToString = (
+    ms: number,
+    separator = '_',
+    removeZeroElement = true,
+    unitNameIsShortOrFull = true,
+    unitChar = '',
+): string => {
     let s = ''
 
     const arr = GetDayHourMinSecFromMs(ms)
+    const units = unitNameIsShortOrFull ? TimeUnitNames_Short : TimeUnitNames_Full
 
-    if (arr[0] > 0 || !removeZeroElement) {
-        s += arr[0] + 'd'
-    }
+    for (let i = 0; i < 4; i++) {
+        if (arr[i] > 0 || !removeZeroElement) {
+            if (s.length > 0)
+                s += separator
 
-    if (arr[1] > 0 || !removeZeroElement) {
-        if (s.length > 0)
-            s += separator
-
-        s += arr[1] + 'h'
-    }
-
-    if (arr[2] > 0 || !removeZeroElement) {
-        if (s.length > 0)
-            s += separator
-
-        s += arr[2] + 'm'
-    }
-
-    if (arr[3] > 0 || !removeZeroElement) {
-        if (s.length > 0)
-            s += separator
-
-        s += arr[3] + 's'
+            s += `${arr[i]}${unitChar}${units[i]}`
+        }
     }
 
     return s

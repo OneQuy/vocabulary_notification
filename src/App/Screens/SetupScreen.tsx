@@ -175,7 +175,7 @@ const SetupScreen = () => {
 
                 title={min === undefined ?
                   texts.custom :
-                  GetDayHourMinSecFromMs_ToString(min * 60 * 1000)
+                  GetDayHourMinSecFromMs_ToString(min * 60 * 1000, ' ', true, false, '-')
                 }
 
                 titleProps={{ style: style.normalBtnTxt }}
@@ -229,7 +229,7 @@ const SetupScreen = () => {
           notChangeToSelected
           style={style.normalBtn}
 
-          title={GetDayHourMinSecFromMs_ToString(displayIntervalInMin * 60 * 1000)}
+          title={GetDayHourMinSecFromMs_ToString(displayIntervalInMin * 60 * 1000, ' ', true, false, '-')}
           titleProps={{ style: style.normalBtnTxt }}
 
           iconProps={{ name: 'Clock', size: FontSize.Normal, }}
