@@ -332,8 +332,9 @@ const SetupScreen = () => {
         contentToRenderInPopup &&
         <SlidingPopup
           backgroundColor={theme.primary}
-          child={contentToRenderInPopup()}
           blurBackgroundColorInHex={theme.background}
+          handleColor={theme.counterPrimary}
+          child={contentToRenderInPopup()}
           onFinishedHide={() => set_showPopup(undefined)}
           childMaxHeight={'80%'}
           setCloseCallbackRef={popupCloseCallbackRef}
