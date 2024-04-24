@@ -1,5 +1,9 @@
 // Doc Telegram: https://github.com/yagop/node-telegram-bot-api/blob/master/doc/api.md
 
+// INSTALL
+// npm i dotenv node-telegram-bot-api
+// .env: NTBA_FIX_350 = true
+
 const TelegramBot = require('node-telegram-bot-api')
 require('dotenv').config()
 
