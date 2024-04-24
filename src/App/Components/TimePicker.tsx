@@ -1,4 +1,5 @@
 // https://github.com/troberts-28/react-native-timer-picker
+// style: https://github.com/troberts-28/react-native-timer-picker/blob/main/src/components/TimerPickerModal.styles.ts
 
 import { StyleSheet, View } from 'react-native'
 import React from 'react'
@@ -32,6 +33,7 @@ const TimePicker = ({
                 closeOnOverlayPress
                 hideSeconds
                 hourLabel={'H'}
+                // hourLimit={}
                 minuteLabel={'M'}
                 styles={{
                     confirmButton: {
