@@ -39,6 +39,8 @@ const SetupScreen = () => {
 
   const [displayIntervalInMin, set_displayIntervalInMin] = useState(30)
 
+  const [showTimePicker, set_showTimePicker] = useState(false)
+
   const style = useMemo(() => {
     return StyleSheet.create({
       master: { flex: 1, },
@@ -139,6 +141,7 @@ const SetupScreen = () => {
 
     if (popupCloseCallbackRef.current)
       popupCloseCallbackRef.current(() => {
+        set_showTimePicker(true)
       })
   }, [])
 
@@ -316,6 +319,7 @@ const SetupScreen = () => {
         />
       </ScrollView>
 
+      {/* popup */}
       {
         contentToRenderInPopup &&
         <SlidingPopup
@@ -328,11 +332,14 @@ const SetupScreen = () => {
         />
       }
 
-      {/* {
-        <View style={StyleSheet.absoluteFill}>
-          <TimePicker />
-        </View>
-      } */}
+      {/* time picker */}
+      {
+        showTimePicker &&
+        <TimePicker
+          setIsVisible={set_showTimePicker}
+          onConfirm={(s) => { }}
+        />
+      }
     </View>
   )
 }

@@ -1,37 +1,37 @@
-import { View } from 'react-native'
-import React, { useState } from 'react'
+import { StyleSheet, View } from 'react-native'
+import React from 'react'
 
 import { TimerPickerModal } from "react-native-timer-picker";
-import { ToCanPrint } from '../../Common/UtilsTS';
+import { HexToRgb } from '../../Common/UtilsTS';
 
-const TimePicker = () => {
-    const [showPicker, setShowPicker] = useState(false);
-    const [alarmString, setAlarmString] = useState<
-            string | null
-        >(null);
-    
+type TimePickerResult = {
+    hours: number,
+    minutes: number,
+    seconds: number,
+}
+
+const TimePicker = ({
+    setIsVisible,
+    onConfirm
+}: {
+    setIsVisible: (visible: boolean) => void,
+    onConfirm: (time: TimePickerResult) => void,
+}) => {
     return (
-        <View style={{backgroundColor: "#514242", alignItems: "center", justifyContent: "center"}}>
+        <View style={[StyleSheet.absoluteFill, { backgroundColor: HexToRgb('#000000', 0.7), alignItems: "center", justifyContent: "center" }]}>
             <TimerPickerModal
-                visible={showPicker}
-                setIsVisible={setShowPicker}
+                visible={true}
+                setIsVisible={setIsVisible}
                 onConfirm={(pickedDuration) => {
-                    setAlarmString(ToCanPrint(pickedDuration));
-                    setShowPicker(false);
+                    onConfirm(pickedDuration)
+                    setIsVisible(false);
                 }}
-                modalTitle="Set Alarm"
-                onCancel={() => setShowPicker(false)}
+                onCancel={() => setIsVisible(false)}
                 closeOnOverlayPress
-                // LinearGradient={LinearGradient}
-                styles={{
-                    theme: "dark",
-                }}
-                modalProps={{
-                    overlayOpacity: 0.2,
-                }}
+                // modalTitle="Set Alarm"
             />
         </View>
-    )    
+    )
 }
 
 export default TimePicker
