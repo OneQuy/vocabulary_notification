@@ -6,7 +6,7 @@ import useLocalText from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PrependZero } from '../../Common/UtilsTS'
+import { AddS, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, LogStringify, PrependZero } from '../../Common/UtilsTS'
 import HairLine from '../../Common/Components/HairLine'
 import { WindowSize_Max } from '../../Common/CommonConstants'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
@@ -14,17 +14,32 @@ import { PopuplarityLevelNumber } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
 import { LucideIcon } from '../../Common/Components/LucideIcon'
 
-const DefaultExcludeTimePair: PairTime = [
-  {
-    hours: 22,
-    minutes: 0,
-    seconds: 0,
-  },
-  {
-    hours: 7,
-    minutes: 0,
-    seconds: 0,
-  }
+const DefaultExcludeTimePairs: PairTime[] = [
+  [
+    {
+      hours: 22,
+      minutes: 0,
+      seconds: 0,
+    },
+    {
+      hours: 23,
+      minutes: 59,
+      seconds: 0,
+    }
+  ],
+
+  [
+    {
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+    },
+    {
+      hours: 7,
+      minutes: 0,
+      seconds: 0,
+    }
+  ]
 ]
 
 const IntervalInMinPresets: (undefined | number)[] = [
@@ -77,7 +92,7 @@ const SetupScreen = () => {
 
   const [displayWordLimitNumber, set_displayWordLimitNumber] = useState<number>(5)
 
-  const [displayExcludeTimePairs, set_displayExcludeTimePairs] = useState<PairTime[]>([DefaultExcludeTimePair])
+  const [displayExcludeTimePairs, set_displayExcludeTimePairs] = useState<PairTime[]>(DefaultExcludeTimePairs)
   const editingExcludeTimePairAndElementIndex = useRef<[PairTime | undefined, number]>([undefined, -1])
 
   const [showTimePicker, set_showTimePicker] = useState(false)
@@ -112,6 +127,10 @@ const SetupScreen = () => {
       }
     })
   }, [theme])
+
+  const onPressSetNotification = useCallback(() => {
+    CalcNotiTimeList(displayIntervalInMin, displayExcludeTimePairs)
+  }, [displayIntervalInMin, displayExcludeTimePairs])
 
   const onConfirmTimePicker = useCallback((time: TimePickerResult) => {
     if (editingExcludeTimePairAndElementIndex.current[0] === undefined ||
@@ -289,7 +308,7 @@ const SetupScreen = () => {
   // exclude time
 
   const onPressAddExcludeTime = useCallback(() => {
-    displayExcludeTimePairs.push(DefaultExcludeTimePair)
+    displayExcludeTimePairs.push(DefaultExcludeTimePairs[0])
     set_displayExcludeTimePairs(CloneObject(displayExcludeTimePairs))
   }, [displayExcludeTimePairs])
 
@@ -485,13 +504,16 @@ const SetupScreen = () => {
 
           notChangeToSelected
           manuallySelected={true}
-
+          canHandlePressWhenSelected
+          
           style={style.normalBtn}
 
           title={texts.set_notification}
           titleProps={{ style: style.normalBtnTxt }}
 
           iconProps={{ name: 'Rocket', size: FontSize.Normal, }}
+
+          onPress={onPressSetNotification}
         />
       </ScrollView>
 
@@ -524,3 +546,60 @@ const SetupScreen = () => {
 }
 
 export default SetupScreen
+
+const TotalMin = (time: TimePickerResult) => {
+  return time.hours * 60 + time.minutes
+}
+
+const IsInExcludeTime = (hour: number, minute: number, excludePairs: PairTime[]) => {
+  const totalMin = hour * 60 + minute
+
+  for (let i = 0; i < excludePairs.length; i++) {
+    const pair = excludePairs[i]
+
+    const startMin = pair[0].hours * 60 + pair[0].minutes
+    const endMin = pair[1].hours * 60 + pair[1].minutes
+
+    if (totalMin >= startMin && totalMin <= endMin)
+      return true
+  }
+
+  return false
+}
+
+const CalcNotiTimeList = (intervalInMinute: number, excludePairs: PairTime[]) => {
+  let lastNoti: TimePickerResult | undefined
+  const arr: TimePickerResult[] = []
+
+  for (let hour = 0; hour < 24; hour++) {
+    for (let minute = 0; minute < 60; minute++) {
+      if (IsInExcludeTime(hour, minute, excludePairs))
+        continue
+
+      if (lastNoti === undefined) {
+        lastNoti = {
+          hours: hour,
+          minutes: minute,
+          seconds: 0
+        }
+
+        arr.push(lastNoti)
+      }
+      else {
+        const distanceInMin = TotalMin({ hours: hour, minutes: minute }) - TotalMin(lastNoti)
+
+        if (distanceInMin >= intervalInMinute) {
+          lastNoti = {
+            hours: hour,
+            minutes: minute,
+            seconds: 0
+          }
+
+          arr.push(lastNoti)
+        }
+      }
+    }
+  }
+
+  LogStringify(arr)
+}

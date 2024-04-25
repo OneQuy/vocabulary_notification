@@ -10,7 +10,7 @@ import { GetDayHourMinSecFromMs, HexToRgb } from '../../Common/UtilsTS';
 export type TimePickerResult = {
     hours: number,
     minutes: number,
-    seconds: number,
+    seconds?: number,
 }
 
 const TimePicker = ({
