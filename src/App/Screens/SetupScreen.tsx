@@ -87,8 +87,9 @@ const SetupScreen = () => {
 
       scrollViewSlidingPopup: { gap: Gap.Small, padding: Outline.Normal, },
 
-      workTimeView: { flexDirection: 'row', gap: Gap.Normal, },
-      workTimeChildView: { gap: Gap.Small, flex: 1, },
+      excludeTimeView: { flexDirection: 'row', gap: Gap.Normal, alignItems: 'center' },
+      excludeTimeChildView: { flex: 1, },
+      excludeTimeArrowTxt: { color: theme.counterBackground, fontSize: FontSize.Normal, },
 
       header: { fontWeight: FontBold.Bold, fontSize: FontSize.Normal, color: theme.primary },
 
@@ -273,9 +274,9 @@ const SetupScreen = () => {
     return (
       displayExcludeTimePairs.map((pair: PairTime) => {
         return (
-          <View style={style.workTimeView}>
+          <View style={style.excludeTimeView}>
             {/* from */}
-            <View style={style.workTimeChildView}>
+            <View style={style.excludeTimeChildView}>
               <LucideIconTextEffectButton
                 unselectedColorOfTextAndIcon={theme.counterBackground}
                 notChangeToSelected
@@ -286,8 +287,10 @@ const SetupScreen = () => {
               />
             </View>
 
+            <Text style={style.excludeTimeArrowTxt}>{'-->'}</Text>
+
             {/* to */}
-            <View style={style.workTimeChildView}>
+            <View style={style.excludeTimeChildView}>
               <LucideIconTextEffectButton
                 unselectedColorOfTextAndIcon={theme.counterBackground}
                 notChangeToSelected
@@ -297,6 +300,14 @@ const SetupScreen = () => {
                 titleProps={{ style: style.normalBtnTxt }}
               />
             </View>
+
+            {/* add */}
+            <LucideIconTextEffectButton
+              unselectedColorOfTextAndIcon={theme.counterBackground}
+              notChangeToSelected
+
+              iconProps={{ name: 'Plus', size: FontSize.Normal }}
+            />
           </View>
         )
       })
