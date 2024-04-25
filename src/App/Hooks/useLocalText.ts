@@ -14,6 +14,8 @@ const eng = {
     custom: 'Custom',
     word: 'word',
     not_show: 'Not show during these time ranges:',
+    popup_error: 'Oops',
+    no_permission: 'Can not setup. Please grant the permission to receive vocabulary notifications!',
 } as const
 
 export type LocalText = typeof eng

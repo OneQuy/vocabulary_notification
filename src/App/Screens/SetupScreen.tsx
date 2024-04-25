@@ -13,7 +13,8 @@ import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { PopuplarityLevelNumber } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
 import { LucideIcon } from '../../Common/Components/LucideIcon'
-import { initNotificationAsync } from '../../Common/Nofitication'
+import { requestPermissionNotificationAsync, setNotification_RemainSeconds } from '../../Common/Nofitication'
+import { AuthorizationStatus } from '@notifee/react-native'
 
 const DefaultExcludeTimePairs: PairTime[] = [
   [
@@ -130,10 +131,20 @@ const SetupScreen = () => {
   }, [theme])
 
   const onPressSetNotification = useCallback(async () => {
-    const res = await initNotificationAsync()
+    const resPermission = await requestPermissionNotificationAsync()
 
-    CalcNotiTimeList(displayIntervalInMin, displayExcludeTimePairs)
-  }, [displayIntervalInMin, displayExcludeTimePairs])
+    if (resPermission.authorizationStatus === AuthorizationStatus.DENIED) {
+      Alert.alert(texts.popup_error, texts.no_permission)
+      return
+    }
+
+    setNotification_RemainSeconds(1, {
+      title: 'hello',
+      message: 'hihi',
+    })
+    
+    // CalcNotiTimeList(displayIntervalInMin, displayExcludeTimePairs)
+  }, [displayIntervalInMin, displayExcludeTimePairs, texts])
 
   const onConfirmTimePicker = useCallback((time: TimePickerResult) => {
     if (editingExcludeTimePairAndElementIndex.current[0] === undefined ||
@@ -154,7 +165,7 @@ const SetupScreen = () => {
       }
       else { // set start time
         const totalMin_EndTime = TotalMin(editingExcludeTimePairAndElementIndex.current[0][1])
-  
+
         if (totalMin >= totalMin_EndTime) {
           Alert.alert(texts.invalid_input, texts.invalid_start_time)
           return
