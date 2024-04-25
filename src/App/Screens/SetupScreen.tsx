@@ -288,7 +288,9 @@ const SetupScreen = () => {
   // exclude time
 
   const onPressAddExcludeTime = useCallback(() => {
-  }, [])
+    displayExcludeTimePairs.push(displayExcludeTimePairs[displayExcludeTimePairs.length - 1])
+    set_displayExcludeTimePairs(CloneObject(displayExcludeTimePairs))
+  }, [displayExcludeTimePairs])
 
   const renderExcludeTimes = useCallback(() => {
     return (
@@ -337,6 +339,8 @@ const SetupScreen = () => {
               notChangeToSelected
 
               iconProps={{ name: 'Plus', size: FontSize.Normal }}
+
+              onPress={onPressAddExcludeTime}
             />
           </View>
         )
