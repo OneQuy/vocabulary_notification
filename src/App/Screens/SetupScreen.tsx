@@ -6,7 +6,7 @@ import useLocalText from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PrependZero } from '../../Common/UtilsTS'
+import { AddS, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PrependZero } from '../../Common/UtilsTS'
 import HairLine from '../../Common/Components/HairLine'
 import { WindowSize_Max } from '../../Common/CommonConstants'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
@@ -291,6 +291,11 @@ const SetupScreen = () => {
     displayExcludeTimePairs.push(displayExcludeTimePairs[displayExcludeTimePairs.length - 1])
     set_displayExcludeTimePairs(CloneObject(displayExcludeTimePairs))
   }, [displayExcludeTimePairs])
+  
+  const onPressRemoveExcludeTime = useCallback((pair: PairTime) => {
+    ArrayRemove(displayExcludeTimePairs, pair)
+    set_displayExcludeTimePairs(CloneObject(displayExcludeTimePairs))
+  }, [displayExcludeTimePairs])
 
   const renderExcludeTimes = useCallback(() => {
     return (
@@ -333,14 +338,14 @@ const SetupScreen = () => {
               />
             </View>
 
-            {/* add */}
+            {/* remove */}
             <LucideIconTextEffectButton
               unselectedColorOfTextAndIcon={theme.counterBackground}
               notChangeToSelected
 
-              iconProps={{ name: 'Plus', size: FontSize.Normal }}
+              iconProps={{ name: 'X', size: FontSize.Normal }}
 
-              onPress={onPressAddExcludeTime}
+              onPress={() => onPressRemoveExcludeTime(pair)}
             />
           </View>
         )
