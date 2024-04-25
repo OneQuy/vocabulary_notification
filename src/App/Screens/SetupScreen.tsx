@@ -12,6 +12,7 @@ import { WindowSize_Max } from '../../Common/CommonConstants'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { PopuplarityLevelNumber } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
+import { LucideIcon } from '../../Common/Components/LucideIcon'
 
 const IntervalInMinPresets: (undefined | number)[] = [
   30,
@@ -89,7 +90,6 @@ const SetupScreen = () => {
 
       excludeTimeView: { flexDirection: 'row', gap: Gap.Normal, alignItems: 'center' },
       excludeTimeChildView: { flex: 1, },
-      excludeTimeArrowTxt: { color: theme.counterBackground, fontSize: FontSize.Normal, },
 
       header: { fontWeight: FontBold.Bold, fontSize: FontSize.Normal, color: theme.primary },
 
@@ -287,7 +287,7 @@ const SetupScreen = () => {
               />
             </View>
 
-            <Text style={style.excludeTimeArrowTxt}>{'-->'}</Text>
+            <LucideIcon name='MoveRight' color={theme.counterBackground} />
 
             {/* to */}
             <View style={style.excludeTimeChildView}>
