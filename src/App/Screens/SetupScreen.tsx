@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import useTheme from '../Hooks/useTheme'
@@ -139,12 +139,30 @@ const SetupScreen = () => {
       set_displayIntervalInMin(time.hours * 60 + time.minutes)
     }
     else { // for exclude time
+      const totalMin = TotalMin(time)
+
+      if (editingExcludeTimePairAndElementIndex.current[1] == 1) { // set end time
+        const totalMin_StartTime = TotalMin(editingExcludeTimePairAndElementIndex.current[0][0])
+
+        if (totalMin <= totalMin_StartTime) {
+          Alert.alert(texts.invalid_input, texts.invalid_end_time)
+          return
+        }
+      }
+      else { // set start time
+        const totalMin_EndTime = TotalMin(editingExcludeTimePairAndElementIndex.current[0][1])
+  
+        if (totalMin >= totalMin_EndTime) {
+          Alert.alert(texts.invalid_input, texts.invalid_start_time)
+          return
+        }
+      }
+
       editingExcludeTimePairAndElementIndex.current[0][editingExcludeTimePairAndElementIndex.current[1]] = time
+      editingExcludeTimePairAndElementIndex.current = [undefined, -1]
       set_displayExcludeTimePairs(CloneObject(displayExcludeTimePairs))
     }
-
-    editingExcludeTimePairAndElementIndex.current = [undefined, -1]
-  }, [displayExcludeTimePairs])
+  }, [displayExcludeTimePairs, texts])
 
   // popularity
 
@@ -505,7 +523,7 @@ const SetupScreen = () => {
           notChangeToSelected
           manuallySelected={true}
           canHandlePressWhenSelected
-          
+
           style={style.normalBtn}
 
           title={texts.set_notification}
