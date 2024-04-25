@@ -13,6 +13,7 @@ import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { PopuplarityLevelNumber } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
 import { LucideIcon } from '../../Common/Components/LucideIcon'
+import { initNotificationAsync } from '../../Common/Nofitication'
 
 const DefaultExcludeTimePairs: PairTime[] = [
   [
@@ -128,7 +129,9 @@ const SetupScreen = () => {
     })
   }, [theme])
 
-  const onPressSetNotification = useCallback(() => {
+  const onPressSetNotification = useCallback(async () => {
+    const res = await initNotificationAsync()
+
     CalcNotiTimeList(displayIntervalInMin, displayExcludeTimePairs)
   }, [displayIntervalInMin, displayExcludeTimePairs])
 
