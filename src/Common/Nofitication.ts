@@ -7,6 +7,8 @@
 //
 // <key>NSUserNotificationsUsageDescription</key>
 // <string>Please grant permission to receive vocabulary notifications.</string>
+//
+//  iOS: add Push Notifications on XCode
 // --------------------------------
 
 import notifee, { AndroidChannel, AndroidImportance, AndroidStyle, Notification, NotificationAndroid, TimestampTrigger, TriggerType } from '@notifee/react-native';
