@@ -337,9 +337,9 @@ const SetupScreen = () => {
 
   const renderExcludeTimes = useCallback(() => {
     return (
-      displayExcludeTimePairs.map((pair: PairTime) => {
+      displayExcludeTimePairs.map((pair: PairTime, index: number) => {
         return (
-          <View style={style.excludeTimeView}>
+          <View key={index} style={style.excludeTimeView}>
             {/* from */}
             <View style={style.excludeTimeChildView}>
               <LucideIconTextEffectButton
