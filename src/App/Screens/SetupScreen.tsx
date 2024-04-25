@@ -6,7 +6,7 @@ import useLocalText from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PrependZero } from '../../Common/UtilsTS'
+import { AddS, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PrependZero } from '../../Common/UtilsTS'
 import HairLine from '../../Common/Components/HairLine'
 import { WindowSize_Max } from '../../Common/CommonConstants'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
@@ -78,8 +78,11 @@ const SetupScreen = () => {
       }
     ]
   ])
+  const editingExcludeTimePairAndElementIndex = useRef<[PairTime | undefined, number]>([undefined, -1])
 
   const [showTimePicker, set_showTimePicker] = useState(false)
+
+  // common
 
   const style = useMemo(() => {
     return StyleSheet.create({
@@ -108,6 +111,20 @@ const SetupScreen = () => {
       }
     })
   }, [theme])
+
+  const onConfirmTimePicker = useCallback((time: TimePickerResult) => {
+    if (editingExcludeTimePairAndElementIndex.current[0] === undefined ||
+      editingExcludeTimePairAndElementIndex.current[1] === -1
+    ) { // set for interval
+      set_displayIntervalInMin(time.hours * 60 + time.minutes)
+    }
+    else { // for exclude time
+      editingExcludeTimePairAndElementIndex.current[0][editingExcludeTimePairAndElementIndex.current[1]] = time
+      set_displayExcludeTimePairs(CloneObject(displayExcludeTimePairs))
+    }
+
+    editingExcludeTimePairAndElementIndex.current = [undefined, -1]
+  }, [displayExcludeTimePairs])
 
   // popularity
 
@@ -270,6 +287,9 @@ const SetupScreen = () => {
 
   // exclude time
 
+  const onPressAddExcludeTime = useCallback(() => {
+  }, [])
+
   const renderExcludeTimes = useCallback(() => {
     return (
       displayExcludeTimePairs.map((pair: PairTime) => {
@@ -284,6 +304,11 @@ const SetupScreen = () => {
 
                 title={`${PrependZero(pair[0].hours)}:${PrependZero(pair[0].minutes)}`}
                 titleProps={{ style: style.normalBtnTxt }}
+
+                onPress={() => {
+                  editingExcludeTimePairAndElementIndex.current = [pair, 0]
+                  set_showTimePicker(true)
+                }}
               />
             </View>
 
@@ -298,6 +323,11 @@ const SetupScreen = () => {
 
                 title={`${PrependZero(pair[1].hours)}:${PrependZero(pair[1].minutes)}`}
                 titleProps={{ style: style.normalBtnTxt }}
+
+                onPress={() => {
+                  editingExcludeTimePairAndElementIndex.current = [pair, 1]
+                  set_showTimePicker(true)
+                }}
               />
             </View>
 
@@ -325,7 +355,16 @@ const SetupScreen = () => {
   else if (showPopup === 'limit-word')
     contentToRenderInPopup = renderWordLimits
 
-  const curIntervalArr = GetDayHourMinSecFromMs(displayIntervalInMin * 60 * 1000)
+  let timePickerInitial
+
+  if (editingExcludeTimePairAndElementIndex.current[0] === undefined ||
+    editingExcludeTimePairAndElementIndex.current[1] < 0)
+    timePickerInitial = GetDayHourMinSecFromMs(displayIntervalInMin * 60 * 1000)
+  else {
+    const time = editingExcludeTimePairAndElementIndex.current[0][editingExcludeTimePairAndElementIndex.current[1]]
+
+    timePickerInitial = GetDayHourMinSecFromMs((time.hours * 60 + time.minutes) * 60 * 1000)
+  }
 
   // render
 
@@ -453,9 +492,9 @@ const SetupScreen = () => {
         showTimePicker &&
         <TimePicker
           setIsVisible={set_showTimePicker}
-          onConfirm={(time) => set_displayIntervalInMin(time.hours * 60 + time.minutes)}
-          initialHour={curIntervalArr[1]}
-          initialMinute={curIntervalArr[2]}
+          onConfirm={onConfirmTimePicker}
+          initialHour={timePickerInitial[1]}
+          initialMinute={timePickerInitial[2]}
         />
       }
     </View>

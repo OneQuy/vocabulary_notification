@@ -39,7 +39,7 @@ const TimePicker = ({
                 initialMinutes={initialMinute}
                 hideSeconds
                 hourLabel={'H'}
-                hourLimit={{ min: 0, max: 12 }}
+                // hourLimit={{ min: 0, max: 12 }}
                 minuteLabel={'M'}
                 styles={{
                     confirmButton: {
