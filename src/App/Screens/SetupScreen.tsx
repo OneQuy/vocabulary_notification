@@ -17,6 +17,19 @@ import { LucideIcon } from '../../Common/Components/LucideIcon'
 const DefaultExcludeTimePairs: PairTime[] = [
   [
     {
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+    },
+    {
+      hours: 7,
+      minutes: 0,
+      seconds: 0,
+    }
+  ],
+
+  [
+    {
       hours: 22,
       minutes: 0,
       seconds: 0,
@@ -27,19 +40,6 @@ const DefaultExcludeTimePairs: PairTime[] = [
       seconds: 0,
     }
   ],
-
-  [
-    {
-      hours: 0,
-      minutes: 0,
-      seconds: 0,
-    },
-    {
-      hours: 7,
-      minutes: 0,
-      seconds: 0,
-    }
-  ]
 ]
 
 const IntervalInMinPresets: (undefined | number)[] = [
