@@ -14,6 +14,19 @@ import { PopuplarityLevelNumber } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
 import { LucideIcon } from '../../Common/Components/LucideIcon'
 
+const DefaultExcludeTimePair: PairTime = [
+  {
+    hours: 22,
+    minutes: 0,
+    seconds: 0,
+  },
+  {
+    hours: 7,
+    minutes: 0,
+    seconds: 0,
+  }
+]
+
 const IntervalInMinPresets: (undefined | number)[] = [
   30,
   60,
@@ -64,20 +77,7 @@ const SetupScreen = () => {
 
   const [displayWordLimitNumber, set_displayWordLimitNumber] = useState<number>(5)
 
-  const [displayExcludeTimePairs, set_displayExcludeTimePairs] = useState<PairTime[]>([
-    [
-      {
-        hours: 22,
-        minutes: 0,
-        seconds: 0,
-      },
-      {
-        hours: 7,
-        minutes: 0,
-        seconds: 0,
-      }
-    ]
-  ])
+  const [displayExcludeTimePairs, set_displayExcludeTimePairs] = useState<PairTime[]>([DefaultExcludeTimePair])
   const editingExcludeTimePairAndElementIndex = useRef<[PairTime | undefined, number]>([undefined, -1])
 
   const [showTimePicker, set_showTimePicker] = useState(false)
@@ -93,6 +93,7 @@ const SetupScreen = () => {
 
       excludeTimeView: { flexDirection: 'row', gap: Gap.Normal, alignItems: 'center' },
       excludeTimeChildView: { flex: 1, },
+      excludeTimeTitleView: { flexDirection: 'row', justifyContent: 'space-between' },
 
       header: { fontWeight: FontBold.Bold, fontSize: FontSize.Normal, color: theme.primary },
 
@@ -288,10 +289,10 @@ const SetupScreen = () => {
   // exclude time
 
   const onPressAddExcludeTime = useCallback(() => {
-    displayExcludeTimePairs.push(displayExcludeTimePairs[displayExcludeTimePairs.length - 1])
+    displayExcludeTimePairs.push(DefaultExcludeTimePair)
     set_displayExcludeTimePairs(CloneObject(displayExcludeTimePairs))
   }, [displayExcludeTimePairs])
-  
+
   const onPressRemoveExcludeTime = useCallback((pair: PairTime) => {
     ArrayRemove(displayExcludeTimePairs, pair)
     set_displayExcludeTimePairs(CloneObject(displayExcludeTimePairs))
@@ -439,7 +440,19 @@ const SetupScreen = () => {
 
         <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
 
-        <Text style={style.header}>{texts.not_show}</Text>
+        <View style={style.excludeTimeTitleView}>
+          <Text style={style.header}>{texts.not_show}</Text>
+
+          {/* add exclude time */}
+          <LucideIconTextEffectButton
+            unselectedColorOfTextAndIcon={theme.counterBackground}
+            notChangeToSelected
+
+            iconProps={{ name: 'Plus', size: FontSize.Normal }}
+
+            onPress={onPressAddExcludeTime}
+          />
+        </View>
 
         {
           renderExcludeTimes()
