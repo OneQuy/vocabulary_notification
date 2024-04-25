@@ -6,12 +6,12 @@
 // npm i @notifee/react-native
 //
 // <key>NSUserNotificationsUsageDescription</key>
-// <string>Please grant permission to receive vocabulary notifications.</string>
+// <string>Please grant permission to receive notification.</string>
 //
 //  iOS: add Push Notifications on XCode
 // --------------------------------
 
-import notifee, { AndroidChannel, AndroidImportance, AndroidStyle, Notification, NotificationAndroid, TimestampTrigger, TriggerType } from '@notifee/react-native';
+import notifee, { AndroidChannel, AndroidImportance, AndroidStyle, Notification, NotificationAndroid, NotificationSettings, TimestampTrigger, TriggerType } from '@notifee/react-native';
 
 export type NotificationOption = {
   message: string,
@@ -19,9 +19,13 @@ export type NotificationOption = {
   timestamp?: number,
 }
 
-var channelId: string
+var androidChannelId: string
+
 var inited: boolean = false
 
+/**
+ * create channel (android)
+ */
 export const initNotificationAsync = async () => {
   if (inited)
     return
@@ -29,7 +33,8 @@ export const initNotificationAsync = async () => {
   inited = true
 
   // Create a channel (required for Android)
-  channelId = await notifee.createChannel({
+
+  androidChannelId = await notifee.createChannel({
     id: 'main',
     name: 'Main Channel',
     importance: AndroidImportance.HIGH,
@@ -37,9 +42,10 @@ export const initNotificationAsync = async () => {
   } as AndroidChannel);
 
   notifee.onBackgroundEvent(async (_) => {})
+}
 
-  // Request permissions (required for iOS)
-  await notifee.requestPermission()
+export const requestPermissionNotificationAsync = async () : Promise<NotificationSettings> => {
+  return await notifee.requestPermission()
 }
 
 export const cancelAllLocalNotificationsAsync = async () => {
@@ -69,7 +75,7 @@ export const setNotification = (option: NotificationOption) => { // main
       title: option.title,
       body: option.message,
       android: {
-        channelId,
+        channelId: androidChannelId,
         style: {
           type: AndroidStyle.BIGTEXT,
           text: option.message,
