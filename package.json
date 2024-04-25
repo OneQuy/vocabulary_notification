@@ -1,6 +1,6 @@
 {
   "name": "vocabulary_notification",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -14,6 +14,7 @@
     "store": "cd android && ./gradlew bundlerelease"
   },
   "dependencies": {
+    "@notifee/react-native": "^7.8.2",
     "lucide-react-native": "^0.372.0",
     "react": "18.2.0",
     "react-native": "0.73.7",

@@ -6,6 +6,8 @@
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>vocabulary_notification</string>
+	<key>NSUserNotificationsUsageDescription</key>
+	<string>Please grant permission to receive vocabulary notifications.</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
