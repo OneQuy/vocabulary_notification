@@ -13,7 +13,7 @@ const eng = {
     no_limit: 'No limit',
     custom: 'Custom',
     word: 'word',
-    not_show: 'NOT show time',
+    not_show: 'Not show during these time ranges:',
 } as const
 
 export type LocalText = typeof eng
