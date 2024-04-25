@@ -13,7 +13,7 @@ import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { PopuplarityLevelNumber } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
 import { LucideIcon } from '../../Common/Components/LucideIcon'
-import { requestPermissionNotificationAsync, setNotification_RemainSeconds } from '../../Common/Nofitication'
+import { cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync, setNotification, setNotification_RemainSeconds } from '../../Common/Nofitication'
 import { AuthorizationStatus } from '@notifee/react-native'
 
 const DefaultExcludeTimePairs: PairTime[] = [
@@ -138,12 +138,26 @@ const SetupScreen = () => {
       return
     }
 
-    setNotification_RemainSeconds(1, {
-      title: 'hello',
-      message: 'hihi',
-    })
-    
-    // CalcNotiTimeList(displayIntervalInMin, displayExcludeTimePairs)
+    await cancelAllLocalNotificationsAsync()
+
+    const arr = CalcNotiTimeList(displayIntervalInMin, displayExcludeTimePairs)
+
+    for (let i = 0; i < arr.length; i++) {
+      const time = arr[i]
+
+      for (let day = 0; day < 5; day++) {
+        const nowdate = new Date()
+        nowdate.setDate(nowdate.getDate() + day)
+        nowdate.setHours(time.hours)
+        nowdate.setMinutes(time.minutes)
+
+        setNotification({
+          timestamp: nowdate.getTime(),
+          title: 'Vocanoti',
+          message: 'hello: ' + nowdate.toLocaleString(),
+        })
+      }
+    }
   }, [displayIntervalInMin, displayExcludeTimePairs, texts])
 
   const onConfirmTimePicker = useCallback((time: TimePickerResult) => {
@@ -583,7 +597,7 @@ const TotalMin = (time: TimePickerResult) => {
   return time.hours * 60 + time.minutes
 }
 
-const IsInExcludeTime = (hour: number, minute: number, excludePairs: PairTime[]) => {
+const IsInExcludeTime = (hour: number, minute: number, excludePairs: PairTime[]): boolean => {
   const totalMin = hour * 60 + minute
 
   for (let i = 0; i < excludePairs.length; i++) {
@@ -599,7 +613,7 @@ const IsInExcludeTime = (hour: number, minute: number, excludePairs: PairTime[])
   return false
 }
 
-const CalcNotiTimeList = (intervalInMinute: number, excludePairs: PairTime[]) => {
+const CalcNotiTimeList = (intervalInMinute: number, excludePairs: PairTime[]): TimePickerResult[] => {
   let lastNoti: TimePickerResult | undefined
   const arr: TimePickerResult[] = []
 
@@ -634,4 +648,6 @@ const CalcNotiTimeList = (intervalInMinute: number, excludePairs: PairTime[]) =>
   }
 
   LogStringify(arr)
+
+  return arr
 }
