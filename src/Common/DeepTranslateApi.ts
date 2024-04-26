@@ -57,7 +57,7 @@ export const DeepTranslateAsync = async (
     })
 }
 
-const Languages: Language[] = [
+export const Languages: Language[] = [
     {
         "language": "en",
         "name": "English",
@@ -590,4 +590,4 @@ const Languages: Language[] = [
         "language": "zu",
         "name": "Zulu"
     }
-]
+] as const
