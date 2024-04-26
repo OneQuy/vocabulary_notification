@@ -1,0 +1,3822 @@
+[
+ {
+  "word": "THE",
+  "idx": 0,
+  "count": 23135851162,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "With a comparative or with more and a verb phrase, establishes a correlation with one or more other such comparatives.",
+      "example": "It looks weaker and weaker, the more I think about it."
+     },
+     {
+      "definition": "With a comparative, and often with for it, indicates a result more like said comparative. This can be negated with none. See none the.",
+      "example": "I'm much the wiser for having had a difficult time like that."
+     }
+    ],
+    "partOfSpeech": "v"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "For each; per.",
+      "example": "valued at half a pound the bushel; paying seven dollars the year interest"
+     }
+    ],
+    "partOfSpeech": "pr"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/the-us-unstressed.mp3",
+    "text": "/ði/"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/the-us-stressed.mp3",
+    "text": "/ˈðiː/"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/the-uk-unstressed.mp3",
+    "text": "/ði/"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/the-ca-unstressed.mp3",
+    "text": "/ði/"
+   }
+  ]
+ },
+ {
+  "word": "OF",
+  "idx": 1,
+  "count": 13151942776,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "Expressing distance or motion."
+     },
+     {
+      "definition": "Expressing separation."
+     },
+     {
+      "definition": "Expressing origin."
+     },
+     {
+      "definition": "Expressing agency."
+     },
+     {
+      "definition": "Expressing composition, substance."
+     },
+     {
+      "definition": "Introducing subject matter."
+     },
+     {
+      "definition": "Having partitive effect."
+     },
+     {
+      "definition": "Expressing possession."
+     },
+     {
+      "definition": "Forming the \"objective genitive\"."
+     },
+     {
+      "definition": "Expressing qualities or characteristics."
+     },
+     {
+      "definition": "Expressing a point in time."
+     }
+    ],
+    "partOfSpeech": "pr"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "To possess, own.",
+      "example": "I have a house and a car."
+     },
+     {
+      "definition": "To hold, as something at someone's disposal.",
+      "example": "Do you have the key? (not necessarily one's own key)"
+     },
+     {
+      "definition": "Used to state the existence or presence of someone in a specified relationship with the subject.",
+      "example": "I have a really mean boss."
+     },
+     {
+      "definition": "To partake of (a particular substance, especially food or drink, or action or activity).",
+      "example": "Can I have a look at that?"
+     },
+     {
+      "definition": "To be scheduled to attend, undertake or participate in.",
+      "example": "Fred won't be able to come to the party; he has a meeting that day."
+     },
+     {
+      "definition": "To experience, go through, undergo.",
+      "example": "He had surgery on his hip yesterday."
+     },
+     {
+      "definition": "To be afflicted with, suffer from.",
+      "example": "He had a cold last week."
+     },
+     {
+      "definition": "(auxiliary verb, taking a past participle) Used in forming the perfect aspect.",
+      "example": "I had already eaten."
+     },
+     {
+      "definition": "Used as an interrogative verb before a pronoun to form a tag question, echoing a previous use of 'have' as an auxiliary verb or, in certain cases, main verb. (For further discussion, see the appendix English tag questions.)",
+      "example": "They haven't eaten dinner yet, have they?"
+     },
+     {
+      "definition": "(auxiliary verb, taking a to-infinitive) See have to.",
+      "example": "I have to go."
+     },
+     {
+      "definition": "To give birth to.",
+      "example": "My mother had me when she was 25."
+     },
+     {
+      "definition": "To engage in sexual intercourse with.",
+      "example": "He's always bragging about how many women he's had."
+     },
+     {
+      "definition": "To accept as a romantic partner.",
+      "example": "Despite my protestations of love, she would not have me."
+     },
+     {
+      "definition": "(transitive with bare infinitive) To cause to, by a command, request or invitation.",
+      "example": "They had me feed their dog while they were out of town."
+     },
+     {
+      "definition": "(transitive with adjective or adjective-phrase complement) To cause to be.",
+      "example": "He had him arrested for trespassing."
+     },
+     {
+      "definition": "(transitive with bare infinitive) To be affected by an occurrence. (Used in supplying a topic that is not a verb argument.)",
+      "example": "I've had three people today tell me my hair looks nice."
+     },
+     {
+      "definition": "(transitive with adjective or adjective-phrase complement) To depict as being.",
+      "example": "Their stories differed; he said he'd been at work when the incident occurred, but her statement had him at home that entire evening."
+     },
+     {
+      "definition": "To defeat in a fight; take.",
+      "example": "I could have him!"
+     },
+     {
+      "definition": "(obsolete outside Ireland) To be able to speak (a language).",
+      "example": "I have no German."
+     },
+     {
+      "definition": "To feel or be (especially painfully) aware of.",
+      "example": "Dan certainly has arms today, probably from scraping paint off four columns the day before."
+     },
+     {
+      "definition": "To trick, to deceive.",
+      "example": "You had me alright! I never would have thought that was just a joke."
+     },
+     {
+      "definition": "(often with present participle) To allow; to tolerate.",
+      "example": "I asked my dad if I could go to the concert this Thursday, but he wouldn't have it since it's a school night."
+     },
+     {
+      "definition": "(often used in the negative) To believe, buy, be taken in by.",
+      "example": "I made up an excuse as to why I was out so late, but my wife wasn't having any of it."
+     },
+     {
+      "definition": "To host someone; to take in as a guest.",
+      "example": "Thank you for having me!"
+     },
+     {
+      "definition": "To get a reading, measurement, or result from an instrument or calculation.",
+      "example": "I have two contacts on my scope."
+     },
+     {
+      "definition": "(of a jury) To consider a court proceeding that has been completed; to begin deliberations on a case.",
+      "example": "We'll schedule closing arguments for Thursday, and the jury will have the case by that afternoon."
+     },
+     {
+      "definition": "To make an observation of (a bird species)."
+     }
+    ],
+    "partOfSpeech": "ve"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/of-1-us-unstressed.mp3",
+    "text": "/ə/"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/of-1-us-stressed.mp3",
+    "text": "/ʌv/"
+   }
+  ]
+ },
+ {
+  "word": "AND",
+  "idx": 2,
+  "count": 12997637966,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "In rhythm, the second half of a divided beat."
+     },
+     {
+      "definition": "Breath."
+     },
+     {
+      "definition": "Sea smoke; steam fog."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "As a coordinating conjunction; expressing two elements to be taken together or in addition to each other."
+     },
+     {
+      "definition": "(heading) Expressing a condition."
+     }
+    ],
+    "partOfSpeech": "c"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "To breathe; whisper; devise; imagine."
+     }
+    ],
+    "partOfSpeech": "ve"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/and-us.mp3"
+   }
+  ]
+ },
+ {
+  "word": "TO",
+  "idx": 3,
+  "count": 12136980858,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "Toward a closed, touching or engaging position.",
+      "example": "Please push the door to."
+     },
+     {
+      "definition": "Into the wind."
+     }
+    ],
+    "partOfSpeech": "v"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Indicating destination: In the direction of, and arriving at.",
+      "example": "We are walking to the shop."
+     },
+     {
+      "definition": "Used to indicate the target or recipient of an action.",
+      "example": "He devoted himself to education."
+     },
+     {
+      "definition": "Used to indicate result of action.",
+      "example": "His face was beaten to a pulp."
+     },
+     {
+      "definition": "Used to indicate a resulting feeling or emotion.",
+      "example": "To everyone's great relief, the tuneless carol singers finally ceased their warbling."
+     },
+     {
+      "definition": "Used after an adjective to indicate its application.",
+      "example": "similar to ..., relevant to ..., pertinent to ..., I was nice to him, he was cruel to her, I am used to walking."
+     },
+     {
+      "definition": "Denotes the end of a range.",
+      "example": "It takes 2 to 4 weeks to process typical applications."
+     },
+     {
+      "definition": "As a.",
+      "example": "With God to friend (with God as a friend);   with The Devil to fiend (with the Devil as a foe);   lambs slaughtered to lake (lambs slaughtered as a sacrifice);   took her to wife (took her as a wife);   was sold to slave (was sold as a slave)."
+     },
+     {
+      "definition": "Used to indicate a ratio or comparison.",
+      "example": "I have ten dollars to your four."
+     },
+     {
+      "definition": "Used to indicate that the preceding term is to be raised to the power of the following value; indicates exponentiation.",
+      "example": "Three squared or three to the second power is nine."
+     },
+     {
+      "definition": "(time) Preceding.",
+      "example": "ten to ten = 9:50; We're going to leave at ten to (the hour)."
+     },
+     {
+      "definition": "Used to describe what something consists of or contains.",
+      "example": "Anyone could do this job; there's nothing to it."
+     },
+     {
+      "definition": "At.",
+      "example": "Stay where you're to and I'll come find you, b'y."
+     }
+    ],
+    "partOfSpeech": "pr"
+   }
+  ],
+  "phonetics": [
+   {
+    "text": "/tu/"
+   },
+   {
+    "text": "/tuː/"
+   },
+   {
+    "text": "/tʉː/"
+   }
+  ]
+ },
+ {
+  "word": "IN",
+  "idx": 5,
+  "count": 8469404971,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "A position of power or influence, or a way to get it.",
+      "example": "His parents got him an in with the company."
+     },
+     {
+      "definition": "(chiefly in the plural) One who, or that which, is in; especially, one who is in office."
+     },
+     {
+      "definition": "The state of a batter/batsman who is currently batting; see innings."
+     },
+     {
+      "definition": "A re-entrant angle; a nook or corner."
+     },
+     {
+      "definition": "Abbreviation of inch; inches."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "To enclose."
+     },
+     {
+      "definition": "To take in; to harvest."
+     }
+    ],
+    "partOfSpeech": "ve"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Located indoors, especially at home or at one's office or place of work.",
+      "example": "Is Mr. Smith in?"
+     },
+     {
+      "definition": "Located inside something.",
+      "example": "Little by little I pushed the snake into the basket, until finally all of it was in."
+     },
+     {
+      "definition": "(of the ball or other playing implement) Falling or remaining within the bounds of the playing area.",
+      "example": "If the tennis ball bounces on the line then it's in."
+     },
+     {
+      "definition": "Inserted or fitted into something.",
+      "example": "I've discovered why the TV wasn't working – the plug wasn't in!"
+     },
+     {
+      "definition": "Having been collected or received.",
+      "example": "The replies to the questionnaires are now all in."
+     },
+     {
+      "definition": "In fashion; popular.",
+      "example": "Skirts are in this year."
+     },
+     {
+      "definition": "Incoming.",
+      "example": "the in train"
+     },
+     {
+      "definition": "(of the sails of a vessel) Furled or stowed."
+     },
+     {
+      "definition": "Of the tide, at or near its highest level.",
+      "example": "You can't get round the headland when the tide's in."
+     },
+     {
+      "definition": "With privilege or possession; used to denote a holding, possession, or seisin.",
+      "example": "in by descent; in by purchase; in of the seisin of her husband"
+     },
+     {
+      "definition": "Currently batting."
+     },
+     {
+      "definition": "Having familiarity or involvement with somebody.",
+      "example": "He is very in with the Joneses."
+     },
+     {
+      "definition": "Having a favourable position, such as a position of influence or expected gain, in relation to another person.",
+      "example": "I think that bird fancies you. You're in there, mate!"
+     }
+    ],
+    "partOfSpeech": "j"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "At or towards the interior of a defined space, such as a building or room.",
+      "example": "He ran to the edge of the swimming pool and dived in."
+     },
+     {
+      "definition": "Towards the speaker or other reference point.",
+      "example": "For six hours the tide flows in, then for another six hours it flows out."
+     },
+     {
+      "definition": "So as to be enclosed or surrounded by something.",
+      "example": "Bring the water to the boil and drop the vegetables in."
+     },
+     {
+      "definition": "Still eligible to play, e.g. able to bat in cricket and baseball.",
+      "example": "He went for the wild toss but wasn't able to stay in."
+     },
+     {
+      "definition": "After the beginning of something.",
+      "example": "The show still didn't become interesting 20 minutes in."
+     },
+     {
+      "definition": "(in combination, after a verb) Denotes a gathering of people assembled for the stated activity, sometimes, though not always, suggesting a protest."
+     }
+    ],
+    "partOfSpeech": "v"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Used to indicate location, inclusion, or position within spatial, temporal or other limits."
+     },
+     {
+      "definition": "Into.",
+      "example": "Less water gets in your boots this way."
+     },
+     {
+      "definition": "Used to indicate limit, qualification, condition, or circumstance.",
+      "example": "In replacing the faucet washers, he felt he was making his contribution to the environment."
+     },
+     {
+      "definition": "Used to indicate means, medium, format, genre, or instrumentality."
+     }
+    ],
+    "partOfSpeech": "pr"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/in-us-stressed.mp3",
+    "text": "/ɪn/"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/in-au-stressed.mp3",
+    "text": "/ɪn/"
+   }
+  ]
+ },
+ {
+  "word": "ON",
+  "idx": 8,
+  "count": 3750423199,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "To switch on",
+      "example": "Can you on the light?"
+     }
+    ],
+    "partOfSpeech": "ve"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "In the state of being active, functioning or operating.",
+      "example": "All the lights are on, so they must be home."
+     },
+     {
+      "definition": "Performing according to schedule; taking place.",
+      "example": "Are we still on for tonight?"
+     },
+     {
+      "definition": "Fitted; covering; being worn.",
+      "example": "I was trying to drink out of the bottle while the top was still on!"
+     },
+     {
+      "definition": "(usually negative) Acceptable, appropriate.",
+      "example": "You can't do that; it's just not on."
+     },
+     {
+      "definition": "Destined, normally in the context of a challenge being accepted; involved, doomed.",
+      "example": "\"Five bucks says the Cavs win tonight.\" ―\"You're on!\""
+     },
+     {
+      "definition": "Having reached a base as a runner and being positioned there, awaiting further action from a subsequent batter."
+     },
+     {
+      "definition": "Within the half of the field on the same side as the batsman's legs; the left side for a right-handed batsman.",
+      "example": "Ponsonby-Smythe hit a thumping on drive."
+     },
+     {
+      "definition": "Menstruating."
+     }
+    ],
+    "partOfSpeech": "j"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "To an operating state.",
+      "example": "turn the television on"
+     },
+     {
+      "definition": "So as to cover or be fitted.",
+      "example": "Put on your hat and gloves."
+     },
+     {
+      "definition": "Along, forwards (continuing an action).",
+      "example": "drive on, rock on"
+     },
+     {
+      "definition": "In continuation, at length.",
+      "example": "He rambled on and on."
+     },
+     {
+      "definition": "(obsolete in the US) Later.",
+      "example": "Ten years on, nothing had changed in the village."
+     },
+     {
+      "definition": "Of betting odds, denoting a better-than-even chance. See also odds-on.",
+      "example": "That horse is twenty-to-one on, so you need to stake twenty pounds just to win one pound."
+     }
+    ],
+    "partOfSpeech": "v"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Positioned at the upper surface of, touching from above.",
+      "example": "A vase of flowers stood on the table."
+     },
+     {
+      "definition": "Positioned at or resting against the outer surface of; attached to.",
+      "example": "He had a scar on the side of his face."
+     },
+     {
+      "definition": "Expressing figurative placement or attachment.",
+      "example": "All of the responsibility is on him."
+     },
+     {
+      "definition": "Denoting performance or action by contact with the surface, upper part, or outside of anything; hence, by means of; with.",
+      "example": "to play on a violin or piano"
+     },
+     {
+      "definition": "At or in (a certain region or location).",
+      "example": "The lighthouse that you can see is on the mainland."
+     },
+     {
+      "definition": "Near; adjacent to; alongside.",
+      "example": "Croton-on-Hudson, Rostov-on-Don, Southend-on-Sea"
+     },
+     {
+      "definition": "Supported by (the specified part of itself).",
+      "example": "A table can't stand on two legs."
+     },
+     {
+      "definition": "So as to impart force to.",
+      "example": "tug on the rope; push hard on the door"
+     },
+     {
+      "definition": "So as to impact; against.",
+      "example": "I stubbed my toe on an old tree stump."
+     },
+     {
+      "definition": "Covering.",
+      "example": "He wore old shoes on his feet."
+     },
+     {
+      "definition": "(with certain modes of transport, especially public transport) Inside (a vehicle) for the purpose of travelling.",
+      "example": "on a bus, on a train, on a plane"
+     },
+     {
+      "definition": "At the date of.",
+      "example": "Born on the 4th of July."
+     },
+     {
+      "definition": "Some time during the day of.",
+      "example": "Can I see you on a different day?"
+     },
+     {
+      "definition": "At a given time after the start of something; at.",
+      "example": "Smith scored again on twelve minutes, doubling Mudchester Rovers' lead."
+     },
+     {
+      "definition": "Dealing with the subject of; about; concerning.",
+      "example": "I have no opinion on this subject."
+     },
+     {
+      "definition": "In the possession of.",
+      "example": "I haven't got any money on me."
+     },
+     {
+      "definition": "Because of, or due to.",
+      "example": "to arrest someone on suspicion of bribery"
+     },
+     {
+      "definition": "Upon; at the time of (and often because of).",
+      "example": "On Jack's entry, William got up to leave."
+     },
+     {
+      "definition": "Paid for by.",
+      "example": "I paid for the airfare and meals for my family, but the hotel room was on the company."
+     },
+     {
+      "definition": "Indicating a means or medium.",
+      "example": "Can't you see I'm on the phone?"
+     },
+     {
+      "definition": "Indicating the target of, or thing affected by, an event or action.",
+      "example": "Her words made a lasting impression on my mind."
+     },
+     {
+      "definition": "Toward; for; indicating the object of an emotion.",
+      "example": "Have pity or compassion on him."
+     },
+     {
+      "definition": "Indicating a means of subsistence.",
+      "example": "The dog survived three weeks on rainwater."
+     },
+     {
+      "definition": "Away or occupied with (e.g. a scheduled activity).",
+      "example": "He's on his lunch break."
+     },
+     {
+      "definition": "Regularly taking (a drug).",
+      "example": "He's acting so strangely, I think he must be on something."
+     },
+     {
+      "definition": "Under the influence of (a drug).",
+      "example": "He's acting crazy because he's on crack right now."
+     },
+     {
+      "definition": "Having identical domain and codomain.",
+      "example": "a function on"
+     },
+     {
+      "definition": "Having V^n as domain and V as codomain, for some set V and integer n.",
+      "example": "an operator on"
+     },
+     {
+      "definition": "Generated by.",
+      "example": "the free group on four letters"
+     },
+     {
+      "definition": "In addition to; besides; indicating multiplication or succession in a series.",
+      "example": "heaps on heaps of food"
+     },
+     {
+      "definition": "Of"
+     },
+     {
+      "definition": "Indicating dependence or reliance; with confidence in.",
+      "example": "He will promise on certain conditions."
+     },
+     {
+      "definition": "At the peril of, or for the safety of."
+     },
+     {
+      "definition": "In the service of; connected with; of the number of.",
+      "example": "He is on a newspaper; I am on the committee."
+     },
+     {
+      "definition": "By virtue of; with the pledge of.",
+      "example": "He affirmed or promised on his word, or on his honour."
+     },
+     {
+      "definition": "To the account or detriment of; denoting imprecation or invocation, or coming to, falling, or resting upon.",
+      "example": "A curse on him!"
+     },
+     {
+      "definition": "(especially when numbers of combatants or competitors are specified) Against; in opposition to.",
+      "example": "The fight was three on one, and he never stood a chance."
+     },
+     {
+      "definition": "Without."
+     }
+    ],
+    "partOfSpeech": "pr"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "In the Japanese language, a pronunciation, or reading, of a kanji character that was originally based on the character's pronunciation in Chinese, contrasted with kun.",
+      "example": "Most kanji have two kinds of reading, called \"on\" and \"kun\"."
+     }
+    ],
+    "partOfSpeech": "n"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/on-us.mp3",
+    "text": "/ɔn/"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/on-uk.mp3",
+    "text": "/ɒn/"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/on-au.mp3",
+    "text": "/ɒn/"
+   }
+  ]
+ },
+ {
+  "word": "THAT",
+  "idx": 9,
+  "count": 3400031103,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "Something being indicated that is there; one of those."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "(degree) To a given extent or degree.",
+      "example": "\"The ribbon was that thin.\" \"I disagree, I say it was not that thin, it was thicker... or maybe thinner...\""
+     },
+     {
+      "definition": "(degree) To a great extent or degree; very, particularly (in negative constructions).",
+      "example": "I did the run last year, and it wasn't that difficult."
+     },
+     {
+      "definition": "To such an extent; so. (in positive constructions).",
+      "example": "Ooh, I was that happy I nearly kissed her."
+     }
+    ],
+    "partOfSpeech": "v"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "(demonstrative) The thing, person, idea, quality, event, action or time indicated or understood from context, especially if more remote geographically, temporally or mentally than one designated as \"this\", or if expressing distinction.",
+      "example": "He went home, and after that I never saw him again."
+     },
+     {
+      "definition": "The known (thing); used to refer to something just said.",
+      "example": "They're getting divorced. What do you think about that?"
+     },
+     {
+      "definition": "(demonstrative) The aforementioned quality or proposition; used to emphatically affirm or deny a previous statement or question.",
+      "example": "The water is so cold! — That it is."
+     },
+     {
+      "definition": "(relative) (plural that) Which, who; representing a subject, direct object, indirect object, or object of a preposition.",
+      "example": "The CPR course that she took really came in handy."
+     },
+     {
+      "definition": "Used in place of relative adverbs such as where or when; often omitted.",
+      "example": "the last time that [= when] I went to Europe"
+     }
+    ],
+    "partOfSpeech": "p"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Introducing a clause which is the subject or object of a verb (such as one involving reported speech), or which is a complement to a previous statement.",
+      "example": "He told me that the book is a good read."
+     },
+     {
+      "definition": "Introducing a subordinate clause expressing a reason or cause: because, in that.",
+      "example": "Be glad that you have enough to eat."
+     },
+     {
+      "definition": "Introducing a subordinate clause that expresses an aim, purpose or goal (\"final\"), and usually contains the auxiliaries may, might or should: so, so that."
+     },
+     {
+      "definition": "Introducing — especially, but not exclusively, with an antecedent like so or such — a subordinate clause expressing a result, consequence or effect.",
+      "example": "The noise was so loud that she woke up."
+     },
+     {
+      "definition": "Introducing a premise or supposition for consideration: seeing as; inasmuch as; given that; as would appear from the fact that."
+     },
+     {
+      "definition": "Introducing a subordinate clause modifying an adverb.",
+      "example": "How often did she visit him? — Twice that I saw."
+     },
+     {
+      "definition": "Introducing an exclamation expressing a desire or wish.",
+      "example": "Oh that spring would come!"
+     },
+     {
+      "definition": "Introducing an exclamation expressing a strong emotion such as sadness or surprise."
+     }
+    ],
+    "partOfSpeech": "c"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/that-us.mp3"
+   },
+   {
+    "text": "/ˈðɛt/"
+   },
+   {
+    "text": "/ˈd̪æt/"
+   },
+   {
+    "text": "/ˈðæt/"
+   }
+  ]
+ },
+ {
+  "word": "BY",
+  "idx": 10,
+  "count": 3350048871,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "A flying insect, of the clade Anthophila within the hymenopteran superfamily Apoidea, known for its organised societies (though only a minority have them), for collecting pollen and (in some species) producing wax and honey."
+     },
+     {
+      "definition": "A contest, especially for spelling; see spelling bee.",
+      "example": "geography bee"
+     },
+     {
+      "definition": "A community gathering to share labour, e.g. a sewing bee or a quilting bee."
+     },
+     {
+      "definition": "A ring or torque; a bracelet."
+     },
+     {
+      "definition": "The name of the Latin-script letter B."
+     },
+     {
+      "definition": "(usually in the plural) Any of the pieces of hard wood bolted to the sides of the bowsprit, to reeve the fore-topmast stays through."
+     },
+     {
+      "definition": "The position of a person or team in a tournament or competition who draws no opponent in a particular round so advances to the next round unopposed, or is awarded points for a win in a league table; also the phantom opponent of such a person or team.",
+      "example": "Craig's Crew plays the bye next week."
+     },
+     {
+      "definition": "An extra scored when the batsmen take runs after the ball has passed the striker without hitting either the bat or the batsman."
+     },
+     {
+      "definition": "A dwelling."
+     },
+     {
+      "definition": "A thing not directly aimed at; something which is a secondary object of regard; an object by the way, etc."
+     },
+     {
+      "definition": "A pass."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Out of the way, subsidiary."
+     }
+    ],
+    "partOfSpeech": "j"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Along a path which runs past the speaker.",
+      "example": "I watched as it passed by."
+     },
+     {
+      "definition": "In the vicinity, near.",
+      "example": "The shop is hard by the High Street."
+     },
+     {
+      "definition": "To or at a place, as a residence or place of business.",
+      "example": "I'll stop by on my way home from work."
+     },
+     {
+      "definition": "Aside, away.",
+      "example": "The women spent much time after harvest putting jams by for winter and spring."
+     }
+    ],
+    "partOfSpeech": "v"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Near or next to.",
+      "example": "The mailbox is by the bus stop."
+     },
+     {
+      "definition": "From one side of something to the other, passing close by; past.",
+      "example": "He ran straight by me."
+     },
+     {
+      "definition": "Not later than (the given time); not later than the end of (the given time interval).",
+      "example": "Be back by ten o'clock!."
+     },
+     {
+      "definition": "Indicates the person or thing that does or causes something: Through the action or presence of."
+     },
+     {
+      "definition": "Indicates the creator of a work: Existing through the authorship etc. of.",
+      "example": "There are many well-known plays by William Shakespeare"
+     },
+     {
+      "definition": "Indicates a means of achieving something: Involving/using the means of.",
+      "example": "By 'maybe' she means 'no'."
+     },
+     {
+      "definition": "Indicates an authority according to which something is done.",
+      "example": "By the power vested in me, I now pronounce you man and wife."
+     },
+     {
+      "definition": "Indicates a means of classification or organisation.",
+      "example": "I sorted the items by category."
+     },
+     {
+      "definition": "Indicates the amount of change, difference or discrepancy",
+      "example": "His date of birth was wrong by ten years."
+     },
+     {
+      "definition": "In the formulae X by X and by Xs, indicates a steady progression, one X after another.",
+      "example": "We crawled forward by inches."
+     },
+     {
+      "definition": "Indicates a referenced source: According to.",
+      "example": "By my reckoning, we should be nearly there."
+     },
+     {
+      "definition": "Used to separate dimensions when describing the size of something.",
+      "example": "It is easy to invert a 2-by-2 matrix."
+     },
+     {
+      "definition": "(horse breeding) Designates a horse's male parent (sire); cf. out of.",
+      "example": "She's a lovely little filly, by Big Lad, out of Damsel in Distress."
+     }
+    ],
+    "partOfSpeech": "pr"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Goodbye."
+     }
+    ],
+    "partOfSpeech": "i"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/by-us.mp3",
+    "text": "/baɪ/"
+   }
+  ]
+ },
+ {
+  "word": "THIS",
+  "idx": 11,
+  "count": 3228469771,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "Something being indicated that is here; one of these."
+     },
+     {
+      "definition": "Referring to the current context in a programming environment in C-like languages."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "To the degree or extent indicated.",
+      "example": "Do we need this many recommendations?"
+     }
+    ],
+    "partOfSpeech": "v"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "The thing, item, etc. being indicated.",
+      "example": "This isn't the item that I ordered."
+     }
+    ],
+    "partOfSpeech": "p"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Indicates the speaker's strong approval or agreement with the previous material."
+     }
+    ],
+    "partOfSpeech": "i"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/this-us.mp3",
+    "text": "/ðəs/"
+   }
+  ]
+ },
+ {
+  "word": "WITH",
+  "idx": 12,
+  "count": 3183110675,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "Along, together with others, in a group, etc.",
+      "example": "Do you want to come with?"
+     }
+    ],
+    "partOfSpeech": "v"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Against.",
+      "example": "He picked a fight with the class bully."
+     },
+     {
+      "definition": "In the company of; alongside, close to; near to.",
+      "example": "He went with his friends."
+     },
+     {
+      "definition": "In addition to; as an accessory to.",
+      "example": "She owns a motorcycle with a sidecar."
+     },
+     {
+      "definition": "Used to indicate simultaneous happening, or immediate succession or consequence.",
+      "example": "Jim was listening to Bach with his eyes closed."
+     },
+     {
+      "definition": "In support of.",
+      "example": "We are with you all the way."
+     },
+     {
+      "definition": "In regard to.",
+      "example": "He was pleased with the outcome."
+     },
+     {
+      "definition": "To denote the accomplishment of cause, means, instrument, etc; – sometimes equivalent to by.",
+      "example": "slain with robbers"
+     },
+     {
+      "definition": "Using as an instrument; by means of.",
+      "example": "Find what you want instantly with our search engine."
+     },
+     {
+      "definition": "Using as nourishment; more recently replaced by on."
+     },
+     {
+      "definition": "Having, owning.",
+      "example": "It was small and bumpy, with a tinge of orange."
+     },
+     {
+      "definition": "Affected by (a certain emotion or condition).",
+      "example": "He spoke with sadness in his voice."
+     },
+     {
+      "definition": "Prompted by (a certain emotion).",
+      "example": "green with envy; flushed with success"
+     }
+    ],
+    "partOfSpeech": "pr"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "A flexible, slender twig or shoot, especially when used as a band or for binding; a withy."
+     },
+     {
+      "definition": "A band of twisted twigs."
+     },
+     {
+      "definition": "An elastic handle to a tool to save the hand from the shock of blows."
+     },
+     {
+      "definition": "An iron attachment on one end of a mast or boom, with a ring, through which another mast or boom is rigged out and secured."
+     },
+     {
+      "definition": "A partition between flues in a chimney."
+     }
+    ],
+    "partOfSpeech": "n"
+   }
+  ]
+ },
+ {
+  "word": "YOU",
+  "idx": 14,
+  "count": 2996181025,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "To address (a person) using the pronoun you (in the past, especially to use you rather than thou, when you was considered more formal)."
+     }
+    ],
+    "partOfSpeech": "ve"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "(object pronoun) The people spoken, or written to, as an object.",
+      "example": "Both of you should get ready now."
+     },
+     {
+      "definition": "(reflexive pronoun) (To) yourselves, (to) yourself."
+     },
+     {
+      "definition": "(object pronoun) The person spoken to or written to, as an object. (Replacing thee; originally as a mark of respect.)"
+     },
+     {
+      "definition": "(subject pronoun) The people spoken to or written to, as a subject. (Replacing ye.)",
+      "example": "You are all supposed to do as I tell you."
+     },
+     {
+      "definition": "(subject pronoun) The person spoken to or written to, as a subject. (Originally as a mark of respect.)"
+     },
+     {
+      "definition": "(indefinite personal pronoun) Anyone, one; an unspecified individual or group of individuals (as subject or object)."
+     }
+    ],
+    "partOfSpeech": "p"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/you-us-stressed.mp3",
+    "text": "/ju/"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/you-uk-stressed.mp3",
+    "text": "/juː/"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/you-au-us-unstressed.mp3",
+    "text": "/jə/"
+   }
+  ]
+ },
+ {
+  "word": "IT",
+  "idx": 15,
+  "count": 2813163874,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "One who is neither a he nor a she; a creature; a dehumanized being."
+     },
+     {
+      "definition": "The person who chases and tries to catch the other players in the playground game of tag.",
+      "example": "In the next game, Adam and Tom will be it…"
+     },
+     {
+      "definition": "The game of tag.",
+      "example": "Let's play it at breaktime."
+     },
+     {
+      "definition": "Sex appeal, especially that which goes beyond beauty."
+     },
+     {
+      "definition": "Sexual activity.",
+      "example": "caught them doing it"
+     },
+     {
+      "definition": "A biological force that inhabits living beings, according to the vitalist approach of Georg Groddeck."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Most fashionable."
+     }
+    ],
+    "partOfSpeech": "j"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "The third-person singular personal pronoun that is normally used to refer to an inanimate object or abstract entity, also often used to refer to animals.",
+      "example": "I heard the sound of the school bus - it was early today."
+     },
+     {
+      "definition": "A third-person singular personal pronoun used to refer to a child, especially of unknown gender.",
+      "example": "She took the baby and held it in her arms."
+     },
+     {
+      "definition": "Used to refer to someone being identified, often on the phone, but not limited to this situation.",
+      "example": "Is it her?"
+     },
+     {
+      "definition": "The impersonal pronoun, used without referent as the subject of an impersonal verb or statement. (known as the dummy pronoun or weather it)",
+      "example": "It is nearly 10 o’clock."
+     },
+     {
+      "definition": "The impersonal pronoun, used without referent in various short idioms."
+     },
+     {
+      "definition": "The impersonal pronoun, used as a placeholder for a delayed subject, or less commonly, object; known as the dummy pronoun or, more formally in linguistics, a syntactic expletive. The delayed subject is commonly a to-infinitive, a gerund, or a noun clause introduced by a .",
+      "example": "He saw to it that everyone would vote for him. (with the noun clause introduced by that)"
+     },
+     {
+      "definition": "All or the end; something after which there is no more.",
+      "example": "Are there more students in this class, or is this it?"
+     },
+     {
+      "definition": "A third-person singular personal pronoun used to refer to an animate referent who is transgender or is neither female nor male."
+     },
+     {
+      "definition": "Followed by an omitted and understood relative pronoun: That which; what."
+     }
+    ],
+    "partOfSpeech": "p"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "A large peninsula in Southern Europe protruding into the Mediterranean Sea and shaped like a boot. The mountain range of Apennines runs across it from north to south. Occupied almost entirely by Italy."
+     },
+     {
+      "definition": "A country in southern Europe. Official name: Italian Republic."
+     },
+     {
+      "definition": "Abbreviation of Italian. (language)"
+     }
+    ],
+    "partOfSpeech": "pn"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/it-us-stressed.mp3",
+    "text": "/ɪt/"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/it-uk-stressed.mp3",
+    "text": "/ɪt/"
+   }
+  ]
+ },
+ {
+  "word": "NOT",
+  "idx": 16,
+  "count": 2633487141,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "A unary operation on logical values that changes true to false, and false to true."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Negates the meaning of the modified verb.",
+      "example": "Did you take out the trash? No, I did not."
+     },
+     {
+      "definition": "To no degree.",
+      "example": "It's not you, it's me."
+     },
+     {
+      "definition": "(understatement, litotes) Used to modify superlatives to indicate the opposite or near opposite, often in a form of understatement.",
+      "example": "It was not my favorite movie of all time."
+     }
+    ],
+    "partOfSpeech": "v"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "And not.",
+      "example": "He painted the car blue and black, not solid purple."
+     }
+    ],
+    "partOfSpeech": "c"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "(1990s) Used to indicate that the previous phrase was meant sarcastically or ironically.",
+      "example": "I really like hanging out with my little brother watching Barney... not!"
+     }
+    ],
+    "partOfSpeech": "i"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/not-us.mp3",
+    "text": "/nɑt/"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/not-uk.mp3",
+    "text": "/nɒt/"
+   }
+  ]
+ },
+ {
+  "word": "OR",
+  "idx": 17,
+  "count": 2590739907,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "Connects at least two alternative words, phrases, clauses, sentences, etc. each of which could make a passage true. In English, this is the \"inclusive or.\" The \"exclusive or\" is formed by \"either [...] or\".",
+      "example": "He might get cancer, or be hit by a bus, or God knows what."
+     },
+     {
+      "definition": "An operator denoting the disjunction of two propositions or truth values. There are two forms, the inclusive or and the exclusive or."
+     },
+     {
+      "definition": "Counts the elements before and after as two possibilities."
+     },
+     {
+      "definition": "Otherwise (a consequence of the condition that the previous is false).",
+      "example": "It's raining! Come inside or you'll catch a cold!"
+     },
+     {
+      "definition": "Connects two equivalent names.",
+      "example": "The country Myanmar, or Burma"
+     }
+    ],
+    "partOfSpeech": "c"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "The binary operator inclusive or, true if one at least one of two inputs is true. In infix notation."
+     },
+     {
+      "definition": "Initialism of Olympic Record."
+     },
+     {
+      "definition": "Initialism of odorant receptor."
+     },
+     {
+      "definition": "Initialism of olfactory receptor."
+     },
+     {
+      "definition": "(Wiktionary and WMF jargon) Initialism of original research."
+     },
+     {
+      "definition": "A room in a hospital used for performing surgical operations."
+     },
+     {
+      "definition": "(operations) The application of scientific methods and techniques to problems of decision making, especially in business management and government administration."
+     },
+     {
+      "definition": "The gold or yellow tincture on a coat of arms."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Of gold or yellow tincture on a coat of arms."
+     }
+    ],
+    "partOfSpeech": "j"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Early (on)."
+     },
+     {
+      "definition": "Earlier, previously."
+     }
+    ],
+    "partOfSpeech": "v"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Before; ere. Followed by \"ever\" or \"ere\"."
+     }
+    ],
+    "partOfSpeech": "pr"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/or-us-stressed.mp3",
+    "text": "/ɔɹ/"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/or-uk-stressed.mp3",
+    "text": "/ɔː(ɹ)/"
+   }
+  ]
+ },
+ {
+  "word": "ARE",
+  "idx": 19,
+  "count": 2393614870,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "An accepted (but deprecated and rarely used) SI unit of area equal to 100 square metres, or a former unit of approximately the same extent. Symbol: a."
+     }
+    ],
+    "partOfSpeech": "n"
+   }
+  ],
+  "phonetics": [
+   {
+    "text": "/ɛəɹ/"
+   },
+   {
+    "text": "/ɛə/"
+   }
+  ]
+ },
+ {
+  "word": "FROM",
+  "idx": 20,
+  "count": 2275595356,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "Used to indicate source or provenance.",
+      "example": "I got a letter from my brother."
+     },
+     {
+      "definition": "Originating at (a year, time, etc.)",
+      "example": "This manuscript is from the 1980s."
+     },
+     {
+      "definition": "Used to indicate a starting point or initial reference.",
+      "example": "Face away from the wall!"
+     },
+     {
+      "definition": "Indicating removal or separation.",
+      "example": "After twenty minutes, remove the cake from the oven."
+     },
+     {
+      "definition": "Indicating exclusion.",
+      "example": "A parasol protects from the sun."
+     },
+     {
+      "definition": "Indicating differentiation.",
+      "example": "He knows right from wrong."
+     },
+     {
+      "definition": "Produced with or out of (a substance or material).",
+      "example": "It's made from pure gold."
+     },
+     {
+      "definition": "Used to indicate causation; because of, as a result of.",
+      "example": "Too many people die from breast cancer."
+     }
+    ],
+    "partOfSpeech": "pr"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/from-us.mp3"
+   },
+   {
+    "text": "/fɹʌm/"
+   },
+   {
+    "text": "/fɹɒm/"
+   }
+  ]
+ },
+ {
+  "word": "AT",
+  "idx": 21,
+  "count": 2272272772,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "To reply to or talk to someone, either online or face-to-face. (from the practice of targeting a message or reply to someone online by writing @name)",
+      "example": "Cars 2 is the most influential film of all time. Don't @ me."
+     }
+    ],
+    "partOfSpeech": "ve"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "The at sign (@)."
+     },
+     {
+      "definition": "A subdivision of currency, equal to one hundredth of a Lao kip."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "In, near, or in the general vicinity of a particular place.",
+      "example": "Caesar was at Rome;  at the corner of Fourth Street and Vine;  at Jim’s house"
+     },
+     {
+      "definition": "(indicating time) Indicating occurrence in an instant of time or a period of time relatively short in context or from the speaker's perspective.",
+      "example": "at six o’clock;  at closing time;  at night."
+     },
+     {
+      "definition": "In the direction of (often in an unfocused or uncaring manner).",
+      "example": "He threw the ball at me.  He shouted at her."
+     },
+     {
+      "definition": "Denotes a price.",
+      "example": "3 apples at 2¢ (each)   The offer was at $30,000 before negotiations."
+     },
+     {
+      "definition": "Occupied in (activity).",
+      "example": "men at work"
+     },
+     {
+      "definition": "In a state of.",
+      "example": "She is at sixes and sevens with him.  They are at loggerheads over how best to tackle the fiscal cliff.  The city was at the mercy of the occupying forces."
+     },
+     {
+      "definition": "Indicates a position on a scale or in a series.",
+      "example": "Sell at 90.  Tiger finished the round at tenth, seven strokes behind the leaders.  I'm offering it—just to select customers—at cost."
+     },
+     {
+      "definition": "Because of.",
+      "example": "to laugh at a joke   mad at their comments"
+     },
+     {
+      "definition": "Indicates a means, method, or manner."
+     },
+     {
+      "definition": "Holding a given speed or rate.",
+      "example": "It is growing at the rate of 3% a year.  Cruising along at fifty miles per hour."
+     },
+     {
+      "definition": "(used for skills (including in activities) or areas of knowledge) On the subject of; regarding.",
+      "example": "He slipped at marksmanship over his extended vacation."
+     },
+     {
+      "definition": "(stressed pronunciation) Bothering, irritating, causing discomfort to"
+     }
+    ],
+    "partOfSpeech": "pr"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Reduced form of that.",
+      "example": "I've never seen anything like ’at."
+     }
+    ],
+    "partOfSpeech": "p"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/at-us.mp3"
+   }
+  ]
+ },
+ {
+  "word": "AS",
+  "idx": 22,
+  "count": 2247431740,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "To such an extent or degree; to the same extent or degree.",
+      "example": "It's not as well made, but it's twice as expensive."
+     },
+     {
+      "definition": "Considered to be, in relation to something else; in the relation (specified).",
+      "example": "1865, The Act of Suicide as Distinct from the Crime of Self-Murder: A Sermon"
+     },
+     {
+      "definition": "For example; for instance. (Compare such as.)"
+     }
+    ],
+    "partOfSpeech": "v"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Introducing a basis of comparison, with an object in the objective case.",
+      "example": "They're big as houses."
+     },
+     {
+      "definition": "In the role of.",
+      "example": "He was never seen as the boss, but rather as a friend."
+     }
+    ],
+    "partOfSpeech": "pr"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "In the (same) way or manner that; to the (same) degree that.",
+      "example": "As you wish, my lord!"
+     },
+     {
+      "definition": "At the time that; during the time when:"
+     },
+     {
+      "definition": "Being that, considering that, because, since.",
+      "example": "As it’s too late, I quit."
+     },
+     {
+      "definition": "Introducing a comparison with a hypothetical state (+ subjunctive, or with the verb elided): as though, as if."
+     },
+     {
+      "definition": "Functioning as a relative conjunction, and sometimes like a relative pronoun: that, which, who. (See usage notes.)",
+      "example": "He had the same problem as she did getting the lock open."
+     },
+     {
+      "definition": "(possibly obsolete) Than."
+     }
+    ],
+    "partOfSpeech": "c"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "(unit of weight) A libra."
+     },
+     {
+      "definition": "Any of several coins of Rome, coined in bronze or later copper; or the equivalent value."
+     }
+    ],
+    "partOfSpeech": "n"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/as-1-us.mp3"
+   }
+  ]
+ },
+ {
+  "word": "ALL",
+  "idx": 24,
+  "count": 2022459848,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "(with a possessive pronoun) Everything that one is capable of.",
+      "example": "She gave her all, and collapsed at the finish line."
+     },
+     {
+      "definition": "The totality of one's possessions."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "All gone; dead.",
+      "example": "The butter is all."
+     }
+    ],
+    "partOfSpeech": "j"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "(degree) Intensifier.",
+      "example": "It suddenly went all quiet."
+     },
+     {
+      "definition": "Entirely; completely; totally."
+     },
+     {
+      "definition": "Apiece; each.",
+      "example": "The score was 30 all when the rain delay started."
+     },
+     {
+      "definition": "(degree) so much.",
+      "example": "Don't want to go? All the better since I lost the tickets."
+     },
+     {
+      "definition": "Even; just."
+     }
+    ],
+    "partOfSpeech": "v"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Everything.",
+      "example": "She knows all and sees all."
+     },
+     {
+      "definition": "Everyone.",
+      "example": "A good time was had by all."
+     },
+     {
+      "definition": "The only thing(s).",
+      "example": "All that was left was a small pile of ash."
+     },
+     {
+      "definition": "Used after who, what, where, how and similar words, either without changing their meaning, or indicating that one expects that they cover more than one element, e.g. that \"who all attended\" is more than one person. (Some dialects only allow this to follow some words and not others.)"
+     },
+     {
+      "definition": "Clipping of y’all. Used only as a vocative."
+     }
+    ],
+    "partOfSpeech": "p"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Although."
+     }
+    ],
+    "partOfSpeech": "c"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/all-us.mp3",
+    "text": "/ɔl/"
+   }
+  ]
+ },
+ {
+  "word": "HAVE",
+  "idx": 25,
+  "count": 1564202750,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "A wealthy or privileged person."
+     },
+     {
+      "definition": "One who has some (contextually specified) thing."
+     },
+     {
+      "definition": "A fraud or deception; something misleading.",
+      "example": "They advertise it as a great deal, but I think it's a bit of a have."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "To possess, own.",
+      "example": "I have a house and a car."
+     },
+     {
+      "definition": "To hold, as something at someone's disposal.",
+      "example": "Do you have the key? (not necessarily one's own key)"
+     },
+     {
+      "definition": "Used to state the existence or presence of someone in a specified relationship with the subject.",
+      "example": "I have a really mean boss."
+     },
+     {
+      "definition": "To partake of (a particular substance, especially food or drink, or action or activity).",
+      "example": "Can I have a look at that?"
+     },
+     {
+      "definition": "To be scheduled to attend, undertake or participate in.",
+      "example": "Fred won't be able to come to the party; he has a meeting that day."
+     },
+     {
+      "definition": "To experience, go through, undergo.",
+      "example": "He had surgery on his hip yesterday."
+     },
+     {
+      "definition": "To be afflicted with, suffer from.",
+      "example": "He had a cold last week."
+     },
+     {
+      "definition": "(auxiliary verb, taking a past participle) Used in forming the perfect aspect.",
+      "example": "I had already eaten."
+     },
+     {
+      "definition": "Used as an interrogative verb before a pronoun to form a tag question, echoing a previous use of 'have' as an auxiliary verb or, in certain cases, main verb. (For further discussion, see the appendix English tag questions.)",
+      "example": "They haven't eaten dinner yet, have they?"
+     },
+     {
+      "definition": "(auxiliary verb, taking a to-infinitive) See have to.",
+      "example": "I have to go."
+     },
+     {
+      "definition": "To give birth to.",
+      "example": "My mother had me when she was 25."
+     },
+     {
+      "definition": "To engage in sexual intercourse with.",
+      "example": "He's always bragging about how many women he's had."
+     },
+     {
+      "definition": "To accept as a romantic partner.",
+      "example": "Despite my protestations of love, she would not have me."
+     },
+     {
+      "definition": "(transitive with bare infinitive) To cause to, by a command, request or invitation.",
+      "example": "They had me feed their dog while they were out of town."
+     },
+     {
+      "definition": "(transitive with adjective or adjective-phrase complement) To cause to be.",
+      "example": "He had him arrested for trespassing."
+     },
+     {
+      "definition": "(transitive with bare infinitive) To be affected by an occurrence. (Used in supplying a topic that is not a verb argument.)",
+      "example": "I've had three people today tell me my hair looks nice."
+     },
+     {
+      "definition": "(transitive with adjective or adjective-phrase complement) To depict as being.",
+      "example": "Their stories differed; he said he'd been at work when the incident occurred, but her statement had him at home that entire evening."
+     },
+     {
+      "definition": "To defeat in a fight; take.",
+      "example": "I could have him!"
+     },
+     {
+      "definition": "(obsolete outside Ireland) To be able to speak (a language).",
+      "example": "I have no German."
+     },
+     {
+      "definition": "To feel or be (especially painfully) aware of.",
+      "example": "Dan certainly has arms today, probably from scraping paint off four columns the day before."
+     },
+     {
+      "definition": "To trick, to deceive.",
+      "example": "You had me alright! I never would have thought that was just a joke."
+     },
+     {
+      "definition": "(often with present participle) To allow; to tolerate.",
+      "example": "I asked my dad if I could go to the concert this Thursday, but he wouldn't have it since it's a school night."
+     },
+     {
+      "definition": "(often used in the negative) To believe, buy, be taken in by.",
+      "example": "I made up an excuse as to why I was out so late, but my wife wasn't having any of it."
+     },
+     {
+      "definition": "To host someone; to take in as a guest.",
+      "example": "Thank you for having me!"
+     },
+     {
+      "definition": "To get a reading, measurement, or result from an instrument or calculation.",
+      "example": "I have two contacts on my scope."
+     },
+     {
+      "definition": "(of a jury) To consider a court proceeding that has been completed; to begin deliberations on a case.",
+      "example": "We'll schedule closing arguments for Thursday, and the jury will have the case by that afternoon."
+     },
+     {
+      "definition": "To make an observation of (a bird species)."
+     }
+    ],
+    "partOfSpeech": "ve"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/have-us.mp3"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/have-uk.mp3"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/have-au.mp3"
+   }
+  ]
+ },
+ {
+  "word": "NEW",
+  "idx": 26,
+  "count": 1551258643,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "Things that are new.",
+      "example": "Out with the old, in with the new."
+     },
+     {
+      "definition": "A kind of light beer."
+     },
+     {
+      "definition": "A naval cadet who has just embarked on training."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "To make new; to recreate; to renew."
+     },
+     {
+      "definition": "To create (an object) by calling its constructor."
+     }
+    ],
+    "partOfSpeech": "ve"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Recently made, or created.",
+      "example": "This is a new scratch on my car!   The band just released a new album."
+     },
+     {
+      "definition": "Additional; recently discovered.",
+      "example": "We turned up some new evidence from the old files."
+     },
+     {
+      "definition": "Current or later, as opposed to former.",
+      "example": "My new car is much better than my previous one, even though it is older.   We had been in our new house for five years by then."
+     },
+     {
+      "definition": "Used to distinguish something established more recently, named after something or some place previously existing.",
+      "example": "New Bond Street is an extension of Bond Street."
+     },
+     {
+      "definition": "In original condition; pristine; not previously worn or used.",
+      "example": "Are you going to buy a new car or a second-hand one?"
+     },
+     {
+      "definition": "Refreshed, reinvigorated, reformed.",
+      "example": "That shirt is dirty. Go and put on a new one.   I feel like a new person after a good night's sleep.   After the accident, I saw the world with new eyes."
+     },
+     {
+      "definition": "Newborn.",
+      "example": "My sister has a new baby, and our mother is excited to finally have a grandchild."
+     },
+     {
+      "definition": "Of recent origin; having taken place recently.",
+      "example": "I can't see you for a while; the pain is still too new.   Did you see the new King Lear at the theatre?"
+     },
+     {
+      "definition": "Strange, unfamiliar or not previously known.",
+      "example": "The idea was new to me.   I need to meet new people."
+     },
+     {
+      "definition": "Recently arrived or appeared.",
+      "example": "Have you met the new guy in town?   He is the new kid at school."
+     },
+     {
+      "definition": "Inexperienced or unaccustomed at some task.",
+      "example": "Don't worry that you're new at this job; you'll get better with time.   I'm new at this business."
+     },
+     {
+      "definition": "(of a period of time) Next; about to begin or recently begun.",
+      "example": "We expect to grow at 10% annually in the new decade."
+     }
+    ],
+    "partOfSpeech": "j"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Newly (especially in composition).",
+      "example": "new-born, new-formed, new-found, new-mown"
+     },
+     {
+      "definition": "As new; from scratch.",
+      "example": "They are scraping the site clean to build new."
+     }
+    ],
+    "partOfSpeech": "v"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/new-us.ogg",
+    "text": "/n(j)u/"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/new-uk.mp3",
+    "text": "/njuː/"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/new-au.mp3",
+    "text": "/njʉː/"
+   }
+  ]
+ },
+ {
+  "word": "MORE",
+  "idx": 27,
+  "count": 1544771673,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "To a greater degree or extent.",
+      "example": "I could no more climb that than fly!"
+     },
+     {
+      "definition": "Used to form the comparative form of adjectives and adverbs.",
+      "example": "You're more beautiful than I ever imagined."
+     },
+     {
+      "definition": "In negative constructions: any further, any longer; any more."
+     },
+     {
+      "definition": "Used in addition to an inflected comparative form.",
+      "example": "I was more better at English than you."
+     }
+    ],
+    "partOfSpeech": "v"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "A greater number or quantity (of something).",
+      "example": "There isn't enough salt in this. You need to add more."
+     },
+     {
+      "definition": "An extra or additional quantity (of something).",
+      "example": "There aren't many people here yet, but more should be arriving soon."
+     }
+    ],
+    "partOfSpeech": "p"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "A carrot; a parsnip."
+     },
+     {
+      "definition": "A root; stock."
+     },
+     {
+      "definition": "A plant."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "To root up."
+     }
+    ],
+    "partOfSpeech": "ve"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/more-us.mp3",
+    "text": "/ˈmɔɹ/"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/more-uk.mp3",
+    "text": "/ˈmɔː/"
+   }
+  ]
+ },
+ {
+  "word": "AN",
+  "idx": 28,
+  "count": 1518266684,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "One"
+     }
+    ],
+    "partOfSpeech": "nu"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "If"
+     },
+     {
+      "definition": "So long as.",
+      "example": "An it harm none, do what ye will."
+     },
+     {
+      "definition": "As if; as though."
+     }
+    ],
+    "partOfSpeech": "c"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "The first letter of the Georgian alphabet, ა (Mkhedruli), Ⴀ (Asomtavruli) or ⴀ (Nuskhuri)."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "In each; to or for each; per.",
+      "example": "I was only going twenty miles an hour."
+     }
+    ],
+    "partOfSpeech": "pr"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/an-us-stressed.mp3",
+    "text": "/æn/"
+   }
+  ]
+ },
+ {
+  "word": "WE",
+  "idx": 30,
+  "count": 1390661912,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "(personal) The speakers/writers, or the speaker/writer and at least one other person (not the person being addressed). (This is the exclusive we.)"
+     },
+     {
+      "definition": "(personal) The speaker(s)/writer(s) and the person(s) being addressed. (This is the inclusive we.)"
+     },
+     {
+      "definition": "(personal) The speaker/writer alone. (This use of we is the editorial we, used by writers and others, including royalty—the royal we—as a less personal substitute for I. The reflexive case of this sense of we is ourself.)"
+     },
+     {
+      "definition": "(personal) The plural form of you, including everyone being addressed.",
+      "example": "How are we all tonight?"
+     },
+     {
+      "definition": "(personal, often considered patronising) A second- or third-person pronoun for a person in the speaker's care.",
+      "example": "How are we feeling this morning?"
+     }
+    ],
+    "partOfSpeech": "p"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/we-us.mp3",
+    "text": "/wi/"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/we-uk.mp3",
+    "text": "/wiː/"
+   }
+  ]
+ },
+ {
+  "word": "WILL",
+  "idx": 31,
+  "count": 1356293641,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "(now uncommon or literary) To wish, desire (something).",
+      "example": "Do what you will."
+     },
+     {
+      "definition": "(nowadays rare) To wish or desire (that something happen); to intend (that)."
+     },
+     {
+      "definition": "(auxiliary) To habitually do (a given action)."
+     },
+     {
+      "definition": "(auxiliary) To choose to (do something); used to express intention but without any temporal connotations (+ bare infinitive), often in negation.",
+      "example": "I’ve told him three times, but he won’t take his medicine."
+     },
+     {
+      "definition": "(auxiliary) Used to express the future tense, sometimes with some implication of volition when used in the first person. Compare shall."
+     },
+     {
+      "definition": "(auxiliary) To be able to, to have the capacity to.",
+      "example": "Unfortunately, only one of these gloves will actually fit over my hand."
+     },
+     {
+      "definition": "(auxiliary) Expressing a present tense with some conditional or subjective weakening: \"will turn out to\", \"must by inference\"."
+     },
+     {
+      "definition": "To wish, desire."
+     },
+     {
+      "definition": "To instruct (that something be done) in one's will."
+     },
+     {
+      "definition": "To try to make (something) happen by using one's will (intention).",
+      "example": "All the fans were willing their team to win the game."
+     },
+     {
+      "definition": "To bequeath (something) to someone in one's will (legal document).",
+      "example": "He willed his stamp collection to the local museum."
+     }
+    ],
+    "partOfSpeech": "ve"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "One's independent faculty of choice; the ability to be able to exercise one's choice or intention.",
+      "example": "Of course, man's will is often regulated by his reason."
+     },
+     {
+      "definition": "One's intention or decision; someone's orders or commands.",
+      "example": "Eventually I submitted to my parents' will."
+     },
+     {
+      "definition": "The act of choosing to do something; a person’s conscious intent or volition.",
+      "example": "Most creatures have a will to live."
+     },
+     {
+      "definition": "Law A formal declaration of one's intent concerning the disposal of one's property and holdings after death; the legal document stating such wishes."
+     },
+     {
+      "definition": "That which is desired; one's wish."
+     },
+     {
+      "definition": "Desire, longing. (Now generally merged with later senses.)",
+      "example": "He felt a great will to make a pilgrimage to the Holy Land."
+     }
+    ],
+    "partOfSpeech": "n"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/will-us.mp3",
+    "text": "/wɪl/"
+   }
+  ]
+ },
+ {
+  "word": "HOME",
+  "idx": 32,
+  "count": 1276852170,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "A dwelling."
+     },
+     {
+      "definition": "One’s native land; the place or country in which one dwells; the place where one’s ancestors dwell or dwelt."
+     },
+     {
+      "definition": "The locality where a thing is usually found, or was first found, or where it is naturally abundant; habitat; seat.",
+      "example": "the home of the pine"
+     },
+     {
+      "definition": "A focus point."
+     },
+     {
+      "definition": "A directory that contains a user's files."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "(of animals) To return to its owner.",
+      "example": "The dog homed."
+     },
+     {
+      "definition": "(always with \"in on\") To seek or aim for something.",
+      "example": "The missile was able to home in on the target."
+     }
+    ],
+    "partOfSpeech": "ve"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Of or pertaining to one’s dwelling or country; domestic; not foreign; as home manufactures; home comforts."
+     },
+     {
+      "definition": "(except in phrases) That strikes home; direct, pointed."
+     },
+     {
+      "definition": "Personal, intimate."
+     },
+     {
+      "definition": "Relating to the home team (the team at whose venue a game is played).",
+      "example": "the home end, home advantage, home supporters"
+     }
+    ],
+    "partOfSpeech": "j"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "To one's home"
+     },
+     {
+      "definition": "At or in one's place of residence or one's customary or official location; at home",
+      "example": "Everyone's gone to watch the game; there's nobody home."
+     },
+     {
+      "definition": "To a full and intimate degree; to the heart of the matter; fully, directly."
+     },
+     {
+      "definition": "Into the goal"
+     },
+     {
+      "definition": "Into the right, proper or stowed position",
+      "example": "sails sheeted home"
+     }
+    ],
+    "partOfSpeech": "v"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/home-us.mp3",
+    "text": "/hoʊm/"
+   }
+  ]
+ },
+ {
+  "word": "CAN",
+  "idx": 33,
+  "count": 1242323499,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "(auxiliary verb, defective) To know how to; to be able to.",
+      "example": "She can speak English, French, and German.   I can play football.   Can you remember your fifth birthday?"
+     },
+     {
+      "definition": "(modal auxiliary verb, defective) May; to be permitted or enabled to.",
+      "example": "You can go outside and play when you're finished with your homework.   Can I use your pen?"
+     },
+     {
+      "definition": "(modal auxiliary verb, defective) To have the potential to; be possible.",
+      "example": "Animals can experience emotions."
+     },
+     {
+      "definition": "(auxiliary verb, defective) Used with verbs of perception.",
+      "example": "Can you hear that?."
+     },
+     {
+      "definition": "To know."
+     },
+     {
+      "definition": "To seal in a can.",
+      "example": "They canned air to sell as a novelty to tourists."
+     },
+     {
+      "definition": "To preserve by heating and sealing in a jar or can.",
+      "example": "They spent August canning fruit and vegetables."
+     },
+     {
+      "definition": "To discard, scrap or terminate (an idea, project, etc.).",
+      "example": "He canned the whole project because he thought it would fail."
+     },
+     {
+      "definition": "To shut up.",
+      "example": "Can your gob."
+     },
+     {
+      "definition": "To fire or dismiss an employee.",
+      "example": "The boss canned him for speaking out."
+     },
+     {
+      "definition": "To hole the ball."
+     }
+    ],
+    "partOfSpeech": "ve"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "A more or less cylindrical vessel for liquids, usually of steel or aluminium, but sometimes of plastic, and with a carrying handle over the top."
+     },
+     {
+      "definition": "A container used to carry and dispense water for plants (a watering can)."
+     },
+     {
+      "definition": "A tin-plate canister, often cylindrical, for preserved foods such as fruit, meat, or fish."
+     },
+     {
+      "definition": "A chamber pot, now a toilet or lavatory.",
+      "example": "Bob's in the can. You can wait a few minutes or just leave it with me."
+     },
+     {
+      "definition": "Buttocks."
+     },
+     {
+      "definition": "Jail or prison.",
+      "example": "Bob's in the can. He won't be back for a few years."
+     },
+     {
+      "definition": "(in the plural) Headphones."
+     },
+     {
+      "definition": "A drinking cup."
+     },
+     {
+      "definition": "A cube-shaped buoy or marker used to denote a port-side lateral mark"
+     },
+     {
+      "definition": "A chimney pot."
+     },
+     {
+      "definition": "(in the plural) an E-meter used in Scientology auditing."
+     }
+    ],
+    "partOfSpeech": "n"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/can-1-us-stressed.mp3",
+    "text": "/ˈkæn/"
+   }
+  ]
+ },
+ {
+  "word": "US",
+  "idx": 34,
+  "count": 1229112622,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "(personal) Me and at least one other person; the objective case of we."
+     },
+     {
+      "definition": "(chiefly with give) Me.",
+      "example": "Give us a look at your paper."
+     },
+     {
+      "definition": "Our.",
+      "example": "We'll have to throw us food out."
+     },
+     {
+      "definition": "Me (in all contexts).",
+      "example": "Could you do that for us?"
+     }
+    ],
+    "partOfSpeech": "p"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/us-1-us.mp3"
+   },
+   {
+    "text": "/əs/"
+   }
+  ]
+ },
+ {
+  "word": "ABOUT",
+  "idx": 35,
+  "count": 1226734006,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "Moving around; astir.",
+      "example": "After my bout with Guillan-Barre Syndrome, it took me 6 months to be up and about again."
+     },
+     {
+      "definition": "In existence; being in evidence; apparent.",
+      "example": "This idea has been about for a while but has only recently become fashionable."
+     },
+     {
+      "definition": "Near; in the vicinity or neighbourhood.",
+      "example": "I had my keys just a minute ago, so they must be about somewhere."
+     }
+    ],
+    "partOfSpeech": "j"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "On all sides; around.",
+      "example": "I looked about at the scenery that surrounded me."
+     },
+     {
+      "definition": "Here and there; around; in one place and another; up and down.",
+      "example": "Bits of old machinery were lying about."
+     },
+     {
+      "definition": "From one place or position to another in succession; indicating repeated movement or activity.",
+      "example": "walking about;  rushing about;  jumping about;  thrashing about"
+     },
+     {
+      "definition": "Indicating unproductive or unstructured activity.",
+      "example": "messing about;   fooling about;  loafing about"
+     },
+     {
+      "definition": "Nearly; approximately; with close correspondence in quality, manner, degree, quantity, or time; almost.",
+      "example": "Dinner's about ready."
+     },
+     {
+      "definition": "Near; in the vicinity."
+     },
+     {
+      "definition": "To a reversed order; half round; facing in the opposite direction; from a contrary point of view.",
+      "example": "to face about;  to turn oneself about"
+     },
+     {
+      "definition": "In succession; one after another; in the course of events."
+     },
+     {
+      "definition": "In circuit; circularly; by a circuitous way; around the outside; in circumference.",
+      "example": "a mile about, and a third of a mile across"
+     }
+    ],
+    "partOfSpeech": "v"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "In a circle around; all round; on every side of; on the outside of.",
+      "example": "The snake was coiled about his ankle."
+     },
+     {
+      "definition": "Over or upon different parts of; through or over in various directions; here and there in; to and fro in; throughout.",
+      "example": "He was well known about town."
+     },
+     {
+      "definition": "Indicates that something will happen very soon; indicates a plan or intention to do something."
+     },
+     {
+      "definition": "Concerning; with regard to; on account of; on the subject of; to affect.",
+      "example": "He talked a lot about his childhood."
+     },
+     {
+      "definition": "Concerned with; engaged in; intent on.",
+      "example": "to be about one's business"
+     },
+     {
+      "definition": "Within or in the immediate neighborhood of; in contiguity or proximity to; near, as to place.",
+      "example": "I can't find my reading glasses, but they must be somewhere about the house."
+     },
+     {
+      "definition": "On one's person; nearby the person.",
+      "example": "I had no weapon about me but a stick."
+     },
+     {
+      "definition": "In or near, as in mental faculties or in the possession of; under the control of; at one's command; in one's makeup.",
+      "example": "He has his wits about him."
+     }
+    ],
+    "partOfSpeech": "pr"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/about-us.mp3",
+    "text": "/əˈbaʊt/"
+   }
+  ]
+ },
+ {
+  "word": "IF",
+  "idx": 36,
+  "count": 1134987907,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "An uncertainty, possibility, condition, doubt etc."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Supposing that, assuming that, in the circumstances that; used to introduce a condition or choice.",
+      "example": "If it rains, I shall get wet."
+     },
+     {
+      "definition": "In the event that a statement is true (a programming statement that acts in a similar manner).",
+      "example": "If A, then B, else C."
+     },
+     {
+      "definition": "Supposing that; used with past or past perfect subjunctive indicating that the condition is closed.",
+      "example": "I would be unhappy if you had not talked with me yesterday."
+     },
+     {
+      "definition": "Supposing that; given that; supposing it is the case that.",
+      "example": "If that's true, we had better get moving!"
+     },
+     {
+      "definition": "Although; used to introduce a concession.",
+      "example": "He was a great friend, if a little stingy at the bar."
+     },
+     {
+      "definition": "(sometimes proscribed) Whether; used to introduce a noun clause, an indirect question, that functions as the direct object of certain verbs.",
+      "example": "I don't know if I want to go or not."
+     },
+     {
+      "definition": "(usually hyperbolic) Even if; even in the circumstances that."
+     },
+     {
+      "definition": "Introducing a relevance conditional.",
+      "example": "I have leftover cake if you want some."
+     }
+    ],
+    "partOfSpeech": "c"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/if-us.mp3",
+    "text": "/ɪf/"
+   }
+  ]
+ },
+ {
+  "word": "PAGE",
+  "idx": 37,
+  "count": 1082121730,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "One of the many pieces of paper bound together within a book or similar document."
+     },
+     {
+      "definition": "One side of a paper leaf on which one has written or printed."
+     },
+     {
+      "definition": "Any record or writing; a collective memory.",
+      "example": "the page of history"
+     },
+     {
+      "definition": "The type set up for printing a page."
+     },
+     {
+      "definition": "A screenful of text and possibly other content."
+     },
+     {
+      "definition": "A web page."
+     },
+     {
+      "definition": "A block of contiguous memory of a fixed length."
+     },
+     {
+      "definition": "A serving boy – a youth attending a person of high degree, especially at courts, as a position of honor and education."
+     },
+     {
+      "definition": "A youth employed for doing errands, waiting on the door, and similar service in households."
+     },
+     {
+      "definition": "A boy or girl employed to wait upon the members of a legislative body."
+     },
+     {
+      "definition": "(in libraries) The common name given to an employee whose main purpose is to replace materials that have either been checked out or otherwise moved, back to their shelves."
+     },
+     {
+      "definition": "A boy child."
+     },
+     {
+      "definition": "A contrivance, as a band, pin, snap, or the like, to hold the skirt of a woman’s dress from the ground."
+     },
+     {
+      "definition": "A track along which pallets carrying newly molded bricks are conveyed to the hack."
+     },
+     {
+      "definition": "A message sent to someone's pager."
+     },
+     {
+      "definition": "Any one of several species of colorful South American moths of the genus Urania."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "To mark or number the pages of, as a book or manuscript."
+     },
+     {
+      "definition": "(often with “through”) To turn several pages of a publication.",
+      "example": "The patient paged through magazines while he waited for the doctor."
+     },
+     {
+      "definition": "To furnish with folios."
+     },
+     {
+      "definition": "To attend (someone) as a page."
+     },
+     {
+      "definition": "To call or summon (someone)."
+     },
+     {
+      "definition": "To contact (someone) by means of a pager or other mobile device.",
+      "example": "I’ll be out all day, so page me if you need me."
+     },
+     {
+      "definition": "To call (somebody) using a public address system so as to find them.",
+      "example": "An SUV parked me in. Could you please page its owner?"
+     }
+    ],
+    "partOfSpeech": "ve"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/page-us.mp3",
+    "text": "/peɪd͡ʒ/"
+   }
+  ]
+ },
+ {
+  "word": "MY",
+  "idx": 38,
+  "count": 1059793441,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "Used to express surprise, shock or amazement.",
+      "example": "My, what big teeth you have!"
+     }
+    ],
+    "partOfSpeech": "i"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/my-us.mp3",
+    "text": "/mi/"
+   }
+  ]
+ },
+ {
+  "word": "HAS",
+  "idx": 39,
+  "count": 1046319984,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "To possess, own.",
+      "example": "I have a house and a car."
+     },
+     {
+      "definition": "To hold, as something at someone's disposal.",
+      "example": "Do you have the key? (not necessarily one's own key)"
+     },
+     {
+      "definition": "Used to state the existence or presence of someone in a specified relationship with the subject.",
+      "example": "I have a really mean boss."
+     },
+     {
+      "definition": "To partake of (a particular substance, especially food or drink, or action or activity).",
+      "example": "Can I have a look at that?"
+     },
+     {
+      "definition": "To be scheduled to attend, undertake or participate in.",
+      "example": "Fred won't be able to come to the party; he has a meeting that day."
+     },
+     {
+      "definition": "To experience, go through, undergo.",
+      "example": "He had surgery on his hip yesterday."
+     },
+     {
+      "definition": "To be afflicted with, suffer from.",
+      "example": "He had a cold last week."
+     },
+     {
+      "definition": "(auxiliary verb, taking a past participle) Used in forming the perfect aspect.",
+      "example": "I had already eaten."
+     },
+     {
+      "definition": "Used as an interrogative verb before a pronoun to form a tag question, echoing a previous use of 'have' as an auxiliary verb or, in certain cases, main verb. (For further discussion, see the appendix English tag questions.)",
+      "example": "They haven't eaten dinner yet, have they?"
+     },
+     {
+      "definition": "(auxiliary verb, taking a to-infinitive) See have to.",
+      "example": "I have to go."
+     },
+     {
+      "definition": "To give birth to.",
+      "example": "My mother had me when she was 25."
+     },
+     {
+      "definition": "To engage in sexual intercourse with.",
+      "example": "He's always bragging about how many women he's had."
+     },
+     {
+      "definition": "To accept as a romantic partner.",
+      "example": "Despite my protestations of love, she would not have me."
+     },
+     {
+      "definition": "(transitive with bare infinitive) To cause to, by a command, request or invitation.",
+      "example": "They had me feed their dog while they were out of town."
+     },
+     {
+      "definition": "(transitive with adjective or adjective-phrase complement) To cause to be.",
+      "example": "He had him arrested for trespassing."
+     },
+     {
+      "definition": "(transitive with bare infinitive) To be affected by an occurrence. (Used in supplying a topic that is not a verb argument.)",
+      "example": "I've had three people today tell me my hair looks nice."
+     },
+     {
+      "definition": "(transitive with adjective or adjective-phrase complement) To depict as being.",
+      "example": "Their stories differed; he said he'd been at work when the incident occurred, but her statement had him at home that entire evening."
+     },
+     {
+      "definition": "To defeat in a fight; take.",
+      "example": "I could have him!"
+     },
+     {
+      "definition": "(obsolete outside Ireland) To be able to speak (a language).",
+      "example": "I have no German."
+     },
+     {
+      "definition": "To feel or be (especially painfully) aware of.",
+      "example": "Dan certainly has arms today, probably from scraping paint off four columns the day before."
+     },
+     {
+      "definition": "To trick, to deceive.",
+      "example": "You had me alright! I never would have thought that was just a joke."
+     },
+     {
+      "definition": "(often with present participle) To allow; to tolerate.",
+      "example": "I asked my dad if I could go to the concert this Thursday, but he wouldn't have it since it's a school night."
+     },
+     {
+      "definition": "(often used in the negative) To believe, buy, be taken in by.",
+      "example": "I made up an excuse as to why I was out so late, but my wife wasn't having any of it."
+     },
+     {
+      "definition": "To host someone; to take in as a guest.",
+      "example": "Thank you for having me!"
+     },
+     {
+      "definition": "To get a reading, measurement, or result from an instrument or calculation.",
+      "example": "I have two contacts on my scope."
+     },
+     {
+      "definition": "(of a jury) To consider a court proceeding that has been completed; to begin deliberations on a case.",
+      "example": "We'll schedule closing arguments for Thursday, and the jury will have the case by that afternoon."
+     },
+     {
+      "definition": "To make an observation of (a bird species)."
+     }
+    ],
+    "partOfSpeech": "ve"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/has-us.mp3"
+   }
+  ]
+ },
+ {
+  "word": "SEARCH",
+  "idx": 40,
+  "count": 1024093118,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "An attempt to find something.",
+      "example": "With only five minutes until we were meant to leave, the search for the keys started in earnest."
+     },
+     {
+      "definition": "The act of searching in general.",
+      "example": "Search is a hard problem for computers to solve efficiently."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "To look in (a place) for something.",
+      "example": "I searched the garden for the keys and found them in the vegetable patch."
+     },
+     {
+      "definition": "(followed by \"for\") To look thoroughly.",
+      "example": "The police are searching for evidence in his flat."
+     },
+     {
+      "definition": "To look for, seek."
+     },
+     {
+      "definition": "To probe or examine (a wound)."
+     },
+     {
+      "definition": "To examine; to try; to put to the test."
+     }
+    ],
+    "partOfSpeech": "ve"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/search-us.mp3",
+    "text": "/sɝt͡ʃ/"
+   }
+  ]
+ },
+ {
+  "word": "FREE",
+  "idx": 41,
+  "count": 1014107316,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "Free transfer"
+     },
+     {
+      "definition": "The usual means of restarting play after a foul is committed, where the non-offending team restarts from where the foul was committed."
+     },
+     {
+      "definition": "(other ballgames) a kick in which a player may kick the ball without interference from the opposition. Such a kick may be awarded for a foul by the opposition, or earned by a player such as by taking a mark."
+     },
+     {
+      "definition": "The usual means of restarting play after a foul is committed, where the non-offending team restarts from where the foul was committed."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "To make free; set at liberty; release."
+     },
+     {
+      "definition": "To rid of something that confines or oppresses."
+     }
+    ],
+    "partOfSpeech": "ve"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "(social) Unconstrained.",
+      "example": "He was given free rein to do whatever he wanted."
+     },
+     {
+      "definition": "Obtainable without any payment.",
+      "example": "It's free real estate."
+     },
+     {
+      "definition": "(abstract) Unconstrained."
+     },
+     {
+      "definition": "(physical) Unconstrained."
+     },
+     {
+      "definition": "Without; not containing (what is specified); exempt; clear; liberated.",
+      "example": "We had a wholesome, filling meal, free of meat.  I would like to live free from care in the mountains."
+     },
+     {
+      "definition": "Ready; eager; acting without spurring or whipping; spirited.",
+      "example": "a free horse"
+     },
+     {
+      "definition": "Invested with a particular freedom or franchise; enjoying certain immunities or privileges; admitted to special rights; followed by of."
+     },
+     {
+      "definition": "Certain or honourable; the opposite of base.",
+      "example": "free service;  free socage"
+     },
+     {
+      "definition": "Privileged or individual; the opposite of common.",
+      "example": "a free fishery;  a free warren"
+     }
+    ],
+    "partOfSpeech": "j"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Without needing to pay.",
+      "example": "I got this bike free."
+     },
+     {
+      "definition": "Freely; willingly."
+     }
+    ],
+    "partOfSpeech": "v"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/free-us.mp3",
+    "text": "/fɹiː/"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/free-uk.mp3",
+    "text": "/fɹiː/"
+   }
+  ]
+ },
+ {
+  "word": "BUT",
+  "idx": 42,
+  "count": 999899654,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "An instance or example of using the word \"but\".",
+      "example": "It has to be done – no ifs or buts."
+     },
+     {
+      "definition": "The outer room of a small two-room cottage."
+     },
+     {
+      "definition": "A limit; a boundary."
+     },
+     {
+      "definition": "The end; especially the larger or thicker end, or the blunt, in distinction from the sharp, end; the butt."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Use the word \"but\".",
+      "example": "But me no buts."
+     }
+    ],
+    "partOfSpeech": "ve"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Merely, only, just.",
+      "example": "Christmas comes  but once a year."
+     },
+     {
+      "definition": "Though, however.",
+      "example": "I'll have to go home early but."
+     },
+     {
+      "definition": "Used as an intensifier.",
+      "example": "Nobody, but nobody, crosses me and gets away with it."
+     }
+    ],
+    "partOfSpeech": "v"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Apart from, except (for), excluding.",
+      "example": "Everyone but Father left early."
+     },
+     {
+      "definition": "(obsolete outside Scotland) Outside of."
+     }
+    ],
+    "partOfSpeech": "pr"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "On the contrary, rather (as a regular adversative conjunction, introducing a word or clause in contrast or contradiction with the preceding negative clause or sentence).",
+      "example": "I am not rich but [I am] poor  not John but Peter went there."
+     },
+     {
+      "definition": "However, although, nevertheless, on the other hand (introducing a clause contrary to prior belief or in contrast with the preceding clause or sentence).",
+      "example": "She is very old but still attractive."
+     },
+     {
+      "definition": "Except that (introducing a subordinate clause which qualifies a negative statement); also, with omission of the subject of the subordinate clause, acting as a negative relative, \"except one that\", \"except such that\".",
+      "example": "I cannot but feel offended."
+     },
+     {
+      "definition": "Without its also being the case that; unless that (introducing a necessary concomitant).",
+      "example": "It never rains but it pours."
+     },
+     {
+      "definition": "Except with; unless with; without."
+     },
+     {
+      "definition": "Only; solely; merely."
+     },
+     {
+      "definition": "Until."
+     },
+     {
+      "definition": "(following a negated expression of improbability) That."
+     }
+    ],
+    "partOfSpeech": "c"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/but-us.mp3"
+   },
+   {
+    "text": "/bʌt/"
+   },
+   {
+    "text": "/bʊt/"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/but-au.mp3"
+   }
+  ]
+ },
+ {
+  "word": "ONE",
+  "idx": 44,
+  "count": 993536631,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "The digit or figure 1."
+     },
+     {
+      "definition": "The neutral element with respect to multiplication in a ring."
+     },
+     {
+      "definition": "A one-dollar bill."
+     },
+     {
+      "definition": "One run scored by hitting the ball and running between the wickets; a single."
+     },
+     {
+      "definition": "A joke or amusing anecdote."
+     },
+     {
+      "definition": "A particularly special or compatible person or thing.",
+      "example": "I knew as soon I met him that John was the one for me and we were married within a month."
+     },
+     {
+      "definition": "(leet) Used instead of ! to amplify an exclamation, parodying unskilled typists who forget to press the shift key while typing exclamation points, thus typing \"1\".",
+      "example": "2003 September 26, \"DEAL WITH IT!!!!11one!!\", in alt.games.video.nintendo.gamecube, Usenet"
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "To cause to become one; to gather into a single whole; to unite."
+     }
+    ],
+    "partOfSpeech": "ve"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Of a period of time, being particular.",
+      "example": "One day the prince set forth to kill the dragon that had brought terror to his father’s kingdom for centuries."
+     },
+     {
+      "definition": "Being a single, unspecified thing; a; any.",
+      "example": "My aunt used to say, \"One day is just like the other.\""
+     },
+     {
+      "definition": "Sole, only.",
+      "example": "He is the one man who can help you."
+     },
+     {
+      "definition": "Whole, entire.",
+      "example": "Body and soul are not separate; they are one."
+     },
+     {
+      "definition": "In agreement.",
+      "example": "We are one on the importance of learning."
+     },
+     {
+      "definition": "The same.",
+      "example": "The two types look very different, but are one species."
+     },
+     {
+      "definition": "Being a preeminent example.",
+      "example": "He is one hell of a guy."
+     },
+     {
+      "definition": "Being an unknown person with the specified name; see also \"a certain\".",
+      "example": "The town records from 1843 showed the overnight incarceration of one “A. Lincoln”."
+     }
+    ],
+    "partOfSpeech": "j"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "The number represented by the Arabic numeral 1; the numerical value equal to that cardinal number.",
+      "example": "In many cultures, a baby turns one year old a year after its birth."
+     },
+     {
+      "definition": "The first positive number in the set of natural numbers."
+     },
+     {
+      "definition": "The cardinality of the smallest nonempty set."
+     },
+     {
+      "definition": "The ordinality of an element which has no predecessor, usually called first or number one."
+     }
+    ],
+    "partOfSpeech": "nu"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "(impersonal pronoun, indefinite) One thing (among a group of others); one member of a group.",
+      "example": "Any one of the boys.  The big one looks good.  I want the green one.  A good driver is one who drives carefully."
+     },
+     {
+      "definition": "(impersonal pronoun, sometimes with \"the\") The first mentioned of two things or people, as opposed to the other.",
+      "example": "She offered him an apple and an orange; he took one and left the other."
+     },
+     {
+      "definition": "(indefinite personal pronoun) Any person (applying to people in general).",
+      "example": "One’s guilt may trouble one, but it is best not to let oneself be troubled by things which cannot be changed.  One shouldn’t be too quick to judge."
+     },
+     {
+      "definition": "(pronoun) Any person, entity or thing.",
+      "example": "\"driver\", noun: one who drives."
+     }
+    ],
+    "partOfSpeech": "p"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/one-us.mp3",
+    "text": "/wʌn/"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/one-au.mp3",
+    "text": "/wan/"
+   }
+  ]
+ },
+ {
+  "word": "OTHER",
+  "idx": 45,
+  "count": 978481319,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "An other, another (person, etc), more often rendered as another.",
+      "example": "I'm afraid little Robbie does not always play well with others."
+     },
+     {
+      "definition": "The other one; the second of two.",
+      "example": "One boat is not better than the other."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "To regard, label or treat as an \"other\", as not part of the same group; to view as different and alien."
+     },
+     {
+      "definition": "To treat as different or separate; segregate; ostracise."
+     }
+    ],
+    "partOfSpeech": "ve"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "See other (determiner) below"
+     },
+     {
+      "definition": "Second.",
+      "example": "I get paid every other week."
+     },
+     {
+      "definition": "Alien."
+     },
+     {
+      "definition": "Different."
+     },
+     {
+      "definition": "Left, as opposed to right."
+     }
+    ],
+    "partOfSpeech": "j"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Apart from; in the phrase \"other than\".",
+      "example": "Other than that, I'm fine."
+     },
+     {
+      "definition": "Otherwise.",
+      "example": "If you think other. — Shakespeare."
+     }
+    ],
+    "partOfSpeech": "v"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/other-us.mp3",
+    "text": "/ˈʌðɚ/"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/other-uk.mp3",
+    "text": "/ʊðə/"
+   }
+  ]
+ },
+ {
+  "word": "DO",
+  "idx": 46,
+  "count": 950751722,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "A party, celebration, social function.",
+      "example": "We’re having a bit of a do on Saturday to celebrate my birthday."
+     },
+     {
+      "definition": "A hairdo.",
+      "example": "Nice do!"
+     },
+     {
+      "definition": "Something that can or should be done (usually in the phrase dos and don'ts)."
+     },
+     {
+      "definition": "A deed; an act."
+     },
+     {
+      "definition": "Ado; bustle; stir; to-do; A period of confusion or argument."
+     },
+     {
+      "definition": "A cheat; a swindler."
+     },
+     {
+      "definition": "An act of swindling; a fraud or deception."
+     },
+     {
+      "definition": "A syllable used in solfège to represent the first and eighth tonic of a major scale."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "(auxiliary) A syntactic marker."
+     },
+     {
+      "definition": "To perform; to execute.",
+      "example": "All you ever do is surf the Internet. What will you do this afternoon?"
+     },
+     {
+      "definition": "To cause, make (someone) (do something)."
+     },
+     {
+      "definition": "To suffice.",
+      "example": "it’s not the best broom, but it will have to do;  this will do me, thanks."
+     },
+     {
+      "definition": "To be reasonable or acceptable.",
+      "example": "It simply will not do to have dozens of children running around such a quiet event."
+     },
+     {
+      "definition": "(ditransitive) To have (as an effect).",
+      "example": "The fresh air did him some good."
+     },
+     {
+      "definition": "To fare, perform (well or poorly).",
+      "example": "Our relationship isn't doing very well;  how do you do?"
+     },
+     {
+      "definition": "(chiefly in questions) To have as one's job.",
+      "example": "What does Bob do? — He's a plumber."
+     },
+     {
+      "definition": "To perform the tasks or actions associated with (something).",
+      "example": "\"Don't forget to do your report\" means something quite different depending on whether you're a student or a programmer."
+     },
+     {
+      "definition": "To cook.",
+      "example": "I'll just do some eggs."
+     },
+     {
+      "definition": "To travel in, to tour, to make a circuit of.",
+      "example": "Let’s do New York also."
+     },
+     {
+      "definition": "To treat in a certain way."
+     },
+     {
+      "definition": "To work for or on, by way of caring for, looking after, preparing, cleaning, keeping in order, etc."
+     },
+     {
+      "definition": "To act or behave in a certain manner; to conduct oneself."
+     },
+     {
+      "definition": "To spend (time) in jail. (See also do time)",
+      "example": "I did five years for armed robbery."
+     },
+     {
+      "definition": "To impersonate or depict.",
+      "example": "They really laughed when he did Clinton, with a perfect accent and a leer."
+     },
+     {
+      "definition": "(with 'a' and the name of a person, place, event, etc.) To copy or emulate the actions or behaviour that is associated with the person or thing mentioned.",
+      "example": "He did a Henry VIII and got married six times."
+     },
+     {
+      "definition": "To kill."
+     },
+     {
+      "definition": "To deal with for good and all; to finish up; to undo; to ruin; to do for."
+     },
+     {
+      "definition": "To punish for a misdemeanor.",
+      "example": "He got done for speeding."
+     },
+     {
+      "definition": "To have sex with. (See also do it)"
+     },
+     {
+      "definition": "To cheat or swindle.",
+      "example": "That guy just did me out of two hundred bucks!"
+     },
+     {
+      "definition": "To convert into a certain form; especially, to translate.",
+      "example": "the novel has just been done into English;  I'm going to do this play into a movie"
+     },
+     {
+      "definition": "To finish."
+     },
+     {
+      "definition": "To work as a domestic servant (with for)."
+     },
+     {
+      "definition": "(auxiliary) Used to form the present progressive of verbs."
+     },
+     {
+      "definition": "To cash or to advance money for, as a bill or note."
+     },
+     {
+      "definition": "(ditransitive) To make or provide.",
+      "example": "Could you do me a burger with mayonnaise instead of ketchup?"
+     },
+     {
+      "definition": "To injure (one's own body part)."
+     },
+     {
+      "definition": "To take drugs.",
+      "example": "I do cocaine."
+     },
+     {
+      "definition": "(in the form be doing [somewhere]) To exist with a purpose or for a reason.",
+      "example": "What's that car doing in our swimming pool?"
+     }
+    ],
+    "partOfSpeech": "ve"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "As said before, likewise."
+     }
+    ],
+    "partOfSpeech": "v"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/do-1-us.mp3",
+    "text": "/du/"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/do-1-au.mp3",
+    "text": "/dʉː/"
+   }
+  ]
+ },
+ {
+  "word": "NO",
+  "idx": 47,
+  "count": 937112320,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "A negating expression; an answer that shows disagreement or disapproval"
+     },
+     {
+      "definition": "A vote not in favor, or opposing a proposition",
+      "example": "The workers voted on whether to strike, and there were thirty \"yeses\" and two \"nos\"."
+     },
+     {
+      "definition": "An abstract entity used to describe quantity.",
+      "example": "Zero, one, −1, 2.5, and pi are all numbers."
+     },
+     {
+      "definition": "A numeral: a symbol for a non-negative integer.",
+      "example": "The number 8 is usually made with a single stroke."
+     },
+     {
+      "definition": "An element of one of several sets: natural numbers, integers, rational numbers, real numbers, complex numbers, and sometimes extensions such as hypercomplex numbers, etc.",
+      "example": "The equation e^{i\\pi}+1=0 includes the most important numbers: 1, 0, \\pi, i, and e."
+     },
+     {
+      "definition": "(Followed by a numeral; used attributively) Indicating the position of something in a list or sequence. Abbreviations: No or No., no or no. (in each case, sometimes written with a superscript \"o\", like Nº or №). The symbol \"#\" is also used in this manner.",
+      "example": "Horse number 5 won the race."
+     },
+     {
+      "definition": "Quantity.",
+      "example": "Any number of people can be reading from a given repository at a time."
+     },
+     {
+      "definition": "A sequence of digits and letters used to register people, automobiles, and various other items.",
+      "example": "Her passport number is C01X864TN."
+     },
+     {
+      "definition": "A telephone number."
+     },
+     {
+      "definition": "(grammar) Of a word or phrase, the state of being singular, dual or plural, shown by inflection.",
+      "example": "Adjectives and nouns should agree in gender, number, and case."
+     },
+     {
+      "definition": "(in the plural) Poetic metres; verses, rhymes."
+     },
+     {
+      "definition": "A performance; especially, a single song or song and dance routine within a larger show.",
+      "example": "For his second number, he sang \"The Moon Shines Bright\"."
+     },
+     {
+      "definition": "A person."
+     },
+     {
+      "definition": "An item of clothing, particularly a stylish one."
+     },
+     {
+      "definition": "A marijuana cigarette, or joint; also, a quantity of marijuana bought form a dealer."
+     },
+     {
+      "definition": "An issue of a periodical publication.",
+      "example": "the latest number of a magazine"
+     },
+     {
+      "definition": "A large amount, in contrast to a smaller amount; numerical preponderance."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "(now only used with different, with comparatives more and less, and informally with certain other adjectives such as good and fun) Not, not at all.",
+      "example": "I just want to find out whether she's coming or no. (Scotland)"
+     },
+     {
+      "definition": "At or towards the interior of a defined space, such as a building or room.",
+      "example": "He ran to the edge of the swimming pool and dived in."
+     },
+     {
+      "definition": "Towards the speaker or other reference point.",
+      "example": "For six hours the tide flows in, then for another six hours it flows out."
+     },
+     {
+      "definition": "So as to be enclosed or surrounded by something.",
+      "example": "Bring the water to the boil and drop the vegetables in."
+     },
+     {
+      "definition": "Still eligible to play, e.g. able to bat in cricket and baseball.",
+      "example": "He went for the wild toss but wasn't able to stay in."
+     },
+     {
+      "definition": "After the beginning of something.",
+      "example": "The show still didn't become interesting 20 minutes in."
+     },
+     {
+      "definition": "(in combination, after a verb) Denotes a gathering of people assembled for the stated activity, sometimes, though not always, suggesting a protest."
+     }
+    ],
+    "partOfSpeech": "v"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Without"
+     },
+     {
+      "definition": "Like"
+     }
+    ],
+    "partOfSpeech": "pr"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/no-us.mp3",
+    "text": "/noʊ/"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/no-uk.mp3",
+    "text": "/nəʊ/"
+   }
+  ]
+ },
+ {
+  "word": "INFORMATION",
+  "idx": 48,
+  "count": 932594387,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "That which resolves uncertainty; anything that answers the question of \"what a given entity is\"."
+     },
+     {
+      "definition": "Things that are or can be known about a given topic; communicable knowledge of something.",
+      "example": "I need some more information about this issue."
+     },
+     {
+      "definition": "The act of informing or imparting knowledge; notification.",
+      "example": "For your information, I did this because I wanted to."
+     },
+     {
+      "definition": "A statement of criminal activity brought before a judge or magistrate; in the UK, used to inform a magistrate of an offence and request a warrant; in the US, an accusation brought before a judge without a grand jury indictment."
+     },
+     {
+      "definition": "The act of informing against someone, passing on incriminating knowledge; accusation."
+     },
+     {
+      "definition": "The systematic imparting of knowledge; education, training."
+     },
+     {
+      "definition": "The creation of form; the imparting of a given quality or characteristic; forming, animation."
+     },
+     {
+      "definition": "[…] the meaning that a human assigns to data by means of the known conventions used in its representation."
+     },
+     {
+      "definition": "Divine inspiration."
+     },
+     {
+      "definition": "A service provided by telephone which provides listed telephone numbers of a subscriber."
+     },
+     {
+      "definition": "Any unambiguous abstract data, the smallest possible unit being the bit."
+     },
+     {
+      "definition": "As contrasted with data, information is processed to extract relevant data."
+     },
+     {
+      "definition": "(information technology) Any ordered sequence of symbols (or signals) (that could contain a message)."
+     }
+    ],
+    "partOfSpeech": "n"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/information-us.mp3",
+    "text": "/ˌɪnfəɹˈmeɪʃən/"
+   }
+  ]
+ },
+ {
+  "word": "TIME",
+  "idx": 49,
+  "count": 908705570,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "The inevitable progression into the future with the passing of present and past events.",
+      "example": "Time stops for nobody.   the ebb and flow of time"
+     },
+     {
+      "definition": "A duration of time."
+     },
+     {
+      "definition": "An instant of time."
+     },
+     {
+      "definition": "The measurement under some system of region of day or moment.",
+      "example": "Let's synchronize our watches so we're not on different time."
+     },
+     {
+      "definition": "Ratio of comparison.",
+      "example": "your car runs three times faster than mine;  that is four times as heavy as this"
+     },
+     {
+      "definition": "(grammar) Tense.",
+      "example": "the time of a verb"
+     },
+     {
+      "definition": "The measured duration of sounds; measure; tempo; rate of movement; rhythmical division.",
+      "example": "common or triple time;   the musician keeps good time."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "To measure or record the time, duration, or rate of.",
+      "example": "I used a stopwatch to time myself running around the block."
+     },
+     {
+      "definition": "To choose when something begins or how long it lasts.",
+      "example": "The President timed his speech badly, coinciding with the Super Bowl."
+     },
+     {
+      "definition": "To keep or beat time; to proceed or move in time."
+     },
+     {
+      "definition": "To pass time; to delay."
+     },
+     {
+      "definition": "To regulate as to time; to accompany, or agree with, in time of movement."
+     },
+     {
+      "definition": "To measure, as in music or harmony."
+     }
+    ],
+    "partOfSpeech": "ve"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Reminder by the umpire for the players to continue playing after their pause."
+     },
+     {
+      "definition": "The umpire's call in prizefights, etc."
+     },
+     {
+      "definition": "A call by a bartender to warn patrons that the establishment is closing and no more drinks will be served."
+     }
+    ],
+    "partOfSpeech": "i"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/time-us.mp3",
+    "text": "/taɪm/"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/time-au.mp3",
+    "text": "/tɑem/"
+   }
+  ]
+ }
+]

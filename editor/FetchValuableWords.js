@@ -1,13 +1,7 @@
 const fs = require('fs')
 
-const filepath = './txt.json'
-
-// interface RootObject {
-//     word: string;
-//     phonetic: string;
-//     phonetics: Phonetic[];
-//     meanings: Meaning[];
-// }
+const outputpath = './editor/Assets/outputs.json'
+const srcpath = './editor/Assets/count_1w100k.txt'
 
 function ArrayAddWithCheckDuplicate(
     arr,
@@ -193,12 +187,24 @@ const GetMeaningArr = (jsonArr) => {
                 meaning.partOfSpeech = 'j'
             else if (meaning.partOfSpeech === 'adverb')
                 meaning.partOfSpeech = 'v'
+            else if (meaning.partOfSpeech === 'verb')
+                meaning.partOfSpeech = 've'
             else if (meaning.partOfSpeech === 'noun')
                 meaning.partOfSpeech = 'n'
             else if (meaning.partOfSpeech === 'pronoun')
                 meaning.partOfSpeech = 'p'
+            else if (meaning.partOfSpeech === 'preposition')
+                meaning.partOfSpeech = 'pr'
+            else if (meaning.partOfSpeech === 'conjunction')
+                meaning.partOfSpeech = 'c'
+            else if (meaning.partOfSpeech === 'numeral')
+                meaning.partOfSpeech = 'nu'
+            else if (meaning.partOfSpeech === 'interjection')
+                meaning.partOfSpeech = 'i'
+            else if (meaning.partOfSpeech === 'proper noun')
+                meaning.partOfSpeech = 'pn'
             else
-                console.error('unknown part of speech: ' + meaning.partOfSpeech);
+                console.error('unknown part of speech: ' + meaning.partOfSpeech, wordObj.word);
 
             const definitions = GetDefinitionArr(meaning.definitions)
 
@@ -232,7 +238,7 @@ const GetMeaningArr = (jsonArr) => {
         return undefined
 }
 
-const FetchWordAsync = async (word, count) => {
+const FetchWordAsync = async (word, count, wordIdx) => {
     const url = 'https://api.dictionaryapi.dev/api/v2/entries/en/' + word
 
     const res = await fetch(url)
@@ -240,7 +246,7 @@ const FetchWordAsync = async (word, count) => {
     const jsonArr = await res.json()
 
     if (!Array.isArray(jsonArr)) {
-        console.log('tmp, not in dic, word: ' + word, count);
+        // console.log('tmp, not in dic, word: ' + word, count);
         return undefined
     }
 
@@ -253,6 +259,7 @@ const FetchWordAsync = async (word, count) => {
 
     const obj = {
         word,
+        idx: wordIdx,
         count,
         meanings,
     }
@@ -263,16 +270,48 @@ const FetchWordAsync = async (word, count) => {
         obj.phonetics = phonetics
 
     return obj
-
-    // const s = JSON.stringify(obj, null, 1)
-
-    // fs.writeFileSync(filepath, s)
 }
 
 const FetchValuableWordsAsync = async () => {
-    const res = await FetchWordAsync('infanticide', 5000)
+    const text = fs.readFileSync(srcpath, 'utf-8')
+    const lines = text.split('\n')
 
-    console.log(res);
+    console.log('start, lines of file: ' + lines.length);
+    const eachCount = 10
+
+    let arr = []
+
+    for (let iline = 0; iline < 50; iline += eachCount) {
+
+        const eachLines = lines.slice(iline, iline + eachCount)
+
+        let wordAndCountArr = eachLines.map((line, index) => {
+            const arr = line.split('\t')
+
+            if (arr.length < 2)
+                return ['', -1]
+
+            return [arr[0], Number.parseInt(arr[1]), iline + index]
+        })
+
+        wordAndCountArr = wordAndCountArr.filter(e => e[0].length >= 2)
+
+        console.log('fetching, start idx: ', iline, 'word fetch count', wordAndCountArr.length)
+
+        const resArr = await Promise.all(wordAndCountArr.map(e => {
+            return FetchWordAsync(e[0], e[1], e[2])
+        }))
+
+        const valids = resArr.filter(i => i !== undefined)
+
+        arr = arr.concat(valids)
+    }
+
+    const s = JSON.stringify(arr, null, 1)
+
+    fs.writeFileSync(outputpath, s)
+
+    console.log('doneee: ' + arr.length);
 }
 
 FetchValuableWordsAsync()
