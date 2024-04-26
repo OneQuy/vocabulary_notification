@@ -300,7 +300,8 @@ const FetchValuableWordsAsync = async () => {
     const lines = text.split('\n')
 
     let arr = []
-    
+    let startOutOfReqTick = -1
+
     for (let lineIdx = StartFromIdx; lineIdx < lines.length; lineIdx++) {
         const line = lines[lineIdx]
 
@@ -311,8 +312,8 @@ const FetchValuableWordsAsync = async () => {
 
         const word = arrSplit[0]
         const count = Number.parseInt(arrSplit[1])
-        
-        let res 
+
+        let res
 
         while (true) {
             res = await FetchWordAsync(word, count, lineIdx)
@@ -320,10 +321,14 @@ const FetchValuableWordsAsync = async () => {
             console.log(lineIdx, word, 'success', res && res.word);
 
             if (res === null) { // out of request
+                if (startOutOfReqTick === -1) {
+                    startOutOfReqTick = Date.now()
+                }
+
                 if (arr.length >= 1) {
                     const s = JSON.stringify(arr, null, 1)
 
-                    const filename = `to-index-${lineIdx-1}_${arr.length}words.json`
+                    const filename = `to-index-${lineIdx - 1}_${arr.length}words.json`
                     fs.writeFileSync(outputpath + filename, s)
 
                     console.log('created: ' + filename)
@@ -332,8 +337,14 @@ const FetchValuableWordsAsync = async () => {
 
                 await DelayAsync(IntervalWaitOutOfRequest)
             }
-            else 
+            else { // success or invalid word
+                if (startOutOfReqTick > -1) {
+                    console.log('server refrest time: ' + (Date.now() - startOutOfReqTick));
+                    startOutOfReqTick = -1
+                }
+
                 break
+            }
         }
 
         if (res !== undefined)
