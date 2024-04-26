@@ -292,7 +292,7 @@ const FetchWordAsync = async (word, count, wordIdx) => {
 // const EachCount = 100
 // const Interval = 1000
 
-const IntervalWaitOutOfRequest = 30
+const IntervalWaitOutOfRequest = 5000
 const StartFromIdx = 1800
 
 const FetchValuableWordsAsync = async () => {
