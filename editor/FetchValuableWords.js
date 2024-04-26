@@ -344,7 +344,7 @@ const FetchValuableWordsAsync = async () => {
                     const filename = `to-index-${lineIdx - 1}.json`
                     fs.writeFileSync(outputpath + filename, s)
 
-                    console.log('created: ' + filename)
+                    console.log('created: ' + filename, arr.length, 'words')
                     arr = []
                 }
 
@@ -352,7 +352,7 @@ const FetchValuableWordsAsync = async () => {
             }
             else { // success or invalid word
                 if (startOutOfReqTick > -1) {
-                    console.log('server refrest time: ' + (Date.now() - startOutOfReqTick));
+                    console.log('server reset time: ' + (Date.now() - startOutOfReqTick));
                     startOutOfReqTick = -1
                 }
 
