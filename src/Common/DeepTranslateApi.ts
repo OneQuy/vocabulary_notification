@@ -1,21 +1,30 @@
 import { SafeValue } from "./UtilsTS";
 
+export type Language = {
+    "language": string,
+    "name": string,
+}
+
 /**
  * @returns text translated if success. same word if api failed or word is unavailable to translate.
  * @param word is 'hello'
- * @param fromLangCode 
- * @param toLangCode 
+ * @param fromLang 
+ * @param toLang 
  */
 export const DeepTranslateAsync = async (
     key: string,
     word: string,
-    fromLangCode: string,
-    toLangCode: string): Promise<string | Error> => {
+    toLang: string | Language,
+    fromLang?: string | Language,
+): Promise<string | Error> => {
     return new Promise((resolve) => {
+        const from = fromLang ? (typeof fromLang === 'object' ? fromLang.language : fromLang) : 'en'
+        const to = typeof toLang === 'object' ? toLang.language : toLang
+
         const data = JSON.stringify({
             q: word,
-            source: 'en',
-            target: 'vi'
+            source: from,
+            target: to,
         });
 
         const xhr = new XMLHttpRequest();
@@ -48,10 +57,10 @@ export const DeepTranslateAsync = async (
     })
 }
 
-const arr = [
+const Languages: Language[] = [
     {
         "language": "en",
-        "name": "English"
+        "name": "English",
     },
     {
         "language": "af",

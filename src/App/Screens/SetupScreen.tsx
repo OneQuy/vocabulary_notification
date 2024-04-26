@@ -133,7 +133,7 @@ const SetupScreen = () => {
   }, [theme])
 
   const onPressTestNotification = useCallback(async () => {
-    const res = await DeepTranslateAsync(DeepTranslateApiKey, "extract", 'en', 'vi')
+    const res = await DeepTranslateAsync(DeepTranslateApiKey, "extract", 'de')
 
     console.log(res);
     
