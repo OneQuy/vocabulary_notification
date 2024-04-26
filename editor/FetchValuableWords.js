@@ -1,5 +1,13 @@
 const fs = require('fs')
 
+
+// const EachCount = 100
+// const Interval = 1000
+
+const IntervalWaitOutOfRequest = 5000
+
+const StartFromIdx = 7620
+
 const outputpath = './editor/Assets/vocabs/'
 
 const srcpath = './editor/Assets/count_1w100k.txt'
@@ -261,11 +269,11 @@ const GetMeaningArr = (jsonArr) => {
 const FetchWordAsync = async (word, count, wordIdx) => {
     const url = 'https://api.dictionaryapi.dev/api/v2/entries/en/' + word
 
-    const res = await fetch(url)
-
     let jsonArr
-
+    
     try {
+        const res = await fetch(url)
+
         jsonArr = await res.json()
 
         if (!Array.isArray(jsonArr)) {
@@ -298,13 +306,6 @@ const FetchWordAsync = async (word, count, wordIdx) => {
 
     return obj
 }
-
-// const EachCount = 100
-// const Interval = 1000
-
-const IntervalWaitOutOfRequest = 5000
-
-const StartFromIdx = 3916
 
 const FetchValuableWordsAsync = async () => {
     const text = fs.readFileSync(srcpath, 'utf-8')
