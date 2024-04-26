@@ -13,6 +13,52 @@
 //     example?: string;
 // }
 
+function ArrayAddWithCheckDuplicate(
+    arr,
+    itemsToAdd,
+    propertyForCompareIfTypeIsObject,
+    stringifyCompare,
+    pushOrUnshift
+) {
+    const arrToAdd = Array.isArray(itemsToAdd) ? itemsToAdd : [itemsToAdd]
+    let added = false
+    const property = propertyForCompareIfTypeIsObject
+
+    for (let i = 0; i < arrToAdd.length; i++) {
+        const curItemToAdd = arrToAdd[i]
+
+        const foundIdx = arr.findIndex(element => {
+            const isObject = typeof curItemToAdd === 'object'
+
+            if (isObject && propertyForCompareIfTypeIsObject) {
+                return curItemToAdd[property] === element[property]
+            }
+            else if (stringifyCompare === true) {
+                const thisObj = JSON.stringify(curItemToAdd)
+                const arrElement = JSON.stringify(element)
+
+                return thisObj === arrElement
+            }
+            else
+                return element === curItemToAdd
+        })
+
+        if (foundIdx >= 0) { // found => not add
+            continue
+        }
+
+        // add!
+
+        added = true
+
+        if (pushOrUnshift)
+            arr.push(curItemToAdd)
+        else
+            arr.unshift(curItemToAdd)
+    }
+
+    return added
+}
 
 function IsValuableArrayOrString(value, trimString = true) {
     if (Array.isArray(value)) {
@@ -74,7 +120,7 @@ const GetPhoneticsArr = async (json) => {
             if (isValueable_Text)
                 obj.text = element.text
 
-            arr.push(obj)
+            ArrayAddWithCheckDuplicate(arr, obj, undefined, true)
         }
     })
 
