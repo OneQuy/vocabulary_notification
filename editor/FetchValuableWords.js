@@ -189,6 +189,17 @@ const GetMeaningArr = (jsonArr) => {
             return
 
         wordObj.meanings.forEach(meaning => {
+            if (meaning.partOfSpeech === 'adjective')
+                meaning.partOfSpeech = 'j'
+            else if (meaning.partOfSpeech === 'adverb')
+                meaning.partOfSpeech = 'v'
+            else if (meaning.partOfSpeech === 'noun')
+                meaning.partOfSpeech = 'n'
+            else if (meaning.partOfSpeech === 'pronoun')
+                meaning.partOfSpeech = 'p'
+            else
+                console.error('unknown part of speech: ' + meaning.partOfSpeech);
+
             const definitions = GetDefinitionArr(meaning.definitions)
 
             if (!definitions)
@@ -204,7 +215,7 @@ const GetMeaningArr = (jsonArr) => {
                 if (IsValuableArrayOrString(meaning.partOfSpeech))
                     obj.partOfSpeech = meaning.partOfSpeech
                 else
-                    console.error('tmp partOfSpeech EMPTY: ', wordObj.word)
+                    console.error('tmp, partOfSpeech EMPTY: ', wordObj.word)
 
                 arr.push(obj)
             }
@@ -229,7 +240,7 @@ const FetchWordAsync = async (word, count) => {
     const jsonArr = await res.json()
 
     if (!Array.isArray(jsonArr)) {
-        console.log('tmp not in dic, word: ' + word, count);
+        console.log('tmp, not in dic, word: ' + word, count);
         return undefined
     }
 
@@ -255,7 +266,7 @@ const FetchWordAsync = async (word, count) => {
 }
 
 const FetchValuableWordsAsync = () => {
-    FetchWordAsync('fetch', 5000)
+    FetchWordAsync('infanticide', 5000)
 }
 
 FetchValuableWordsAsync()
