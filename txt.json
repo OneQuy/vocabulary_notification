@@ -1,0 +1,72 @@
+{
+ "word": "fetch",
+ "count": 5000,
+ "meanings": [
+  {
+   "definitions": [
+    {
+     "definition": "An act of fetching, of bringing something from a distance."
+    },
+    {
+     "definition": "The object of fetching; the source of an attraction; a force, propensity, or quality which attracts."
+    },
+    {
+     "definition": "A stratagem or trick; an artifice."
+    },
+    {
+     "definition": "(originally Ireland) The apparition of a living person; a person's double, the sight of which is supposedly a sign that they are fated to die soon, a doppelganger; a wraith."
+    }
+   ],
+   "partOfSpeech": "noun"
+  },
+  {
+   "definitions": [
+    {
+     "definition": "To retrieve; to bear towards; to go and get."
+    },
+    {
+     "definition": "To obtain as price or equivalent; to sell for.",
+     "example": "If you put some new tyres on it, and clean it up a bit, the car should fetch about $5,000"
+    },
+    {
+     "definition": "To bring or get within reach by going; to reach; to arrive at; to attain; to reach by sailing.",
+     "example": "to fetch headway or sternway"
+    },
+    {
+     "definition": "To bring oneself; to make headway; to veer; as, to fetch about; to fetch to windward."
+    },
+    {
+     "definition": "To take (a breath), to heave (a sigh)"
+    },
+    {
+     "definition": "To cause to come; to bring to a particular state."
+    },
+    {
+     "definition": "To recall from a swoon; to revive; sometimes with to.",
+     "example": "to fetch a man to"
+    },
+    {
+     "definition": "To reduce; to throw."
+    },
+    {
+     "definition": "To bring to accomplishment; to achieve; to make; to perform, with certain objects.",
+     "example": "to fetch a compass;  to fetch a leap"
+    },
+    {
+     "definition": "To make (a pump) draw water by pouring water into the top and working the handle."
+    }
+   ],
+   "partOfSpeech": "verb"
+  }
+ ],
+ "phonetics": [
+  {
+   "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/fetch-us.mp3",
+   "text": "/fɛtʃ/"
+  },
+  {
+   "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/fetch-uk.mp3",
+   "text": "/fɛtʃ/"
+  }
+ ]
+}

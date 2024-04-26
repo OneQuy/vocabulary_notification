@@ -1,16 +1,12 @@
+const fs = require('fs')
+
+const filepath = './txt.json'
+
 // interface RootObject {
 //     word: string;
 //     phonetic: string;
 //     phonetics: Phonetic[];
 //     meanings: Meaning[];
-// }
-// interface Meaning {
-//     partOfSpeech: string;
-//     definitions: Definition[];
-// }
-// interface Definition {
-//     definition: string;
-//     example?: string;
 // }
 
 function ArrayAddWithCheckDuplicate(
@@ -82,20 +78,20 @@ function IsValuableArrayOrString(value, trimString = true) {
  * 
  * @returns undefined / arr of phonetics
  */
-const GetPhoneticsArr = async (json) => {
+const GetPhoneticsArr = (jsonArr) => {
     // currently just extract from first element
 
-    json = json[0]
+    jsonArr = jsonArr[0]
 
     // default value
 
-    const phonetics = json.phonetics
+    const phonetics = jsonArr.phonetics
 
     if (!Array.isArray(phonetics)) {
-        if (IsValuableArrayOrString(json.phonetic) > 0) {
+        if (IsValuableArrayOrString(jsonArr.phonetic) > 0) {
             return [
                 {
-                    text: json.phonetic
+                    text: jsonArr.phonetic
                 }
             ]
         }
@@ -105,7 +101,8 @@ const GetPhoneticsArr = async (json) => {
 
     // extract arr
 
-    const arr = []
+    let arr = []
+    let hadElementBothTextAndAudio = false
 
     phonetics.forEach(element => {
         const isValueable_Text = IsValuableArrayOrString(element.text)
@@ -121,8 +118,15 @@ const GetPhoneticsArr = async (json) => {
                 obj.text = element.text
 
             ArrayAddWithCheckDuplicate(arr, obj, undefined, true)
+
+            if (isValueable_Audio && isValueable_Text)
+                hadElementBothTextAndAudio = true
         }
     })
+
+    if (hadElementBothTextAndAudio) {
+        arr = arr.filter(i => i.text && i.audio)
+    }
 
     if (arr.length > 0)
         return arr
@@ -130,23 +134,128 @@ const GetPhoneticsArr = async (json) => {
         return undefined
 }
 
-const FetchWordAsync = async () => {
-    const url = 'https://api.dictionaryapi.dev/api/v2/entries/en/love'
+
+// interface Definition {
+//     definition?: string;
+//     example?: string;
+// }
+/**
+ * 
+ * @returns undefined / arr of definitions
+ */
+const GetDefinitionArr = (definitions) => {
+    if (!Array.isArray(definitions))
+        return undefined
+
+    const arr = []
+
+    definitions.forEach(element => {
+        const isValue_definition = IsValuableArrayOrString(element.definition)
+
+        if (isValue_definition) {
+            const obj = {
+                definition: element.definition
+            }
+
+            if (IsValuableArrayOrString(element.example)) {
+                obj.example = element.example
+            }
+
+            arr.push(obj)
+        }
+    });
+
+    if (arr.length > 0)
+        return arr
+    else
+        return undefined
+}
+
+// interface Meaning {
+//     partOfSpeech?: string;
+//     definitions?: Definition[];
+// }
+/**
+ * 
+ * @returns undefined / arr of meanings
+ */
+const GetMeaningArr = (jsonArr) => {
+    // merge meanings
+
+    const arr = [] // Meaning[]
+
+    jsonArr.forEach(wordObj => {
+        if (!Array.isArray(wordObj.meanings))
+            return
+
+        wordObj.meanings.forEach(meaning => {
+            const definitions = GetDefinitionArr(meaning.definitions)
+
+            if (!definitions)
+                return
+
+            const idx = arr.findIndex(i => i.partOfSpeech === meaning.partOfSpeech)
+
+            if (idx < 0) {
+                const obj = {
+                    definitions,
+                }
+
+                if (IsValuableArrayOrString(meaning.partOfSpeech))
+                    obj.partOfSpeech = meaning.partOfSpeech
+                else
+                    console.error('tmp partOfSpeech EMPTY: ', wordObj.word)
+
+                arr.push(obj)
+            }
+            else {
+                const arrElement = arr[idx]
+                arrElement.definitions = arrElement.definitions.concat(definitions)
+            }
+        });
+    });
+
+    if (arr.length > 0)
+        return arr
+    else
+        return undefined
+}
+
+const FetchWordAsync = async (word, count) => {
+    const url = 'https://api.dictionaryapi.dev/api/v2/entries/en/' + word
 
     const res = await fetch(url)
 
-    const json = await res.json()
+    const jsonArr = await res.json()
 
-    if (!Array.isArray(json))
+    if (!Array.isArray(jsonArr)) {
+        console.log('tmp not in dic, word: ' + word, count);
+        return undefined
+    }
+
+    const meanings = GetMeaningArr(jsonArr)
+
+    if (meanings === undefined)
         return undefined
 
-    const phonetics = GetPhoneticsArr(json)
+    const obj = {
+        word,
+        count,
+        meanings,
+    }
 
-    console.log(phonetics);
+    const phonetics = GetPhoneticsArr(jsonArr)
+
+    if (phonetics !== undefined)
+        obj.phonetics = phonetics
+
+    const s = JSON.stringify(obj, null, 1)
+
+    fs.writeFileSync(filepath, s)
 }
 
 const FetchValuableWordsAsync = () => {
-    FetchWordAsync()
+    FetchWordAsync('fetch', 5000)
 }
 
 FetchValuableWordsAsync()
