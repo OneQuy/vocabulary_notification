@@ -1,7 +1,12 @@
 const fs = require('fs')
 
-const outputpath = './editor/Assets/outputs.json'
+const outputpath = './editor/Assets/vocabs/'
+
 const srcpath = './editor/Assets/count_1w100k.txt'
+
+async function DelayAsync(msTime) {
+    return new Promise(resolve => setTimeout(resolve, msTime));
+}
 
 function ArrayAddWithCheckDuplicate(
     arr,
@@ -238,16 +243,28 @@ const GetMeaningArr = (jsonArr) => {
         return undefined
 }
 
+/**
+ * 
+ * @returns null if out of request
+ * @returns undefined if invalid word
+ */
 const FetchWordAsync = async (word, count, wordIdx) => {
     const url = 'https://api.dictionaryapi.dev/api/v2/entries/en/' + word
 
     const res = await fetch(url)
 
-    const jsonArr = await res.json()
+    let jsonArr
 
-    if (!Array.isArray(jsonArr)) {
-        // console.log('tmp, not in dic, word: ' + word, count);
-        return undefined
+    try {
+        jsonArr = await res.json()
+
+        if (!Array.isArray(jsonArr)) {
+            // console.log('tmp, not in dic, word: ' + word, count);
+            return undefined
+        }
+    }
+    catch {
+        return null
     }
 
     const meanings = GetMeaningArr(jsonArr)
@@ -272,18 +289,27 @@ const FetchWordAsync = async (word, count, wordIdx) => {
     return obj
 }
 
+const EachCount = 100
+const Interval = 1000
+
 const FetchValuableWordsAsync = async () => {
     const text = fs.readFileSync(srcpath, 'utf-8')
     const lines = text.split('\n')
 
-    console.log('start, lines of file: ' + lines.length);
-    const eachCount = 10
-
     let arr = []
+    let startIdx = 0
+    let lastFetch = 0
 
-    for (let iline = 0; iline < 50; iline += eachCount) {
+    for (let iline = 0; iline < 2000; iline += EachCount) {
+        const now = Date.now()
 
-        const eachLines = lines.slice(iline, iline + eachCount)
+        if (now - lastFetch < Interval) {
+            await DelayAsync(now - lastFetch)
+        }
+        else
+            lastFetch = now
+
+        const eachLines = lines.slice(iline, iline + EachCount)
 
         let wordAndCountArr = eachLines.map((line, index) => {
             const arr = line.split('\t')
@@ -305,11 +331,19 @@ const FetchValuableWordsAsync = async () => {
         const valids = resArr.filter(i => i !== undefined)
 
         arr = arr.concat(valids)
+
+        if (arr.length >= 1000) {
+            const s = JSON.stringify(arr, null, 1)
+
+            const filename = `${startIdx}-${iline + EachCount}-${arr.length}words.json`
+            fs.writeFileSync(outputpath + filename, s)
+
+            arr = []
+            startIdx = iline + EachCount
+
+            console.log('created: ' + filename)
+        }
     }
-
-    const s = JSON.stringify(arr, null, 1)
-
-    fs.writeFileSync(outputpath, s)
 
     console.log('doneee: ' + arr.length);
 }
