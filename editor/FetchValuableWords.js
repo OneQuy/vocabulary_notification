@@ -318,7 +318,7 @@ const FetchValuableWordsAsync = async () => {
         while (true) {
             res = await FetchWordAsync(word, count, lineIdx)
 
-            console.log(lineIdx, word, 'success', res && res.word);
+            // console.log(lineIdx, word, 'success', res && res.word);
 
             if (res === null) { // out of request
                 if (startOutOfReqTick === -1) {
