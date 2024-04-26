@@ -293,7 +293,8 @@ const FetchWordAsync = async (word, count, wordIdx) => {
 // const Interval = 1000
 
 const IntervalWaitOutOfRequest = 5000
-const StartFromIdx = 1800
+
+const StartFromIdx = 2700
 
 const FetchValuableWordsAsync = async () => {
     const text = fs.readFileSync(srcpath, 'utf-8')
