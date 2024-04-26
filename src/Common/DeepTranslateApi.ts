@@ -6,7 +6,7 @@ export type Language = {
 }
 
 /**
- * @returns text translated if success. same word if api failed or word is unavailable to translate.
+ * @returns text translated if success. Error() if api failed or word is unavailable to translate.
  * @param word is 'hello'
  * @param fromLang 
  * @param toLang 
@@ -57,6 +57,16 @@ export const DeepTranslateAsync = async (
     })
 }
 
+export const DeepTranslateMultiWordAsync = async (
+    key: string,
+    words: string[],
+    toLang: string | Language,
+    fromLang?: string | Language,
+): Promise<(string | Error)[]> => {
+    return await Promise.all(words.map(word => {
+        return DeepTranslateAsync(key, word, toLang, fromLang)
+    }))
+}
 export const Languages: Language[] = [
     {
         "language": "en",
