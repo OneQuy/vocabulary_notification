@@ -4,6 +4,8 @@ const outputpath = './editor/Assets/vocabs/'
 
 const srcpath = './editor/Assets/count_1w100k.txt'
 
+const AudioPath = 'https://api.dictionaryapi.dev/media/pronunciations/en/'
+
 async function DelayAsync(msTime) {
     return new Promise(resolve => setTimeout(resolve, msTime));
 }
@@ -110,8 +112,16 @@ const GetPhoneticsArr = (jsonArr) => {
         if (isValueable_Audio || isValueable_Text) {
             const obj = {}
 
-            if (isValueable_Audio)
-                obj.audio = element.audio
+            if (isValueable_Audio) {
+                if (element.audio.startsWith(AudioPath)) {
+                    if (element.audio.endsWith('.mp3'))
+                        obj.audio = element.audio.substring(AudioPath.length, element.audio.length - 4)
+                    else
+                        obj.audio = element.audio.substring(AudioPath.length)
+                }
+                else
+                    obj.audio = element.audio
+            }
 
             if (isValueable_Text)
                 obj.text = element.text
