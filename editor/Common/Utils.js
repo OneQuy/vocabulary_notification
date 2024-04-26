@@ -3,6 +3,9 @@
 // file, path, dir
 // array / string
 // log
+// other
+
+
 
 // ------------------------------
 
@@ -186,6 +189,12 @@ function LogGreen(...msg) {
 function LogYellow(...msg) {
     const code = process.platform === 'win32' ? 93 : 33
     console.log(`\x1b[${code}m ${msg.join(', ')} \x1b[0m`);
+}
+
+// other
+
+async function DelayAsync(msTime) {
+    return new Promise(resolve => setTimeout(resolve, msTime));
 }
 
 module.exports = {
