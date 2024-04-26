@@ -246,8 +246,10 @@ const FetchWordAsync = async (word, count) => {
 
     const meanings = GetMeaningArr(jsonArr)
 
-    if (meanings === undefined)
+    if (meanings === undefined) {
+        console.log('tmp, not meanings, word: ' + word, count);
         return undefined
+    }
 
     const obj = {
         word,
@@ -260,13 +262,17 @@ const FetchWordAsync = async (word, count) => {
     if (phonetics !== undefined)
         obj.phonetics = phonetics
 
-    const s = JSON.stringify(obj, null, 1)
+    return obj
 
-    fs.writeFileSync(filepath, s)
+    // const s = JSON.stringify(obj, null, 1)
+
+    // fs.writeFileSync(filepath, s)
 }
 
-const FetchValuableWordsAsync = () => {
-    FetchWordAsync('infanticide', 5000)
+const FetchValuableWordsAsync = async () => {
+    const res = await FetchWordAsync('infanticide', 5000)
+
+    console.log(res);
 }
 
 FetchValuableWordsAsync()
