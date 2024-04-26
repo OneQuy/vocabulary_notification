@@ -15,6 +15,8 @@ import TimePicker, { TimePickerResult } from '../Components/TimePicker'
 import { LucideIcon } from '../../Common/Components/LucideIcon'
 import { cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync, setNotification, setNotification_RemainSeconds } from '../../Common/Nofitication'
 import { AuthorizationStatus } from '@notifee/react-native'
+import { DeepTranslateAsync } from '../../Common/DeepTranslateApi'
+import { DeepTranslateApiKey } from '../../../Keys'
 
 const DefaultExcludeTimePairs: PairTime[] = [
   [
@@ -129,6 +131,13 @@ const SetupScreen = () => {
       }
     })
   }, [theme])
+
+  const onPressTestNotification = useCallback(async () => {
+    const res = await DeepTranslateAsync(DeepTranslateApiKey, "extract", 'en', 'vi')
+
+    console.log(res);
+    
+  }, [])
 
   const onPressSetNotification = useCallback(async () => {
     const resPermission = await requestPermissionNotificationAsync()
@@ -536,6 +545,8 @@ const SetupScreen = () => {
           titleProps={{ style: style.normalBtnTxt }}
 
           iconProps={{ name: 'Bell', size: FontSize.Normal, }}
+
+          onPress={onPressTestNotification}
         />
 
         {/* set notification */}
