@@ -429,7 +429,9 @@ export function ArrayAddWithCheckDuplicate<T>(
     arr: NonNullable<T>[],
     itemsToAdd: NonNullable<T> | NonNullable<T>[],
     propertyForCompareIfTypeIsObject?: string,
-    pushOrUnshift = true): boolean {
+    stringifyCompare?: boolean,
+    pushOrUnshift = true
+): boolean {
     const arrToAdd = Array.isArray(itemsToAdd) ? itemsToAdd : [itemsToAdd]
     let added = false
     const property = propertyForCompareIfTypeIsObject as keyof T
@@ -437,18 +439,28 @@ export function ArrayAddWithCheckDuplicate<T>(
     for (let i = 0; i < arrToAdd.length; i++) {
         const curItemToAdd = arrToAdd[i]
 
-        const foundIdx = arr.findIndex(f => {
-            if (propertyForCompareIfTypeIsObject && typeof curItemToAdd === 'object') {
-                return curItemToAdd[property] === f[property]
+        const foundIdx = arr.findIndex(element => {
+            const isObject = typeof curItemToAdd === 'object'
+
+            if (isObject && propertyForCompareIfTypeIsObject) {
+                return curItemToAdd[property] === element[property]
+            }
+            else if (stringifyCompare === true) {
+                const thisObj = JSON.stringify(curItemToAdd)
+                const arrElement = JSON.stringify(element)
+
+                return thisObj === arrElement
             }
             else
-                return f === curItemToAdd
+                return element === curItemToAdd
         })
 
         if (foundIdx >= 0) { // found => not add
             continue
         }
 
+        // add!
+        
         added = true
 
         if (pushOrUnshift)
