@@ -294,7 +294,7 @@ const FetchWordAsync = async (word, count, wordIdx) => {
 
 const IntervalWaitOutOfRequest = 5000
 
-const StartFromIdx = 2700
+const StartFromIdx = 3916
 
 const FetchValuableWordsAsync = async () => {
     const text = fs.readFileSync(srcpath, 'utf-8')
@@ -327,7 +327,8 @@ const FetchValuableWordsAsync = async () => {
                 }
 
                 if (arr.length >= 1) {
-                    const s = JSON.stringify(arr, null, 1)
+                    // const s = JSON.stringify(arr, null, 1)
+                    const s = JSON.stringify(arr)
 
                     const filename = `to-index-${lineIdx - 1}.json`
                     fs.writeFileSync(outputpath + filename, s)
