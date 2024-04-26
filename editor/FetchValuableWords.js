@@ -289,64 +289,122 @@ const FetchWordAsync = async (word, count, wordIdx) => {
     return obj
 }
 
-const EachCount = 100
-const Interval = 1000
+// const EachCount = 100
+// const Interval = 1000
+
+const IntervalWaitOutOfRequest = 1000
+const StartFromIdx = 0
 
 const FetchValuableWordsAsync = async () => {
     const text = fs.readFileSync(srcpath, 'utf-8')
     const lines = text.split('\n')
 
     let arr = []
-    let startIdx = 0
-    let lastFetch = 0
+    
+    for (let lineIdx = StartFromIdx; lineIdx < lines.length; lineIdx++) {
+        const line = lines[lineIdx]
 
-    for (let iline = 0; iline < 2000; iline += EachCount) {
-        const now = Date.now()
+        const arrSplit = line.split('\t')
 
-        if (now - lastFetch < Interval) {
-            await DelayAsync(now - lastFetch)
+        if (arrSplit.length < 2 || arrSplit[0].length < 2)
+            continue
+
+        const word = arrSplit[0]
+        const count = Number.parseInt(arrSplit[1])
+        
+        let res 
+
+        while (true) {
+            res = await FetchWordAsync(word, count, lineIdx)
+
+            console.log(lineIdx, word, 'success', res && res.word);
+
+            if (res === null) { // out of request
+                if (arr.length >= 1) {
+                    const s = JSON.stringify(arr, null, 1)
+
+                    const filename = `to-index-${lineIdx-1}_${arr.length}words.json`
+                    fs.writeFileSync(outputpath + filename, s)
+
+                    console.log('created: ' + filename)
+                    arr = []
+                }
+
+                await DelayAsync(IntervalWaitOutOfRequest)
+            }
+            else 
+                break
         }
-        else
-            lastFetch = now
 
-        const eachLines = lines.slice(iline, iline + EachCount)
-
-        let wordAndCountArr = eachLines.map((line, index) => {
-            const arr = line.split('\t')
-
-            if (arr.length < 2)
-                return ['', -1]
-
-            return [arr[0], Number.parseInt(arr[1]), iline + index]
-        })
-
-        wordAndCountArr = wordAndCountArr.filter(e => e[0].length >= 2)
-
-        console.log('fetching, start idx: ', iline, 'word fetch count', wordAndCountArr.length)
-
-        const resArr = await Promise.all(wordAndCountArr.map(e => {
-            return FetchWordAsync(e[0], e[1], e[2])
-        }))
-
-        const valids = resArr.filter(i => i !== undefined)
-
-        arr = arr.concat(valids)
-
-        if (arr.length >= 1000) {
-            const s = JSON.stringify(arr, null, 1)
-
-            const filename = `${startIdx}-${iline + EachCount}-${arr.length}words.json`
-            fs.writeFileSync(outputpath + filename, s)
-
-            arr = []
-            startIdx = iline + EachCount
-
-            console.log('created: ' + filename)
-        }
+        if (res !== undefined)
+            arr.push(res)
     }
-
-    console.log('doneee: ' + arr.length);
 }
+
+// const FetchValuableWordsAsync = async () => {
+//     const text = fs.readFileSync(srcpath, 'utf-8')
+//     const lines = text.split('\n')
+
+//     let arr = []
+//     let startIdx = 0
+//     let lastFetch = 0
+
+//     for (let iline = 0; iline < 2000; iline += EachCount) {
+//         const now = Date.now()
+
+//         if (now - lastFetch < Interval) {
+//             await DelayAsync(now - lastFetch)
+//         }
+//         else
+//             lastFetch = now
+
+//         const eachLines = lines.slice(iline, iline + EachCount)
+
+//         let wordAndCountArr = eachLines.map((line, index) => {
+//             const arr = line.split('\t')
+
+//             if (arr.length < 2)
+//                 return ['', -1]
+
+//             return [arr[0], Number.parseInt(arr[1]), iline + index]
+//         })
+
+//         wordAndCountArr = wordAndCountArr.filter(e => e[0].length >= 2)
+
+//         console.log('fetching, start idx: ', iline, 'word fetch count', wordAndCountArr.length)
+
+//         const resArr = await Promise.all(wordAndCountArr.map(e => {
+//             return FetchWordAsync(e[0], e[1], e[2])
+//         }))
+
+//         const valids = resArr.filter(i => i !== undefined)
+
+//         arr = arr.concat(valids)
+
+//         if (arr.length >= 1000) {
+//             const s = JSON.stringify(arr, null, 1)
+
+//             const filename = `${startIdx}-${iline + EachCount}-${arr.length}words.json`
+//             fs.writeFileSync(outputpath + filename, s)
+
+//             arr = []
+//             startIdx = iline + EachCount
+
+//             console.log('created: ' + filename)
+//         }
+//     }
+
+//     if (arr.length >= 1) {
+//         const s = JSON.stringify(arr, null, 1)
+
+//         const filename = `${startIdx}-final-${arr.length}words.json`
+//         fs.writeFileSync(outputpath + filename, s)
+
+//         console.log('created: ' + filename)
+//     }
+
+//     console.log('doneeeeeeee: ' + arr.length);
+// }
 
 FetchValuableWordsAsync()
 

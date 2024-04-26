@@ -342,6 +342,87 @@
   ]
  },
  {
+  "word": "A",
+  "idx": 4,
+  "count": 9081174698,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "The name of the Latin script letter A/a."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "(crosswords) across",
+      "example": "Do you have the answer for 23a?"
+     },
+     {
+      "definition": "All."
+     }
+    ],
+    "partOfSpeech": "v"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "To do with position or direction; In, on, at, by, towards, onto.",
+      "example": "Stand a tiptoe."
+     },
+     {
+      "definition": "To do with separation; In, into.",
+      "example": "Torn a pieces."
+     },
+     {
+      "definition": "To do with time; Each, per, in, on, by.",
+      "example": "I brush my teeth twice a day."
+     },
+     {
+      "definition": "To do with method; In, with."
+     },
+     {
+      "definition": "To do with role or capacity; In.",
+      "example": "A God’s name."
+     },
+     {
+      "definition": "To do with status; In."
+     },
+     {
+      "definition": "To do with process, with a passive verb; In the course of, experiencing."
+     },
+     {
+      "definition": "To do with an action, an active verb; Engaged in."
+     },
+     {
+      "definition": "To do with an action/movement; To, into."
+     },
+     {
+      "definition": "Of.",
+      "example": "The name of John a Gaunt."
+     }
+    ],
+    "partOfSpeech": "pr"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "All."
+     }
+    ],
+    "partOfSpeech": "j"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/a-1-us.mp3",
+    "text": "/eɪ/"
+   }
+  ]
+ },
+ {
   "word": "IN",
   "idx": 5,
   "count": 8469404971,
@@ -1135,6 +1216,39 @@
      }
     ],
     "partOfSpeech": "n"
+   }
+  ]
+ },
+ {
+  "word": "I",
+  "idx": 13,
+  "count": 3086225277,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "The name of the Latin-script letter I.",
+      "example": "the position of an i-dot (the dot of an i)"
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "The speaker or writer, referred to as the grammatical subject, of a sentence."
+     },
+     {
+      "definition": "The speaker or writer, referred to as the grammatical object, of a sentence.",
+      "example": "Mom drove my sister and I to school."
+     }
+    ],
+    "partOfSpeech": "p"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/i-1-us.mp3"
    }
   ]
  },
@@ -6140,6 +6254,102 @@
   ]
  },
  {
+  "word": "C",
+  "idx": 80,
+  "count": 596623239,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "Abbreviation of circa.",
+      "example": "The document was written in the Middle Ages, c. 1250."
+     }
+    ],
+    "partOfSpeech": "v"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "The middle tone in either one of the sets of seven white keys on a keyboard or a set of seven strings on a stringed instrument."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "(stative) To perceive or detect with the eyes, or as if by sight."
+     },
+     {
+      "definition": "To form a mental picture of."
+     },
+     {
+      "definition": "(social) To meet, to visit."
+     },
+     {
+      "definition": "To be the setting or time of.",
+      "example": "1999 saw the release of many great films."
+     },
+     {
+      "definition": "(by extension) To ensure that something happens, especially while witnessing it.",
+      "example": "I'll see you hang for this!  I saw that they didn't make any more trouble."
+     },
+     {
+      "definition": "To wait upon; attend, escort.",
+      "example": "I saw the old lady safely across the road."
+     },
+     {
+      "definition": "To respond to another player's bet with a bet of equal value.",
+      "example": "I'll see your twenty dollars and raise you ten."
+     },
+     {
+      "definition": "To determine by trial or experiment; to find out (if or whether).",
+      "example": "I'll come over later and see if I can fix your computer."
+     },
+     {
+      "definition": "(used in the imperative) To reference or to study for further details.",
+      "example": "For a complete proof of the Poincaré conjecture, see Appendix C."
+     },
+     {
+      "definition": "To examine something closely, or to utilize something, often as a temporary alternative.",
+      "example": "Can I see that lighter for a second? Mine just quit working."
+     },
+     {
+      "definition": "To include as one of something's experiences.",
+      "example": "The equipment has not seen usage outside of our projects."
+     }
+    ],
+    "partOfSpeech": "ve"
+   }
+  ]
+ },
+ {
+  "word": "E",
+  "idx": 81,
+  "count": 593086170,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "The name of the Latin-script letter E."
+     },
+     {
+      "definition": "The base of the natural logarithm, 2.718281828459045…"
+     }
+    ],
+    "partOfSpeech": "n"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/e-us.mp3"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/e-uk.mp3"
+   }
+  ]
+ },
+ {
   "word": "FIRST",
   "idx": 82,
   "count": 578161543,
@@ -6416,6 +6626,81 @@
    {
     "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/me-1-us.mp3",
     "text": "/mi/"
+   }
+  ]
+ },
+ {
+  "word": "S",
+  "idx": 89,
+  "count": 565123981,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "A weight of 1/288 of a pound, that is, twenty grains or one third of a dram, about 1.3 grams (symbol: ℈)."
+     },
+     {
+      "definition": "(by extension) A very small quantity; a particle."
+     },
+     {
+      "definition": "A doubt or uncertainty concerning a matter of fact; intellectual perplexity."
+     },
+     {
+      "definition": "Hesitation to act from the difficulty of determining what is right or expedient; doubt, hesitation or unwillingness due to motives of conscience."
+     },
+     {
+      "definition": "A Hebrew unit of time equal to 1/1080 hour."
+     },
+     {
+      "definition": "Each of the four divisions of a year: spring, summer, autumn (fall) and winter"
+     },
+     {
+      "definition": "A part of a year when something particular happens",
+      "example": "mating season"
+     },
+     {
+      "definition": "That which gives relish; seasoning."
+     },
+     {
+      "definition": "The period over which a series of Test matches are played."
+     },
+     {
+      "definition": "A group of episodes of a television or radio program broadcast in regular intervals with a long break between each group, usually with one year between the beginning of each.",
+      "example": "The third season of Friends aired from 1996 to 1997."
+     },
+     {
+      "definition": "An extended, undefined period of time."
+     },
+     {
+      "definition": "The full set of downloadable content for a game, which can be purchased with a season pass."
+     },
+     {
+      "definition": "A fixed period of time in a massively multiplayer online game in which new content (themes, rules, modes, etc.) becomes available, sometimes replacing earlier content."
+     },
+     {
+      "definition": "A coin formerly used in the United Kingdom, Ireland, Malta, Australia, New Zealand and many other Commonwealth countries.",
+      "example": "The shilling was worth twelve old pence, or one twentieth of a pound sterling."
+     },
+     {
+      "definition": "The currency of Kenya, Somalia, Tanzania and Uganda."
+     },
+     {
+      "definition": "A currency in the United States, differing in value between states."
+     },
+     {
+      "definition": "(New York and some other states) The Spanish real, formerly having the value of one eighth of a dollar."
+     },
+     {
+      "definition": "One of the four major compass points, specifically 180°, directed toward the South Pole, and conventionally downwards on a map, abbreviated as S."
+     },
+     {
+      "definition": "The side of a church on the right hand of a person facing the altar."
+     },
+     {
+      "definition": "A quark having a fractional electric charge of -1/3 and a mass about 80 to 130 MeV. Symbol: s"
+     }
+    ],
+    "partOfSpeech": "n"
    }
   ]
  },
@@ -6989,6 +7274,39 @@
    },
    {
     "text": "/ˈsɜːvɪs/"
+   }
+  ]
+ },
+ {
+  "word": "X",
+  "idx": 97,
+  "count": 508609523,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "Intersex or non-binary (in passports and identification documents)."
+     },
+     {
+      "definition": "Suitable only for those aged 16 or (later) 18 years and over."
+     },
+     {
+      "definition": "(movie rating) Obscene."
+     }
+    ],
+    "partOfSpeech": "j"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Used between the names of two characters to denote a ship, particularly in anime, manga, and video games."
+     },
+     {
+      "definition": "Used in place of and in artist collaborations.",
+      "example": "Taska Black x DROELOE, Steve Aoki x Lauren Jauregui, etc."
+     }
+    ],
+    "partOfSpeech": "c"
    }
   ]
  },
@@ -8605,6 +8923,39 @@
   ]
  },
  {
+  "word": "N",
+  "idx": 117,
+  "count": 437961375,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "North"
+     },
+     {
+      "definition": "(grammar) noun"
+     },
+     {
+      "definition": "(grammar) neuter gender"
+     },
+     {
+      "definition": "Normal"
+     },
+     {
+      "definition": "Neutral"
+     },
+     {
+      "definition": "No"
+     },
+     {
+      "definition": "Shortening of and, used in set phrases like rock-n-roll."
+     }
+    ],
+    "partOfSpeech": "n"
+   }
+  ]
+ },
+ {
   "word": "WORLD",
   "idx": 118,
   "count": 431934249,
@@ -9054,6 +9405,21 @@
    {
     "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/go-1-au.mp3",
     "text": "/ɡəʉ/"
+   }
+  ]
+ },
+ {
+  "word": "B",
+  "idx": 123,
+  "count": 419765694,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "Having from birth (or as if from birth) a certain quality or character; innate; inherited."
+     }
+    ],
+    "partOfSpeech": "j"
    }
   ]
  },
@@ -11247,6 +11613,96 @@
   ]
  },
  {
+  "word": "D",
+  "idx": 157,
+  "count": 361493758,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "Abbreviation of declare."
+     }
+    ],
+    "partOfSpeech": "j"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "From a higher position to a lower one; downwards.",
+      "example": "The cat jumped down from the table."
+     },
+     {
+      "definition": "At a lower or further place or position along a set path.",
+      "example": "His place is farther down the road."
+     },
+     {
+      "definition": "South (as south is at the bottom of typical maps).",
+      "example": "I went down to Miami for a conference."
+     },
+     {
+      "definition": "Away from the city (regardless of direction).",
+      "example": "He went down to Cavan."
+     },
+     {
+      "definition": "At or towards any place that is visualised as 'down' by virtue of local features or local convention, or arbitrarily, irrespective of direction or elevation change.",
+      "example": "She lives down by the park."
+     },
+     {
+      "definition": "Towards the opponent's side (in ball-sports)."
+     },
+     {
+      "definition": "Into a state of non-operation.",
+      "example": "The computer has been shut down."
+     },
+     {
+      "definition": "To a subordinate or less prestigious position or rank.",
+      "example": "After the incident, Kelly went down to Second Lieutenant."
+     },
+     {
+      "definition": "In the direction leading away from the principal terminus, away from milepost zero."
+     },
+     {
+      "definition": "(sentence substitute) Get down.",
+      "example": "Down, boy! (such as to direct a dog to stand on four legs from two, or to sit from standing on four legs.)"
+     },
+     {
+      "definition": "(academia) Away from Oxford or Cambridge.",
+      "example": "He's gone back down to Newcastle for Christmas."
+     },
+     {
+      "definition": "From a remoter or higher antiquity.",
+      "example": "These traditions have been handed down over generations."
+     },
+     {
+      "definition": "So as to lessen quantity, level or intensity.",
+      "example": "Please turn the music down!"
+     },
+     {
+      "definition": "So as to reduce size, weight or volume.",
+      "example": "Boil the mixture down to a syrupy consistency."
+     },
+     {
+      "definition": "From less to greater detail.",
+      "example": "This spreadsheet lets you drill down to daily or even hourly sales figures."
+     },
+     {
+      "definition": "So as to secure or compress something to the floor, ground, or other (usually horizontal) surface.",
+      "example": "We need to nail down this carpet so people don't keep tripping over it."
+     },
+     {
+      "definition": "(intensifier) Used with verbs to add emphasis to the action of the verb.",
+      "example": "They tamped (down) the asphalt to get a better bond."
+     },
+     {
+      "definition": "Used with verbs to indicate that the action of the verb was carried to some state of completion, rather than being of indefinite duration.",
+      "example": "He boiled the mixture. / He boiled down the mixture."
+     }
+    ],
+    "partOfSpeech": "v"
+   }
+  ]
+ },
+ {
   "word": "WHERE",
   "idx": 158,
   "count": 360468339,
@@ -11901,6 +12357,195 @@
    {
     "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/through-1-us.mp3",
     "text": "/θɹu/"
+   }
+  ]
+ },
+ {
+  "word": "M",
+  "idx": 166,
+  "count": 341583838,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "Abbreviation of million."
+     },
+     {
+      "definition": "Thousand"
+     },
+     {
+      "definition": "A prescribed quantity or extent."
+     },
+     {
+      "definition": "The act or result of measuring."
+     },
+     {
+      "definition": "Metrical rhythm."
+     },
+     {
+      "definition": "A course of action."
+     },
+     {
+      "definition": "(always meter) A device that measures things."
+     },
+     {
+      "definition": "(always meter) A parking meter or similar device for collecting payment."
+     },
+     {
+      "definition": "(always meter) One who metes or measures.",
+      "example": "a labouring coal-meter"
+     },
+     {
+      "definition": "(elsewhere metre) The base unit of length in the International System of Units (SI), conceived of as 1/10000000 of the distance from the North Pole to the Equator, and now defined as the distance light will travel in a vacuum in 1/299792458 second."
+     },
+     {
+      "definition": "(elsewhere metre) An increment of music; the overall rhythm; particularly, the number of beats in a measure."
+     },
+     {
+      "definition": "(elsewhere metre) The rhythm pattern in a poem."
+     },
+     {
+      "definition": "(elsewhere metre) A line above or below a hanging net, to which the net is attached in order to strengthen it."
+     },
+     {
+      "definition": "A poem."
+     },
+     {
+      "definition": "The international mile: a unit of length precisely equal to 1.609344 kilometers established by treaty among Anglophone nations in 1959, divided into 5,280 feet or 1,760 yards."
+     },
+     {
+      "definition": "Any of several customary units of length derived from the 1593 English statute mile of 8 furlongs, equivalent to 5,280 feet or 1,760 yards of various precise values."
+     },
+     {
+      "definition": "Any of many customary units of length derived from the Roman mile (mille passus) of 8 stades or 5,000 Roman feet."
+     },
+     {
+      "definition": "The Scandinavian mile: a unit of length precisely equal to 10 kilometers defined in 1889."
+     },
+     {
+      "definition": "Any of many customary units of length from other measurement systems of roughly similar values, as the Chinese (里) or Arabic mile (al-mīl)."
+     },
+     {
+      "definition": "(travel) An airline mile in a frequent flier program."
+     },
+     {
+      "definition": "Any similarly large distance.",
+      "example": "The shot missed by a mile."
+     },
+     {
+      "definition": "A race of 1 mile's length; a race of around 1 mile's length (usually 1500 or 1600 meters)",
+      "example": "The runners competed in the mile."
+     },
+     {
+      "definition": "One mile per hour, as a measure of speed.",
+      "example": "five miles over the speed limit"
+     },
+     {
+      "definition": "A half note, drawn as a semibreve with a stem."
+     },
+     {
+      "definition": "A unit of volume, in the Imperial and U.S. customary systems, 1/60 fluid drachm. Approximately equal to 1 drop, 62 μL or 0.9 grain (weight) of water."
+     },
+     {
+      "definition": "A short vertical stroke used in handwriting."
+     },
+     {
+      "definition": "Anything very minute; applied to animalcula and the like.",
+      "example": "the minims of existence"
+     },
+     {
+      "definition": "The smallest kind of worker in a leaf-cutter ant colony."
+     },
+     {
+      "definition": "A little man or being; a dwarf."
+     },
+     {
+      "definition": "A small fish; a minnow."
+     },
+     {
+      "definition": "A short poetical encomium."
+     },
+     {
+      "definition": "A unit of time equal to sixty seconds (one-sixtieth of an hour).",
+      "example": "You have twenty minutes to complete the test."
+     },
+     {
+      "definition": "A short but unspecified time period.",
+      "example": "Wait a minute, I’m not ready yet!"
+     },
+     {
+      "definition": "A unit of angle equal to one-sixtieth of a degree.",
+      "example": "We need to be sure these maps are accurate to within one minute of arc."
+     },
+     {
+      "definition": "(chiefly in the plural, minutes) A (usually formal) written record of a meeting or a part of a meeting.",
+      "example": "Let’s look at the minutes of last week’s meeting."
+     },
+     {
+      "definition": "A unit of purchase on a telephone or other network, especially a cell phone network, roughly equivalent in gross form to sixty seconds' use of the network.",
+      "example": "If you buy this phone, you’ll get 100 free minutes."
+     },
+     {
+      "definition": "A point in time; a moment."
+     },
+     {
+      "definition": "A nautical or a geographic mile."
+     },
+     {
+      "definition": "An old coin, a half farthing."
+     },
+     {
+      "definition": "A very small part of anything, or anything very small; a jot; a whit."
+     },
+     {
+      "definition": "A fixed part of a module."
+     },
+     {
+      "definition": "A while or a long unspecified period of time",
+      "example": "Oh, I ain't heard that song in a minute!"
+     },
+     {
+      "definition": "A period into which a year is divided, historically based on the phases of the moon.",
+      "example": "July is my favourite month."
+     },
+     {
+      "definition": "A period of 30 days, 31 days, or some alternation thereof.",
+      "example": "We went on holiday for two months."
+     },
+     {
+      "definition": "(in the plural) A woman's period; menstrual discharge."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Make"
+     }
+    ],
+    "partOfSpeech": "ve"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Of or pertaining to the male gender; manly."
+     },
+     {
+      "definition": "Of or pertaining to the male sex; biologically male, not female."
+     },
+     {
+      "definition": "Belonging to males; typically used by males.",
+      "example": "“John”, “Paul” and “Jake” are masculine names."
+     },
+     {
+      "definition": "Having the qualities stereotypically associated with men: virile, aggressive, not effeminate."
+     },
+     {
+      "definition": "(grammar) Of, pertaining or belonging to the male grammatical gender, in languages that have gender distinctions."
+     }
+    ],
+    "partOfSpeech": "j"
    }
   ]
  },
@@ -14706,6 +15351,137 @@
   ]
  },
  {
+  "word": "P",
+  "idx": 205,
+  "count": 303249898,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "Abbreviation of penny; pence."
+     },
+     {
+      "definition": "Proton"
+     },
+     {
+      "definition": "One of the many pieces of paper bound together within a book or similar document."
+     },
+     {
+      "definition": "One side of a paper leaf on which one has written or printed."
+     },
+     {
+      "definition": "Any record or writing; a collective memory.",
+      "example": "the page of history"
+     },
+     {
+      "definition": "The type set up for printing a page."
+     },
+     {
+      "definition": "A screenful of text and possibly other content."
+     },
+     {
+      "definition": "A web page."
+     },
+     {
+      "definition": "A block of contiguous memory of a fixed length."
+     },
+     {
+      "definition": "A serving boy – a youth attending a person of high degree, especially at courts, as a position of honor and education."
+     },
+     {
+      "definition": "A youth employed for doing errands, waiting on the door, and similar service in households."
+     },
+     {
+      "definition": "A boy or girl employed to wait upon the members of a legislative body."
+     },
+     {
+      "definition": "(in libraries) The common name given to an employee whose main purpose is to replace materials that have either been checked out or otherwise moved, back to their shelves."
+     },
+     {
+      "definition": "A boy child."
+     },
+     {
+      "definition": "A contrivance, as a band, pin, snap, or the like, to hold the skirt of a woman’s dress from the ground."
+     },
+     {
+      "definition": "A track along which pallets carrying newly molded bricks are conveyed to the hack."
+     },
+     {
+      "definition": "A message sent to someone's pager."
+     },
+     {
+      "definition": "Any one of several species of colorful South American moths of the genus Urania."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "For each.",
+      "example": "$2.50 per dozen"
+     },
+     {
+      "definition": "To each, in each (used in expressing ratios of units).",
+      "example": "100 centimeters per meter"
+     },
+     {
+      "definition": "By the, by means of the, via the, through the.",
+      "example": "Introduce the endoscope per nasum."
+     },
+     {
+      "definition": "In accordance with.",
+      "example": "I parked my car at the curb per your request."
+     },
+     {
+      "definition": "After; especially after a significant event that has long-term ramifications."
+     }
+    ],
+    "partOfSpeech": "pr"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Somewhat, fairly, quite; sometimes also (by meiosis) very."
+     },
+     {
+      "definition": "Prettily, in a pretty manner."
+     }
+    ],
+    "partOfSpeech": "v"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "To decorate with fringe or embroidered edge",
+      "example": "Needlework purled with gold."
+     },
+     {
+      "definition": "An inverted stitch producing ribbing etc",
+      "example": "Knit one, purl two."
+     },
+     {
+      "definition": "To upset, to spin, capsize, fall heavily, fall headlong.",
+      "example": "The huntsman was purled from his horse."
+     },
+     {
+      "definition": "To flow with a murmuring sound in swirls and eddies."
+     },
+     {
+      "definition": "To rise in circles, ripples, or undulations; to curl; to mantle."
+     }
+    ],
+    "partOfSpeech": "ve"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/p-2-us.mp3",
+    "text": "/piː/"
+   }
+  ]
+ },
+ {
   "word": "PART",
   "idx": 206,
   "count": 302729303,
@@ -15145,6 +15921,48 @@
    {
     "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/real-1-uk.mp3",
     "text": "/ɹiːl/"
+   }
+  ]
+ },
+ {
+  "word": "F",
+  "idx": 212,
+  "count": 297285731,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "Used to profess respect for a deceased person, or for something that has been lost."
+     },
+     {
+      "definition": "Used to express regret or disappointment about an unfortunate event or piece of information."
+     }
+    ],
+    "partOfSpeech": "i"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "(abbreviation) Folio, paper and book size (10\"-12.5\" x 15\"-20\")"
+     },
+     {
+      "definition": "Fuck",
+      "example": "What the f do you think you're doing?"
+     },
+     {
+      "definition": "That which is feminine."
+     },
+     {
+      "definition": "(possibly obsolete) A woman."
+     },
+     {
+      "definition": "(grammar) The feminine gender."
+     },
+     {
+      "definition": "(grammar) A word of the feminine gender."
+     }
+    ],
+    "partOfSpeech": "n"
    }
   ]
  },
@@ -18692,6 +19510,44 @@
   ]
  },
  {
+  "word": "L",
+  "idx": 262,
+  "count": 252900442,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "Litre, liter"
+     },
+     {
+      "definition": "Pound (sterling) (from Latin libra)"
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Laughing (or laugh) out loud."
+     },
+     {
+      "definition": "Lots of laughs. (occasionally used)"
+     },
+     {
+      "definition": "(by dilution) Indicates light-heartedness or amusement, or that the accompanying statement is not intended as serious."
+     },
+     {
+      "definition": "(letter-writing) Lots of love."
+     },
+     {
+      "definition": "Used in song as a nonsense syllable."
+     }
+    ],
+    "partOfSpeech": "i"
+   }
+  ]
+ },
+ {
   "word": "LONG",
   "idx": 263,
   "count": 252519588,
@@ -18845,6 +19701,57 @@
    {
     "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/based-1-us.mp3",
     "text": "/beɪst/"
+   }
+  ]
+ },
+ {
+  "word": "W",
+  "idx": 265,
+  "count": 252231566,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "Watt"
+     },
+     {
+      "definition": "West"
+     },
+     {
+      "definition": "Witness"
+     },
+     {
+      "definition": "Work"
+     },
+     {
+      "definition": "Wanker"
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Wide"
+     },
+     {
+      "definition": "White"
+     }
+    ],
+    "partOfSpeech": "j"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "With"
+     }
+    ],
+    "partOfSpeech": "pr"
+   }
+  ],
+  "phonetics": [
+   {
+    "text": "/ˈdʌb.juː/"
    }
   ]
  },
@@ -19040,6 +19947,134 @@
    {
     "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/show-uk.mp3",
     "text": "/ʃəʊ/"
+   }
+  ]
+ },
+ {
+  "word": "O",
+  "idx": 268,
+  "count": 246429812,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "The name of the Latin-script letter O."
+     },
+     {
+      "definition": "A zero (used in reading out numbers).",
+      "example": "It is currently two-o-five in the afternoon (2:05 PM)."
+     },
+     {
+      "definition": "(IRC) Operator"
+     },
+     {
+      "definition": "Object, see SVO"
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Over"
+     }
+    ],
+    "partOfSpeech": "j"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Expression of surprise.",
+      "example": "Oh! I didn't see you there."
+     },
+     {
+      "definition": "Expression of wonder, amazement, or awe.",
+      "example": "Oh, wow! That's amazing."
+     },
+     {
+      "definition": "Expression of understanding, affirmation, recognition, or realization.",
+      "example": "Oh, so that's how it works."
+     },
+     {
+      "definition": "A word to precede an offhand or annoyed remark.",
+      "example": "Oh, leave me alone."
+     },
+     {
+      "definition": "A word to precede an added comment or afterthought.",
+      "example": "Oh, and don't forget your coat."
+     },
+     {
+      "definition": "An invocation or address (similar to the vocative in languages with noun declension), often with a term of endearment."
+     },
+     {
+      "definition": "Exclamation for drama or emphasis (often poetic).",
+      "example": "Oh, when will it end?"
+     },
+     {
+      "definition": "Expression of pain. See ouch.",
+      "example": "Oh! That hurt."
+     },
+     {
+      "definition": "Space filler or extra syllable, especially in (popular) music."
+     },
+     {
+      "definition": "(interrogative) Expression of mild scepticism.",
+      "example": "\"You should watch where you're going!\" \"Oh?\""
+     },
+     {
+      "definition": "A word to mark a spoken phrase as imaginary.",
+      "example": "What if he says \"Oh, I need to see your ID\"?"
+     }
+    ],
+    "partOfSpeech": "i"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Expressing distance or motion."
+     },
+     {
+      "definition": "Expressing separation."
+     },
+     {
+      "definition": "Expressing origin."
+     },
+     {
+      "definition": "Expressing agency."
+     },
+     {
+      "definition": "Expressing composition, substance."
+     },
+     {
+      "definition": "Introducing subject matter."
+     },
+     {
+      "definition": "Having partitive effect."
+     },
+     {
+      "definition": "Expressing possession."
+     },
+     {
+      "definition": "Forming the \"objective genitive\"."
+     },
+     {
+      "definition": "Expressing qualities or characteristics."
+     },
+     {
+      "definition": "Expressing a point in time."
+     }
+    ],
+    "partOfSpeech": "pr"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/o-1-us.mp3",
+    "text": "/oʊ/"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/o-1-uk.mp3",
+    "text": "/əʊ/"
    }
   ]
  },
@@ -21450,6 +22485,72 @@
   ]
  },
  {
+  "word": "G",
+  "idx": 300,
+  "count": 227771642,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "A gangster, gangsta."
+     },
+     {
+      "definition": "Abbreviation for Government Spending."
+     },
+     {
+      "definition": "Games (the statistic reporting the number of games that a player has participated in)."
+     },
+     {
+      "definition": "Green."
+     },
+     {
+      "definition": "(of a movie) General (suitable for a general audience)."
+     },
+     {
+      "definition": "Goals (a sports statistic)."
+     },
+     {
+      "definition": "Ground floor (of a building)."
+     },
+     {
+      "definition": "A galaxy."
+     },
+     {
+      "definition": "Gravity"
+     },
+     {
+      "definition": "Grand (thousand dollars)."
+     },
+     {
+      "definition": "The academic grade that comes next below F."
+     },
+     {
+      "definition": "A photograph or video shared on this service."
+     },
+     {
+      "definition": "A unit of gravitational acceleration."
+     },
+     {
+      "definition": "(grammar) Noun case used to express some relationship such as possession or origin. It corresponds roughly to the English preposition “of” and the suffix “-'s”."
+     },
+     {
+      "definition": "A unit of mass equal to one-thousandth of a kilogram. Symbol: g"
+     },
+     {
+      "definition": "A leguminous plant grown for its seeds, especially the chickpea."
+     },
+     {
+      "definition": "The seeds of these plants."
+     },
+     {
+      "definition": "Grandmother"
+     }
+    ],
+    "partOfSpeech": "n"
+   }
+  ]
+ },
+ {
   "word": "COUNTY",
   "idx": 301,
   "count": 227567373,
@@ -22672,6 +23773,102 @@
    {
     "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/download-us.mp3",
     "text": "/ˈdaʊnˌloʊd/"
+   }
+  ]
+ },
+ {
+  "word": "H",
+  "idx": 319,
+  "count": 220523502,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "(chiefly Internet slang) Used as a filler response when one does not have a response to use. Almost always used by itself."
+     }
+    ],
+    "partOfSpeech": "i"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "A powerful and addictive drug derived from opium producing intense euphoria classed as an illegal narcotic in most of the world."
+     },
+     {
+      "definition": "A number system with base sixteen, using the digits 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E and F, most used in computing as a hexadecimal digit can represent four bits, half a standard byte."
+     },
+     {
+      "definition": "A number expressed in the hexadecimal system."
+     },
+     {
+      "definition": "A blow; a punch; a striking against; the collision of one body against another; the stroke that touches anything.",
+      "example": "The hit was very slight."
+     },
+     {
+      "definition": "Something very successful, such as a song, film, or video game, that receives widespread recognition and acclaim."
+     },
+     {
+      "definition": "An attack on a location, person or people."
+     },
+     {
+      "definition": "A collision of a projectile with the target."
+     },
+     {
+      "definition": "A match found by searching a computer system or search engine"
+     },
+     {
+      "definition": "A measured visit to a web site, a request for a single file from a web server."
+     },
+     {
+      "definition": "An approximately correct answer in a test set."
+     },
+     {
+      "definition": "The complete play, when the batter reaches base without the benefit of a walk, error, or fielder’s choice.",
+      "example": "The catcher got a hit to lead off the fifth."
+     },
+     {
+      "definition": "A dose of an illegal or addictive drug.",
+      "example": "Where am I going to get my next hit?"
+     },
+     {
+      "definition": "A premeditated murder done for criminal or political purposes."
+     },
+     {
+      "definition": "A peculiarly apt expression or turn of thought; a phrase which hits the mark.",
+      "example": "a happy hit"
+     },
+     {
+      "definition": "A move that throws one of the opponent's men back to the entering point."
+     },
+     {
+      "definition": "A game won after the adversary has removed some of his men. It counts for less than a gammon."
+     },
+     {
+      "definition": "Landline (telephone in one's house)"
+     },
+     {
+      "definition": "A time period of sixty minutes; one twenty-fourth of a day.",
+      "example": "I spent an hour at lunch."
+     },
+     {
+      "definition": "A season, moment, or time."
+     },
+     {
+      "definition": "The time.",
+      "example": "The hour grows late and I must go home."
+     },
+     {
+      "definition": "(in the plural) Used after a two-digit hour and a two-digit minute to indicate time."
+     },
+     {
+      "definition": "(in the plural) The set times of prayer, the canonical hours, the offices or services prescribed for these, or a book containing them."
+     },
+     {
+      "definition": "A distance that can be traveled in one hour.",
+      "example": "This place is an hour away from where I live."
+     }
+    ],
+    "partOfSpeech": "n"
    }
   ]
  },
@@ -25233,6 +26430,47 @@
   ]
  },
  {
+  "word": "V",
+  "idx": 358,
+  "count": 204486977,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "A shape resembling the letter v",
+      "example": "The impact was so strong, it bent the bar into a v."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Very.",
+      "example": "You were acting v rude to his boyfriend on New Year's."
+     }
+    ],
+    "partOfSpeech": "v"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Against; in opposition to.",
+      "example": "It is the Packers versus the Steelers in the Super Bowl."
+     },
+     {
+      "definition": "Compared with, as opposed to."
+     },
+     {
+      "definition": "Bringing a legal action against, as used in the title of a court case in which the first party indicates the plaintiff (or appellant or the like), and the second indicates the defendant (or respondent or the like).",
+      "example": "Brown v. Board of Education of Topeka, Kans."
+     }
+    ],
+    "partOfSpeech": "pr"
+   }
+  ]
+ },
+ {
   "word": "SHOPPING",
   "idx": 359,
   "count": 204104275,
@@ -26669,6 +27907,135 @@
   "phonetics": [
    {
     "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/non-us.mp3"
+   }
+  ]
+ },
+ {
+  "word": "K",
+  "idx": 380,
+  "count": 195647953,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "A kilobyte (more formally KB or kB)."
+     },
+     {
+      "definition": "A kilobit (more formally kb), especially in measuring Internet connection."
+     },
+     {
+      "definition": "Kilometre or kilometres.",
+      "example": "We drove 15 ks before we realised Billy wasn't in the back seat."
+     },
+     {
+      "definition": "Thousand or thousands.",
+      "example": "Just about 65 k of Jack's full salary comes from servicing the Baker account."
+     },
+     {
+      "definition": "The SI measurement value of 1,000"
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "(texting) OK"
+     }
+    ],
+    "partOfSpeech": "i"
+   }
+  ]
+ },
+ {
+  "word": "Y",
+  "idx": 381,
+  "count": 195011703,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "(abstract) This place; this location.",
+      "example": "An Alzheimer patient's here may in his mind be anywhere he called home in the time he presently re-lives."
+     },
+     {
+      "definition": "(abstract) This time, the present situation."
+     },
+     {
+      "definition": "A solar year, the time it takes the Earth to complete one revolution of the Sun (between 365.24 and 365.26 days depending on the point of reference).",
+      "example": "we moved to this town a year ago;  I quit smoking exactly one year ago"
+     },
+     {
+      "definition": "(by extension) The time it takes for any astronomical object (such as a planet, dwarf planet, small Solar System body, or comet) in direct orbit around a star (such as the Sun) to make one revolution around the star.",
+      "example": "Mars goes around the sun once in a Martian year, or 1.88 Earth years."
+     },
+     {
+      "definition": "A period between set dates that mark a year, from January 1 to December 31 by the Gregorian calendar, from Tishiri 1 to Elul 29 by the Jewish calendar, and from Muharram 1 to Dhu al-Hijjah 29 or 30 by the Islamic calendar.",
+      "example": "A normal year has 365 full days, but there are 366 days in a leap year."
+     },
+     {
+      "definition": "A scheduled part of a calendar year spent in a specific activity.",
+      "example": "During this school year I have to get up at 6:30 to catch the bus."
+     },
+     {
+      "definition": "A Julian year, exactly 365.25 days, represented by \"a\"."
+     },
+     {
+      "definition": "A level or grade in school or college.",
+      "example": "Every second-year student must select an area of specialization."
+     },
+     {
+      "definition": "The proportion of a creature's lifespan equivalent to one year of an average human lifespan (see also dog year).",
+      "example": "Geneticists have created baker's yeast that can live to 800 in yeast years."
+     },
+     {
+      "definition": "Eye dialect spelling of hear"
+     },
+     {
+      "definition": "An affirmative expression; an answer that shows agreement or acceptance.",
+      "example": "Was that a yes?"
+     },
+     {
+      "definition": "A vote of support or in favor/favour of something.",
+      "example": "The workers voted on whether to strike, and there were thirty \"yeses\" and one \"no\"."
+     },
+     {
+      "definition": "The quality or state of being young.",
+      "example": "Her youth and beauty attracted him to her."
+     },
+     {
+      "definition": "The part of life following childhood; the period of existence preceding maturity or age; the whole early part of life, from childhood, or, sometimes, from infancy, to adulthood.",
+      "example": "I made many mistakes in my youth, but learned from them all."
+     },
+     {
+      "definition": "A young person.",
+      "example": "There was a group of youths hanging around the parking lot, reading fashion magazines and listening to music."
+     },
+     {
+      "definition": "A young man; a male adolescent or young adult."
+     },
+     {
+      "definition": "(used with a plural or singular verb) Young persons, collectively."
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "For what cause, reason, or purpose (interrogative adverb)."
+     },
+     {
+      "definition": "For which cause, reason, or purpose (relative adverb).",
+      "example": "That's the reason why I did that."
+     }
+    ],
+    "partOfSpeech": "v"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/y-us.mp3"
    }
   ]
  },
@@ -28870,6 +30237,37 @@
   ]
  },
  {
+  "word": "J",
+  "idx": 416,
+  "count": 180739802,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "A term for a marijuana cigarette ('joint')."
+     },
+     {
+      "definition": "An alternative version of i, the positive square root of -1; used in the context of electronics."
+     },
+     {
+      "definition": "The second unit vector, after i"
+     }
+    ],
+    "partOfSpeech": "n"
+   }
+  ],
+  "phonetics": [
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/j-us.mp3",
+    "text": "/dʒeɪ/"
+   },
+   {
+    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/j-uk.mp3",
+    "text": "/dʒeɪ/"
+   }
+  ]
+ },
+ {
   "word": "FOOD",
   "idx": 417,
   "count": 180144029,
@@ -29144,6 +30542,51 @@
    {
     "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/press-uk.mp3",
     "text": "/pɹɛs/"
+   }
+  ]
+ },
+ {
+  "word": "U",
+  "idx": 422,
+  "count": 179615587,
+  "meanings": [
+   {
+    "definitions": [
+     {
+      "definition": "The name of the Latin-script letter U."
+     },
+     {
+      "definition": "A thing in the shape of the letter U"
+     }
+    ],
+    "partOfSpeech": "n"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "(abbreviation) you (in text messaging and internet conversations)",
+      "example": "Take me with u."
+     }
+    ],
+    "partOfSpeech": "p"
+   },
+   {
+    "definitions": [
+     {
+      "definition": "Beneath the surface of the water, or of or pertaining to the region beneath the water surface"
+     },
+     {
+      "definition": "Beneath the water line of a vessel"
+     },
+     {
+      "definition": "Under water."
+     },
+     {
+      "definition": "Having negative equity; owing more on an asset than its market value",
+      "example": "We've been underwater on our mortgage ever since the housing crash."
+     }
+    ],
+    "partOfSpeech": "j"
    }
   ]
  },
@@ -30929,2185 +32372,5 @@
     "text": "/ɪsˈteɪt/"
    }
   ]
- },
- {
-  "word": "BOX",
-  "idx": 450,
-  "count": 169231297,
-  "meanings": [
-   {
-    "definitions": [
-     {
-      "definition": "Senses relating to a three-dimensional object or space."
-     },
-     {
-      "definition": "Senses relating to a two-dimensional object or space"
-     },
-     {
-      "definition": "Any of various evergreen shrubs or trees of the genus Buxus, especially the common box, European box, or boxwood (Buxus sempervirens) which is often used for making hedges and topiary."
-     },
-     {
-      "definition": "The wood from a box tree: boxwood."
-     },
-     {
-      "definition": "A musical instrument, especially one made from boxwood."
-     },
-     {
-      "definition": "An evergreen tree of the genus Lophostemon (for example, the box scrub, Brisbane box, brush box, pink box, or Queensland box, Lophostemon confertus)."
-     },
-     {
-      "definition": "Various species of Eucalyptus trees are popularly called various kinds of boxes, on the basis of the nature of their wood, bark, or appearance for example, the drooping (Eucalyptus bicolor), shiny-leaved (Eucalyptus tereticornis), black, or ironbark box trees."
-     },
-     {
-      "definition": "A blow with the fist."
-     },
-     {
-      "definition": "A Mediterranean food fish of the genus Boops, which is a variety of sea bream; a bogue or oxeye."
-     }
-    ],
-    "partOfSpeech": "n"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "To place inside a box; to pack in one or more boxes."
-     },
-     {
-      "definition": "Usually followed by in: to surround and enclose in a way that restricts movement; to corner, to hem in."
-     },
-     {
-      "definition": "To mix two containers of paint of similar colour to ensure that the color is identical."
-     },
-     {
-      "definition": "To make an incision or hole in (a tree) for the purpose of procuring the sap."
-     },
-     {
-      "definition": "To enclose with boarding, lathing, etc., so as to conceal (for example, pipes) or to bring to a required form."
-     },
-     {
-      "definition": "To furnish (for example, the axle of a wheel) with a box."
-     },
-     {
-      "definition": "To enclose (images, text, etc.) in a box."
-     },
-     {
-      "definition": "To place a value of a primitive type into a corresponding object."
-     },
-     {
-      "definition": "To strike with the fists; to punch.",
-      "example": "Leave this place before I box you!"
-     },
-     {
-      "definition": "To fight against (a person) in a boxing match."
-     },
-     {
-      "definition": "To participate in boxing; to be a boxer."
-     }
-    ],
-    "partOfSpeech": "ve"
-   }
-  ],
-  "phonetics": [
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/box-us.mp3",
-    "text": "/bɑks/"
-   }
-  ]
- },
- {
-  "word": "CONDITIONS",
-  "idx": 451,
-  "count": 168957006,
-  "meanings": [
-   {
-    "definitions": [
-     {
-      "definition": "A logical clause or phrase that a conditional statement uses. The phrase can either be true or false."
-     },
-     {
-      "definition": "A requirement or requisite.",
-      "example": "Environmental protection is a condition for sustainability.   What other planets might have the right conditions for life?   The union had a dispute over sick time and other conditions of employment."
-     },
-     {
-      "definition": "A clause in a contract or agreement indicating that a certain contingency may modify the principal obligation in some way."
-     },
-     {
-      "definition": "The health status of a medical patient.",
-      "example": "My aunt couldn't walk up the stairs in her condition."
-     },
-     {
-      "definition": "The state or quality.",
-      "example": "National reports on the condition of public education are dismal.   The condition of man can be classified as civilized or uncivilized."
-     },
-     {
-      "definition": "A particular state of being.",
-      "example": "Hypnosis is a peculiar condition of the nervous system.   Steps were taken to ameliorate the condition of slavery.   Security is defined as the condition of not being threatened.   Aging is a condition over which we are powerless."
-     },
-     {
-      "definition": "The situation of a person or persons, particularly their social and/or economic class, rank.",
-      "example": "A man of his condition has no place to make request."
-     }
-    ],
-    "partOfSpeech": "n"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "To subject to the process of acclimation.",
-      "example": "I became conditioned to the absence of seasons in San Diego."
-     },
-     {
-      "definition": "To subject to different conditions, especially as an exercise.",
-      "example": "They were conditioning their shins in their karate class."
-     },
-     {
-      "definition": "To place conditions or limitations upon."
-     },
-     {
-      "definition": "To shape the behaviour of someone to do something."
-     },
-     {
-      "definition": "To treat (the hair) with hair conditioner."
-     },
-     {
-      "definition": "To contract; to stipulate; to agree."
-     },
-     {
-      "definition": "To test or assay, as silk (to ascertain the proportion of moisture it contains)."
-     },
-     {
-      "definition": "(colleges) To put under conditions; to require to pass a new examination or to make up a specified study, as a condition of remaining in one's class or in college.",
-      "example": "to condition a student who has failed in some branch of study"
-     },
-     {
-      "definition": "To impose upon an object those relations or conditions without which knowledge and thought are alleged to be impossible."
-     }
-    ],
-    "partOfSpeech": "ve"
-   }
-  ],
-  "phonetics": [
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/conditions-us.mp3",
-    "text": "/kənˈdɪʃənz/"
-   }
-  ]
- },
- {
-  "word": "SELECT",
-  "idx": 452,
-  "count": 168673045,
-  "meanings": [
-   {
-    "definitions": [
-     {
-      "definition": "To choose one or more elements of a set, especially a set of options.",
-      "example": "He looked over the menu, and selected the roast beef."
-     },
-     {
-      "definition": "To obtain a set of data from a database using a query."
-     }
-    ],
-    "partOfSpeech": "ve"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "Privileged, specially selected.",
-      "example": "Only a select few were allowed into the premiere."
-     },
-     {
-      "definition": "Of high quality; top-notch.",
-      "example": "This is a select cut of beef."
-     }
-    ],
-    "partOfSpeech": "j"
-   }
-  ],
-  "phonetics": [
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/select-uk.mp3",
-    "text": "/sɪˈlɛkt/"
-   }
-  ]
- },
- {
-  "word": "WINDOWS",
-  "idx": 453,
-  "count": 168532149,
-  "meanings": [
-   {
-    "definitions": [
-     {
-      "definition": "The inedible parts of a grain-producing plant.",
-      "example": "To separate out the chaff, early cultures tossed baskets of grain into the air and let the wind blow away the lighter chaff."
-     },
-     {
-      "definition": "Straw or hay cut up fine for the food of cattle."
-     },
-     {
-      "definition": "Any excess or unwanted material, resource, or person; anything worthless."
-     },
-     {
-      "definition": "Light jesting talk; banter; raillery."
-     },
-     {
-      "definition": "Loose material, e.g. small strips of aluminum foil dropped from aircraft, intended to interfere with radar detection."
-     },
-     {
-      "definition": "An opening, usually covered by one or more panes of clear glass, to allow light and air from outside to enter a building or vehicle."
-     },
-     {
-      "definition": "An opening, usually covered by glass, in a shop which allows people to view the shop and its products from outside; a shop window."
-     },
-     {
-      "definition": "The shutter, casement, sash with its fittings, or other framework, which closes a window opening."
-     },
-     {
-      "definition": "A period of time when something is available.",
-      "example": "launch window;  window of opportunity;  You have a two-hour window of clear weather to finish working on the lawn."
-     },
-     {
-      "definition": "A restricted range."
-     },
-     {
-      "definition": "A rectangular area on a computer terminal or screen containing some kind of user interface, displaying the output of and allowing input for one of a number of simultaneously running computer processes."
-     },
-     {
-      "definition": "A figure formed of lines crossing each other."
-     },
-     {
-      "definition": "The time between first infection and detectability."
-     }
-    ],
-    "partOfSpeech": "n"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "To furnish with windows."
-     },
-     {
-      "definition": "To place at or in a window."
-     }
-    ],
-    "partOfSpeech": "ve"
-   }
-  ],
-  "phonetics": [
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/windows-us.mp3",
-    "text": "/ˈwɪndoʊz/"
-   }
-  ]
- },
- {
-  "word": "PHOTOS",
-  "idx": 454,
-  "count": 167827453,
-  "meanings": [
-   {
-    "definitions": [
-     {
-      "definition": "A photograph."
-     },
-     {
-      "definition": "A photo finish."
-     }
-    ],
-    "partOfSpeech": "n"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "To take a photograph of."
-     }
-    ],
-    "partOfSpeech": "ve"
-   }
-  ],
-  "phonetics": [
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/photos.mp3"
-   }
-  ]
- },
- {
-  "word": "GAY",
-  "idx": 455,
-  "count": 167587791,
-  "meanings": [
-   {
-    "definitions": [
-     {
-      "definition": "(chiefly in plural or attributive) A homosexual, especially a male homosexual; see also lesbian."
-     },
-     {
-      "definition": "Something which is bright or colorful, such as a picture or a flower."
-     },
-     {
-      "definition": "An ornament, a knick-knack."
-     },
-     {
-      "definition": "The letter —, which stands for the sound /ɡ/, in Pitman shorthand."
-     }
-    ],
-    "partOfSpeech": "n"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "To make happy or cheerful."
-     },
-     {
-      "definition": "To cause (something, e.g. AIDS) to be associated with homosexual people."
-     }
-    ],
-    "partOfSpeech": "ve"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "(possibly obsolete) Happy, joyful, and lively.",
-      "example": "The Gay Science"
-     },
-     {
-      "definition": "Quick, fast."
-     },
-     {
-      "definition": "(possibly obsolete) Festive, bright, or colourful.",
-      "example": "Pennsylvania Dutch include the plain folk and the gay folk."
-     },
-     {
-      "definition": "Sexually promiscuous (of any gender), (sometimes particularly) engaged in prostitution."
-     },
-     {
-      "definition": "Homosexual:"
-     },
-     {
-      "definition": "A pejorative:"
-     },
-     {
-      "definition": "(of a dog's tail) Upright or curved over the back."
-     },
-     {
-      "definition": "(possibly obsolete) Considerable, great, large in number, size, or degree."
-     }
-    ],
-    "partOfSpeech": "j"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "(possibly obsolete) Considerably, very."
-     }
-    ],
-    "partOfSpeech": "v"
-   }
-  ],
-  "phonetics": [
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/gay-us.mp3",
-    "text": "/ɡeɪ/"
-   }
-  ]
- },
- {
-  "word": "THREAD",
-  "idx": 456,
-  "count": 167518537,
-  "meanings": [
-   {
-    "definitions": [
-     {
-      "definition": "A long, thin and flexible form of material, generally with a round cross-section, used in sewing, weaving or in the construction of string."
-     },
-     {
-      "definition": "A continued theme or idea.",
-      "example": "All of these essays have a common thread."
-     },
-     {
-      "definition": "A screw thread."
-     },
-     {
-      "definition": "A sequence of connections."
-     },
-     {
-      "definition": "The line midway between the banks of a stream."
-     },
-     {
-      "definition": "A unit of execution, lighter in weight than a process, usually sharing memory and other resources with other threads executing concurrently."
-     },
-     {
-      "definition": "A series of messages, generally grouped by subject, in which all messages except the first are replies to previous messages in the thread."
-     },
-     {
-      "definition": "A filament, as of a flower, or of any fibrous substance, as of bark."
-     },
-     {
-      "definition": "Composition; quality; fineness."
-     }
-    ],
-    "partOfSpeech": "n"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "To put thread through.",
-      "example": "thread a needle"
-     },
-     {
-      "definition": "To pass (through a narrow constriction or around a series of obstacles).",
-      "example": "I think I can thread my way through here, but it’s going to be tight."
-     },
-     {
-      "definition": "To screw on, to fit the threads of a nut on a bolt"
-     }
-    ],
-    "partOfSpeech": "ve"
-   }
-  ],
-  "phonetics": [
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/thread-us.mp3",
-    "text": "[θɾ̪̊ɛd]"
-   }
-  ]
- },
- {
-  "word": "WEEK",
-  "idx": 457,
-  "count": 167202060,
-  "meanings": [
-   {
-    "definitions": [
-     {
-      "definition": "Any period of seven consecutive days."
-     },
-     {
-      "definition": "A period of seven days beginning with Sunday or Monday."
-     },
-     {
-      "definition": "A period of five days beginning with Monday."
-     },
-     {
-      "definition": "A subdivision of the month into longer periods of work days punctuated by shorter weekend periods of days for markets, rest, or religious observation such as a sabbath.",
-      "example": "A 4-day week consists of Monday, Tuesday, Wednesday, and Thursday."
-     },
-     {
-      "definition": "Seven days after (sometimes before) a specified date.",
-      "example": "I'll see you Thursday week."
-     }
-    ],
-    "partOfSpeech": "n"
-   }
-  ],
-  "phonetics": [
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/week-us.mp3",
-    "text": "/wik/"
-   },
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/week-uk.mp3",
-    "text": "/wiːk/"
-   }
-  ]
- },
- {
-  "word": "CATEGORY",
-  "idx": 458,
-  "count": 166811948,
-  "meanings": [
-   {
-    "definitions": [
-     {
-      "definition": "A group, often named or numbered, to which items are assigned based on similarity or defined criteria.",
-      "example": "I wouldn't put this book in the same category as the author's first novel."
-     },
-     {
-      "definition": "A collection of objects, together with a transitively closed collection of composable arrows between them, such that every object has an identity arrow, and such that arrow composition is associative.",
-      "example": "Just as a monoid consists of an underlying set with a binary operation \"on top of it\" which is closed, associative and with an identity, a category consists of an underlying digraph with an arrow composition operation \"on top of it\" which is transitively closed, associative, and with an identity at each object. In fact, a category's composition operation, when restricted to a single one of its objects, turns that object's set of arrows (which would all be loops) into a monoid."
-     }
-    ],
-    "partOfSpeech": "n"
-   }
-  ],
-  "phonetics": [
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/category-us.mp3",
-    "text": "/ˈkætəˌɡɔɹi/"
-   }
-  ]
- },
- {
-  "word": "NOTE",
-  "idx": 459,
-  "count": 166657334,
-  "meanings": [
-   {
-    "definitions": [
-     {
-      "definition": "(heading) A symbol or annotation."
-     },
-     {
-      "definition": "(heading) A written or printed communication or commitment."
-     },
-     {
-      "definition": "(heading) A sound."
-     },
-     {
-      "definition": "Observation; notice; heed."
-     },
-     {
-      "definition": "Reputation; distinction.",
-      "example": "a poet of note"
-     },
-     {
-      "definition": "Notification; information; intelligence."
-     },
-     {
-      "definition": "Mark of disgrace."
-     },
-     {
-      "definition": "That which is needed or necessary; business; duty; work."
-     },
-     {
-      "definition": "The giving of milk by a cow or sow; the period following calving or farrowing during which a cow or sow is at her most useful (i.e. gives milk); the milk given by a cow or sow during such a period."
-     }
-    ],
-    "partOfSpeech": "n"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "To notice with care; to observe; to remark; to heed.",
-      "example": "If you look to the left, you can note the old cathedral."
-     },
-     {
-      "definition": "To record in writing; to make a memorandum of.",
-      "example": "We noted his speech."
-     },
-     {
-      "definition": "To denote; to designate.",
-      "example": "The modular multiplicative inverse of x may be noted x-1."
-     },
-     {
-      "definition": "To annotate."
-     },
-     {
-      "definition": "To set down in musical characters."
-     },
-     {
-      "definition": "To record on the back of (a bill, draft, etc.) a refusal of acceptance, as the ground of a protest, which is done officially by a notary."
-     }
-    ],
-    "partOfSpeech": "ve"
-   }
-  ],
-  "phonetics": [
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/note-us.mp3",
-    "text": "/noʊt/"
-   }
-  ]
- },
- {
-  "word": "LIVE",
-  "idx": 460,
-  "count": 166005029,
-  "meanings": [
-   {
-    "definitions": [
-     {
-      "definition": "To be alive; to have life.",
-      "example": "He's not expected to live for more than a few months."
-     },
-     {
-      "definition": "To have permanent residence somewhere, to inhabit, to reside.",
-      "example": "I live at 2a Acacia Avenue.  He lives in LA, but he's staying here over the summer."
-     },
-     {
-      "definition": "To survive; to persevere; to continue.",
-      "example": "Her memory lives in that song."
-     },
-     {
-      "definition": "To cope.",
-      "example": "You'll just have to live with it!  I can't live in a world without you."
-     },
-     {
-      "definition": "To pass life in a specified manner.",
-      "example": "It is difficult to live in poverty.   And they lived happily ever after."
-     },
-     {
-      "definition": "To spend, as one's life; to pass; to maintain; to continue in, constantly or habitually.",
-      "example": "To live an idle or a useful life."
-     },
-     {
-      "definition": "To act habitually in conformity with; to practice; to exemplify in one's way of life."
-     },
-     {
-      "definition": "To outlast danger; to float (said of a ship, boat, etc).",
-      "example": "No ship could live in such a storm."
-     },
-     {
-      "definition": "(followed by \"on\" or \"upon\") To maintain or support one's existence; to provide for oneself; to feed; to subsist.",
-      "example": "It is hard to live on the minimum wage.   They lived on stale bread."
-     },
-     {
-      "definition": "To make the most of life; to experience a full, rich life.",
-      "example": "I'm sick of spending every day studying at home: I want to go out there and live!"
-     }
-    ],
-    "partOfSpeech": "ve"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "Life"
-     }
-    ],
-    "partOfSpeech": "n"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "(only used attributively) Having life; that is alive.",
-      "example": "The post office will not ship live animals."
-     },
-     {
-      "definition": "Being in existence; actual",
-      "example": "He is a live example of the consequences of excessive drinking."
-     },
-     {
-      "definition": "Having active properties; being energized."
-     },
-     {
-      "definition": "Operational; in actual use rather than in testing etc."
-     },
-     {
-      "definition": "Taken from a living animal.",
-      "example": "live feathers"
-     },
-     {
-      "definition": "Imparting power; having motion.",
-      "example": "a live, or driving, axle"
-     },
-     {
-      "definition": "Still in active play.",
-      "example": "a live ball"
-     },
-     {
-      "definition": "Seen or heard from a broadcast, as it happens.",
-      "example": "The station presented a live news program every evening."
-     },
-     {
-      "definition": "(of a performance or speech) In person.",
-      "example": "This nightclub has a live band on weekends."
-     },
-     {
-      "definition": "(entertainment, performing) Recorded in front of an audience and not having been edited after recording.",
-      "example": "a live album"
-     },
-     {
-      "definition": "Of firearms or explosives, capable of causing harm.",
-      "example": "The air force practices dropping live bombs on the uninhabited island."
-     },
-     {
-      "definition": "(circuitry) Electrically charged or energized, usually indicating that the item may cause electrocution if touched.",
-      "example": "Use caution when working near live wires."
-     },
-     {
-      "definition": "Being a bet which can be raised by the bettor, usually in reference to a blind or straddle.",
-      "example": "Tommy's blind was live, so he was given the option to raise."
-     },
-     {
-      "definition": "Featuring humans; not animated, in the phrases “live actors” or “live action”."
-     },
-     {
-      "definition": "Being in a state of ignition; burning.",
-      "example": "a live coal; live embers"
-     },
-     {
-      "definition": "Full of earnestness; active; wide awake; glowing.",
-      "example": "a live man, or orator"
-     },
-     {
-      "definition": "Vivid; bright."
-     }
-    ],
-    "partOfSpeech": "j"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "Of an event, as it happens; in real time; direct.",
-      "example": "The concert was broadcast live by radio."
-     },
-     {
-      "definition": "Of making a performance or speech, in person.",
-      "example": "He'll be appearing live at the auditorium."
-     }
-    ],
-    "partOfSpeech": "v"
-   }
-  ],
-  "phonetics": [
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/live-1-us.mp3",
-    "text": "/lɪv/"
-   }
-  ]
- },
- {
-  "word": "LARGE",
-  "idx": 461,
-  "count": 165863763,
-  "meanings": [
-   {
-    "definitions": [
-     {
-      "definition": "An old musical note, equal to two longas, four breves, or eight semibreves."
-     },
-     {
-      "definition": "Liberality, generosity."
-     },
-     {
-      "definition": "(plural: large) A thousand dollars/pounds.",
-      "example": "Getting a car tricked out like that will cost you 50 large."
-     },
-     {
-      "definition": "A large serving of something.",
-      "example": "One small coffee and two larges, please."
-     }
-    ],
-    "partOfSpeech": "n"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "Of considerable or relatively great size or extent.",
-      "example": "Russia is a large country.   The fruit-fly has large eyes for its body size.   He has a large collection of stamps."
-     },
-     {
-      "definition": "Abundant; ample."
-     },
-     {
-      "definition": "Full in statement; diffuse; profuse."
-     },
-     {
-      "definition": "Free; unencumbered."
-     },
-     {
-      "definition": "Unrestrained by decorum; said of language."
-     },
-     {
-      "definition": "Crossing the line of a ship's course in a favorable direction; said of the wind when it is abeam, or between the beam and the quarter."
-     }
-    ],
-    "partOfSpeech": "j"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "Before the wind."
-     }
-    ],
-    "partOfSpeech": "v"
-   }
-  ],
-  "phonetics": [
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/large-us.ogg",
-    "text": "/ˈlɑɹd͡ʒ/"
-   },
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/large-uk.mp3",
-    "text": "/ˈlɑːd͡ʒ/"
-   }
-  ]
- },
- {
-  "word": "GALLERY",
-  "idx": 462,
-  "count": 165671626,
-  "meanings": [
-   {
-    "definitions": [
-     {
-      "definition": "An institution, building, or room for the exhibition and conservation of works of art."
-     },
-     {
-      "definition": "An establishment that buys, sells, and displays works of art."
-     },
-     {
-      "definition": "The uppermost seating area projecting from the rear or side walls of a theater, concert hall, or auditorium."
-     },
-     {
-      "definition": "The, often elevated and in the rear, part of a courtroom where seating for the public audience is facilitated during trial."
-     },
-     {
-      "definition": "A roofed promenade, especially one extending along the wall of a building and supported by arches or columns on the outer side"
-     },
-     {
-      "definition": "The spectators of an event, collectively."
-     },
-     {
-      "definition": "A browsable collection of images, font styles, etc.",
-      "example": "a clip-art gallery in a wordprocessor"
-     },
-     {
-      "definition": "(fortification) A covered passage cut through the earth or masonry."
-     },
-     {
-      "definition": "A level or drive in a mine."
-     }
-    ],
-    "partOfSpeech": "n"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "To show off"
-     }
-    ],
-    "partOfSpeech": "ve"
-   }
-  ],
-  "phonetics": [
-   {
-    "text": "/ˈɡæləɹi/"
-   }
-  ]
- },
- {
-  "word": "TABLE",
-  "idx": 463,
-  "count": 165341452,
-  "meanings": [
-   {
-    "definitions": [
-     {
-      "definition": "Furniture with a top surface to accommodate a variety of uses."
-     },
-     {
-      "definition": "A two-dimensional presentation of data."
-     },
-     {
-      "definition": "The top of a stringed instrument, particularly a member of the violin family: the side of the instrument against which the strings vibrate."
-     },
-     {
-      "definition": "One half of a backgammon board, which is divided into the inner and outer table."
-     },
-     {
-      "definition": "The flat topmost facet of a cut diamond."
-     }
-    ],
-    "partOfSpeech": "n"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "To tabulate; to put into a table or grid.",
-      "example": "to table fines"
-     },
-     {
-      "definition": "To supply (a guest, client etc.) with food at a table; to feed."
-     },
-     {
-      "definition": "To delineate; to represent, as in a picture; to depict."
-     },
-     {
-      "definition": "(non-US) To put on the table of a commission or legislative assembly; to propose for formal discussion or consideration, to put on the agenda."
-     },
-     {
-      "definition": "To remove from the agenda, to postpone dealing with; to shelve (to indefinitely postpone consideration or discussion of something).",
-      "example": "The legislature tabled the amendment, so they will not be discussing it until later."
-     },
-     {
-      "definition": "To join (pieces of timber) together using coaks."
-     },
-     {
-      "definition": "To put on a table."
-     },
-     {
-      "definition": "To make board hems in the skirts and bottoms of (sails) in order to strengthen them in the part attached to the bolt-rope."
-     }
-    ],
-    "partOfSpeech": "ve"
-   }
-  ],
-  "phonetics": [
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/table-us.mp3",
-    "text": "/ˈteɪbəl/"
-   },
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/table-uk.mp3",
-    "text": "/ˈteɪbəl/"
-   }
-  ]
- },
- {
-  "word": "REGISTER",
-  "idx": 464,
-  "count": 164834442,
-  "meanings": [
-   {
-    "definitions": [
-     {
-      "definition": "A machine that tabulates the amount of sales transactions, makes a permanent and cumulative record of them, and has a drawer in which cash can be kept."
-     },
-     {
-      "definition": "A point of sale."
-     },
-     {
-      "definition": "A formal recording of names, events, transactions etc.",
-      "example": "The teacher took the register by calling out each child's name."
-     },
-     {
-      "definition": "A book of such entries."
-     },
-     {
-      "definition": "An entry in such a book."
-     },
-     {
-      "definition": "The act of registering."
-     },
-     {
-      "definition": "A certificate issued by the collector of customs of a port or district to the owner of a vessel, containing the description of a vessel, its name, ownership, and other material facts. It is kept on board the vessel, to be used as evidence of nationality or as a muniment of title."
-     },
-     {
-      "definition": "One who registers or records; a registrar; especially, a public officer charged with the duty of recording certain transactions or events.",
-      "example": "a register of deeds"
-     },
-     {
-      "definition": "A distinct horizontal (or, more rarely, vertical) section of a work of art or inscription that is divided into several such sections"
-     },
-     {
-      "definition": "A device that automatically records a quantity."
-     },
-     {
-      "definition": "The part of a telegraphic apparatus that automatically records the message received."
-     },
-     {
-      "definition": "A list of received calls in a phone set."
-     },
-     {
-      "definition": "A small unit of very fast memory that is directly accessible to the central processing unit, and is mostly used to store inputs, outputs or intermediate results of computations."
-     },
-     {
-      "definition": "The exact alignment of lines, margins and colors."
-     },
-     {
-      "definition": "The inner part of the mould in which types are cast."
-     },
-     {
-      "definition": "The range of a voice or instrument."
-     },
-     {
-      "definition": "An organ stop."
-     },
-     {
-      "definition": "A style of a language used in a particular context.",
-      "example": "My ex-boss used \"let go\", in the euphemistic register, when he sacked me."
-     },
-     {
-      "definition": "A grille at the outflow of a ventilation duct, capable of being opened and closed to direct the air flow."
-     }
-    ],
-    "partOfSpeech": "n"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "To enter in a register."
-     },
-     {
-      "definition": "To enroll, especially to vote."
-     },
-     {
-      "definition": "To record, especially in writing."
-     },
-     {
-      "definition": "To buy the full version of trial software by providing one's details and payment.",
-      "example": "This is a trial version, and will expire in 30 days. Please register!"
-     },
-     {
-      "definition": "To express outward signs."
-     },
-     {
-      "definition": "(mail) To record officially and handle specially."
-     },
-     {
-      "definition": "To make or adjust so as to be properly or precisely aligned."
-     },
-     {
-      "definition": "To place one's name, or have one's name placed in a register.",
-      "example": "They registered for school."
-     },
-     {
-      "definition": "To make an impression."
-     },
-     {
-      "definition": "To be in proper alignment; to align or correspond exactly."
-     },
-     {
-      "definition": "To voluntarily sign over for safe keeping, abandoning complete ownership for partial."
-     }
-    ],
-    "partOfSpeech": "ve"
-   }
-  ],
-  "phonetics": [
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/register-us.mp3",
-    "text": "/ˈɹɛdʒ.ɪs.tɚ/"
-   }
-  ]
- },
- {
-  "word": "HOWEVER",
-  "idx": 465,
-  "count": 163957176,
-  "meanings": [
-   {
-    "definitions": [
-     {
-      "definition": "Nevertheless; yet, still; in spite of (that).",
-      "example": "He told me not to do it. I, however, did it anyway. / I did it anyway, however. / (sometimes proscribed:) However, I did it anyway."
-     },
-     {
-      "definition": "(degree) To whatever degree or extent",
-      "example": "However clear you think you've been, many questions will remain."
-     },
-     {
-      "definition": "(manner) In whatever way or manner.",
-      "example": "Let me know when you've had your interview, however it goes."
-     },
-     {
-      "definition": "An emphatic form of how.",
-      "example": "However were you able to do it?"
-     },
-     {
-      "definition": "In any case, at any rate, at all events."
-     }
-    ],
-    "partOfSpeech": "v"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "In whatever way or manner.",
-      "example": "she offered to help however she could"
-     },
-     {
-      "definition": "Although, though, but, yet."
-     }
-    ],
-    "partOfSpeech": "c"
-   }
-  ],
-  "phonetics": [
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/however-us.mp3",
-    "text": "/haʊˈɛvɚ/"
-   }
-  ]
- },
- null,
- null,
- null,
- null,
- {
-  "word": "REALLY",
-  "idx": 471,
-  "count": 162033390,
-  "meanings": [
-   {
-    "definitions": [
-     {
-      "definition": "In a way or manner that is real, not unreal."
-     },
-     {
-      "definition": "(modal) Actually; in fact; in reality.",
-      "example": "\"He really is a true friend.\" / \"Really? What makes you so sure?\""
-     },
-     {
-      "definition": "(as an intensifier) Very (modifying an adjective); very much (modifying a verb).",
-      "example": "But ma, I really, really want to go to the show!"
-     }
-    ],
-    "partOfSpeech": "v"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "Indicating surprise at, or requesting confirmation of, some new information; to express skepticism.",
-      "example": "A: He won the Nobel Prize yesterday."
-     },
-     {
-      "definition": "(sarcastic, typically exaggerated question.) Indicating that what was just said was obvious and unnecessary; contrived incredulity",
-      "example": "A: I've just been reading Shakespeare - he's one of the best authors like, ever!"
-     },
-     {
-      "definition": "Indicating affirmation, agreement.",
-      "example": "A: That girl talks about herself way too much."
-     },
-     {
-      "definition": "Indicating displeasure at another person's behaviour or statement.",
-      "example": "Well, really! How rude."
-     }
-    ],
-    "partOfSpeech": "i"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "To bring together again."
-     },
-     {
-      "definition": "To ally anew; to re-form an alliance."
-     }
-    ],
-    "partOfSpeech": "ve"
-   }
-  ],
-  "phonetics": [
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/really-1-us.mp3",
-    "text": "/ˈɹi.əli/"
-   }
-  ]
- },
- null,
- {
-  "word": "START",
-  "idx": 473,
-  "count": 161913408,
-  "meanings": [
-   {
-    "definitions": [
-     {
-      "definition": "The beginning of an activity.",
-      "example": "The movie was entertaining from start to finish."
-     },
-     {
-      "definition": "A sudden involuntary movement.",
-      "example": "He woke with a start."
-     },
-     {
-      "definition": "The beginning point of a race, a board game, etc.",
-      "example": "Captured pieces are returned to the start of the board."
-     },
-     {
-      "definition": "An appearance in a sports game, horserace, etc., from the beginning of the event.",
-      "example": "Jones has been a substitute before, but made his first start for the team last Sunday."
-     },
-     {
-      "definition": "A young plant germinated in a pot to be transplanted later."
-     },
-     {
-      "definition": "An initial advantage over somebody else; a head start.",
-      "example": "to get, or have, the start"
-     },
-     {
-      "definition": "A tail, or anything projecting like a tail."
-     },
-     {
-      "definition": "A handle, especially that of a plough."
-     },
-     {
-      "definition": "The curved or inclined front and bottom of a water wheel bucket."
-     },
-     {
-      "definition": "The arm, or level, of a gin, drawn around by a horse."
-     }
-    ],
-    "partOfSpeech": "n"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "To begin, commence, initiate."
-     },
-     {
-      "definition": "To begin an activity.",
-      "example": "The rain started at 9:00."
-     },
-     {
-      "definition": "To have its origin (at), begin.",
-      "example": "The blue line starts one foot away from the wall."
-     },
-     {
-      "definition": "To startle or be startled; to move or be moved suddenly."
-     },
-     {
-      "definition": "To break away, to come loose."
-     },
-     {
-      "definition": "To put into play."
-     },
-     {
-      "definition": "To pour out; to empty; to tap and begin drawing from.",
-      "example": "to start a water cask"
-     },
-     {
-      "definition": "To start one's periods (menstruation).",
-      "example": "Have you started yet?"
-     }
-    ],
-    "partOfSpeech": "ve"
-   }
-  ],
-  "phonetics": [
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/start-us.mp3",
-    "text": "/stɑɹt/"
-   },
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/start-uk.mp3",
-    "text": "/stɑːt/"
-   }
-  ]
- },
- {
-  "word": "SERIES",
-  "idx": 474,
-  "count": 161518557,
-  "meanings": [
-   {
-    "definitions": [
-     {
-      "definition": "A number of things that follow on one after the other or are connected one after the other.",
-      "example": "A series of seemingly inconsequential events led cumulatively to the fall of the company."
-     },
-     {
-      "definition": "A television or radio program which consists of several episodes that are broadcast in regular intervals",
-      "example": "“Friends” was one of the most successful television series in recent years."
-     },
-     {
-      "definition": "The sequence of partial sums \\sum_{i=1}^n{a_i} of a given sequence ai.",
-      "example": "The harmonic series has been much studied."
-     },
-     {
-      "definition": "A group of matches between two sides, with the aim being to win more matches than the opposition.",
-      "example": "The Blue Jays are playing the Yankees in a four-game series."
-     },
-     {
-      "definition": "An unranked taxon."
-     },
-     {
-      "definition": "A subdivision of a genus, a taxonomic rank below that of section (and subsection) but above that of species."
-     },
-     {
-      "definition": "A parcel of rough diamonds of assorted qualities."
-     },
-     {
-      "definition": "A set of consonants that share a particular phonetic or phonological feature."
-     }
-    ],
-    "partOfSpeech": "n"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "Connected one after the other in a circuit.",
-      "example": "You have to connect the lights in series for them to work properly."
-     }
-    ],
-    "partOfSpeech": "j"
-   }
-  ],
-  "phonetics": [
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/series-us.mp3",
-    "text": "/ˈsiɹiz/"
-   }
-  ]
- },
- {
-  "word": "MODEL",
-  "idx": 475,
-  "count": 161205740,
-  "meanings": [
-   {
-    "definitions": [
-     {
-      "definition": "A person who serves as a subject for artwork or fashion, usually in the medium of photography but also for painting or drawing.",
-      "example": "The beautiful model had her face on the cover of almost every fashion magazine imaginable."
-     },
-     {
-      "definition": "A person, usually an attractive female, hired to show items or goods to the public, such as items given away as prizes on a TV game show."
-     },
-     {
-      "definition": "A representation of a physical object, usually in miniature.",
-      "example": "The boy played with a model of a World War II fighter plane."
-     },
-     {
-      "definition": "A simplified representation used to explain the workings of a real world system or event.",
-      "example": "The computer weather model did not correctly predict the path of the hurricane."
-     },
-     {
-      "definition": "A style, type, or design.",
-      "example": "He decided to buy the turbo engine model of the sports car."
-     },
-     {
-      "definition": "The structural design of a complex system.",
-      "example": "The team developed a sound business model."
-     },
-     {
-      "definition": "A successful example to be copied, with or without modifications.",
-      "example": "British parliamentary democracy was seen as a model for other countries to follow."
-     },
-     {
-      "definition": "An interpretation function which assigns a truth value to each atomic proposition."
-     },
-     {
-      "definition": "An interpretation which makes a set of sentences true, in which case that interpretation is called a model of that set."
-     },
-     {
-      "definition": "An animal that is used to study a human disease or pathology."
-     },
-     {
-      "definition": "Any copy, or resemblance, more or less exact."
-     },
-     {
-      "definition": "In software applications using the model-view-controller design pattern, the part or parts of the application that manage the data."
-     }
-    ],
-    "partOfSpeech": "n"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "To display for others to see, especially in regard to wearing clothing while performing the role of a fashion model",
-      "example": "She modelled the shoes for her friends to see."
-     },
-     {
-      "definition": "To use as an object in the creation of a forecast or model",
-      "example": "They modelled the data with a computer to analyze the experiment’s results."
-     },
-     {
-      "definition": "To make a miniature model of",
-      "example": "He takes great pride in his skill at modeling airplanes."
-     },
-     {
-      "definition": "To create from a substance such as clay",
-      "example": "The sculptor modelled the clay into the form of a dolphin."
-     },
-     {
-      "definition": "To make a model or models"
-     },
-     {
-      "definition": "To be a model of any kind",
-      "example": "The actress used to model before being discovered by Hollywood."
-     }
-    ],
-    "partOfSpeech": "ve"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "Worthy of being a model; exemplary."
-     }
-    ],
-    "partOfSpeech": "j"
-   }
-  ],
-  "phonetics": [
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/model-us.mp3",
-    "text": "/ˈmɑdl̩/"
-   }
-  ]
- },
- {
-  "word": "FEATURES",
-  "idx": 476,
-  "count": 160961088,
-  "meanings": [
-   {
-    "definitions": [
-     {
-      "definition": "One's structure or make-up: form, shape, bodily proportions."
-     },
-     {
-      "definition": "An important or main item."
-     },
-     {
-      "definition": "A long, prominent article or item in the media, or the department that creates them; frequently used technically to distinguish content from news."
-     },
-     {
-      "definition": "Any of the physical constituents of the face (eyes, nose, etc.)."
-     },
-     {
-      "definition": "A beneficial capability of a piece of software."
-     },
-     {
-      "definition": "The cast or structure of anything, or of any part of a thing, as of a landscape, a picture, a treaty, or an essay; any marked peculiarity or characteristic.",
-      "example": "one of the features of the landscape"
-     },
-     {
-      "definition": "Something discerned from physical evidence that helps define, identify, characterize, and interpret an archeological site."
-     },
-     {
-      "definition": "Characteristic forms or shapes of parts. For example, a hole, boss, slot, cut, chamfer, or fillet."
-     },
-     {
-      "definition": "(machine learning) An individual measurable property or characteristic of a phenomenon being observed."
-     },
-     {
-      "definition": "The act of being featured in a piece of music."
-     },
-     {
-      "definition": "The elements into which linguistic units can be broken down."
-     }
-    ],
-    "partOfSpeech": "n"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "To ascribe the greatest importance to something within a certain context."
-     },
-     {
-      "definition": "To star, to contain."
-     },
-     {
-      "definition": "To appear, to make an appearance."
-     },
-     {
-      "definition": "To have features resembling."
-     }
-    ],
-    "partOfSpeech": "ve"
-   }
-  ],
-  "phonetics": [
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/features-us.mp3",
-    "text": "/ˈfitʃɚz/"
-   }
-  ]
- },
- null,
- {
-  "word": "INDUSTRY",
-  "idx": 478,
-  "count": 160812623,
-  "meanings": [
-   {
-    "definitions": [
-     {
-      "definition": "The tendency to work persistently. Diligence.",
-      "example": "Over the years, their industry and business sense made them wealthy."
-     },
-     {
-      "definition": "Businesses of the same type, considered as a whole. Trade.",
-      "example": "The software and tourism industries continue to grow, while the steel industry remains troubled."
-     },
-     {
-      "definition": "Businesses that produce goods as opposed to services."
-     },
-     {
-      "definition": "(in the singular) The sector of the economy consisting of large-scale enterprises.",
-      "example": "There used to be a lot of industry around here, but now the economy depends on tourism."
-     },
-     {
-      "definition": "Automated production of material goods."
-     },
-     {
-      "definition": "A typological classification of stone tools, associated with a technocomplex."
-     }
-    ],
-    "partOfSpeech": "n"
-   }
-  ],
-  "phonetics": [
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/industry-us.mp3",
-    "text": "/ˈɪndəstɹi/"
-   },
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/industry-uk.mp3",
-    "text": "/ˈɪndəstɹi/"
-   }
-  ]
- },
- {
-  "word": "PLAN",
-  "idx": 479,
-  "count": 160746244,
-  "meanings": [
-   {
-    "definitions": [
-     {
-      "definition": "A drawing showing technical details of a building, machine, etc., with unwanted details omitted, and often using symbols rather than detailed drawing to represent doors, valves, etc.",
-      "example": "The plans for many important buildings were once publicly available."
-     },
-     {
-      "definition": "A set of intended actions, usually mutually related, through which one expects to achieve a goal.",
-      "example": "He didn't really have a plan; he had a goal and a habit of control."
-     },
-     {
-      "definition": "A two-dimensional drawing of a building as seen from above with obscuring or irrelevant details such as roof removed, or of a floor of a building, revealing the internal layout; as distinct from the elevation.",
-      "example": "Seen in plan, the building had numerous passageways not apparent to visitors."
-     },
-     {
-      "definition": "A method; a way of procedure; a custom."
-     },
-     {
-      "definition": "A subscription to a service.",
-      "example": "a phone plan"
-     }
-    ],
-    "partOfSpeech": "n"
-   },
-   {
-    "definitions": [
-     {
-      "definition": "To design (a building, machine, etc.).",
-      "example": "The architect planned the building for the client."
-     },
-     {
-      "definition": "To create a plan for.",
-      "example": "They jointly planned the project in phases, with good detail for the first month."
-     },
-     {
-      "definition": "To intend.",
-      "example": "He planned to go, but work intervened."
-     },
-     {
-      "definition": "To make a plan.",
-      "example": "They planned for the worst, bringing lots of emergency supplies."
-     }
-    ],
-    "partOfSpeech": "ve"
-   }
-  ],
-  "phonetics": [
-   {
-    "audio": "https://api.dictionaryapi.dev/media/pronunciations/en/plan-us.mp3",
-    "text": "/plæn/"
-   }
-  ]
- },
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null,
- null
+ }
 ]
