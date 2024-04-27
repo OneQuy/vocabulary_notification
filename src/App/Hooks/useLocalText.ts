@@ -5,7 +5,7 @@ const eng = {
     translate_to: 'Translate to',
     tap_to_select: 'Tap to select...',
     search_language: 'Search language...',
-    show_every: 'Show every',
+    repeat: 'Repeat',
     invalid_end_time: "End time must be the time that comes after the Start time!",
     invalid_start_time: "Start time must be the time that comes before the End time!",
     invalid_input: 'Invalid input',

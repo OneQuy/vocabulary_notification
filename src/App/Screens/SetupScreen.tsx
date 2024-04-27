@@ -589,7 +589,7 @@ const SetupScreen = () => {
 
         <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
 
-        <Text style={style.header}>{texts.show_every}</Text>
+        <Text style={style.header}>{texts.repeat}</Text>
 
         <LucideIconTextEffectButton
           unselectedColorOfTextAndIcon={theme.counterBackground}
