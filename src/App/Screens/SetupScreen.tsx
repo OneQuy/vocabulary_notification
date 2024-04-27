@@ -103,6 +103,7 @@ const SetupScreen = () => {
   const [displayWordLimitNumber, set_displayWordLimitNumber] = useState<number>(5)
 
   const [displayTargetLang, set_displayTargetLang] = useState<Language | undefined>()
+  const [searchCountryInputTxt, set_searchCountryInputTxt] = useState('')
 
   const [displayExcludeTimePairs, set_displayExcludeTimePairs] = useState<PairTime[]>(DefaultExcludeTimePairs)
   const editingExcludeTimePairAndElementIndex = useRef<[PairTime | undefined, number]>([undefined, -1])
@@ -401,24 +402,28 @@ const SetupScreen = () => {
   // limit words
 
   const onPressTargetLang = useCallback((lang: Language) => {
-    // if (wordNum !== undefined)
-    //   set_displayWordLimitNumber(wordNum)
+      set_displayTargetLang(lang)
 
-    // if (popupCloseCallbackRef.current)
-    //   popupCloseCallbackRef.current()
+    if (popupCloseCallbackRef.current)
+      popupCloseCallbackRef.current()
   }, [])
 
   const renderPickTargetLang = useCallback(() => {
+    const langs = Languages.filter(lang => searchCountryInputTxt.length === 0 || lang.name.toLowerCase().includes(searchCountryInputTxt.toLowerCase()))
+
     return (
       <View style={CommonStyles.flex_1}>
         {/* input search */}
         <View style={style.searchCountryView}>
           <TextInput
             style={style.searchTxt}
-            placeholder={texts.search_country}
+            placeholder={texts.search_language}
             maxLength={20}
             textContentType='countryName'
             keyboardType='default'
+            value={searchCountryInputTxt}
+            onChangeText={set_searchCountryInputTxt}
+            autoCapitalize='none'
           />
         </View>
 
@@ -429,7 +434,7 @@ const SetupScreen = () => {
             contentContainerStyle={style.scrollViewSlidingPopup}
           >
             {
-              Languages.map((lang: Language) => {
+              langs.map((lang: Language) => {
                 const isSelected = lang === displayTargetLang
 
                 return (
@@ -458,7 +463,7 @@ const SetupScreen = () => {
         </View>
       </View>
     )
-  }, [displayTargetLang, texts, theme, style])
+  }, [displayTargetLang, searchCountryInputTxt, texts, theme, style])
 
   // exclude time
 
