@@ -17,8 +17,9 @@ import { NotificationOption, cancelAllLocalNotificationsAsync, requestPermission
 import { AuthorizationStatus } from '@notifee/react-native'
 import { DeepTranslateAsync, DeepTranslateMultiWordAsync } from '../../Common/DeepTranslateApi'
 import { DeepTranslateApiKey } from '../../../Keys'
+import { Word } from '../Types'
 
-const arrWords = require('./../../../data.json')
+const arrWords: Word[] = require('./../../../data.json') as Word[]
 
 const DefaultExcludeTimePairs: PairTime[] = [
   [
@@ -158,7 +159,7 @@ const SetupScreen = () => {
 
     const arrNotis = CalcNotiTimeList(displayIntervalInMin, displayExcludeTimePairs)
 
-    const contents = await GetContentNotisAsync(arrNotis.length)
+    const contents: NotificationOption[] = await GetContentNotisAsync(arrNotis.length)
 
     for (let i = 0; i < arrNotis.length; i++) {
       const time = arrNotis[i]
@@ -646,17 +647,15 @@ const IsInExcludeTime = (hour: number, minute: number, excludePairs: PairTime[])
   return false
 }
 
-const GetContentNotisAsync = async (count: number): Promise<NotificationOption> => {
+const GetContentNotisAsync = async (count: number): Promise<NotificationOption[]> => {
   const arr: NotificationOption[] = []
 
   for (let i = 0; i < count; i++) {
-    const wordObj = PickRandomElement(arrWords)
+    const wordObj: Word = PickRandomElement(arrWords)
 
     arr.push({
-      // @ts-ignore
       title: wordObj.word,
 
-      // @ts-ignore
       message: `(#${wordObj.idx + 1}, ${wordObj.count}) ${wordObj.meanings[0].definitions[0].definition}`
     })
   }
