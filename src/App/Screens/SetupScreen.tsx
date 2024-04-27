@@ -103,7 +103,7 @@ const SetupScreen = () => {
   const [displayWordLimitNumber, set_displayWordLimitNumber] = useState<number>(5)
 
   const [displayTargetLang, set_displayTargetLang] = useState<Language | undefined>()
-  const [searchCountryInputTxt, set_searchCountryInputTxt] = useState('')
+  const [searchLangInputTxt, set_searchLangInputTxt] = useState('')
 
   const [displayExcludeTimePairs, set_displayExcludeTimePairs] = useState<PairTime[]>(DefaultExcludeTimePairs)
   const editingExcludeTimePairAndElementIndex = useRef<[PairTime | undefined, number]>([undefined, -1])
@@ -402,14 +402,14 @@ const SetupScreen = () => {
   // limit words
 
   const onPressTargetLang = useCallback((lang: Language) => {
-      set_displayTargetLang(lang)
+    set_displayTargetLang(lang)
 
     if (popupCloseCallbackRef.current)
       popupCloseCallbackRef.current()
   }, [])
 
   const renderPickTargetLang = useCallback(() => {
-    const langs = Languages.filter(lang => searchCountryInputTxt.length === 0 || lang.name.toLowerCase().includes(searchCountryInputTxt.toLowerCase()))
+    const langs = Languages.filter(lang => searchLangInputTxt.length === 0 || lang.name.toLowerCase().includes(searchLangInputTxt.toLowerCase()))
 
     return (
       <View style={CommonStyles.flex_1}>
@@ -421,8 +421,8 @@ const SetupScreen = () => {
             maxLength={20}
             textContentType='countryName'
             keyboardType='default'
-            value={searchCountryInputTxt}
-            onChangeText={set_searchCountryInputTxt}
+            value={searchLangInputTxt}
+            onChangeText={set_searchLangInputTxt}
             autoCapitalize='none'
           />
         </View>
@@ -463,7 +463,7 @@ const SetupScreen = () => {
         </View>
       </View>
     )
-  }, [displayTargetLang, searchCountryInputTxt, texts, theme, style])
+  }, [displayTargetLang, searchLangInputTxt, texts, theme, style])
 
   // exclude time
 
@@ -545,6 +545,12 @@ const SetupScreen = () => {
     contentToRenderInPopup = renderWordLimits
   else if (showPopup === 'target-lang')
     contentToRenderInPopup = renderPickTargetLang
+  else { // not show any popup
+    // reset search lang input
+
+    if (searchLangInputTxt.length > 0)
+      set_searchLangInputTxt('')
+  }
 
   let timePickerInitial
 
