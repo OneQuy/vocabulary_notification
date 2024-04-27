@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, Alert, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Alert, ActivityIndicator, TextInput } from 'react-native'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import useTheme from '../Hooks/useTheme'
@@ -6,9 +6,9 @@ import useLocalText from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, LogStringify, PickRandomElement, PrependZero } from '../../Common/UtilsTS'
+import { AddS, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, LogStringify, PickRandomElement, PrependZero, ToCanPrint } from '../../Common/UtilsTS'
 import HairLine from '../../Common/Components/HairLine'
-import { WindowSize_Max } from '../../Common/CommonConstants'
+import { CommonStyles, WindowSize_Max } from '../../Common/CommonConstants'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { PopuplarityLevelNumber } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
@@ -17,6 +17,9 @@ import { NotificationOption, cancelAllLocalNotificationsAsync, requestPermission
 import { AuthorizationStatus } from '@notifee/react-native'
 import { Word } from '../Types'
 import { BridgeTranslateMultiWordAsync } from '../Handles/TranslateBridge'
+import { SystranTranslateAsync } from '../../Common/SystranTranslateApi'
+import { SystranTranslateApiKey } from '../../../Keys'
+import { Language, Languages } from '../../Common/DeepTranslateApi'
 
 const arrWords: Word[] = require('./../../../data.json') as Word[]
 
@@ -84,7 +87,7 @@ const LimitWordPresets: (number)[] = [
 
 type PairTime = TimePickerResult[]
 
-type PopupType = 'popularity' | 'interval' | 'limit-word' | undefined
+type PopupType = 'popularity' | 'interval' | 'limit-word' | 'target-lang' | undefined
 
 const SetupScreen = () => {
   const theme = useTheme()
@@ -98,6 +101,8 @@ const SetupScreen = () => {
   const [displayIntervalInMin, set_displayIntervalInMin] = useState<number>(60)
 
   const [displayWordLimitNumber, set_displayWordLimitNumber] = useState<number>(5)
+
+  const [displayTargetLang, set_displayTargetLang] = useState<Language | undefined>()
 
   const [displayExcludeTimePairs, set_displayExcludeTimePairs] = useState<PairTime[]>(DefaultExcludeTimePairs)
   const editingExcludeTimePairAndElementIndex = useRef<[PairTime | undefined, number]>([undefined, -1])
@@ -123,6 +128,18 @@ const SetupScreen = () => {
 
       normalBtnTxt: { fontSize: FontSize.Normal, },
 
+      searchCountryView: {
+        borderWidth: StyleSheet.hairlineWidth,
+        borderRadius: BorderRadius.Medium,
+        borderColor: theme.counterPrimary,
+        padding: Outline.Normal,
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: Outline.Normal,
+      },
+
+      searchTxt: { fontSize: FontSize.Normal, color: theme.counterPrimary },
+
       normalBtn: {
         borderWidth: WindowSize_Max * 0.0015,
         borderRadius: BorderRadius.Medium,
@@ -138,10 +155,17 @@ const SetupScreen = () => {
   }, [theme])
 
   const onPressTestNotification = useCallback(async () => {
-    // const res = await DeepTranslateAsync(DeepTranslateApiKey, "extract", 'de')
+    const res = await SystranTranslateAsync(
+      SystranTranslateApiKey,
+      [
+        'jump',
+        'do'
+      ],
+      'pt'
+    )
 
-    // console.log(res);
 
+    console.log(JSON.stringify(res));
   }, [])
 
   const onPressSetNotification = useCallback(async () => {
@@ -374,6 +398,68 @@ const SetupScreen = () => {
     )
   }, [displayWordLimitNumber, theme, style])
 
+  // limit words
+
+  const onPressTargetLang = useCallback((lang: Language) => {
+    // if (wordNum !== undefined)
+    //   set_displayWordLimitNumber(wordNum)
+
+    // if (popupCloseCallbackRef.current)
+    //   popupCloseCallbackRef.current()
+  }, [])
+
+  const renderPickTargetLang = useCallback(() => {
+    return (
+      <View style={CommonStyles.flex_1}>
+        {/* input search */}
+        <View style={style.searchCountryView}>
+          <TextInput
+            style={style.searchTxt}
+            placeholder={texts.search_country}
+            maxLength={20}
+            textContentType='countryName'
+            keyboardType='default'
+          />
+        </View>
+
+        {/* country */}
+        <View style={CommonStyles.flex_1}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={style.scrollViewSlidingPopup}
+          >
+            {
+              Languages.map((lang: Language) => {
+                const isSelected = lang === displayTargetLang
+
+                return (
+                  <LucideIconTextEffectButton
+                    key={lang.language}
+
+                    selectedColorOfTextAndIcon={theme.primary}
+                    unselectedColorOfTextAndIcon={theme.counterPrimary}
+
+                    onPress={() => onPressTargetLang(lang)}
+
+                    manuallySelected={isSelected}
+                    notChangeToSelected
+                    canHandlePressWhenSelected
+
+                    style={isSelected ? style.normalBtn : style.normalBtn_NoBorder}
+
+                    title={lang.name}
+
+                    titleProps={{ style: style.normalBtnTxt }}
+                  />
+                )
+              })
+            }
+          </ScrollView>
+        </View>
+      </View>
+    )
+  }, [displayTargetLang, texts, theme, style])
+
   // exclude time
 
   const onPressAddExcludeTime = useCallback(() => {
@@ -452,6 +538,8 @@ const SetupScreen = () => {
     contentToRenderInPopup = renderIntervals
   else if (showPopup === 'limit-word')
     contentToRenderInPopup = renderWordLimits
+  else if (showPopup === 'target-lang')
+    contentToRenderInPopup = renderPickTargetLang
 
   let timePickerInitial
 
@@ -545,6 +633,25 @@ const SetupScreen = () => {
         {
           renderExcludeTimes()
         }
+
+        {/* target lang */}
+
+        <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
+
+        <Text style={style.header}>{texts.translate_to}</Text>
+
+        <LucideIconTextEffectButton
+          unselectedColorOfTextAndIcon={theme.counterBackground}
+          notChangeToSelected
+          style={style.normalBtn}
+
+          title={displayTargetLang?.name ?? texts.tap_to_select}
+          titleProps={{ style: style.normalBtnTxt }}
+
+          iconProps={{ name: 'Languages', size: FontSize.Normal, }}
+
+          onPress={() => onPressShowPopup('target-lang')}
+        />
 
         {/* test noti */}
 
