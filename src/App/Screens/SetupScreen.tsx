@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Alert, ActivityIndicator } from 'react-native'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import useTheme from '../Hooks/useTheme'
@@ -6,17 +6,19 @@ import useLocalText from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, LogStringify, PrependZero } from '../../Common/UtilsTS'
+import { AddS, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, LogStringify, PickRandomElement, PrependZero } from '../../Common/UtilsTS'
 import HairLine from '../../Common/Components/HairLine'
 import { WindowSize_Max } from '../../Common/CommonConstants'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { PopuplarityLevelNumber } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
 import { LucideIcon } from '../../Common/Components/LucideIcon'
-import { cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync, setNotification, setNotification_RemainSeconds } from '../../Common/Nofitication'
+import { NotificationOption, cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync, setNotification, setNotification_RemainSeconds } from '../../Common/Nofitication'
 import { AuthorizationStatus } from '@notifee/react-native'
-import { DeepTranslateAsync } from '../../Common/DeepTranslateApi'
+import { DeepTranslateAsync, DeepTranslateMultiWordAsync } from '../../Common/DeepTranslateApi'
 import { DeepTranslateApiKey } from '../../../Keys'
+
+const arrWords = require('./../../../data.json')
 
 const DefaultExcludeTimePairs: PairTime[] = [
   [
@@ -47,6 +49,7 @@ const DefaultExcludeTimePairs: PairTime[] = [
 ]
 
 const IntervalInMinPresets: (undefined | number)[] = [
+  10,
   30,
   60,
   120,
@@ -101,6 +104,8 @@ const SetupScreen = () => {
 
   const [showTimePicker, set_showTimePicker] = useState(false)
 
+  const [handling, set_handling] = useState(false)
+
   // common
 
   const style = useMemo(() => {
@@ -136,7 +141,7 @@ const SetupScreen = () => {
     const res = await DeepTranslateAsync(DeepTranslateApiKey, "extract", 'de')
 
     console.log(res);
-    
+
   }, [])
 
   const onPressSetNotification = useCallback(async () => {
@@ -147,26 +152,35 @@ const SetupScreen = () => {
       return
     }
 
+    set_handling(true)
+
     await cancelAllLocalNotificationsAsync()
 
-    const arr = CalcNotiTimeList(displayIntervalInMin, displayExcludeTimePairs)
+    const arrNotis = CalcNotiTimeList(displayIntervalInMin, displayExcludeTimePairs)
 
-    for (let i = 0; i < arr.length; i++) {
-      const time = arr[i]
+    const contents = await GetContentNotisAsync(arrNotis.length)
 
-      for (let day = 0; day < 5; day++) {
+    for (let i = 0; i < arrNotis.length; i++) {
+      const time = arrNotis[i]
+
+      for (let day = 0; day < 2; day++) {
         const nowdate = new Date()
         nowdate.setDate(nowdate.getDate() + day)
         nowdate.setHours(time.hours)
         nowdate.setMinutes(time.minutes)
 
-        setNotification({
+        const noti = {
+          ...contents[i],
           timestamp: nowdate.getTime(),
-          title: 'Vocanoti',
-          message: 'hello: ' + nowdate.toLocaleString(),
-        })
+        }
+
+        setNotification(noti)
+
+        console.log(noti);
       }
     }
+
+    set_handling(false)
   }, [displayIntervalInMin, displayExcludeTimePairs, texts])
 
   const onConfirmTimePicker = useCallback((time: TimePickerResult) => {
@@ -553,25 +567,33 @@ const SetupScreen = () => {
 
         <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
 
-        <LucideIconTextEffectButton
-          selectedBackgroundColor={theme.primary}
+        {
+          handling &&
+          <ActivityIndicator color={theme.counterBackground} />
+        }
 
-          selectedColorOfTextAndIcon={theme.counterPrimary}
-          unselectedColorOfTextAndIcon={theme.counterBackground}
+        {
+          !handling &&
+          <LucideIconTextEffectButton
+            selectedBackgroundColor={theme.primary}
 
-          notChangeToSelected
-          manuallySelected={true}
-          canHandlePressWhenSelected
+            selectedColorOfTextAndIcon={theme.counterPrimary}
+            unselectedColorOfTextAndIcon={theme.counterBackground}
 
-          style={style.normalBtn}
+            notChangeToSelected
+            manuallySelected={true}
+            canHandlePressWhenSelected
 
-          title={texts.set_notification}
-          titleProps={{ style: style.normalBtnTxt }}
+            style={style.normalBtn}
 
-          iconProps={{ name: 'Rocket', size: FontSize.Normal, }}
+            title={texts.set_notification}
+            titleProps={{ style: style.normalBtnTxt }}
 
-          onPress={onPressSetNotification}
-        />
+            iconProps={{ name: 'Rocket', size: FontSize.Normal, }}
+
+            onPress={onPressSetNotification}
+          />
+        }
       </ScrollView>
 
       {/* popup */}
@@ -622,6 +644,38 @@ const IsInExcludeTime = (hour: number, minute: number, excludePairs: PairTime[])
   }
 
   return false
+}
+
+const GetContentNotisAsync = async (count: number): Promise<NotificationOption> => {
+  const arr: NotificationOption[] = []
+
+  for (let i = 0; i < count; i++) {
+    const wordObj = PickRandomElement(arrWords)
+
+    arr.push({
+      // @ts-ignore
+      title: wordObj.word,
+
+      // @ts-ignore
+      message: `(#${wordObj.idx + 1}, ${wordObj.count}) ${wordObj.meanings[0].definitions[0].definition}`
+    })
+  }
+
+  const arrTranslated = await DeepTranslateMultiWordAsync(
+    DeepTranslateApiKey,
+    arr.map(i => i.title),
+    'vi'
+  )
+
+  for (let i = 0; i < count && i < arrTranslated.length; i++) {
+    const trans = arrTranslated[i]
+
+    if (typeof trans === 'string') {
+      arr[i].message = `${trans.toUpperCase()}\n\n${arr[i].message}`
+    }
+  }
+
+  return arr
 }
 
 const CalcNotiTimeList = (intervalInMinute: number, excludePairs: PairTime[]): TimePickerResult[] => {

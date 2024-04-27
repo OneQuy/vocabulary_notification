@@ -1,12 +1,8 @@
 const fs = require('fs')
 
-
-// const EachCount = 100
-// const Interval = 1000
-
 const IntervalWaitOutOfRequest = 5000
 
-const StartFromIdx = 7620
+const StartFromIdx = 19770
 
 const outputpath = './editor/Assets/vocabs/'
 
@@ -364,71 +360,6 @@ const FetchValuableWordsAsync = async () => {
             arr.push(res)
     }
 }
-
-// const FetchValuableWordsAsync = async () => {
-//     const text = fs.readFileSync(srcpath, 'utf-8')
-//     const lines = text.split('\n')
-
-//     let arr = []
-//     let startIdx = 0
-//     let lastFetch = 0
-
-//     for (let iline = 0; iline < 2000; iline += EachCount) {
-//         const now = Date.now()
-
-//         if (now - lastFetch < Interval) {
-//             await DelayAsync(now - lastFetch)
-//         }
-//         else
-//             lastFetch = now
-
-//         const eachLines = lines.slice(iline, iline + EachCount)
-
-//         let wordAndCountArr = eachLines.map((line, index) => {
-//             const arr = line.split('\t')
-
-//             if (arr.length < 2)
-//                 return ['', -1]
-
-//             return [arr[0], Number.parseInt(arr[1]), iline + index]
-//         })
-
-//         wordAndCountArr = wordAndCountArr.filter(e => e[0].length >= 2)
-
-//         console.log('fetching, start idx: ', iline, 'word fetch count', wordAndCountArr.length)
-
-//         const resArr = await Promise.all(wordAndCountArr.map(e => {
-//             return FetchWordAsync(e[0], e[1], e[2])
-//         }))
-
-//         const valids = resArr.filter(i => i !== undefined)
-
-//         arr = arr.concat(valids)
-
-//         if (arr.length >= 1000) {
-//             const s = JSON.stringify(arr, null, 1)
-
-//             const filename = `${startIdx}-${iline + EachCount}-${arr.length}words.json`
-//             fs.writeFileSync(outputpath + filename, s)
-
-//             arr = []
-//             startIdx = iline + EachCount
-
-//             console.log('created: ' + filename)
-//         }
-//     }
-
-//     if (arr.length >= 1) {
-//         const s = JSON.stringify(arr, null, 1)
-
-//         const filename = `${startIdx}-final-${arr.length}words.json`
-//         fs.writeFileSync(outputpath + filename, s)
-
-//         console.log('created: ' + filename)
-//     }
-
-//     console.log('doneeeeeeee: ' + arr.length);
-// }
 
 FetchValuableWordsAsync()
 
