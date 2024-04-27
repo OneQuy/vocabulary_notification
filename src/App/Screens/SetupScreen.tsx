@@ -15,9 +15,8 @@ import TimePicker, { TimePickerResult } from '../Components/TimePicker'
 import { LucideIcon } from '../../Common/Components/LucideIcon'
 import { NotificationOption, cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync, setNotification, setNotification_RemainSeconds } from '../../Common/Nofitication'
 import { AuthorizationStatus } from '@notifee/react-native'
-import { DeepTranslateAsync, DeepTranslateMultiWordAsync } from '../../Common/DeepTranslateApi'
-import { DeepTranslateApiKey } from '../../../Keys'
 import { Word } from '../Types'
+import { BridgeTranslateMultiWordAsync } from '../Handles/TranslateBridge'
 
 const arrWords: Word[] = require('./../../../data.json') as Word[]
 
@@ -139,9 +138,9 @@ const SetupScreen = () => {
   }, [theme])
 
   const onPressTestNotification = useCallback(async () => {
-    const res = await DeepTranslateAsync(DeepTranslateApiKey, "extract", 'de')
+    // const res = await DeepTranslateAsync(DeepTranslateApiKey, "extract", 'de')
 
-    console.log(res);
+    // console.log(res);
 
   }, [])
 
@@ -660,8 +659,7 @@ const GetContentNotisAsync = async (count: number): Promise<NotificationOption[]
     })
   }
 
-  const arrTranslated = await DeepTranslateMultiWordAsync(
-    DeepTranslateApiKey,
+  const arrTranslated = await BridgeTranslateMultiWordAsync(
     arr.map(i => i.title),
     'vi'
   )
