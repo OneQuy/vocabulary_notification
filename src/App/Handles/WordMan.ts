@@ -62,5 +62,3 @@ export const SetCurrentNotiWordsAsync = async (savedDatas: SavedWordData[]) => {
 
     await SetArrayAsync(StorageKey_CurrentNotiWords, savedDatas)
 }
-
-// --------------------------------
