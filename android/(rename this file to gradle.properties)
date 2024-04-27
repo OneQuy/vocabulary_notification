@@ -44,3 +44,5 @@ MYAPP_UPLOAD_STORE_FILE=my-upload-key.keystore
 MYAPP_UPLOAD_KEY_ALIAS=my-key-alias
 MYAPP_UPLOAD_STORE_PASSWORD=your-password
 MYAPP_UPLOAD_KEY_PASSWORD=your-password
+
+AsyncStorage_db_size_in_MB=1000
