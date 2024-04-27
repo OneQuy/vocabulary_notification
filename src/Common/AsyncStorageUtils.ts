@@ -299,6 +299,20 @@ export const SaveArrayAsync = async <T>(key: string, arr: T[]): Promise<void> =>
     await AsyncStorage.setItem(key, JSON.stringify(arr))
 }
 
+export const AppendArrayAsync = async <T>(key: string, itemOrArr: T[] | T): Promise<void> => {
+    let savedArr = await LoadArrayAsync<T>(key)
+
+    if (savedArr === undefined)
+        savedArr = []
+
+    if (Array.isArray(itemOrArr))
+        savedArr = savedArr.concat(itemOrArr)
+    else
+        savedArr.push(itemOrArr)
+
+    await SaveArrayAsync(key, savedArr)
+}
+
 export const LoadArrayAsync = async <T>(key: string): Promise<T[] | undefined> => {
     const s = await AsyncStorage.getItem(key)
 
