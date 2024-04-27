@@ -295,7 +295,7 @@ export const StorageAppendToArrayAsync = async (key: string, value: string, sepa
 
 // array =================
 
-export const SaveArrayAsync = async <T>(key: string, arr: T[]): Promise<void> => {
+export const SetArrayAsync = async <T>(key: string, arr: T[]): Promise<void> => {
     await AsyncStorage.setItem(key, JSON.stringify(arr))
 }
 
@@ -310,10 +310,10 @@ export const AppendArrayAsync = async <T>(key: string, itemOrArr: T[] | T): Prom
     else
         savedArr.push(itemOrArr)
 
-    await SaveArrayAsync(key, savedArr)
+    await SetArrayAsync(key, savedArr)
 }
 
-export const LoadArrayAsync = async <T>(key: string): Promise<T[] | undefined> => {
+export const GetArrayAsync = async <T>(key: string): Promise<T[] | undefined> => {
     const s = await AsyncStorage.getItem(key)
 
     if (!s)
