@@ -20,3 +20,13 @@ export interface Word {
     phonetics?: Phonetic[],
     meanings: Meaning[],
 }
+
+export type LocalizedWordData = {
+    translatedWord: string,
+}
+
+export type SavedWordData = {
+    word: string,
+    localized: LocalizedWordData,
+    notiTick: number,
+}

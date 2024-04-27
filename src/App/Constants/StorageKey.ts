@@ -1,0 +1,1 @@
+export const StorageKey_CurrentNotiWords = 'StorageKey_CurrentNotiWords'
