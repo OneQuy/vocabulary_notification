@@ -2,7 +2,7 @@ const fs = require('fs')
 
 const IntervalWaitOutOfRequest = 5000
 
-const StartFromIdx = 19770
+const StartFromIdx = 60486
 
 const outputpath = './editor/Assets/vocabs/'
 
@@ -266,7 +266,7 @@ const FetchWordAsync = async (word, count, wordIdx) => {
     const url = 'https://api.dictionaryapi.dev/api/v2/entries/en/' + word
 
     let jsonArr
-    
+
     try {
         const res = await fetch(url)
 
@@ -309,6 +309,7 @@ const FetchValuableWordsAsync = async () => {
 
     let arr = []
     let startOutOfReqTick = -1
+    let fetchedWordCount = 0
 
     for (let lineIdx = StartFromIdx; lineIdx < lines.length; lineIdx++) {
         const line = lines[lineIdx]
@@ -325,6 +326,7 @@ const FetchValuableWordsAsync = async () => {
 
         while (true) {
             res = await FetchWordAsync(word, count, lineIdx)
+            fetchedWordCount++
 
             // console.log(lineIdx, word, 'success', res && res.word);
 
@@ -340,7 +342,7 @@ const FetchValuableWordsAsync = async () => {
                     const filename = `to-index-${lineIdx - 1}.json`
                     fs.writeFileSync(outputpath + filename, s)
 
-                    console.log('created: ' + filename, arr.length, 'words')
+                    console.log('created: ' + filename, arr.length, 'words', ', fetched: ' + fetchedWordCount)
                     arr = []
                 }
 
@@ -350,6 +352,7 @@ const FetchValuableWordsAsync = async () => {
                 if (startOutOfReqTick > -1) {
                     console.log('server reset time: ' + (Date.now() - startOutOfReqTick));
                     startOutOfReqTick = -1
+                    fetchedWordCount = 1
                 }
 
                 break
