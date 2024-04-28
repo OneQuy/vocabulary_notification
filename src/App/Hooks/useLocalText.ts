@@ -20,6 +20,7 @@ const eng = {
     popup_error: 'Oops',
     no_permission: 'Can not setup. Please grant the permission to receive vocabulary notifications!',
     pls_set_target_lang: 'Please set a language you wish to translate to',
+    fail_translate: 'Can not get words transation.',
 } as const
 
 export type LocalText = typeof eng
