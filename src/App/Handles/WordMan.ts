@@ -1,9 +1,46 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { SavedWordData } from "../Types";
+import { SavedWordData, Word } from "../Types";
 import { StorageKey_CurrentNotiWords, StorageKey_SeenWords } from "../Constants/StorageKey";
 import { GetArrayAsync, SetArrayAsync } from "../../Common/AsyncStorageUtils";
+import { PickRandomElement, SafeArrayLength } from "../../Common/UtilsTS";
 
-export const AddSeenWordsAsync = async (words: SavedWordData[]): Promise<void> => {
+const arrWords: Word[] = require('./../../../data.json') as Word[] // tmp
+
+// Set Noti --------------------------------
+
+export type SetupWordsForSetNotiResult = {
+    words?: SavedWordData[],
+    error?: Error,
+}
+
+const GetNextWordsFromDataAsync = async (count: number): Promise<Word[]> => {
+    const arr: Word[] = []
+
+    for (let i = 0; i < count; i++)
+        arr.push(PickRandomElement(arrWords))
+
+    return arr
+}
+
+export const SetupWordsForSetNotiAsync = async (count: number): Promise<SetupWordsForSetNotiResult> => {
+    // get not seen words (already have saved data)
+
+    const notSeenWords = await CutAndSaveSeenWordsAndGetNotSeenWordsFromCurrentNotiWordsAsync()
+
+    // get new word from data file for enough 'count'
+
+    const nextWords = await GetNextWordsFromDataAsync(count - SafeArrayLength(notSeenWords))
+    
+    // fetch data for new words
+
+    // if success return []
+
+    // if fail, LoadSeenWordsAsync
+}
+
+// Seen Words --------------------------------
+
+const AddSeenWordsAsync = async (words: SavedWordData[]): Promise<void> => {
     let arr = await GetArrayAsync<SavedWordData>(StorageKey_SeenWords)
 
     if (arr === undefined)
@@ -20,11 +57,11 @@ export const LoadSeenWordsAsync = async (): Promise<SavedWordData[] | undefined>
 
 // Current Noti Words --------------------------------
 
-const CutAndSaveSeenWordsFromCurrentNotiWordsAsync = async (): Promise<void> => {
+const CutAndSaveSeenWordsAndGetNotSeenWordsFromCurrentNotiWordsAsync = async (): Promise<SavedWordData[] | undefined> => {
     const arr = await GetCurrentNotiWordsAsync()
 
     if (arr === undefined)
-        return
+        return undefined
 
     const now = Date.now()
 
@@ -45,7 +82,7 @@ const CutAndSaveSeenWordsFromCurrentNotiWordsAsync = async (): Promise<void> => 
 
     // handle not seens => save back to SetCurrentNotiWordsAsync
 
-    await SetCurrentNotiWordsAsync(notSeenArr)
+    return notSeenArr
 }
 
 const GetCurrentNotiWordsAsync = async (): Promise<SavedWordData[] | undefined> => {

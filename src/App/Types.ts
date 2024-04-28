@@ -28,5 +28,6 @@ export type LocalizedWordData = {
 export type SavedWordData = {
     word: string,
     localized: LocalizedWordData,
+    targetLang: string,
     notiTick: number,
 }

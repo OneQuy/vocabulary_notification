@@ -21,8 +21,6 @@ import { SystranTranslateAsync } from '../../Common/SystranTranslateApi'
 import { SystranTranslateApiKey } from '../../../Keys'
 import { Language, Languages } from '../../Common/DeepTranslateApi'
 
-const arrWords: Word[] = require('./../../../data.json') as Word[]
-
 const DefaultExcludeTimePairs: PairTime[] = [
   [
     {
@@ -183,27 +181,27 @@ const SetupScreen = () => {
 
     const arrNotis = CalcNotiTimeList(displayIntervalInMin, displayExcludeTimePairs)
 
-    const contents: NotificationOption[] = await GetContentNotisAsync(arrNotis.length)
+    // const contents: NotificationOption[] = await GetContentNotisAsync(arrNotis.length)
 
-    for (let i = 0; i < arrNotis.length; i++) {
-      const time = arrNotis[i]
+    // for (let i = 0; i < arrNotis.length; i++) {
+    //   const time = arrNotis[i]
 
-      for (let day = 0; day < 2; day++) {
-        const nowdate = new Date()
-        nowdate.setDate(nowdate.getDate() + day)
-        nowdate.setHours(time.hours)
-        nowdate.setMinutes(time.minutes)
+    //   for (let day = 0; day < 2; day++) {
+    //     const nowdate = new Date()
+    //     nowdate.setDate(nowdate.getDate() + day)
+    //     nowdate.setHours(time.hours)
+    //     nowdate.setMinutes(time.minutes)
 
-        const noti = {
-          ...contents[i],
-          timestamp: nowdate.getTime(),
-        }
+    //     const noti = {
+    //       ...contents[i],
+    //       timestamp: nowdate.getTime(),
+    //     }
 
-        setNotification(noti)
+    //     setNotification(noti)
 
-        console.log(noti);
-      }
-    }
+    //     console.log(noti);
+    //   }
+    // }
 
     set_handling(false)
   }, [displayIntervalInMin, displayExcludeTimePairs, texts])
@@ -762,35 +760,6 @@ const IsInExcludeTime = (hour: number, minute: number, excludePairs: PairTime[])
   }
 
   return false
-}
-
-const GetContentNotisAsync = async (count: number): Promise<NotificationOption[]> => {
-  const arr: NotificationOption[] = []
-
-  for (let i = 0; i < count; i++) {
-    const wordObj: Word = PickRandomElement(arrWords)
-
-    arr.push({
-      title: wordObj.word,
-
-      message: `(#${wordObj.idx + 1}, ${wordObj.count}) ${wordObj.meanings[0].definitions[0].definition}`
-    })
-  }
-
-  const arrTranslated = await BridgeTranslateMultiWordAsync(
-    arr.map(i => i.title),
-    'vi'
-  )
-
-  for (let i = 0; i < count && i < arrTranslated.length; i++) {
-    const trans = arrTranslated[i]
-
-    if (typeof trans === 'string') {
-      arr[i].message = `${trans.toUpperCase()}\n\n${arr[i].message}`
-    }
-  }
-
-  return arr
 }
 
 const CalcNotiTimeList = (intervalInMinute: number, excludePairs: PairTime[]): TimePickerResult[] => {

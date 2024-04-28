@@ -19,6 +19,7 @@ const eng = {
     not_show: 'Not show during these time ranges:',
     popup_error: 'Oops',
     no_permission: 'Can not setup. Please grant the permission to receive vocabulary notifications!',
+    pls_set_target_lang: 'Please set a language you wish to translate to',
 } as const
 
 export type LocalText = typeof eng
