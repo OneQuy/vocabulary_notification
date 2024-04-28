@@ -2,7 +2,9 @@ const fs = require('fs')
 
 const dir = './editor/Assets/vocabs/'
 
-const outputPath = './editor/Assets/'
+const outputPath = './editor/Assets/files/'
+
+const WordsPerFile = 4840
 
 
 /**
@@ -62,7 +64,7 @@ const ShortAudio = (word) => {
     }
 }
 
-const MergeAsync = async () => {
+const MergeAndSplitFilesAsync = async () => {
     let dirInfo = fs.readdirSync(dir)
 
     dirInfo = dirInfo.sort((a, b) => {
@@ -73,26 +75,38 @@ const MergeAsync = async () => {
     })
 
     let arr = []
+    let count = 0
+    let preIdx = -1
 
     for (let file of dirInfo) {
-        // console.log(file);
-        // continue
-
         const text = fs.readFileSync(dir + file, 'utf-8')
 
         const words = JSON.parse(text)
 
         for (let word of words) {
+            if (word.idx < preIdx) {
+                console.error('wrong indexxxxxxxxxxx', word.word)
+            }
+
+            preIdx = word.idx
+
             ShortAudio(word)
             arr.push(word)
+
+            if (arr.length >= WordsPerFile) {
+                const s = JSON.stringify(arr)
+
+                const file = `${outputPath}index-${count++}.json`
+                fs.writeFileSync(file, s)
+
+                console.log(file, arr.length)
+
+                arr = []
+            }
         }
     }
 
-    const s = JSON.stringify(arr)
-
-    fs.writeFileSync(`${outputPath}merged-${arr.length}words.json`, s)
-
-    console.log('files', dirInfo.length, 'words', arr.length);
+    console.log('done')
 }
 
-MergeAsync()
+MergeAndSplitFilesAsync()
