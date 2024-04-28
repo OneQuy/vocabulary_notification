@@ -43,6 +43,25 @@ const SplitNumberInText = (text) => {
     return Number.parseFloat(numS)
 }
 
+const AudioPath = 'https://api.dictionaryapi.dev/media/pronunciations/en/'
+
+const ShortAudio = (word) => {
+    if (!word.phonetics)
+        return
+
+    for (let phone of word.phonetics) {
+        if (!phone.audio)
+            continue
+
+        if (phone.audio.startsWith(AudioPath)) {
+            if (phone.audio.endsWith('.mp3'))
+                phone.audio = phone.audio.substring(AudioPath.length, phone.audio.length - 4)
+            else
+                phone.audio = phone.audio.substring(AudioPath.length)
+        }
+    }
+}
+
 const MergeAsync = async () => {
     let dirInfo = fs.readdirSync(dir)
 
@@ -64,6 +83,7 @@ const MergeAsync = async () => {
         const words = JSON.parse(text)
 
         for (let word of words) {
+            ShortAudio(word)
             arr.push(word)
         }
     }
