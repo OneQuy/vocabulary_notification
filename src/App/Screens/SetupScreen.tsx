@@ -158,11 +158,11 @@ const SetupScreen = () => {
       SystranTranslateApiKey,
       [
         'jump',
+        'afaldfjads',
         'do'
       ],
-      'pt'
+      'vi'
     )
-
 
     console.log(JSON.stringify(res));
   }, [])

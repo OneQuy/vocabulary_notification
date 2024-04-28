@@ -6,7 +6,8 @@ export type Language = {
 }
 
 /**
- * @returns text translated if success. Error() if api failed or word is unavailable to translate.
+ * @returns text translated if success.
+ * @returns Error() if api failed or word is unavailable to translate.
  * @param word is 'hello'
  */
 export const DeepTranslateAsync = async (

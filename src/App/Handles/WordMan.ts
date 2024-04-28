@@ -99,8 +99,10 @@ export const SetupWordsForSetNotiAsync = async (count: number): Promise<SetupWor
     }
 
     else { // error each or success all
-        for (let translatedOrError of translateRes) {
-
+        for (let translatedWordOrError of translateRes) {
+            if (typeof translatedWordOrError === 'string') {
+                
+            }
         }
     }
 
