@@ -19,6 +19,7 @@ const GetTargetLangAsync = async (): Promise<string | null> => {
 export type SetupWordsForSetNotiResult = {
     words?: SavedWordData[],
     errorText?: keyof LocalText,
+    error?: Error,
 }
 
 const GetWordsFromDataAsync = async (words: string[]): Promise<Word[]> => {
@@ -28,6 +29,9 @@ const GetWordsFromDataAsync = async (words: string[]): Promise<Word[]> => {
 const GetNextWordsFromDataAsync = async (count: number): Promise<Word[]> => {
     const arr: Word[] = []
 
+    if (count <= 0)
+        return arr
+
     for (let i = 0; i < count; i++)
         arr.push(PickRandomElement(arrWords))
 
@@ -35,7 +39,7 @@ const GetNextWordsFromDataAsync = async (count: number): Promise<Word[]> => {
 }
 
 /**
- * 
+ * do call: AddSeenWordsAndRefreshCurrentNotiWordsAsync
  * @returns words.length maybe >= count
  */
 export const SetupWordsForSetNotiAsync = async (count: number): Promise<SetupWordsForSetNotiResult> => {
@@ -55,16 +59,16 @@ export const SetupWordsForSetNotiAsync = async (count: number): Promise<SetupWor
 
     // if not seen words not match current lang => need to refetch
 
-    let notSeenWords_NotMatchLang: string[] | undefined
+    let notSeenWords_NotMatchLang: Word[] | undefined
 
-    if (notSeenWords && notSeenWords.findIndex(i =>i.targetLang !== targetLang) >= 0) {
-        notSeenWords_NotMatchLang = notSeenWords.map(i => i.word)
+    if (notSeenWords && notSeenWords.findIndex(i => i.targetLang !== targetLang) >= 0) {
+        notSeenWords_NotMatchLang = await GetWordsFromDataAsync(notSeenWords.map(i => i.word))
         notSeenWords = undefined
     }
 
     // enough fetched words, not need fetch more.
 
-    if (notSeenWords && notSeenWords.length >= count) { 
+    if (notSeenWords && notSeenWords.length >= count) {
         return {
             words: notSeenWords,
         } as SetupWordsForSetNotiResult
@@ -76,16 +80,32 @@ export const SetupWordsForSetNotiAsync = async (count: number): Promise<SetupWor
 
     let nextWords = await GetNextWordsFromDataAsync(neededNextWordsCount)
 
+    if (notSeenWords_NotMatchLang)
+        nextWords = nextWords.concat(notSeenWords_NotMatchLang)
 
     // fetch data for new words
 
     const translateRes = await BridgeTranslateMultiWordAsync(
         nextWords.map(word => word.word),
-        'en')
+        targetLang)
+
+    // if fail, random from LoadSeenWordsAsync
+
+    if (translateRes instanceof Error) { // error overall
+        return {
+            errorText: 'fail_translate',
+            error: translateRes,
+        } as SetupWordsForSetNotiResult
+    }
+
+    else { // error each or success all
+        for (let translatedOrError of translateRes) {
+
+        }
+    }
 
     // if success return []
 
-    // if fail, LoadSeenWordsAsync
 }
 
 // Seen Words --------------------------------
