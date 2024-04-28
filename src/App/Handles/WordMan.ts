@@ -1,10 +1,17 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SavedWordData, Word } from "../Types";
-import { StorageKey_CurrentNotiWords, StorageKey_SeenWords } from "../Constants/StorageKey";
+import { StorageKey_CurrentNotiWords, StorageKey_SeenWords, StorageKey_TargetLang } from "../Constants/StorageKey";
 import { GetArrayAsync, SetArrayAsync } from "../../Common/AsyncStorageUtils";
 import { PickRandomElement, SafeArrayLength } from "../../Common/UtilsTS";
+import { BridgeTranslateMultiWordAsync } from "./TranslateBridge";
 
 const arrWords: Word[] = require('./../../../data.json') as Word[] // tmp
+
+// settings
+
+const GetTargetLangAsync = async (): Promise<string | null> => {
+    return await AsyncStorage.getItem(StorageKey_TargetLang)
+}
 
 // Set Noti --------------------------------
 
@@ -23,15 +30,35 @@ const GetNextWordsFromDataAsync = async (count: number): Promise<Word[]> => {
 }
 
 export const SetupWordsForSetNotiAsync = async (count: number): Promise<SetupWordsForSetNotiResult> => {
+    const targetLang = await GetTargetLangAsync()
+
+    if (!targetLang) {
+        return {
+            error: new Error('Please setl')
+        } as SetupWordsForSetNotiResult
+    }
+
     // get not seen words (already have saved data)
 
-    const notSeenWords = await CutAndSaveSeenWordsAndGetNotSeenWordsFromCurrentNotiWordsAsync()
+    const notSeenWords = await AddSeenWordsAndRefreshCurrentNotiWordsAsync()
 
     // get new word from data file for enough 'count'
 
-    const nextWords = await GetNextWordsFromDataAsync(count - SafeArrayLength(notSeenWords))
-    
+    const neededNextWords = count - SafeArrayLength(notSeenWords)
+
+    if (neededNextWords <= 0) { // enough fetched words, not need fetch more.
+        return {
+            words: notSeenWords,
+        } as SetupWordsForSetNotiResult
+    }
+
+    const nextWords = await GetNextWordsFromDataAsync(neededNextWords)
+
     // fetch data for new words
+
+    const translateRes = await BridgeTranslateMultiWordAsync(
+        nextWords.map(word => word.word),
+        'en')
 
     // if success return []
 
@@ -46,7 +73,7 @@ const AddSeenWordsAsync = async (words: SavedWordData[]): Promise<void> => {
     if (arr === undefined)
         arr = words
     else
-        arr = arr.concat(words)
+        arr = words.concat(arr)
 
     await SetArrayAsync(StorageKey_SeenWords, arr)
 }
@@ -57,7 +84,7 @@ export const LoadSeenWordsAsync = async (): Promise<SavedWordData[] | undefined>
 
 // Current Noti Words --------------------------------
 
-const CutAndSaveSeenWordsAndGetNotSeenWordsFromCurrentNotiWordsAsync = async (): Promise<SavedWordData[] | undefined> => {
+const AddSeenWordsAndRefreshCurrentNotiWordsAsync = async (): Promise<SavedWordData[] | undefined> => {
     const arr = await GetCurrentNotiWordsAsync()
 
     if (arr === undefined)
@@ -78,9 +105,11 @@ const CutAndSaveSeenWordsAndGetNotSeenWordsFromCurrentNotiWordsAsync = async ():
     // handle seens => save to db
 
     if (seenArr.length > 0)
-        AddSeenWordsAsync(seenArr)
+        await AddSeenWordsAsync(seenArr)
 
     // handle not seens => save back to SetCurrentNotiWordsAsync
+
+    await SetCurrentNotiWordsAsync(notSeenArr)
 
     return notSeenArr
 }
