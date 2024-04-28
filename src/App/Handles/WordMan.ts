@@ -4,6 +4,7 @@ import { StorageKey_CurrentNotiWords, StorageKey_SeenWords, StorageKey_TargetLan
 import { GetArrayAsync, SetArrayAsync } from "../../Common/AsyncStorageUtils";
 import { PickRandomElement, SafeArrayLength } from "../../Common/UtilsTS";
 import { BridgeTranslateMultiWordAsync } from "./TranslateBridge";
+import { LocalText } from "../Hooks/useLocalText";
 
 const arrWords: Word[] = require('./../../../data.json') as Word[] // tmp
 
@@ -17,7 +18,11 @@ const GetTargetLangAsync = async (): Promise<string | null> => {
 
 export type SetupWordsForSetNotiResult = {
     words?: SavedWordData[],
-    error?: Error,
+    errorText?: keyof LocalText,
+}
+
+const GetWordsFromDataAsync = async (words: string[]): Promise<Word[]> => {
+    return arrWords.filter(word => words.includes(word.word))
 }
 
 const GetNextWordsFromDataAsync = async (count: number): Promise<Word[]> => {
@@ -29,30 +34,48 @@ const GetNextWordsFromDataAsync = async (count: number): Promise<Word[]> => {
     return arr
 }
 
+/**
+ * 
+ * @returns words.length maybe >= count
+ */
 export const SetupWordsForSetNotiAsync = async (count: number): Promise<SetupWordsForSetNotiResult> => {
     const targetLang = await GetTargetLangAsync()
 
+    // error not set lang yet
+
     if (!targetLang) {
         return {
-            error: new Error('Please setl')
+            errorText: 'pls_set_target_lang',
         } as SetupWordsForSetNotiResult
     }
 
     // get not seen words (already have saved data)
 
-    const notSeenWords = await AddSeenWordsAndRefreshCurrentNotiWordsAsync()
+    let notSeenWords = await AddSeenWordsAndRefreshCurrentNotiWordsAsync()
 
-    // get new word from data file for enough 'count'
+    // if not seen words not match current lang => need to refetch
 
-    const neededNextWords = count - SafeArrayLength(notSeenWords)
+    let notSeenWords_NotMatchLang: string[] | undefined
 
-    if (neededNextWords <= 0) { // enough fetched words, not need fetch more.
+    if (notSeenWords && notSeenWords.findIndex(i =>i.targetLang !== targetLang) >= 0) {
+        notSeenWords_NotMatchLang = notSeenWords.map(i => i.word)
+        notSeenWords = undefined
+    }
+
+    // enough fetched words, not need fetch more.
+
+    if (notSeenWords && notSeenWords.length >= count) { 
         return {
             words: notSeenWords,
         } as SetupWordsForSetNotiResult
     }
 
-    const nextWords = await GetNextWordsFromDataAsync(neededNextWords)
+    // get new words count from data file for enough 'count'
+
+    const neededNextWordsCount = count - SafeArrayLength(notSeenWords) - SafeArrayLength(notSeenWords_NotMatchLang)
+
+    let nextWords = await GetNextWordsFromDataAsync(neededNextWordsCount)
+
 
     // fetch data for new words
 
