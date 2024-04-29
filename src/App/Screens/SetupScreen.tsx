@@ -18,8 +18,8 @@ import { AuthorizationStatus } from '@notifee/react-native'
 import { Word } from '../Types'
 import { BridgeTranslateMultiWordAsync } from '../Handles/TranslateBridge'
 import { SystranTranslateAsync } from '../../Common/SystranTranslateApi'
-import { SystranTranslateApiKey } from '../../../Keys'
-import { DeepTranslateAsync, DeepTranslateMultiWordAsync, Language, Languages } from '../../Common/DeepTranslateApi'
+import { DeepTranslateApiKey, SystranTranslateApiKey } from '../../../Keys'
+import { DeepTranslateSingleTextAsync, DeepTranslateAsync, Language, Languages } from '../../Common/DeepTranslateApi'
 
 const DefaultExcludeTimePairs: PairTime[] = [
   [
@@ -154,15 +154,23 @@ const SetupScreen = () => {
   }, [theme])
 
   const onPressTestNotification = useCallback(async () => {
-    const res = await DeepTranslateMultiWordAsync(
-      SystranTranslateApiKey,
+    // const res = await systra(
+    //   SystranTranslateApiKey,
+    const res = await DeepTranslateAsync(
+      DeepTranslateApiKey,
       [
         'the',
+        'love', 
+        'rope',
+        'ring',
+        'roooaa',
+        'this'
       ],
       'vi'
     )
 
-    console.log(JSON.stringify(res));
+    // console.log(res);
+    console.log(JSON.stringify(res, null, 1));
   }, [])
 
   const onPressSetNotification = useCallback(async () => {

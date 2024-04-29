@@ -6,7 +6,7 @@ import { Language, TranslatedResult } from "./DeepTranslateApi"
 import { CreateError } from "./UtilsTS"
 
 /**
- * @returns success: string[] translated (or word is unavailable to translate)
+ * @returns success: string[] translated (even word is unavailable to translate)
  * @returns error: Error()
  */
 export const SystranTranslateAsync = async (

@@ -1,3 +1,5 @@
+// https://rapidapi.com/gatzuma/api/deep-translate1
+
 import { SafeValue } from "./UtilsTS";
 
 export type Language = {
@@ -12,10 +14,10 @@ export type TranslatedResult = {
 }
 
 /**
- * @returns text translated if success (or word is unavailable to translate)
+ * @returns text translated if success (even word is unavailable to translate)
  * @returns Error() if api failed
  */
-export const DeepTranslateAsync = async (
+export const DeepTranslateSingleTextAsync = async (
     key: string,
     text: string,
     toLang: string | Language,
@@ -35,8 +37,6 @@ export const DeepTranslateAsync = async (
         xhr.withCredentials = true;
 
         xhr.onload = function () {
-            // console.log(xhr.getAllResponseHeaders());
-
             const json = JSON.parse(xhr.response)
             const translatedText = SafeValue(json?.data?.translations?.translatedText, '')
 
@@ -70,19 +70,57 @@ export const DeepTranslateAsync = async (
 
 /**
  * ### each element:
- * * text translated if success (or word is unavailable to translate)
+ * * text translated arr if success (even word is unavailable to translate)
  * * Error() if api failed
+ * 
+ * ### test cases:
+// [
+//     'the',
+//     'love', 
+//     'rope',
+//     'ring',
+//     'roooaa',
+//     'this'
+// ],
  */
-export const DeepTranslateMultiWordAsync = async (
+export const DeepTranslateAsync = async (
     key: string,
-    words: string[],
+    texts: string[],
     toLang: string | Language,
     fromLang?: string | Language,
-): Promise<TranslatedResult[]> => {
-    return await Promise.all(words.map(word => {
-        return DeepTranslateAsync(key, word, toLang, fromLang)
-    }))
+): Promise<TranslatedResult[] | Error> => {
+    const joinChar = '|'
+    const join = texts.join(joinChar)
+
+    const res = await DeepTranslateSingleTextAsync(
+        key,
+        join,
+        toLang,
+        fromLang)
+
+    if (res.error instanceof Error)
+        return res.error
+
+    if (!res.translated)
+        return new Error('DeepTranslateAsync failed')
+
+    const translatedArr = res.translated.split(joinChar)
+
+    if (translatedArr.length !== texts.length)
+        return new Error('DeepTranslateAsync translated arr not same length with texts length')
+
+    return translatedArr.map((translated, index) => {
+        return {
+            text: texts[index],
+            translated: (translated && translated.length > 0) ? translated : texts[index],
+        } as TranslatedResult
+    })
+
+    // return await Promise.all(texts.map(text => {
+    //     return DeepTranslateSingleTextAsync(key, text, toLang, fromLang)
+    // }))
 }
+
 export const Languages: Language[] = [
     {
         "language": "en",
