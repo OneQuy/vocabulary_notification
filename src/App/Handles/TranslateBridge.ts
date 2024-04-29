@@ -19,6 +19,11 @@ var currentService: BridgeTranslateService = {
     key: SystranTranslateApiKey,
 }
 
+/**
+ * ### each element:
+ * * text translated if success (or word is unavailable to translate)
+ * * Error() if api failed
+ */
 export const BridgeTranslateMultiWordAsync = async (
     words: string[],
     toLang: string | Language,
