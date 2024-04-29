@@ -1,3 +1,5 @@
+import { TimePickerResult } from "./Components/TimePicker";
+
 export interface Definition {
     definition: string;
     example?: string;
@@ -31,3 +33,5 @@ export type SavedWordData = {
     localized: LocalizedData,
     notiTick: number,
 }
+
+export type PairTime = TimePickerResult[]

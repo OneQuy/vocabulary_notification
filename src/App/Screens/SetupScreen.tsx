@@ -6,84 +6,18 @@ import useLocalText from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, LogStringify, PickRandomElement, PrependZero, ToCanPrint } from '../../Common/UtilsTS'
+import { AddS, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, LogStringify, PrependZero } from '../../Common/UtilsTS'
 import HairLine from '../../Common/Components/HairLine'
 import { CommonStyles, WindowSize_Max } from '../../Common/CommonConstants'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
-import { PopuplarityLevelNumber } from '../Constants/AppConstants'
+import { DefaultExcludedTimePairs, DefaultIntervalInMin, IntervalInMinPresets, LimitWordsPerDayPresets, PopuplarityLevelNumber } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
 import { LucideIcon } from '../../Common/Components/LucideIcon'
-import { NotificationOption, cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync, setNotification, setNotification_RemainSeconds } from '../../Common/Nofitication'
+import { cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync } from '../../Common/Nofitication'
 import { AuthorizationStatus } from '@notifee/react-native'
-import { Word } from '../Types'
-import { BridgeTranslateMultiWordAsync } from '../Handles/TranslateBridge'
-import { SystranTranslateAsync } from '../../Common/SystranTranslateApi'
-import { DeepTranslateApiKey, SystranTranslateApiKey } from '../../../Keys'
-import { DeepTranslateSingleTextAsync, DeepTranslateAsync, Language, Languages } from '../../Common/DeepTranslateApi'
-
-const DefaultExcludeTimePairs: PairTime[] = [
-  [
-    {
-      hours: 0,
-      minutes: 0,
-      seconds: 0,
-    },
-    {
-      hours: 7,
-      minutes: 0,
-      seconds: 0,
-    }
-  ],
-
-  [
-    {
-      hours: 22,
-      minutes: 0,
-      seconds: 0,
-    },
-    {
-      hours: 23,
-      minutes: 59,
-      seconds: 0,
-    }
-  ],
-]
-
-const IntervalInMinPresets: (undefined | number)[] = [
-  10,
-  30,
-  60,
-  120,
-  180,
-  240,
-  300,
-  360,
-  420,
-  480,
-  60 * 24,
-  undefined // custom
-]
-
-const LimitWordPresets: (number)[] = [
-  0,
-  1,
-  2,
-  3,
-  4,
-  5,
-  6,
-  7,
-  8,
-  9,
-  10,
-  11,
-  12,
-  13,
-  14,
-  15,
-]
-
-type PairTime = TimePickerResult[]
+import { DeepTranslateApiKey } from '../../../Keys'
+import { DeepTranslateAsync, Language, Languages } from '../../Common/DeepTranslateApi'
+import { PairTime } from '../Types'
 
 type PopupType = 'popularity' | 'interval' | 'limit-word' | 'target-lang' | undefined
 
@@ -96,14 +30,14 @@ const SetupScreen = () => {
 
   const [displayPopularityLevelIdx, set_displayPopularityLevelIdx] = useState(0)
 
-  const [displayIntervalInMin, set_displayIntervalInMin] = useState<number>(60)
+  const [displayIntervalInMin, set_displayIntervalInMin] = useState<number>(DefaultIntervalInMin)
 
   const [displayWordLimitNumber, set_displayWordLimitNumber] = useState<number>(5)
 
   const [displayTargetLang, set_displayTargetLang] = useState<Language | undefined>()
   const [searchLangInputTxt, set_searchLangInputTxt] = useState('')
 
-  const [displayExcludeTimePairs, set_displayExcludeTimePairs] = useState<PairTime[]>(DefaultExcludeTimePairs)
+  const [displayExcludeTimePairs, set_displayExcludeTimePairs] = useState<PairTime[]>(DefaultExcludedTimePairs)
   const editingExcludeTimePairAndElementIndex = useRef<[PairTime | undefined, number]>([undefined, -1])
 
   const [showTimePicker, set_showTimePicker] = useState(false)
@@ -374,7 +308,7 @@ const SetupScreen = () => {
         contentContainerStyle={style.scrollViewSlidingPopup}
       >
         {
-          LimitWordPresets.map((wordNum: number) => {
+          LimitWordsPerDayPresets.map((wordNum: number) => {
             const isSelected = wordNum === displayWordLimitNumber
 
             return (
@@ -472,7 +406,7 @@ const SetupScreen = () => {
   // exclude time
 
   const onPressAddExcludeTime = useCallback(() => {
-    displayExcludeTimePairs.push(DefaultExcludeTimePairs[0])
+    displayExcludeTimePairs.push(DefaultExcludedTimePairs[0])
     set_displayExcludeTimePairs(CloneObject(displayExcludeTimePairs))
   }, [displayExcludeTimePairs])
 
