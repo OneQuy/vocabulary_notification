@@ -21,13 +21,13 @@ export interface Word {
     meanings: Meaning[],
 }
 
-export type LocalizedWordData = {
-    translatedWord: string,
+export type LocalizedData = {
+    translated?: string,
+    lang: string,
 }
 
 export type SavedWordData = {
     word: string,
-    localized: LocalizedWordData,
-    targetLang: string,
+    localized: LocalizedData,
     notiTick: number,
 }

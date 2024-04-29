@@ -1,5 +1,5 @@
 import { DeepTranslateApiKey, SystranTranslateApiKey } from "../../../Keys"
-import { DeepTranslateMultiWordAsync, Language } from "../../Common/DeepTranslateApi"
+import { DeepTranslateMultiWordAsync, Language, TranslatedResult } from "../../Common/DeepTranslateApi"
 import { SystranTranslateAsync } from "../../Common/SystranTranslateApi"
 
 type BridgeTranslateServiceName = 'deep' | 'systran'
@@ -23,7 +23,7 @@ export const BridgeTranslateMultiWordAsync = async (
     words: string[],
     toLang: string | Language,
     fromLang?: string | Language,
-): Promise<(string | Error)[] | Error> => {
+): Promise<TranslatedResult[] | Error> => {
     if (currentService.service === 'deep') {
         return await DeepTranslateMultiWordAsync(
             currentService.key,

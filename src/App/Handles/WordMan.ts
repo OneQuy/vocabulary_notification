@@ -2,9 +2,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SavedWordData, Word } from "../Types";
 import { StorageKey_CurrentNotiWords, StorageKey_SeenWords, StorageKey_TargetLang } from "../Constants/StorageKey";
 import { GetArrayAsync, SetArrayAsync } from "../../Common/AsyncStorageUtils";
-import { PickRandomElement, SafeArrayLength } from "../../Common/UtilsTS";
+import { PickRandomElement, SafeArrayLength, SafeGetArrayElement } from "../../Common/UtilsTS";
 import { BridgeTranslateMultiWordAsync } from "./TranslateBridge";
 import { LocalText } from "../Hooks/useLocalText";
+import { Language, TranslatedResult } from "../../Common/DeepTranslateApi";
 
 const arrWords: Word[] = require('./../../../data.json') as Word[] // tmp
 
@@ -22,11 +23,17 @@ export type SetupWordsForSetNotiResult = {
     error?: Error,
 }
 
-const GetWordsFromDataAsync = async (words: string[]): Promise<Word[]> => {
+const GetWordsDataAsync = async (words: string[]): Promise<Word[]> => {
     return arrWords.filter(word => words.includes(word.word))
 }
 
+const SetReachedWordIndexAsync = async (index: number): Promise<void> => {
+}
+
 const GetNextWordsFromDataAsync = async (count: number): Promise<Word[]> => {
+    // get cur index
+    // return get index
+
     const arr: Word[] = []
 
     if (count <= 0)
@@ -36,6 +43,38 @@ const GetNextWordsFromDataAsync = async (count: number): Promise<Word[]> => {
         arr.push(PickRandomElement(arrWords))
 
     return arr
+}
+
+export const LoadFromSeenWordsOrTranslateAsync = async (
+    words: string[],
+    toLang: string,
+    fromLang?: string,
+): Promise<TranslatedResult[] | Error> => {
+    const seenWords = await LoadSeenWordsAsync()
+
+    const needFetchWords = words.filter(word => !seenWords || seenWords.findIndex(i => i.word === word && toLang === i.localized.lang) < 0)
+
+    const savedWords = seenWords ?
+        seenWords.filter(word => words.includes(word.word)) :
+        undefined
+
+    if (savedWords && needFetchWords.length <= 0)
+        return savedWords.map(saved => {
+            return {
+                text: saved.word,
+                translated?: saved.localized.translated
+                error?: Error,
+            } as TranslatedResult
+        })
+
+
+    // if (seenWords) {
+    //     for (let saved of seenWords) {
+    //         if (words.includes(saved.word)) {
+    //             savedWords.push(saved)
+    //         }
+    //     }
+    // }
 }
 
 /**
@@ -61,8 +100,8 @@ export const SetupWordsForSetNotiAsync = async (count: number): Promise<SetupWor
 
     let notSeenWords_NotMatchLang: Word[] | undefined
 
-    if (notSeenWords && notSeenWords.findIndex(i => i.targetLang !== targetLang) >= 0) {
-        notSeenWords_NotMatchLang = await GetWordsFromDataAsync(notSeenWords.map(i => i.word))
+    if (notSeenWords && notSeenWords.findIndex(i => i.localized.lang !== targetLang) >= 0) {
+        notSeenWords_NotMatchLang = await GetWordsDataAsync(notSeenWords.map(i => i.word))
         notSeenWords = undefined
     }
 
@@ -80,47 +119,84 @@ export const SetupWordsForSetNotiAsync = async (count: number): Promise<SetupWor
 
     let nextWords = await GetNextWordsFromDataAsync(neededNextWordsCount)
 
+    // add not seen words but not match lang to refetch
+
     if (notSeenWords_NotMatchLang)
         nextWords = nextWords.concat(notSeenWords_NotMatchLang)
 
     // fetch data for new words
 
-    const translateRes = await BridgeTranslateMultiWordAsync(
+    const translatedApiResultArrOrError = await BridgeTranslateMultiWordAsync(
         nextWords.map(word => word.word),
         targetLang)
 
     // if fail, random from LoadSeenWordsAsync
 
-    if (translateRes instanceof Error) { // error overall
+    if (translatedApiResultArrOrError instanceof Error) { // error overall
         return {
             errorText: 'fail_translate',
-            error: translateRes,
+            error: translatedApiResultArrOrError,
         } as SetupWordsForSetNotiResult
     }
 
-    else { // error each or success all
-        for (let translatedWordOrError of translateRes) {
-            if (typeof translatedWordOrError === 'string') {
-                
-            }
+    // error each or success all
+
+    else {
+        const successAny = translatedApiResultArrOrError.findIndex(t => t.translated !== undefined) >= 0
+
+        // error all
+
+        if (!successAny) {
+            const first = SafeGetArrayElement<TranslatedResult>(translatedApiResultArrOrError)
+
+            return {
+                errorText: 'fail_translate',
+                error: first?.error,
+            } as SetupWordsForSetNotiResult
         }
+
+        // success all or some words
+
+        SetReachedWordIndexAsync(-1)
+
+        const words: SavedWordData[] = translatedApiResultArrOrError.map(translate => {
+            return {
+                word: translate.text,
+                notiTick: -1,
+
+                localized: {
+                    translated: translate.translated,
+                    lang: targetLang,
+                },
+            } as SavedWordData
+        })
+
+        return {
+            words: notSeenWords ? words.concat(notSeenWords) : words
+        } as SetupWordsForSetNotiResult
     }
-
-    // if success return []
-
 }
 
 // Seen Words --------------------------------
 
-const AddSeenWordsAsync = async (words: SavedWordData[]): Promise<void> => {
-    let arr = await GetArrayAsync<SavedWordData>(StorageKey_SeenWords)
+const AddSeenWordsAsync = async (addWords: SavedWordData[]): Promise<void> => {
+    let savedArr = await GetArrayAsync<SavedWordData>(StorageKey_SeenWords)
 
-    if (arr === undefined)
-        arr = words
-    else
-        arr = words.concat(arr)
+    if (savedArr === undefined) // never save seen words before
+        savedArr = addWords
+    else // append current ones
+    {
+        for (let add of addWords) {
+            const idx = savedArr.findIndex(saved => IsSameSavedWord(saved, add))
 
-    await SetArrayAsync(StorageKey_SeenWords, arr)
+            if (idx >= 0) // saved already
+                continue
+
+            savedArr.unshift(add)
+        }
+    }
+
+    await SetArrayAsync(StorageKey_SeenWords, savedArr)
 }
 
 export const LoadSeenWordsAsync = async (): Promise<SavedWordData[] | undefined> => {
@@ -172,4 +248,14 @@ export const SetCurrentNotiWordsAsync = async (savedDatas: SavedWordData[]) => {
     }
 
     await SetArrayAsync(StorageKey_CurrentNotiWords, savedDatas)
+}
+
+// other
+
+const IsSameSavedWord = (s1: SavedWordData, s2: SavedWordData) => {
+    return (
+        s1.word === s2.word &&
+        s1.localized.translated === s2.localized.translated &&
+        s1.localized.lang === s2.localized.lang
+    )
 }

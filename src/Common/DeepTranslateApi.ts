@@ -5,23 +5,28 @@ export type Language = {
     "name": string,
 }
 
+export type TranslatedResult = {
+    text: string,
+    translated?: string,
+    error?: Error,
+}
+
 /**
- * @returns text translated if success.
- * @returns Error() if api failed or word is unavailable to translate.
- * @param word is 'hello'
+ * @returns text translated if success (or word is unavailable to translate)
+ * @returns Error() if api failed
  */
 export const DeepTranslateAsync = async (
     key: string,
-    word: string,
+    text: string,
     toLang: string | Language,
     fromLang?: string | Language,
-): Promise<string | Error> => {
+): Promise<TranslatedResult> => {
     return new Promise((resolve) => {
         const from = fromLang ? (typeof fromLang === 'object' ? fromLang.language : fromLang) : 'en'
         const to = typeof toLang === 'object' ? toLang.language : toLang
 
         const data = JSON.stringify({
-            q: word,
+            q: text,
             source: from,
             target: to,
         });
@@ -33,18 +38,25 @@ export const DeepTranslateAsync = async (
             // console.log(xhr.getAllResponseHeaders());
 
             const json = JSON.parse(xhr.response)
-            const value = SafeValue(json?.data?.translations?.translatedText, '')
+            const translatedText = SafeValue(json?.data?.translations?.translatedText, '')
 
-            if (value === '')
-                resolve(new Error(xhr.response))
-            else if (value === word)
-                resolve(new Error('This word is unavailable to translate.'))
+            if (translatedText === '')
+                resolve({
+                    error: new Error(xhr.response),
+                    text,
+                } as TranslatedResult)
             else
-                resolve(value)
+                resolve({
+                    translated: translatedText,
+                    text,
+                } as TranslatedResult)
         };
 
         xhr.onerror = function () {
-            resolve(new Error('DeepTranslateAsync failed'))
+            resolve({
+                error: new Error('DeepTranslateAsync failed'),
+                text,
+            } as TranslatedResult)
         };
 
         xhr.open('POST', 'https://deep-translate1.p.rapidapi.com/language/translate/v2');
@@ -56,12 +68,17 @@ export const DeepTranslateAsync = async (
     })
 }
 
+/**
+ * ### each element:
+ * * text translated if success (or word is unavailable to translate)
+ * * Error() if api failed
+ */
 export const DeepTranslateMultiWordAsync = async (
     key: string,
     words: string[],
     toLang: string | Language,
     fromLang?: string | Language,
-): Promise<(string | Error)[]> => {
+): Promise<TranslatedResult[]> => {
     return await Promise.all(words.map(word => {
         return DeepTranslateAsync(key, word, toLang, fromLang)
     }))

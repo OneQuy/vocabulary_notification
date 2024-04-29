@@ -19,7 +19,7 @@ import { Word } from '../Types'
 import { BridgeTranslateMultiWordAsync } from '../Handles/TranslateBridge'
 import { SystranTranslateAsync } from '../../Common/SystranTranslateApi'
 import { SystranTranslateApiKey } from '../../../Keys'
-import { Language, Languages } from '../../Common/DeepTranslateApi'
+import { DeepTranslateAsync, DeepTranslateMultiWordAsync, Language, Languages } from '../../Common/DeepTranslateApi'
 
 const DefaultExcludeTimePairs: PairTime[] = [
   [
@@ -154,12 +154,10 @@ const SetupScreen = () => {
   }, [theme])
 
   const onPressTestNotification = useCallback(async () => {
-    const res = await SystranTranslateAsync(
+    const res = await DeepTranslateMultiWordAsync(
       SystranTranslateApiKey,
       [
-        'jump',
-        'afaldfjads',
-        'do'
+        'the',
       ],
       'vi'
     )
