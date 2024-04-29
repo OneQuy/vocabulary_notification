@@ -18,7 +18,7 @@ import { AuthorizationStatus } from '@notifee/react-native'
 import { DeepTranslateApiKey } from '../../../Keys'
 import { DeepTranslateAsync, Language, Languages } from '../../Common/DeepTranslateApi'
 import { PairTime } from '../Types'
-import { ExecuteSqlAsync, OpenDatabaseAsync } from '../../Common/SqlLite'
+import { ExecuteSqlAsync, OpenDatabaseAsync } from '../../Common/SQLite'
 
 type PopupType = 'popularity' | 'interval' | 'limit-word' | 'target-lang' | undefined
 
