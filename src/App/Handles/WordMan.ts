@@ -2,10 +2,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SavedWordData, Word } from "../Types";
 import { StorageKey_CurrentNotiWords, StorageKey_SeenWords, StorageKey_TargetLang } from "../Constants/StorageKey";
 import { GetArrayAsync, SetArrayAsync } from "../../Common/AsyncStorageUtils";
-import { PickRandomElement, SafeArrayLength, SafeGetArrayElement } from "../../Common/UtilsTS";
+import { PickRandomElement, SafeArrayLength } from "../../Common/UtilsTS";
 import { BridgeTranslateMultiWordAsync } from "./TranslateBridge";
 import { LocalText } from "../Hooks/useLocalText";
-import { Language, TranslatedResult } from "../../Common/DeepTranslateApi";
+import { TranslatedResult } from "../../Common/DeepTranslateApi";
 
 const arrWords: Word[] = require('./../../../data.json') as Word[] // tmp
 
