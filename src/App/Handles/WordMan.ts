@@ -52,29 +52,48 @@ export const LoadFromSeenWordsOrTranslateAsync = async (
 ): Promise<TranslatedResult[] | Error> => {
     const seenWords = await LoadSeenWordsAsync()
 
-    const needFetchWords = words.filter(word => !seenWords || seenWords.findIndex(i => i.word === word && toLang === i.localized.lang) < 0)
+    const alreadyFetchedWords: SavedWordData[] = []
 
-    const savedWords = seenWords ?
-        seenWords.filter(word => words.includes(word.word)) :
-        undefined
+    const needFetchWords = words.filter(word => {
+        if (!seenWords)
+            return true
 
-    if (savedWords && needFetchWords.length <= 0)
-        return savedWords.map(saved => {
-            return {
-                text: saved.word,
-                translated?: saved.localized.translated
-                error?: Error,
-            } as TranslatedResult
+        const seen = seenWords.find(seen => seen.word === word && toLang === seen.localized.lang)
+
+        if (seen)
+            alreadyFetchedWords.push(seen)
+
+        return seen === undefined
+    })
+
+    // already fetched all, did not fetch anymore
+
+    if (needFetchWords.length <= 0) {
+        return alreadyFetchedWords.map(saved => {
+            return SavedWordToTranslatedResult(saved)
         })
+    }
 
+    // fetch
 
-    // if (seenWords) {
-    //     for (let saved of seenWords) {
-    //         if (words.includes(saved.word)) {
-    //             savedWords.push(saved)
-    //         }
-    //     }
-    // }
+    const translatedArrOrError = await BridgeTranslateMultiWordAsync(
+        needFetchWords,
+        toLang,
+        fromLang)
+
+    // error overall
+
+    if (translatedArrOrError instanceof Error) {
+        return translatedArrOrError
+    }
+
+    // success all
+
+    else {
+        const alreadyArr = alreadyFetchedWords.map(word => SavedWordToTranslatedResult(word))
+
+        return translatedArrOrError.concat(alreadyArr)
+    }
 }
 
 /**
@@ -94,85 +113,64 @@ export const SetupWordsForSetNotiAsync = async (count: number): Promise<SetupWor
 
     // get not seen words (already have saved data)
 
-    let notSeenWords = await AddSeenWordsAndRefreshCurrentNotiWordsAsync()
+    let alreadyFetchedAndNotSeenWords = await AddSeenWordsAndRefreshCurrentNotiWordsAsync()
 
     // if not seen words not match current lang => need to refetch
 
-    let notSeenWords_NotMatchLang: Word[] | undefined
+    let alreadyFetchedAndNotSeenWords_ButNotMatchLang: Word[] | undefined
 
-    if (notSeenWords && notSeenWords.findIndex(i => i.localized.lang !== targetLang) >= 0) {
-        notSeenWords_NotMatchLang = await GetWordsDataAsync(notSeenWords.map(i => i.word))
-        notSeenWords = undefined
+    if (alreadyFetchedAndNotSeenWords && alreadyFetchedAndNotSeenWords.findIndex(i => i.localized.lang !== targetLang) >= 0) {
+        alreadyFetchedAndNotSeenWords_ButNotMatchLang = await GetWordsDataAsync(alreadyFetchedAndNotSeenWords.map(i => i.word))
+        alreadyFetchedAndNotSeenWords = undefined
     }
 
     // enough fetched words, not need fetch more.
 
-    if (notSeenWords && notSeenWords.length >= count) {
+    if (alreadyFetchedAndNotSeenWords && alreadyFetchedAndNotSeenWords.length >= count) {
         return {
-            words: notSeenWords,
+            words: alreadyFetchedAndNotSeenWords,
         } as SetupWordsForSetNotiResult
     }
 
     // get new words count from data file for enough 'count'
 
-    const neededNextWordsCount = count - SafeArrayLength(notSeenWords) - SafeArrayLength(notSeenWords_NotMatchLang)
+    const neededNextWordsCount = count - SafeArrayLength(alreadyFetchedAndNotSeenWords) - SafeArrayLength(alreadyFetchedAndNotSeenWords_ButNotMatchLang)
 
-    let nextWords = await GetNextWordsFromDataAsync(neededNextWordsCount)
+    let nextWordsToFetch = await GetNextWordsFromDataAsync(neededNextWordsCount)
 
     // add not seen words but not match lang to refetch
 
-    if (notSeenWords_NotMatchLang)
-        nextWords = nextWords.concat(notSeenWords_NotMatchLang)
+    if (alreadyFetchedAndNotSeenWords_ButNotMatchLang)
+        nextWordsToFetch = nextWordsToFetch.concat(alreadyFetchedAndNotSeenWords_ButNotMatchLang)
 
     // fetch data for new words
 
-    const translatedApiResultArrOrError = await BridgeTranslateMultiWordAsync(
-        nextWords.map(word => word.word),
+    const translatedResultArrOrError = await LoadFromSeenWordsOrTranslateAsync(
+        nextWordsToFetch.map(word => word.word),
         targetLang)
 
-    // if fail, random from LoadSeenWordsAsync
+    // error overall
 
-    if (translatedApiResultArrOrError instanceof Error) { // error overall
+    if (translatedResultArrOrError instanceof Error) {
         return {
             errorText: 'fail_translate',
-            error: translatedApiResultArrOrError,
+            error: translatedResultArrOrError,
         } as SetupWordsForSetNotiResult
     }
 
-    // error each or success all
+    // success all
 
     else {
-        const successAny = translatedApiResultArrOrError.findIndex(t => t.translated !== undefined) >= 0
-
-        // error all
-
-        if (!successAny) {
-            const first = SafeGetArrayElement<TranslatedResult>(translatedApiResultArrOrError)
-
-            return {
-                errorText: 'fail_translate',
-                error: first?.error,
-            } as SetupWordsForSetNotiResult
-        }
-
-        // success all or some words
-
         SetReachedWordIndexAsync(-1)
 
-        const words: SavedWordData[] = translatedApiResultArrOrError.map(translate => {
-            return {
-                word: translate.text,
-                notiTick: -1,
-
-                localized: {
-                    translated: translate.translated,
-                    lang: targetLang,
-                },
-            } as SavedWordData
+        const translatedWords: SavedWordData[] = translatedResultArrOrError.map(translatedResult => {
+            return TranslatedResultToSavedWord(translatedResult, targetLang, -1)
         })
 
         return {
-            words: notSeenWords ? words.concat(notSeenWords) : words
+            words: alreadyFetchedAndNotSeenWords ?
+                translatedWords.concat(alreadyFetchedAndNotSeenWords) :
+                translatedWords
         } as SetupWordsForSetNotiResult
     }
 }
@@ -251,6 +249,25 @@ export const SetCurrentNotiWordsAsync = async (savedDatas: SavedWordData[]) => {
 }
 
 // other
+
+const SavedWordToTranslatedResult = (saved: SavedWordData): TranslatedResult => {
+    return {
+        text: saved.word,
+        translated: saved.localized.translated,
+    } as TranslatedResult
+}
+
+const TranslatedResultToSavedWord = (translate: TranslatedResult, lang: string, notiTick: number): SavedWordData => {
+    return {
+        word: translate.text,
+        notiTick,
+
+        localized: {
+            translated: translate.translated,
+            lang,
+        },
+    } as SavedWordData
+}
 
 const IsSameSavedWord = (s1: SavedWordData, s2: SavedWordData) => {
     return (
