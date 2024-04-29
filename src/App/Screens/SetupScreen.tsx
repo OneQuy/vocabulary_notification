@@ -18,6 +18,7 @@ import { AuthorizationStatus } from '@notifee/react-native'
 import { DeepTranslateApiKey } from '../../../Keys'
 import { DeepTranslateAsync, Language, Languages } from '../../Common/DeepTranslateApi'
 import { PairTime } from '../Types'
+import { OpenDatabaseAsync } from '../../Common/SqlLite'
 
 type PopupType = 'popularity' | 'interval' | 'limit-word' | 'target-lang' | undefined
 
@@ -90,21 +91,23 @@ const SetupScreen = () => {
   const onPressTestNotification = useCallback(async () => {
     // const res = await systra(
     //   SystranTranslateApiKey,
-    const res = await DeepTranslateAsync(
-      DeepTranslateApiKey,
-      [
-        'the',
-        'love', 
-        'rope',
-        'ring',
-        'roooaa',
-        'this'
-      ],
-      'vi'
-    )
+    // const res = await DeepTranslateAsync(
+    //   DeepTranslateApiKey,
+    //   [
+    //     'the',
+    //     'love', 
+    //     'rope',
+    //     'ring',
+    //     'roooaa',
+    //     'this'
+    //   ],
+    //   'vi'
+    // )
 
-    // console.log(res);
-    console.log(JSON.stringify(res, null, 1));
+    // // console.log(res);
+    // console.log(JSON.stringify(res, null, 1));
+
+    OpenDatabaseAsync()
   }, [])
 
   const onPressSetNotification = useCallback(async () => {

@@ -944,6 +944,8 @@ PODS:
   - React-Mapbuffer (0.73.7):
     - glog
     - React-debug
+  - react-native-sqlite-2 (3.6.2):
+    - React-Core
   - React-nativeconfig (0.73.7)
   - React-NativeModulesApple (0.73.7):
     - glog
@@ -1122,11 +1124,7 @@ PODS:
     - React-Core
   - RNSVG (15.1.0):
     - React-Core
-  - simdjson (3.1.0-wmelon1)
   - SocketRocket (0.6.1)
-  - WatermelonDB (0.27.1):
-    - React
-    - simdjson
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -1182,6 +1180,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector-modern`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
+  - react-native-sqlite-2 (from `../node_modules/react-native-sqlite-2`)
   - React-nativeconfig (from `../node_modules/react-native/ReactCommon`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -1206,8 +1205,6 @@ DEPENDENCIES:
   - RNFS (from `../node_modules/react-native-fs`)
   - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNSVG (from `../node_modules/react-native-svg`)
-  - "simdjson (from `../node_modules/@nozbe/simdjson`)"
-  - "WatermelonDB (from `../node_modules/@nozbe/watermelondb`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -1282,6 +1279,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   React-Mapbuffer:
     :path: "../node_modules/react-native/ReactCommon"
+  react-native-sqlite-2:
+    :path: "../node_modules/react-native-sqlite-2"
   React-nativeconfig:
     :path: "../node_modules/react-native/ReactCommon"
   React-NativeModulesApple:
@@ -1330,10 +1329,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@notifee/react-native"
   RNSVG:
     :path: "../node_modules/react-native-svg"
-  simdjson:
-    :path: "../node_modules/@nozbe/simdjson"
-  WatermelonDB:
-    :path: "../node_modules/@nozbe/watermelondb"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -1377,6 +1372,7 @@ SPEC CHECKSUMS:
   React-jsinspector: f356e49aa086380d3a4892708ca173ad31ac69c1
   React-logger: 7b19bdfb254772a0332d6cd4d66eceb0678b6730
   React-Mapbuffer: 6f392912435adb8fbf4c3eee0e79a0a0b4e4b717
+  react-native-sqlite-2: 21c4a9d439e92193a8712c68492731c014671b53
   React-nativeconfig: 754233aac2a769578f828093b672b399355582e6
   React-NativeModulesApple: a03b2da2b8e127d5f5ee29c683e0deba7a9e1575
   React-perflogger: 68ec84e2f858a3e35009aef8866b55893e5e0a1f
@@ -1401,11 +1397,9 @@ SPEC CHECKSUMS:
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNNotifee: 8e2d3df3f0e9ce8f5d1fe4c967431138190b6175
   RNSVG: 50cf2c7018e57cf5d3522d98d0a3a4dd6bf9d093
-  simdjson: e6bfae9ce4bcdc80452d388d593816f1ca2106f3
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
-  WatermelonDB: 842d22ba555425aa9f3ce551239a001200c539bc
   Yoga: c716aea2ee01df6258550c7505fa61b248145ced
 
-PODFILE CHECKSUM: 8f133b81373cf60db8c6051b20774bf7c6f0c21e
+PODFILE CHECKSUM: dbe6b4e10e42a3c1e5be74e86112e596a0f86c25
 
 COCOAPODS: 1.15.2
