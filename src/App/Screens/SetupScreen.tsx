@@ -18,7 +18,7 @@ import { AuthorizationStatus } from '@notifee/react-native'
 import { DeepTranslateApiKey } from '../../../Keys'
 import { DeepTranslateAsync, Language, Languages } from '../../Common/DeepTranslateApi'
 import { PairTime } from '../Types'
-import { OpenDatabaseAsync } from '../../Common/SqlLite'
+import { ExecuteSqlAsync, OpenDatabaseAsync } from '../../Common/SqlLite'
 
 type PopupType = 'popularity' | 'interval' | 'limit-word' | 'target-lang' | undefined
 
@@ -107,7 +107,27 @@ const SetupScreen = () => {
     // // console.log(res);
     // console.log(JSON.stringify(res, null, 1));
 
-    OpenDatabaseAsync()
+    await OpenDatabaseAsync('demo')
+
+    // let r = await ExecuteSqlAsync('DROP TABLE IF EXISTS Users')
+
+
+    // r = await ExecuteSqlAsync('CREATE TABLE IF NOT EXISTS Users(user_id INTEGER PRIMARY KEY NOT NULL, name VARCHAR(30))')
+    // r = await ExecuteSqlAsync(`INSERT INTO Users (name) VALUES ('John')`)
+    // let r = await ExecuteSqlAsync('SELECT * FROM `users`')
+
+    let r = await ExecuteSqlAsync('SELECTfdsfdsf')
+
+    console.log(r)
+
+    // console.log(r.rows);
+
+    // txn.executeSql('INSERT INTO Users (name) VALUES (:name)', ['takuya'])
+
+    //     for (let i = 0; i < res.rows.length; ++i) {
+    //         console.log('item:', res.rows.item(i))
+    //     }
+    // })
   }, [])
 
   const onPressSetNotification = useCallback(async () => {

@@ -8,8 +8,17 @@ import SQLite, { SQLResultSet, WebsqlDatabase } from 'react-native-sqlite-2'
 
 var db: WebsqlDatabase | undefined
 
-export const OpenDatabase = (dbName: string) => {
-    db = SQLite.openDatabase(dbName)
+export const OpenDatabaseAsync = (dbName: string): Promise<void> => {
+    return new Promise((resolve: () => void) => {
+        db = SQLite.openDatabase(
+            dbName,
+            undefined,
+            undefined,
+            undefined,
+            (_) => {
+                resolve()
+            })
+    })
 }
 
 export const ExecuteSqlAsync = async (cmd: string): Promise<SQLResultSet | Error> => {
@@ -18,25 +27,10 @@ export const ExecuteSqlAsync = async (cmd: string): Promise<SQLResultSet | Error
     }
 
     return new Promise((resolve) => {
-        // @ts-ignore
-        db.transaction(function (txn) {
-            // txn.executeSql('DROP TABLE IF EXISTS Users', [])
-            // txn.executeSql(
-            //     'CREATE TABLE IF NOT EXISTS Users(user_id INTEGER PRIMARY KEY NOT NULL, name VARCHAR(30))',
-            //     []
-            // )
-            // txn.executeSql('INSERT INTO Users (name) VALUES (:name)', ['nora'])
-            // txn.executeSql('INSERT INTO Users (name) VALUES (:name)', ['takuya'])
-
-            // txn.executeSql('SELECT * FROM `users`', [], function (tx, res) {
-            //     for (let i = 0; i < res.rows.length; ++i) {
-            //         console.log('item:', res.rows.item(i))
-            //     }
-            // })
-
+        db?.transaction(function (txn) {
             txn.executeSql(
                 cmd,
-                [],
+                undefined, // [],
                 function (_, res) {
                     resolve(res)
                 },
@@ -53,3 +47,22 @@ export const ExecuteSqlAsync = async (cmd: string): Promise<SQLResultSet | Error
         })
     })
 }
+
+// let r = await ExecuteSqlAsync('DROP TABLE IF EXISTS Users')
+
+// r = await ExecuteSqlAsync('CREATE TABLE IF NOT EXISTS Users(user_id INTEGER PRIMARY KEY NOT NULL, name VARCHAR(30))')
+
+// r = await ExecuteSqlAsync(`INSERT INTO Users (name) VALUES ('John')`)
+
+// r = await ExecuteSqlAsync('SELECT * FROM `users`')
+// console.log(r.rows)
+
+// ------------
+
+// txn.executeSql('SELECT * FROM `users`', [], function (tx, res) {
+    //     for (let i = 0; i < res.rows.length; ++i) {
+        //         console.log('item:', res.rows.item(i))
+        //     }
+        // })
+        
+// r = await ExecuteSqlAsync('INSERT INTO Users (name) VALUES (:name)', ['takuya'])
