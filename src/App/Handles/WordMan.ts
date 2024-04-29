@@ -1,20 +1,15 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SavedWordData, Word } from "../Types";
-import { StorageKey_CurrentNotiWords, StorageKey_SeenWords, StorageKey_TargetLang } from "../Constants/StorageKey";
+import { StorageKey_CurrentNotiWords } from "../Constants/StorageKey";
 import { GetArrayAsync, SetArrayAsync } from "../../Common/AsyncStorageUtils";
-import { PickRandomElement, SafeArrayLength } from "../../Common/UtilsTS";
+import { SafeArrayLength } from "../../Common/UtilsTS";
 import { BridgeTranslateMultiWordAsync } from "./TranslateBridge";
 import { LocalText } from "../Hooks/useLocalText";
 import { TranslatedResult } from "../../Common/DeepTranslateApi";
 import { AddSeenWordsAsync, LoadSeenWordsAsync } from "./SeenWords";
 import { SavedWordToTranslatedResult, TranslatedResultToSavedWord } from "./AppUtils";
 import { GetNextWordsFromDataAsync, GetWordsDataAsync, SetReachedWordIndexAsync } from "./WordsData";
-
-// settings
-
-const GetTargetLangAsync = async (): Promise<string | null> => {
-    return await AsyncStorage.getItem(StorageKey_TargetLang)
-}
+import { GetTargetLangAsync } from "./Settings";
 
 // Set Noti --------------------------------
 
