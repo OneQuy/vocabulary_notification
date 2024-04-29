@@ -6,6 +6,8 @@ import { PickRandomElement, SafeArrayLength } from "../../Common/UtilsTS";
 import { BridgeTranslateMultiWordAsync } from "./TranslateBridge";
 import { LocalText } from "../Hooks/useLocalText";
 import { TranslatedResult } from "../../Common/DeepTranslateApi";
+import { AddSeenWordsAsync, LoadSeenWordsAsync } from "./SeenWords";
+import { SavedWordToTranslatedResult, TranslatedResultToSavedWord } from "./AppUtils";
 
 const arrWords: Word[] = require('./../../../data.json') as Word[] // tmp
 
@@ -175,32 +177,6 @@ export const SetupWordsForSetNotiAsync = async (count: number): Promise<SetupWor
     }
 }
 
-// Seen Words --------------------------------
-
-const AddSeenWordsAsync = async (addWords: SavedWordData[]): Promise<void> => {
-    let savedArr = await GetArrayAsync<SavedWordData>(StorageKey_SeenWords)
-
-    if (savedArr === undefined) // never save seen words before
-        savedArr = addWords
-    else // append current ones
-    {
-        for (let add of addWords) {
-            const idx = savedArr.findIndex(saved => IsSameSavedWord(saved, add))
-
-            if (idx >= 0) // saved already
-                continue
-
-            savedArr.unshift(add)
-        }
-    }
-
-    await SetArrayAsync(StorageKey_SeenWords, savedArr)
-}
-
-export const LoadSeenWordsAsync = async (): Promise<SavedWordData[] | undefined> => {
-    return GetArrayAsync(StorageKey_SeenWords)
-}
-
 // Current Noti Words --------------------------------
 
 const AddSeenWordsAndRefreshCurrentNotiWordsAsync = async (): Promise<SavedWordData[] | undefined> => {
@@ -246,33 +222,4 @@ export const SetCurrentNotiWordsAsync = async (savedDatas: SavedWordData[]) => {
     }
 
     await SetArrayAsync(StorageKey_CurrentNotiWords, savedDatas)
-}
-
-// other
-
-const SavedWordToTranslatedResult = (saved: SavedWordData): TranslatedResult => {
-    return {
-        text: saved.word,
-        translated: saved.localized.translated,
-    } as TranslatedResult
-}
-
-const TranslatedResultToSavedWord = (translate: TranslatedResult, lang: string, notiTick: number): SavedWordData => {
-    return {
-        word: translate.text,
-        notiTick,
-
-        localized: {
-            translated: translate.translated,
-            lang,
-        },
-    } as SavedWordData
-}
-
-const IsSameSavedWord = (s1: SavedWordData, s2: SavedWordData) => {
-    return (
-        s1.word === s2.word &&
-        s1.localized.translated === s2.localized.translated &&
-        s1.localized.lang === s2.localized.lang
-    )
 }
