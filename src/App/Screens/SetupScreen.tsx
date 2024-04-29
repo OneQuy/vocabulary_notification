@@ -108,6 +108,8 @@ const SetupScreen = () => {
     // console.log(JSON.stringify(res, null, 1));
 
     await OpenDatabaseAsync('demo')
+    await OpenDatabaseAsync('demo')
+    await OpenDatabaseAsync('demo')
 
     // let r = await ExecuteSqlAsync('DROP TABLE IF EXISTS Users')
 
@@ -116,9 +118,9 @@ const SetupScreen = () => {
     // r = await ExecuteSqlAsync(`INSERT INTO Users (name) VALUES ('John')`)
     // let r = await ExecuteSqlAsync('SELECT * FROM `users`')
 
-    let r = await ExecuteSqlAsync('SELECTfdsfdsf')
+    // let r = await ExecuteSqlAsync('SELECTfdsfdsf')
 
-    console.log(r)
+    // console.log(r)
 
     // console.log(r.rows);
 

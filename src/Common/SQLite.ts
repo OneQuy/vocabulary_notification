@@ -10,6 +10,11 @@ var db: WebsqlDatabase | undefined
 
 export const OpenDatabaseAsync = (dbName: string): Promise<void> => {
     return new Promise((resolve: () => void) => {
+        if (db) {
+            resolve()
+            return
+        }
+
         db = SQLite.openDatabase(
             dbName,
             undefined,
