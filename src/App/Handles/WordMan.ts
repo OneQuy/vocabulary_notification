@@ -8,7 +8,7 @@ import { LocalText } from "../Hooks/useLocalText";
 import { TranslatedResult } from "../../Common/DeepTranslateApi";
 import { AddSeenWordsAsync, LoadSeenWordsAsync } from "./SeenWords";
 import { SavedWordToTranslatedResult, TranslatedResultToSavedWord } from "./AppUtils";
-import { GetNextWordsFromDataAsync, GetWordsDataAsync, SetReachedWordIndexAsync } from "./WordsData";
+import { GetNextWordsDataForNotiAsync, GetWordsDataAsync, SetUsedWordIndexAsync } from "./WordsData";
 import { GetTargetLangAsync } from "./Settings";
 
 // Set Noti --------------------------------
@@ -110,7 +110,7 @@ export const SetupWordsForSetNotiAsync = async (count: number): Promise<SetupWor
 
     const neededNextWordsCount = count - SafeArrayLength(alreadyFetchedAndNotSeenWords) - SafeArrayLength(alreadyFetchedAndNotSeenWords_ButNotMatchLang)
 
-    let nextWordsToFetch = await GetNextWordsFromDataAsync(neededNextWordsCount)
+    let nextWordsToFetch = await GetNextWordsDataForNotiAsync(neededNextWordsCount)
 
     // add not seen words but not match lang to refetch
 
@@ -135,7 +135,7 @@ export const SetupWordsForSetNotiAsync = async (count: number): Promise<SetupWor
     // success all
 
     else {
-        SetReachedWordIndexAsync(-1)
+        SetUsedWordIndexAsync(-1)
 
         const translatedWords: SavedWordData[] = translatedResultArrOrError.map(translatedResult => {
             return TranslatedResultToSavedWord(translatedResult, targetLang, -1)
