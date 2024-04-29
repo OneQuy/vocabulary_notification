@@ -29,18 +29,28 @@ export const ExecuteSqlAsync = async (cmd: string): Promise<SQLResultSet | Error
     return new Promise((resolve) => {
         db?.transaction(function (txn) {
             txn.executeSql(
+                // cmd
+
                 cmd,
+                
+                // agrs
+                
                 undefined, // [],
+
+                // success
+
                 function (_, res) {
                     resolve(res)
                 },
 
-                // SQLStatementErrorCallback returns a boolean value.
+                // error
 
-                // - true - ends the execution of the transaction. true is returned if there is no callback function specified as a parameter. Important: When true is returned, the transaction is rolled back.
-                // - false - continues executing the transaction
                 function (_, err) {
                     resolve(new Error(err.message as string))
+                    
+                    // SQLStatementErrorCallback returns a boolean value.
+                    // - true - ends the execution of the transaction. true is returned if there is no callback function specified as a parameter. Important: When true is returned, the transaction is rolled back.
+                    // - false - continues executing the transaction
                     return true
                 }
             )
