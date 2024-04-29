@@ -8,8 +8,7 @@ import { LocalText } from "../Hooks/useLocalText";
 import { TranslatedResult } from "../../Common/DeepTranslateApi";
 import { AddSeenWordsAsync, LoadSeenWordsAsync } from "./SeenWords";
 import { SavedWordToTranslatedResult, TranslatedResultToSavedWord } from "./AppUtils";
-
-const arrWords: Word[] = require('./../../../data.json') as Word[] // tmp
+import { GetNextWordsFromDataAsync, GetWordsDataAsync, SetReachedWordIndexAsync } from "./WordsData";
 
 // settings
 
@@ -23,28 +22,6 @@ export type SetupWordsForSetNotiResult = {
     words?: SavedWordData[],
     errorText?: keyof LocalText,
     error?: Error,
-}
-
-const GetWordsDataAsync = async (words: string[]): Promise<Word[]> => {
-    return arrWords.filter(word => words.includes(word.word))
-}
-
-const SetReachedWordIndexAsync = async (index: number): Promise<void> => {
-}
-
-const GetNextWordsFromDataAsync = async (count: number): Promise<Word[]> => {
-    // get cur index
-    // return get index
-
-    const arr: Word[] = []
-
-    if (count <= 0)
-        return arr
-
-    for (let i = 0; i < count; i++)
-        arr.push(PickRandomElement(arrWords))
-
-    return arr
 }
 
 export const LoadFromSeenWordsOrTranslateAsync = async (
