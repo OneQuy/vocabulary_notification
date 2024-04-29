@@ -11,8 +11,6 @@ import { SavedWordToTranslatedResult, TranslatedResultToSavedWord } from "./AppU
 import { GetNextWordsDataForNotiAsync, GetWordsDataAsync, SetUsedWordIndexAsync } from "./WordsData";
 import { GetTargetLangAsync } from "./Settings";
 
-// Set Noti --------------------------------
-
 export type SetupWordsForSetNotiResult = {
     words?: SavedWordData[],
     errorText?: keyof LocalText,
@@ -94,7 +92,15 @@ export const SetupWordsForSetNotiAsync = async (count: number): Promise<SetupWor
     let alreadyFetchedAndNotSeenWords_ButNotMatchLang: Word[] | undefined
 
     if (alreadyFetchedAndNotSeenWords && alreadyFetchedAndNotSeenWords.findIndex(i => i.localized.lang !== targetLang) >= 0) {
-        alreadyFetchedAndNotSeenWords_ButNotMatchLang = await GetWordsDataAsync(alreadyFetchedAndNotSeenWords.map(i => i.word))
+        const wordsDataOrError = await GetWordsDataAsync(alreadyFetchedAndNotSeenWords.map(i => i.word))
+
+        if (wordsDataOrError instanceof Error) {
+            return {
+                error: wordsDataOrError
+            } as SetupWordsForSetNotiResult
+        }
+
+        alreadyFetchedAndNotSeenWords_ButNotMatchLang = wordsDataOrError
         alreadyFetchedAndNotSeenWords = undefined
     }
 
@@ -110,7 +116,15 @@ export const SetupWordsForSetNotiAsync = async (count: number): Promise<SetupWor
 
     const neededNextWordsCount = count - SafeArrayLength(alreadyFetchedAndNotSeenWords) - SafeArrayLength(alreadyFetchedAndNotSeenWords_ButNotMatchLang)
 
-    let nextWordsToFetch = await GetNextWordsDataForNotiAsync(neededNextWordsCount)
+    const getNextWordsDataForNotiResult = await GetNextWordsDataForNotiAsync(neededNextWordsCount)
+
+    if (getNextWordsDataForNotiResult instanceof Error) {
+        return {
+            error: getNextWordsDataForNotiResult
+        } as SetupWordsForSetNotiResult
+    }
+
+    let nextWordsToFetch = getNextWordsDataForNotiResult.words
 
     // add not seen words but not match lang to refetch
 
@@ -135,7 +149,7 @@ export const SetupWordsForSetNotiAsync = async (count: number): Promise<SetupWor
     // success all
 
     else {
-        SetUsedWordIndexAsync(-1)
+        SetUsedWordIndexAsync(getNextWordsDataForNotiResult.usedWordIndex)
 
         const translatedWords: SavedWordData[] = translatedResultArrOrError.map(translatedResult => {
             return TranslatedResultToSavedWord(translatedResult, targetLang, -1)
