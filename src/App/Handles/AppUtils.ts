@@ -31,10 +31,10 @@ export const TranslatedResultToSavedWord = (translate: TranslatedResult, lang: s
     } as SavedWordData
 }
 
-export const IsSameSavedWord = (s1: SavedWordData, s2: SavedWordData) => {
-    return (
-        s1.word === s2.word &&
-        s1.localized.translated === s2.localized.translated &&
-        s1.localized.lang === s2.localized.lang
-    )
-}
+// export const IsSameSavedWord = (s1: SavedWordData, s2: SavedWordData) => {
+//     return (
+//         s1.word === s2.word &&
+//         s1.localized.translated === s2.localized.translated &&
+//         s1.localized.lang === s2.localized.lang
+//     )
+// }

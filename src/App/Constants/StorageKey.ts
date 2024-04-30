@@ -1,7 +1,6 @@
 export const StorageKey_UsedWordIndex = (popularityIdx: number) => 'StorageKey_UsedWordIndex_' + popularityIdx
 
 export const StorageKey_CurrentNotiWords = 'StorageKey_CurrentNotiWords'
-export const StorageKey_SeenWords = 'StorageKey_SeenWords'
 
 // settings
 

@@ -19,6 +19,7 @@ import { DeepTranslateApiKey } from '../../../Keys'
 import { DeepTranslateAsync, Language, Languages } from '../../Common/DeepTranslateApi'
 import { PairTime } from '../Types'
 import { ExecuteSqlAsync, OpenDatabaseAsync } from '../../Common/SQLite'
+import { AddSeenWordsAsync, LoadAllSeenWordsAsync } from '../Handles/SeenWords'
 
 type PopupType = 'popularity' | 'interval' | 'limit-word' | 'target-lang' | undefined
 
@@ -107,29 +108,40 @@ const SetupScreen = () => {
     // // console.log(res);
     // console.log(JSON.stringify(res, null, 1));
 
-    await OpenDatabaseAsync('demo')
-    await OpenDatabaseAsync('demo')
-    await OpenDatabaseAsync('demo')
+    await AddSeenWordsAsync([
+      {
+        word: 'hehe',
 
-    // let r = await ExecuteSqlAsync('DROP TABLE IF EXISTS Users')
+        localized: {
+          lang: 'vi',
+          translated: 'huleii'
+        },
 
+        notiTick: 1
+      },
+      // {
+      //   word: 'hehe',
 
-    // r = await ExecuteSqlAsync('CREATE TABLE IF NOT EXISTS Users(user_id INTEGER PRIMARY KEY NOT NULL, name VARCHAR(30))')
-    // r = await ExecuteSqlAsync(`INSERT INTO Users (name) VALUES ('John')`)
-    // let r = await ExecuteSqlAsync('SELECT * FROM `users`')
+      //   localized: {
+      //     lang: 'en',
+      //     translated: 'heheeen'
+      //   },
 
-    // let r = await ExecuteSqlAsync('SELECTfdsfdsf')
+      //   notiTick: 3
+      // },
+      // {
+      //   word: 'hehe',
 
-    // console.log(r)
+      //   localized: {
+      //     lang: 'vi',
+      //     translated: 'vi222'
+      //   },
 
-    // console.log(r.rows);
+      //   notiTick: 4
+      // }
+    ])
 
-    // txn.executeSql('INSERT INTO Users (name) VALUES (:name)', ['takuya'])
-
-    //     for (let i = 0; i < res.rows.length; ++i) {
-    //         console.log('item:', res.rows.item(i))
-    //     }
-    // })
+    await LoadAllSeenWordsAsync()
   }, [])
 
   const onPressSetNotification = useCallback(async () => {

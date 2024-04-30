@@ -6,7 +6,7 @@ import { SafeArrayLength } from "../../Common/UtilsTS";
 import { BridgeTranslateMultiWordAsync } from "./TranslateBridge";
 import { LocalText } from "../Hooks/useLocalText";
 import { TranslatedResult } from "../../Common/DeepTranslateApi";
-import { AddSeenWordsAsync, LoadSeenWordsAsync } from "./SeenWords";
+import { AddSeenWordsAsync, LoadAllSeenWordsAsync } from "./SeenWords";
 import { SavedWordToTranslatedResult, TranslatedResultToSavedWord } from "./AppUtils";
 import { GetNextWordsDataForNotiAsync, GetWordsDataAsync, SetUsedWordIndexAsync } from "./WordsData";
 import { GetTargetLangAsync } from "./Settings";
@@ -22,12 +22,12 @@ export const LoadFromSeenWordsOrTranslateAsync = async (
     toLang: string,
     fromLang?: string,
 ): Promise<TranslatedResult[] | Error> => {
-    const seenWords = await LoadSeenWordsAsync()
+    const seenWords = await LoadAllSeenWordsAsync()
 
     const alreadyFetchedWords: SavedWordData[] = []
 
     const needFetchWords = words.filter(word => {
-        if (!seenWords)
+        if (seenWords instanceof Error)
             return true
 
         const seen = seenWords.find(seen => seen.word === word && toLang === seen.localized.lang)

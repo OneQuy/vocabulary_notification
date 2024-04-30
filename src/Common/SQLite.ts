@@ -63,21 +63,50 @@ export const ExecuteSqlAsync = async (cmd: string): Promise<SQLResultSet | Error
     })
 }
 
+// CheckInitDBAsync ----------------------------
+
+// const DBName = 'SeenWordsDB'
+
+// const CreateTableCmd = 'CREATE TABLE IF NOT EXISTS SeenSavedWords(wordAndLang VARCHAR(255) PRIMARY KEY, lastNotiTick INT, savedWordData TEXT)'
+
+// var inited = false
+
+// const CheckInitDBAsync = async () => {
+//     if (inited)
+//         return
+
+//     if (IsLog)
+//         console.log('[CheckInitDBAsync] inited.');
+
+//     inited = true
+
+//     await OpenDatabaseAsync(DBName)
+//     await ExecuteSqlAsync(CreateTableCmd)
+// }
+
+// DROP TABLE ----------------------------
+
 // let r = await ExecuteSqlAsync('DROP TABLE IF EXISTS Users')
+
+// CREATE TABLE ----------------------------
 
 // r = await ExecuteSqlAsync('CREATE TABLE IF NOT EXISTS Users(user_id INTEGER PRIMARY KEY NOT NULL, name VARCHAR(30))')
 
+// const CreateTableCmd = 'CREATE TABLE IF NOT EXISTS SeenSavedWords(wordAndLang VARCHAR(255) PRIMARY KEY, lastNotiTick INT, savedWordData TEXT)'
+
+// INSERT ----------------------------
+
 // r = await ExecuteSqlAsync(`INSERT INTO Users (name) VALUES ('John')`)
+
+// const cmd = "INSERT OR IGNORE INTO SeenSavedWords" +
+// "(wordAndLang, lastNotiTick, savedWordData) VALUES " +
+// `('${wordAndLang}', ${word.notiTick}, '${savedWordData}')`
+
+// SELECT ----------------------------
 
 // r = await ExecuteSqlAsync('SELECT * FROM `users`')
 // console.log(r.rows)
 
-// ------------
-
-// txn.executeSql('SELECT * FROM `users`', [], function (tx, res) {
-    //     for (let i = 0; i < res.rows.length; ++i) {
-        //         console.log('item:', res.rows.item(i))
-        //     }
-        // })
+// AGRS ----------------------------
         
 // r = await ExecuteSqlAsync('INSERT INTO Users (name) VALUES (:name)', ['takuya'])
