@@ -156,7 +156,7 @@ const SetupScreen = () => {
 
     await cancelAllLocalNotificationsAsync()
 
-    const arrNotis = CalcNotiTimeList(displayIntervalInMin, displayExcludeTimePairs)
+    const arrNotis = CalcNotiTimeListOfOneDay(displayIntervalInMin, displayExcludeTimePairs)
 
     // const contents: NotificationOption[] = await GetContentNotisAsync(arrNotis.length)
 
@@ -739,7 +739,7 @@ const IsInExcludeTime = (hour: number, minute: number, excludePairs: PairTime[])
   return false
 }
 
-const CalcNotiTimeList = (intervalInMinute: number, excludePairs: PairTime[]): TimePickerResult[] => {
+const CalcNotiTimeListOfOneDay = (intervalInMinute: number, excludePairs: PairTime[]): TimePickerResult[] => {
   let lastNoti: TimePickerResult | undefined
   const arr: TimePickerResult[] = []
 
