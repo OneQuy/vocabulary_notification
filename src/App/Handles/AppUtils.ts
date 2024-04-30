@@ -3,6 +3,15 @@ import { ToCanPrint } from "../../Common/UtilsTS"
 import { TranslatedResult } from "../../Common/DeepTranslateApi"
 import { PairTime, SavedWordData } from "../Types"
 import { TimePickerResult } from "../Components/TimePicker"
+import { GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync } from "./Settings"
+
+// export const IsSameSavedWord = (s1: SavedWordData, s2: SavedWordData) => {
+//     return (
+//         s1.word === s2.word &&
+//         s1.localized.translated === s2.localized.translated &&
+//         s1.localized.lang === s2.localized.lang
+//     )
+// }
 
 export const HandleError = (title: string, error: any, alert: boolean) => {
     // todo
@@ -36,7 +45,7 @@ export const TotalMin = (time: TimePickerResult) => {
     return time.hours * 60 + time.minutes
 }
 
-export const IsInExcludeTime = (hour: number, minute: number, excludePairs: PairTime[]): boolean => {
+const IsInExcludeTime = (hour: number, minute: number, excludePairs: PairTime[]): boolean => {
     const totalMin = hour * 60 + minute
 
     for (let i = 0; i < excludePairs.length; i++) {
@@ -52,7 +61,7 @@ export const IsInExcludeTime = (hour: number, minute: number, excludePairs: Pair
     return false
 }
 
-export const CalcNotiTimeListOfOneDay = (intervalInMinute: number, excludePairs: PairTime[]): TimePickerResult[] => {
+const CalcNotiTimeListPerDay = (intervalInMinute: number, excludePairs: PairTime[]): TimePickerResult[] => {
     let lastNoti: TimePickerResult | undefined
     const arr: TimePickerResult[] = []
 
@@ -91,10 +100,22 @@ export const CalcNotiTimeListOfOneDay = (intervalInMinute: number, excludePairs:
     return arr
 }
 
-// export const IsSameSavedWord = (s1: SavedWordData, s2: SavedWordData) => {
-//     return (
-//         s1.word === s2.word &&
-//         s1.localized.translated === s2.localized.translated &&
-//         s1.localized.lang === s2.localized.lang
-//     )
-// }
+export const SetNotificationAsync = async () => {
+    const popularityLevelIdx = await GetPopularityLevelIndexAsync()
+    const intervalInMin = await GetIntervalMinAsync()
+    const limitWordsPerDay = await GetLimitWordsPerDayAsync()
+    const numDaysToPush = await GetNumDaysToPushAsync()
+    const excludedTimePairs = await GetExcludedTimesAsync()
+
+    // numPushesPerDay
+
+    const notiTimeListPerDay = CalcNotiTimeListPerDay(intervalInMin, excludedTimePairs)
+
+    const numPushesPerDay = notiTimeListPerDay.length
+
+    // numUniqueWordsPerDay
+    
+    const numUniqueWordsPerDay = Math.min(numPushesPerDay, limitWordsPerDay)
+
+    // numUniqueWordsOfAllDay
+}

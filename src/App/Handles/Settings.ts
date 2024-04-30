@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { StorageKey_ExcludedTimes, StorageKey_IntervalMin, StorageKey_LimitWordsPerDay, StorageKey_PopularityIndex, StorageKey_TargetLang } from "../Constants/StorageKey"
+import { StorageKey_ExcludedTimes, StorageKey_IntervalMin, StorageKey_LimitWordsPerDay, StorageKey_NumDaysToPush, StorageKey_PopularityIndex, StorageKey_TargetLang } from "../Constants/StorageKey"
 import { GetArrayAsync, GetNumberIntAsync, SetArrayAsync, SetNumberAsync } from "../../Common/AsyncStorageUtils"
-import { DefaultExcludedTimePairs, DefaultIntervalInMin, DefaultLimitWords as DefaultLimitWordsPerDay } from "../Constants/AppConstants"
+import { DefaultExcludedTimePairs, DefaultIntervalInMin, DefaultLimitWords as DefaultLimitWordsPerDay, DefaultNumDaysToPush } from "../Constants/AppConstants"
 import { PairTime } from "../Types"
 
 export const GetTargetLangAsync = async (): Promise<string | null> => {
@@ -39,6 +39,14 @@ export const SetLimitWordsPerDayAsync = async (value: number): Promise<void> => 
     await SetNumberAsync(StorageKey_LimitWordsPerDay, value)
 }
 
+export const GetNumDaysToPushAsync = async (): Promise<number> => {
+    return await GetNumberIntAsync(StorageKey_NumDaysToPush, DefaultNumDaysToPush)
+}
+
+export const SetNumDaysToPushAsync = async (value: number): Promise<void> => {
+    await SetNumberAsync(StorageKey_NumDaysToPush, value)
+}
+
 
 export const GetExcludeTimesAsync = async (): Promise<PairTime[]> => {
     const arr = await GetArrayAsync<PairTime>(StorageKey_ExcludedTimes)
@@ -49,6 +57,6 @@ export const GetExcludeTimesAsync = async (): Promise<PairTime[]> => {
         return arr
 }
 
-export const SetExcludeTimesAsync = async (pairs: PairTime[]): Promise<void> => {
+export const SetExcludedTimesAsync = async (pairs: PairTime[]): Promise<void> => {
     await SetArrayAsync(StorageKey_ExcludedTimes, pairs)
 }

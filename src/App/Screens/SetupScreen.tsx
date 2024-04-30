@@ -18,7 +18,7 @@ import { AuthorizationStatus } from '@notifee/react-native'
 import { Language, Languages } from '../../Common/DeepTranslateApi'
 import { PairTime } from '../Types'
 import { AddSeenWordsAsync, LoadAllSeenWordsAsync } from '../Handles/SeenWords'
-import { CalcNotiTimeListOfOneDay, TotalMin } from '../Handles/AppUtils'
+import { SetNotificationAsync, TotalMin } from '../Handles/AppUtils'
 
 type PopupType = 'popularity' | 'interval' | 'limit-word' | 'target-lang' | undefined
 
@@ -144,40 +144,18 @@ const SetupScreen = () => {
   }, [])
 
   const onPressSetNotification = useCallback(async () => {
+    set_handling(true)
+
     const resPermission = await requestPermissionNotificationAsync()
 
     if (resPermission.authorizationStatus === AuthorizationStatus.DENIED) {
+      set_handling(false)
       Alert.alert(texts.popup_error, texts.no_permission)
+
       return
     }
 
-    set_handling(true)
-
-    await cancelAllLocalNotificationsAsync()
-
-    const arrNotis = CalcNotiTimeListOfOneDay(displayIntervalInMin, displayExcludeTimePairs)
-
-    // const contents: NotificationOption[] = await GetContentNotisAsync(arrNotis.length)
-
-    // for (let i = 0; i < arrNotis.length; i++) {
-    //   const time = arrNotis[i]
-
-    //   for (let day = 0; day < 2; day++) {
-    //     const nowdate = new Date()
-    //     nowdate.setDate(nowdate.getDate() + day)
-    //     nowdate.setHours(time.hours)
-    //     nowdate.setMinutes(time.minutes)
-
-    //     const noti = {
-    //       ...contents[i],
-    //       timestamp: nowdate.getTime(),
-    //     }
-
-    //     setNotification(noti)
-
-    //     console.log(noti);
-    //   }
-    // }
+    await SetNotificationAsync()
 
     set_handling(false)
   }, [displayIntervalInMin, displayExcludeTimePairs, texts])
