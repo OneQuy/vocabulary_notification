@@ -52,6 +52,44 @@ export const IsInExcludeTime = (hour: number, minute: number, excludePairs: Pair
     return false
 }
 
+export const CalcNotiTimeListOfOneDay = (intervalInMinute: number, excludePairs: PairTime[]): TimePickerResult[] => {
+    let lastNoti: TimePickerResult | undefined
+    const arr: TimePickerResult[] = []
+
+    for (let hour = 0; hour < 24; hour++) {
+        for (let minute = 0; minute < 60; minute++) {
+            if (IsInExcludeTime(hour, minute, excludePairs))
+                continue
+
+            if (lastNoti === undefined) {
+                lastNoti = {
+                    hours: hour,
+                    minutes: minute,
+                    seconds: 0
+                }
+
+                arr.push(lastNoti)
+            }
+            else {
+                const distanceInMin = TotalMin({ hours: hour, minutes: minute }) - TotalMin(lastNoti)
+
+                if (distanceInMin >= intervalInMinute) {
+                    lastNoti = {
+                        hours: hour,
+                        minutes: minute,
+                        seconds: 0
+                    }
+
+                    arr.push(lastNoti)
+                }
+            }
+        }
+    }
+
+    // LogStringify(arr)
+
+    return arr
+}
 
 // export const IsSameSavedWord = (s1: SavedWordData, s2: SavedWordData) => {
 //     return (

@@ -6,7 +6,7 @@ import useLocalText from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, LogStringify, PrependZero } from '../../Common/UtilsTS'
+import { AddS, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PrependZero } from '../../Common/UtilsTS'
 import HairLine from '../../Common/Components/HairLine'
 import { CommonStyles, WindowSize_Max } from '../../Common/CommonConstants'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
@@ -15,12 +15,10 @@ import TimePicker, { TimePickerResult } from '../Components/TimePicker'
 import { LucideIcon } from '../../Common/Components/LucideIcon'
 import { cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync } from '../../Common/Nofitication'
 import { AuthorizationStatus } from '@notifee/react-native'
-import { DeepTranslateApiKey } from '../../../Keys'
-import { DeepTranslateAsync, Language, Languages } from '../../Common/DeepTranslateApi'
+import { Language, Languages } from '../../Common/DeepTranslateApi'
 import { PairTime } from '../Types'
-import { ExecuteSqlAsync, OpenDatabaseAsync } from '../../Common/SQLite'
 import { AddSeenWordsAsync, LoadAllSeenWordsAsync } from '../Handles/SeenWords'
-import { IsInExcludeTime, TotalMin } from '../Handles/AppUtils'
+import { CalcNotiTimeListOfOneDay, TotalMin } from '../Handles/AppUtils'
 
 type PopupType = 'popularity' | 'interval' | 'limit-word' | 'target-lang' | undefined
 
@@ -719,42 +717,3 @@ const SetupScreen = () => {
 }
 
 export default SetupScreen
-
-const CalcNotiTimeListOfOneDay = (intervalInMinute: number, excludePairs: PairTime[]): TimePickerResult[] => {
-  let lastNoti: TimePickerResult | undefined
-  const arr: TimePickerResult[] = []
-
-  for (let hour = 0; hour < 24; hour++) {
-    for (let minute = 0; minute < 60; minute++) {
-      if (IsInExcludeTime(hour, minute, excludePairs))
-        continue
-
-      if (lastNoti === undefined) {
-        lastNoti = {
-          hours: hour,
-          minutes: minute,
-          seconds: 0
-        }
-
-        arr.push(lastNoti)
-      }
-      else {
-        const distanceInMin = TotalMin({ hours: hour, minutes: minute }) - TotalMin(lastNoti)
-
-        if (distanceInMin >= intervalInMinute) {
-          lastNoti = {
-            hours: hour,
-            minutes: minute,
-            seconds: 0
-          }
-
-          arr.push(lastNoti)
-        }
-      }
-    }
-  }
-
-  LogStringify(arr)
-
-  return arr
-}
