@@ -70,7 +70,9 @@ export const LoadFromSeenWordsOrTranslateAsync = async (
 
 /**
  * do call: AddSeenWordsAndRefreshCurrentNotiWordsAsync
- * @returns words.length maybe >= count
+ * 
+ * ### note:
+ * @returns words.length must === numUniqueWordsOfAllDay
  */
 export const SetupWordsForSetNotiAsync = async (numUniqueWordsOfAllDay: number): Promise<SetupWordsForSetNotiResult> => {
     const targetLang = await GetTargetLangAsync()

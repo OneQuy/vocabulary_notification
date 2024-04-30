@@ -371,18 +371,35 @@ export function SafeArrayLength<T>(arr: T[] | any): number {
     return arr.length
 }
 
-export function SafeGetArrayElement_ForceValue<T>(arr: T[] | any, defaultValue: T): T {
+export function SafeGetArrayElement_ForceValue<T>(arr: T[] | any, defaultValue: T): T { // sub 
     return SafeGetArrayElement(arr, defaultValue) as T
 }
 
-export function SafeGetArrayElement<T>(arr: T[] | any, defaultValue: T | undefined = undefined, index = 0): undefined | T {
+export function SafeGetArrayElement<T>( // main 
+    arr: T[] | any,
+    defaultValue: T | undefined = undefined,
+    index = 0,
+    loop = false,
+): undefined | T {
     if (!Array.isArray(arr))
         return defaultValue
 
-    if (arr.length <= index)
+    if (arr.length === 0)
         return defaultValue
 
-    return arr[index]
+    if (!loop) {
+        if (index < 0 || arr.length <= index)
+            return defaultValue
+        else
+            return arr[index]
+    }
+    else { // loop
+        if (index < 0 && index % arr.length !== 0) {
+            return arr[arr.length - Math.abs(index) % arr.length]
+        }
+        else
+            return arr[index % arr.length]
+    }
 }
 
 export function IsValuableArrayOrString(value: any, trimString: boolean = true) {
@@ -460,7 +477,7 @@ export function ArrayAddWithCheckDuplicate<T>(
         }
 
         // add!
-        
+
         added = true
 
         if (pushOrUnshift)
