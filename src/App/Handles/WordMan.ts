@@ -72,7 +72,7 @@ export const LoadFromSeenWordsOrTranslateAsync = async (
  * do call: AddSeenWordsAndRefreshCurrentNotiWordsAsync
  * @returns words.length maybe >= count
  */
-export const SetupWordsForSetNotiAsync = async (count: number): Promise<SetupWordsForSetNotiResult> => {
+export const SetupWordsForSetNotiAsync = async (numUniqueWordsOfAllDay: number): Promise<SetupWordsForSetNotiResult> => {
     const targetLang = await GetTargetLangAsync()
 
     // error not set lang yet
@@ -106,7 +106,7 @@ export const SetupWordsForSetNotiAsync = async (count: number): Promise<SetupWor
 
     // enough fetched words, not need fetch more.
 
-    if (alreadyFetchedAndNotSeenWords && alreadyFetchedAndNotSeenWords.length >= count) {
+    if (alreadyFetchedAndNotSeenWords && alreadyFetchedAndNotSeenWords.length >= numUniqueWordsOfAllDay) {
         return {
             words: alreadyFetchedAndNotSeenWords,
         } as SetupWordsForSetNotiResult
@@ -114,7 +114,7 @@ export const SetupWordsForSetNotiAsync = async (count: number): Promise<SetupWor
 
     // get new words count from data file for enough 'count'
 
-    const neededNextWordsCount = count - SafeArrayLength(alreadyFetchedAndNotSeenWords) - SafeArrayLength(alreadyFetchedAndNotSeenWords_ButNotMatchLang)
+    const neededNextWordsCount = numUniqueWordsOfAllDay - SafeArrayLength(alreadyFetchedAndNotSeenWords) - SafeArrayLength(alreadyFetchedAndNotSeenWords_ButNotMatchLang)
 
     const getNextWordsDataForNotiResult = await GetNextWordsDataForNotiAsync(neededNextWordsCount)
 

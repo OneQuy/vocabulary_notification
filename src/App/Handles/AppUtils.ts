@@ -4,6 +4,7 @@ import { TranslatedResult } from "../../Common/DeepTranslateApi"
 import { PairTime, SavedWordData } from "../Types"
 import { TimePickerResult } from "../Components/TimePicker"
 import { GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync } from "./Settings"
+import { SetupWordsForSetNotiAsync } from "./WordMan"
 
 // export const IsSameSavedWord = (s1: SavedWordData, s2: SavedWordData) => {
 //     return (
@@ -106,7 +107,6 @@ export const SetNotificationAsync = async () => {
     const limitWordsPerDay = await GetLimitWordsPerDayAsync()
     const numDaysToPush = await GetNumDaysToPushAsync()
     const excludedTimePairs = await GetExcludedTimesAsync()
-
     // numPushesPerDay
 
     const notiTimeListPerDay = CalcNotiTimeListPerDay(intervalInMin, excludedTimePairs)
@@ -114,8 +114,19 @@ export const SetNotificationAsync = async () => {
     const numPushesPerDay = notiTimeListPerDay.length
 
     // numUniqueWordsPerDay
-    
+
     const numUniqueWordsPerDay = Math.min(numPushesPerDay, limitWordsPerDay)
 
     // numUniqueWordsOfAllDay
+
+    const numUniqueWordsOfAllDay = numUniqueWordsPerDay * numDaysToPush
+
+    // uniqueWordsOfAllDay
+
+    const uniqueWordsOfAllDay = await SetupWordsForSetNotiAsync(numUniqueWordsOfAllDay)
+
+
+
+    // await cancelAllLocalNotificationsAsync()
+
 }
