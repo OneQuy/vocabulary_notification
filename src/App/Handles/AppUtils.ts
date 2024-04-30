@@ -1,7 +1,8 @@
 import { Alert } from "react-native"
 import { ToCanPrint } from "../../Common/UtilsTS"
 import { TranslatedResult } from "../../Common/DeepTranslateApi"
-import { SavedWordData } from "../Types"
+import { PairTime, SavedWordData } from "../Types"
+import { TimePickerResult } from "../Components/TimePicker"
 
 export const HandleError = (title: string, error: any, alert: boolean) => {
     // todo
@@ -30,6 +31,27 @@ export const TranslatedResultToSavedWord = (translate: TranslatedResult, lang: s
         },
     } as SavedWordData
 }
+
+export const TotalMin = (time: TimePickerResult) => {
+    return time.hours * 60 + time.minutes
+}
+
+export const IsInExcludeTime = (hour: number, minute: number, excludePairs: PairTime[]): boolean => {
+    const totalMin = hour * 60 + minute
+
+    for (let i = 0; i < excludePairs.length; i++) {
+        const pair = excludePairs[i]
+
+        const startMin = pair[0].hours * 60 + pair[0].minutes
+        const endMin = pair[1].hours * 60 + pair[1].minutes
+
+        if (totalMin >= startMin && totalMin <= endMin)
+            return true
+    }
+
+    return false
+}
+
 
 // export const IsSameSavedWord = (s1: SavedWordData, s2: SavedWordData) => {
 //     return (

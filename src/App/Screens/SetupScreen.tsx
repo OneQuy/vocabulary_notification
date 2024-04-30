@@ -20,6 +20,7 @@ import { DeepTranslateAsync, Language, Languages } from '../../Common/DeepTransl
 import { PairTime } from '../Types'
 import { ExecuteSqlAsync, OpenDatabaseAsync } from '../../Common/SQLite'
 import { AddSeenWordsAsync, LoadAllSeenWordsAsync } from '../Handles/SeenWords'
+import { IsInExcludeTime, TotalMin } from '../Handles/AppUtils'
 
 type PopupType = 'popularity' | 'interval' | 'limit-word' | 'target-lang' | undefined
 
@@ -718,26 +719,6 @@ const SetupScreen = () => {
 }
 
 export default SetupScreen
-
-const TotalMin = (time: TimePickerResult) => {
-  return time.hours * 60 + time.minutes
-}
-
-const IsInExcludeTime = (hour: number, minute: number, excludePairs: PairTime[]): boolean => {
-  const totalMin = hour * 60 + minute
-
-  for (let i = 0; i < excludePairs.length; i++) {
-    const pair = excludePairs[i]
-
-    const startMin = pair[0].hours * 60 + pair[0].minutes
-    const endMin = pair[1].hours * 60 + pair[1].minutes
-
-    if (totalMin >= startMin && totalMin <= endMin)
-      return true
-  }
-
-  return false
-}
 
 const CalcNotiTimeListOfOneDay = (intervalInMinute: number, excludePairs: PairTime[]): TimePickerResult[] => {
   let lastNoti: TimePickerResult | undefined
