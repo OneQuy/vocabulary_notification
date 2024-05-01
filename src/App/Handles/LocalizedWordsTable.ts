@@ -1,4 +1,4 @@
-import { SqlExecuteAsync, OpenDatabaseAsync, SqlInsertOrUpdateAsync, SqlGetAllRowsWithColumnIncludedInArrayAsync } from "../../Common/SQLite"
+import { SqlExecuteAsync, OpenDatabaseAsync, SqlInsertOrUpdateAsync, SqlGetAllRowsWithColumnIncludedInArrayAsync, SqlDropTableAsync } from "../../Common/SQLite"
 import { IsAllValuableString as IsAllValuableStrings, ToCanPrint } from "../../Common/UtilsTS"
 import { SavedWordData } from "../Types"
 import { ToWordLangString } from "./AppUtils"
@@ -26,16 +26,19 @@ export const CheckInitDBAsync = async () => {
     if (inited)
         return
 
-    if (IsLog)
-        console.log('[CheckInitDBAsync] inited.');
-
     inited = true
 
     await OpenDatabaseAsync(DBName)
 
-    // await SqlDropTableAsync(TableName)
+    const res = await SqlExecuteAsync(CreateTableCmd)
 
-    await SqlExecuteAsync(CreateTableCmd)
+    if (IsLog)
+        console.log('[CheckInitDBAsync] inited, created table: ', res)
+}
+
+export const DropTableAsync = async () => {
+    await CheckInitDBAsync()
+    await SqlDropTableAsync(TableName)
 }
 
 const AddOrUpdateLocalizedWordToDbAsync = async (
@@ -90,7 +93,7 @@ export const AddOrUpdateLocalizedWordsToDbAsync = async (words: SavedWordData[])
         console.error('[AddOrUpdateLocalizedWordsAsync] errors: ' + errors.length, errors);
     else {
         if (IsLog)
-            console.log('[AddOrUpdateLocalizedWordsAsync] success inserted all')
+            console.log('[AddOrUpdateLocalizedWordsAsync] success inserted all', resArr.length)
     }
 }
 

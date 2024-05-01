@@ -44,7 +44,7 @@ const LoadFromLocalizedDbOrTranslateWordsAsync = async (
 
     if (IsLog)
         console.log('[LoadFromLocalizedDbOrTranslateWordsAsync] alreadySavedWords', SafeArrayLength(alreadySavedWords),
-            'needFetchWords', needFetchWords)
+            'needFetchWords', needFetchWords.length)
 
     // already fetched all, did not fetch anymore
 
@@ -71,7 +71,7 @@ const LoadFromLocalizedDbOrTranslateWordsAsync = async (
 
     else {
         if (IsLog)
-            console.log('[LoadFromLocalizedDbOrTranslateWordsAsync] fetched (translated) success all')
+            console.log('[LoadFromLocalizedDbOrTranslateWordsAsync] fetched (translated) success all', translatedArrOrError.length)
 
         const alreadyArr = (alreadySavedWords instanceof Error) ? [] : alreadySavedWords.map(word => SavedWordToTranslatedResult(word))
         return translatedArrOrError.concat(alreadyArr)
@@ -153,7 +153,7 @@ const SetupWordsForSetNotiAsync = async (numRequired: number): Promise<SetupWord
 
     else {
         if (IsLog)
-            console.log('[SetupWordsForSetNotiAsync] translated success all')
+            console.log('[SetupWordsForSetNotiAsync] translated success all', getNextWordsDataForNotiResult.words.length)
 
         SetUsedWordIndexAsync(getNextWordsDataForNotiResult.usedWordIndex)
 
@@ -177,42 +177,35 @@ const UpdateSeenWordsAndRefreshCurrentNotiWordsAsync = async (): Promise<void> =
 
     const now = Date.now()
 
-    const seenArr: SavedWordData[] = []
-    const notSeenArr: SavedWordData[] = []
+    const pushedArr: SavedWordData[] = []
+    const notPushedArr: SavedWordData[] = []
 
     for (let word of arr) {
         if (word.lastNotiTick > now)
-            notSeenArr.push(word)
+            notPushedArr.push(word)
         else
-            seenArr.push(word)
+            pushedArr.push(word)
     }
 
     if (IsLog)
-        console.log('[UpdateSeenWordsAndRefreshCurrentNotiWordsAsync] seen words', SafeArrayLength(seenArr),
-            'not seen words', notSeenArr.length)
+        console.log('[UpdateSeenWordsAndRefreshCurrentNotiWordsAsync] pushed words', SafeArrayLength(pushedArr),
+            'not pushed words', notPushedArr.length)
 
     // handle seens => save last noti tick to db
 
-    if (seenArr.length > 0)
-        await AddOrUpdateLocalizedWordsToDbAsync(seenArr)
+    if (pushedArr.length > 0)
+        await AddOrUpdateLocalizedWordsToDbAsync(pushedArr)
 
     // update SetCurrentAllNotificationsAsync
 
-    await SetCurrentAllNotificationsAsync(notSeenArr)
+    await SetCurrentAllNotificationsAsync(notPushedArr)
 }
 
 const GetCurrentAllNotificationsAsync = async (): Promise<SavedWordData[] | undefined> => {
     return await GetArrayAsync<SavedWordData>(StorageKey_CurrentAllNotifications)
 }
 
-const SetCurrentAllNotificationsAsync = async (currentAllNotifications: SavedWordData[]) => {
-    // const s = await AsyncStorage.getItem(StorageKey_CurrentAllNotifications)
-
-    // if (s) {
-    //     console.error('pls handle list before saving');
-    //     return
-    // }
-
+export const SetCurrentAllNotificationsAsync = async (currentAllNotifications: SavedWordData[]) => {
     await SetArrayAsync(StorageKey_CurrentAllNotifications, currentAllNotifications)
 }
 
@@ -330,7 +323,7 @@ export const SetNotificationAsync = async (): Promise<undefined | SetupNotificat
 
     if (IsLog) {
         console.log('[SetNotificationAsync]',
-            'didSetNotiList', didSetNotiList)
+            'didSetNotiList', didSetNotiList.length)
     }
 
     SetCurrentAllNotificationsAsync(didSetNotiList)

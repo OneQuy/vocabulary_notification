@@ -16,8 +16,8 @@ import { LucideIcon } from '../../Common/Components/LucideIcon'
 import { GetLanguage, Language, Languages } from '../../Common/DeepTranslateApi'
 import { PairTime } from '../Types'
 import { CheckInitDBAsync } from '../Handles/LocalizedWordsTable'
-import { AlertError, CalcNotiTimeListPerDay, TotalMin } from '../Handles/AppUtils'
-import { SqlDropTableAsync, SqlGetAllRowsWithColumnIncludedInArrayAsync } from '../../Common/SQLite'
+import { AlertError, CalcNotiTimeListPerDay, ClearDbAndNotificationsAsync, TotalMin } from '../Handles/AppUtils'
+import { SqlDropTableAsync, SqlGetAllRowsWithColumnIncludedInArrayAsync, SqlLogAllRowsAsync } from '../../Common/SQLite'
 import { SetNotificationAsync } from '../Handles/SetupNotification'
 import { GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetPopularityLevelIndexAsync, SettTargetLangAsyncAsync } from '../Handles/Settings'
 
@@ -90,9 +90,11 @@ const SetupScreen = () => {
   }, [theme])
 
   const onPressTestNotification = useCallback(async () => {
-    // await CheckInitDBAsync()
+    // ClearDbAndNotificationsAsync()
 
-    await SqlDropTableAsync('LocalizedWordsTable')
+    await CheckInitDBAsync()
+
+    SqlLogAllRowsAsync('LocalizedWordsTable')
 
     return
 

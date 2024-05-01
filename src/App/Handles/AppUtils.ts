@@ -3,12 +3,21 @@ import { SafeValue, ToCanPrint } from "../../Common/UtilsTS"
 import { TranslatedResult } from "../../Common/DeepTranslateApi"
 import { LocalizedData, PairTime, SavedWordData } from "../Types"
 import { TimePickerResult } from "../Components/TimePicker"
+import { DropTableAsync } from "./LocalizedWordsTable"
+import { SetCurrentAllNotificationsAsync } from "./SetupNotification"
+import { cancelAllLocalNotificationsAsync } from "../../Common/Nofitication"
 
 const IsLog_SetNotification = true
 
 export const HandleError = (title: string, error: any, alert: boolean) => {
     // todo
     Alert.alert(title, ToCanPrint(error))
+}
+
+export const ClearDbAndNotificationsAsync = async () => {
+    await DropTableAsync()
+    await SetCurrentAllNotificationsAsync([])
+    cancelAllLocalNotificationsAsync()
 }
 
 export const AlertError = (error: any) => {
