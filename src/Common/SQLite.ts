@@ -5,6 +5,7 @@
 // Just: npm i react-native-sqlite-2
 
 import SQLite, { SQLResultSet, WebsqlDatabase } from 'react-native-sqlite-2'
+import { ToCanPrint } from './UtilsTS'
 
 export type SqlColumnAndValue = {
     column: string,
@@ -37,6 +38,17 @@ const ConvertValueToSqlType = (val: any) : string => {
         return `'${JSON.stringify(val)}'`
     else
         return `'${val}'`
+}
+
+const SQLResultSetToObjects = <T extends object>(result: SQLResultSet) : T[] => {
+    const arr: T[] = []
+
+    for (let i = 0; i < result.rows.length; i++) {
+        const obj = JSON.parse(result.rows.item(i)) as T        
+        arr.push(obj)
+    }
+
+    return arr
 }
 
 const ConvertObjectToSqlColumnAndValueArr = (obj: object, emptyStringTreatedAsNull = true) : SqlColumnAndValue[] => {
@@ -96,20 +108,20 @@ export const SqlIsExistedAsync = async (table: string, value: SqlColumnAndValue)
 
     if (res instanceof Error)
         return false
-
-    return res.rows.length >= 1
+    else
+        return res.length > 0
 }
 
 export const SqlLogAllRowsAsync = async (table: string): Promise<void> => {
-    const allrows = await SqlGetAllRowsAsync(table)
+    const allRows = await SqlGetAllRowsAsync(table)
 
-    if (allrows instanceof Error) {
-        console.log('[SqlLogAllRowsAsync] ' + allrows)
+    if (allRows instanceof Error) {
+        console.log('[SqlLogAllRowsAsync] ' + allRows)
         return
     }
 
-    for (let i = 0; i < allrows.rows.length; i++)
-        console.log(allrows.rows.item(i));
+    for (let i = 0; i < allRows.length; i++)
+        console.log(ToCanPrint(allRows[i]))
 }
 
 export const SqlDropTableAsync = async (table: string): Promise<void> => {
@@ -122,10 +134,9 @@ export const SqlDropTableAsync = async (table: string): Promise<void> => {
  * 
  * @param numRows (<= 0 for get all rows.)
  */
-export const SqlGetAllRowsAsync = async (table: string, numRows = -1): Promise<SQLResultSet | Error> => {
+export const SqlGetAllRowsAsync = async <T extends object>(table: string, numRows = -1): Promise<T[] | Error> => {
     const cmd = `SELECT ${numRows <= 0 ? '*' : numRows} FROM ${table}`
-    const res = await ExecuteSqlAsync(cmd)
-    return res
+    return await ExecuteSqlAsync<T>(cmd)
 }
 
 /**
@@ -178,12 +189,12 @@ export const SqlInsertOrUpdateAsync = async (table: string, values: SqlColumnAnd
  * ### note:
  * undefinded can be treated as null
  */
-export const ExecuteSqlAsync = async (cmd: string): Promise<SQLResultSet | Error> => {
+export const ExecuteSqlAsync = async <T extends object>(cmd: string): Promise<T[] | Error> => {
     if (db === undefined) {
         return new Error('[ExecuteSqlAsync] Not OpenDatabase yet.')
     }
 
-    return new Promise((resolve) => {
+    return new Promise((resolve: (res: T[] | Error) => void) => {
         db?.transaction(function (txn) {
             txn.executeSql(
                 // cmd
@@ -197,7 +208,7 @@ export const ExecuteSqlAsync = async (cmd: string): Promise<SQLResultSet | Error
                 // success
 
                 function (_, res) {
-                    resolve(res)
+                    resolve(SQLResultSetToObjects<T>(res))
                 },
 
                 // error
