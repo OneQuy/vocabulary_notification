@@ -177,7 +177,7 @@ export const SqlInsertOrUpdateAsync = async (table: string, values: SqlColumnAnd
         `VALUES` + GenerateValuesInBracketText(values)
     }
 
-    console.log(cmd);
+    // console.log(cmd);
 
     const res = await ExecuteSqlAsync(cmd)
 
