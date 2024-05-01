@@ -69,6 +69,9 @@ export const AddOrUpdateLocalizedWordsAsync = async (words: SavedWordData[]): Pr
     await CheckInitDBAsync()
 
     const resArr = await Promise.all(words.map(word => {
+        if (!word.localizedData)
+            return new Error('[AddOrUpdateLocalizedWordsAsync] what? !word.localizedData')
+
         const localizedData = ToCanPrint(word.localizedData)
         return AddOrUpdateLocalizedWordAsync(word.wordAndLang, word.lastNotiTick, localizedData)
     }))
