@@ -1,4 +1,4 @@
-import { SqlExecuteAsync, OpenDatabaseAsync, SqlInsertOrUpdateAsync } from "../../Common/SQLite"
+import { SqlExecuteAsync, OpenDatabaseAsync, SqlInsertOrUpdateAsync, SqlGetAllRowsWithColumnIncludedInArrayAsync } from "../../Common/SQLite"
 import { IsAllValuableString, ToCanPrint } from "../../Common/UtilsTS"
 import { SavedWordData } from "../Types"
 
@@ -91,7 +91,12 @@ export const AddOrUpdateLocalizedWordsToDbAsync = async (words: SavedWordData[])
     }
 }
 
-export const GetLocalizedWordFromDbAsync = async (lang: string | undefined, seen: boolean | undefined): Promise<SavedWordData[] | Error> => {
+/**
+ * 
+ * @param toLang undefined means get all toLang
+ * @param seen undefined means get all both seen & unseen
+ */
+export const GetLocalizedWordFromDbAsync = async (toLang: string | undefined, seen: boolean | undefined): Promise<SavedWordData[] | Error> => {
     let sql =
         `SELECT * ` +
         `FROM ${TableName} `
@@ -105,11 +110,15 @@ export const GetLocalizedWordFromDbAsync = async (lang: string | undefined, seen
             sql += `WHERE ${Column_lastNotiTick} < 1 `
     }
 
-    if (lang !== undefined) {
-        sql += `${seen !== undefined ? 'AND' : 'WHERE'} ${Column_wordAndLang} LIKE '%\_${lang}';`
+    if (toLang !== undefined) {
+        sql += `${seen !== undefined ? 'AND' : 'WHERE'} ${Column_wordAndLang} LIKE '%\_${toLang}';`
     }
 
     // console.log(sql);
     
     return await SqlExecuteAsync<SavedWordData>(sql)
+}
+
+export const GetLocalizedWordsFromDbIfAvailableAsync = async (lang: string, wordsToCheck: string[]): Promise<SavedWordData[] | Error> => {
+    return await SqlGetAllRowsWithColumnIncludedInArrayAsync<SavedWordData>(TableName, Column_wordAndLang, wordsToCheck)
 }
