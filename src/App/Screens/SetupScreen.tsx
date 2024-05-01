@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, ScrollView, Alert, ActivityIndicator, TextInput } from 'react-native'
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import useTheme from '../Hooks/useTheme'
 import useLocalText from '../Hooks/useLocalText'
@@ -13,13 +13,13 @@ import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { DefaultExcludedTimePairs, DefaultIntervalInMin, IntervalInMinPresets, LimitWordsPerDayPresets, PopuplarityLevelNumber } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
 import { LucideIcon } from '../../Common/Components/LucideIcon'
-import { Language, Languages } from '../../Common/DeepTranslateApi'
+import { GetLanguage, Language, Languages } from '../../Common/DeepTranslateApi'
 import { PairTime } from '../Types'
 import { CheckInitDBAsync } from '../Handles/LocalizedWordsTable'
 import { AlertError, TotalMin } from '../Handles/AppUtils'
 import { SqlGetAllRowsWithColumnIncludedInArrayAsync } from '../../Common/SQLite'
 import { SetNotificationAsync } from '../Handles/SetupNotification'
-import { SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetPopularityLevelIndexAsync, SettTargetLangAsyncAsync } from '../Handles/Settings'
+import { GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetPopularityLevelIndexAsync, SettTargetLangAsyncAsync } from '../Handles/Settings'
 
 type PopupType = 'popularity' | 'interval' | 'limit-word' | 'target-lang' | undefined
 
@@ -248,9 +248,11 @@ const SetupScreen = () => {
       editingExcludeTimePairAndElementIndex.current[0][editingExcludeTimePairAndElementIndex.current[1]] = time
       editingExcludeTimePairAndElementIndex.current = [undefined, -1]
 
-      set_displayExcludedTimePairs(CloneObject(displayExcludedTimePairs))
+      const obj = CloneObject(displayExcludedTimePairs)
 
-      SetExcludedTimesAsync(displayExcludedTimePairs)
+      set_displayExcludedTimePairs(obj)
+
+      SetExcludedTimesAsync(obj)
     }
   }, [displayExcludedTimePairs, texts])
 
@@ -494,12 +496,22 @@ const SetupScreen = () => {
 
   const onPressAddExcludeTime = useCallback(() => {
     displayExcludedTimePairs.push(DefaultExcludedTimePairs[0])
-    set_displayExcludedTimePairs(CloneObject(displayExcludedTimePairs))
+
+    const obj = CloneObject(displayExcludedTimePairs)
+
+    set_displayExcludedTimePairs(obj)
+
+    SetExcludedTimesAsync(obj)
   }, [displayExcludedTimePairs])
 
   const onPressRemoveExcludeTime = useCallback((pair: PairTime) => {
     ArrayRemove(displayExcludedTimePairs, pair)
-    set_displayExcludedTimePairs(CloneObject(displayExcludedTimePairs))
+
+    const obj = CloneObject(displayExcludedTimePairs)
+
+    set_displayExcludedTimePairs(obj)
+
+    SetExcludedTimesAsync(obj)
   }, [displayExcludedTimePairs])
 
   const renderExcludeTimes = useCallback(() => {
@@ -587,6 +599,30 @@ const SetupScreen = () => {
 
     timePickerInitial = GetDayHourMinSecFromMs((time.hours * 60 + time.minutes) * 60 * 1000)
   }
+
+  // load setting
+
+  useEffect(() => {
+    (async () => {
+      const levelPopularity = await GetPopularityLevelIndexAsync()
+      set_displayPopularityLevelIdx(levelPopularity)
+
+      const intervalInMin = await GetIntervalMinAsync()
+      set_displayIntervalInMin(intervalInMin)
+
+      const limitWordsPerDay = await GetLimitWordsPerDayAsync()
+      set_displayWordLimitNumber(limitWordsPerDay)
+
+      const numDaysToPush = await GetNumDaysToPushAsync()
+      //
+
+      const excludedTimePairs = await GetExcludedTimesAsync()
+      set_displayExcludedTimePairs(excludedTimePairs)
+
+      const targetLang = await GetTargetLangAsync()
+      set_displayTargetLang(targetLang ? GetLanguage(targetLang) : undefined)
+    })()
+  }, [])
 
   // render
 

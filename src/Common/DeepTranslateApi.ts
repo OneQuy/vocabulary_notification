@@ -7,7 +7,7 @@ export type Language = {
      *  "language": "en",
      */
     "language": string,
-    
+
     /**
      *  "name": "English",
      */
@@ -126,6 +126,10 @@ export const DeepTranslateAsync = async (
     // return await Promise.all(texts.map(text => {
     //     return DeepTranslateSingleTextAsync(key, text, toLang, fromLang)
     // }))
+}
+
+export const GetLanguage = (codeLang: string) : Language | undefined => {
+    return Languages.find(i => i.language === codeLang)
 }
 
 export const Languages: Language[] = [
