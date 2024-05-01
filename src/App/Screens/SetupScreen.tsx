@@ -741,40 +741,40 @@ const SetupScreen = () => {
 
           onPress={onPressTestNotification}
         />
-
-        {/* set notification */}
-
-        <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
-
-        {
-          handling &&
-          <ActivityIndicator color={theme.counterBackground} />
-        }
-
-        {
-          !handling &&
-          <LucideIconTextEffectButton
-            selectedBackgroundColor={theme.primary}
-
-            selectedColorOfTextAndIcon={theme.counterPrimary}
-            unselectedColorOfTextAndIcon={theme.counterBackground}
-
-            notChangeToSelected
-            manuallySelected={true}
-            canHandlePressWhenSelected
-
-            style={style.normalBtn}
-
-            title={texts.set_notification}
-            titleProps={{ style: style.normalBtnTxt }}
-
-            iconProps={{ name: 'Rocket', size: FontSize.Normal, }}
-
-            onPress={onPressSetNotification}
-          />
-        }
       </ScrollView>
 
+      {/* set notification */}
+
+      <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
+
+      {
+        handling &&
+        <ActivityIndicator color={theme.counterBackground} />
+      }
+
+      {
+        !handling &&
+        <LucideIconTextEffectButton
+          selectedBackgroundColor={theme.primary}
+
+          selectedColorOfTextAndIcon={theme.counterPrimary}
+          unselectedColorOfTextAndIcon={theme.counterBackground}
+
+          notChangeToSelected
+          manuallySelected={true}
+          canHandlePressWhenSelected
+
+          style={style.normalBtn}
+
+          title={texts.set_notification}
+          titleProps={{ style: style.normalBtnTxt }}
+
+          iconProps={{ name: 'Rocket', size: FontSize.Normal, }}
+
+          onPress={onPressSetNotification}
+        />
+      }
+      
       {/* popup */}
       {
         contentToRenderInPopup &&
