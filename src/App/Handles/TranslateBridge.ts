@@ -21,7 +21,7 @@ var currentService: BridgeTranslateService = {
 
 /**
  * ### each element:
- * * text translated if success (or word is unavailable to translate)
+ * * text translated if success (or word is unavailable to translate). but both cases full enough length.
  * * Error() if api failed
  */
 export const BridgeTranslateMultiWordAsync = async (

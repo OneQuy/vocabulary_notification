@@ -4,8 +4,11 @@ import { GetArrayAsync, SetArrayAsync } from "../../Common/AsyncStorageUtils";
 import { BridgeTranslateMultiWordAsync } from "./TranslateBridge";
 import { LocalText } from "../Hooks/useLocalText";
 import { TranslatedResult } from "../../Common/DeepTranslateApi";
-import { GetLocalizedWordFromDbAsync } from "./LocalizedWordsTable";
-import { SavedWordToTranslatedResult } from "./AppUtils";
+import { AddOrUpdateLocalizedWordsToDbAsync, GetLocalizedWordsFromDbIfAvailableAsync } from "./LocalizedWordsTable";
+import { SavedWordToTranslatedResult, ToWordLangString } from "./AppUtils";
+import { SafeArrayLength } from "../../Common/UtilsTS";
+
+const IsLog = true
 
 export type SetupWordsForSetNotiResult = {
     words?: SavedWordData[],
@@ -13,31 +16,30 @@ export type SetupWordsForSetNotiResult = {
     error?: Error,
 }
 
-export const LoadFromSeenWordsOrTranslateAsync = async (
+export const LoadFromLocalizedDbOrTranslateWordsAsync = async (
     words: string[],
     toLang: string,
     fromLang?: string,
 ): Promise<TranslatedResult[] | Error> => {
-    const seenWords = await GetLocalizedWordFromDbAsync()
+    const alreadySavedWords = await GetLocalizedWordsFromDbIfAvailableAsync(toLang, words)
 
-    const alreadyFetchedWords: SavedWordData[] = []
-
-    const needFetchWords = words.filter(word => {
-        if (seenWords instanceof Error)
+    const needFetchWords = words.filter(wordToCheck => {
+        if (alreadySavedWords instanceof Error)
             return true
 
-        const seen = seenWords.find(seen => seen.wordAndLang)
-
-        if (seen)
-            alreadyFetchedWords.push(seen)
+        const seen = alreadySavedWords.find(seen => seen.wordAndLang === ToWordLangString(wordToCheck, toLang))
 
         return seen === undefined
     })
 
+    if (IsLog)
+        console.log('[LoadFromLocalizedDbOrTranslateWordsAsync] not need fetch', SafeArrayLength(alreadySavedWords),
+            'needFetchWords', needFetchWords)
+
     // already fetched all, did not fetch anymore
 
-    if (needFetchWords.length <= 0) {
-        return alreadyFetchedWords.map(saved => {
+    if (!(alreadySavedWords instanceof Error) && needFetchWords.length <= 0) {
+        return alreadySavedWords.map(saved => {
             return SavedWordToTranslatedResult(saved)
         })
     }
@@ -58,8 +60,10 @@ export const LoadFromSeenWordsOrTranslateAsync = async (
     // success all
 
     else {
-        const alreadyArr = alreadyFetchedWords.map(word => SavedWordToTranslatedResult(word))
+        if (IsLog)
+            console.log('[LoadFromLocalizedDbOrTranslateWordsAsync] fetch success all')
 
+        const alreadyArr = (alreadySavedWords instanceof Error) ? [] : alreadySavedWords.map(word => SavedWordToTranslatedResult(word))
         return translatedArrOrError.concat(alreadyArr)
     }
 }
@@ -165,11 +169,11 @@ export const SetupWordsForSetNotiAsync = async (numUniqueWordsOfAllDay: number):
 
 // Current Noti Words --------------------------------
 
-const AddSeenWordsAndRefreshCurrentNotiWordsAsync = async (): Promise<SavedWordData[] | undefined> => {
+const UpdateSeenWordsAndRefreshCurrentNotiWordsAsync = async (): Promise<void> => {
     const arr = await GetCurrentAllNotificationsAsync()
 
     if (arr === undefined)
-        return undefined
+        return
 
     const now = Date.now()
 
@@ -183,16 +187,18 @@ const AddSeenWordsAndRefreshCurrentNotiWordsAsync = async (): Promise<SavedWordD
             seenArr.push(word)
     }
 
-    // handle seens => save to db
+    if (IsLog)
+        console.log('[UpdateSeenWordsAndRefreshCurrentNotiWordsAsync] seen words', SafeArrayLength(seenArr),
+            'not seen words', notSeenArr.length)
+
+    // handle seens => save last noti tick to db
 
     if (seenArr.length > 0)
-        await AddOrUpdateLocalizedWordsAsync(seenArr)
+        await AddOrUpdateLocalizedWordsToDbAsync(seenArr)
 
-    // handle not seens => save back to SetCurrentNotiWordsAsync
+    // update SetCurrentAllNotificationsAsync
 
     await SetCurrentAllNotificationsAsync(notSeenArr)
-
-    return notSeenArr
 }
 
 const GetCurrentAllNotificationsAsync = async (): Promise<SavedWordData[] | undefined> => {

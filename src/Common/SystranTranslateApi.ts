@@ -6,7 +6,7 @@ import { Language, TranslatedResult } from "./DeepTranslateApi"
 import { CreateError } from "./UtilsTS"
 
 /**
- * @returns success: string[] translated (even word is unavailable to translate)
+ * @returns success: string[] translated (even word is unavailable to translate). but both cases full enough length.
  * @returns error: Error()
  */
 export const SystranTranslateAsync = async (
@@ -28,12 +28,16 @@ export const SystranTranslateAsync = async (
         const arr = json?.outputs
 
         if (Array.isArray(arr)) {
-            return arr.map((translatedWordRes, index) => {
-                return {
-                    translated: translatedWordRes.output,
-                    text: texts[index],
-                } as TranslatedResult
-            })
+            if (arr.length !== texts.length)
+                return new Error('[SystranTranslateAsync] translated arr not same length with texts length')
+            else {
+                return arr.map((translatedWordRes, index) => {
+                    return {
+                        translated: translatedWordRes.output,
+                        text: texts[index],
+                    } as TranslatedResult
+                })
+            }
         }
         else
             return json as Error

@@ -1,6 +1,7 @@
 import { SqlExecuteAsync, OpenDatabaseAsync, SqlInsertOrUpdateAsync, SqlGetAllRowsWithColumnIncludedInArrayAsync } from "../../Common/SQLite"
 import { IsAllValuableString, ToCanPrint } from "../../Common/UtilsTS"
 import { SavedWordData } from "../Types"
+import { ToWordLangString } from "./AppUtils"
 
 const IsLog = true
 
@@ -8,7 +9,7 @@ const DBName = 'LocalizedWordsDB'
 
 const TableName = 'LocalizedWordsTable'
 
-const Column_wordAndLang = 'wordAndLang'
+const Column_wordAndLang = 'wordAndLang' // lang is toLang
 const Column_lastNotiTick = 'lastNotiTick'
 const Column_localizedData = 'localizedData'
 
@@ -119,6 +120,9 @@ export const GetLocalizedWordFromDbAsync = async (toLang: string | undefined, se
     return await SqlExecuteAsync<SavedWordData>(sql)
 }
 
-export const GetLocalizedWordsFromDbIfAvailableAsync = async (lang: string, wordsToCheck: string[]): Promise<SavedWordData[] | Error> => {
-    return await SqlGetAllRowsWithColumnIncludedInArrayAsync<SavedWordData>(TableName, Column_wordAndLang, wordsToCheck)
+export const GetLocalizedWordsFromDbIfAvailableAsync = async (toLang: string, wordsToCheck: string[]): Promise<SavedWordData[] | Error> => {
+    return await SqlGetAllRowsWithColumnIncludedInArrayAsync<SavedWordData>(
+        TableName, 
+        Column_wordAndLang, 
+        wordsToCheck.map(word => ToWordLangString(word, toLang)))
 }

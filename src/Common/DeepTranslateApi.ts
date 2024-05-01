@@ -70,7 +70,7 @@ export const DeepTranslateSingleTextAsync = async (
 
 /**
  * ### each element:
- * * text translated arr if success (even word is unavailable to translate)
+ * * text translated arr if success (even word is unavailable to translate). but both cases full enough length.
  * * Error() if api failed
  * 
  * ### test cases:
@@ -107,7 +107,7 @@ export const DeepTranslateAsync = async (
     const translatedArr = res.translated.split(joinChar)
 
     if (translatedArr.length !== texts.length)
-        return new Error('DeepTranslateAsync translated arr not same length with texts length')
+        return new Error('[DeepTranslateAsync] translated arr not same length with texts length')
 
     return translatedArr.map((translated, index) => {
         return {
