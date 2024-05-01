@@ -15,7 +15,7 @@ const Column_localizedData = 'localizedData'
 
 /**
  * @wordAndLang 'hello_en'
- * @lastNotiTick -1 (not noti yet), 1788888888 did noti.
+ * @lastNotiTick -1 (DefaultNotSeenNotiTick), 1788888888 did noti.
  * @localizedData not empty
  */
 const CreateTableCmd = `CREATE TABLE IF NOT EXISTS ${TableName}(${Column_wordAndLang} VARCHAR(50) PRIMARY KEY, ${Column_lastNotiTick} INT NOT NULL, ${Column_localizedData} TEXT NOT NULL)`
