@@ -20,15 +20,27 @@ const SqlGenerateColumnNamesInBracketText = (values: SqlColumnAndValue[]) => {
     return `(${values.map(val => val.column).join(',')})`
 }
 
+const SqlConvertValueToSqlType = (val: any) : string => {
+    const typee = typeof val
+
+    if (typee === 'number')
+        return val.toString()
+    else if (typee === 'undefined')
+        return 'undefined'
+    else if (val === null)
+        return 'null'
+    else if (typee === 'object')
+        return `'${JSON.stringify(val)}'`
+    else
+        return `'${val}'`
+}
+
 /**
  * @returns ('hello', 5, 'lottie')
  */
 const SqlGenerateValuesInBracketText = (values: SqlColumnAndValue[]) => {
     return `(${values.map(val => {
-        if (typeof val.value === 'number')
-            return val.value
-        else
-            return `'${val.value}'`
+        return SqlConvertValueToSqlType(val.value)
     }).join(',')})`
 }
 
@@ -37,10 +49,7 @@ const SqlGenerateValuesInBracketText = (values: SqlColumnAndValue[]) => {
  */
 const SqlGenerateColumnEqualValueText = (values: SqlColumnAndValue[]) => {
     return `${values.map(val => {
-        if (typeof val.value === 'number')
-            return `${val.column}=${val.value}`
-        else
-            return `${val.column}='${val.value}'`
+        return `${val.column}=${SqlConvertValueToSqlType(val.value)}`
     }).join(',')}`
 }
 
@@ -122,7 +131,7 @@ export const SqlInsertOrUpdateAsync = async (table: string, values: SqlColumnAnd
         `VALUES` + SqlGenerateValuesInBracketText(values)
     }
 
-    // console.log(cmd);
+    console.log(cmd);
 
     const res = await ExecuteSqlAsync(cmd)
 

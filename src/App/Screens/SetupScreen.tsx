@@ -125,7 +125,7 @@ const SetupScreen = () => {
         },
         {
           column: 'localizedData',
-          value: RandomInt(0, 1000) + 'aaa',
+          value: null,
         }
       ]
     )

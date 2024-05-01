@@ -1,4 +1,4 @@
-import { ExecuteSqlAsync, OpenDatabaseAsync } from "../../Common/SQLite"
+import { ExecuteSqlAsync, OpenDatabaseAsync, SqlDropTableAsync } from "../../Common/SQLite"
 import { ToCanPrint } from "../../Common/UtilsTS"
 import { SavedWordData } from "../Types"
 
@@ -6,12 +6,14 @@ const IsLog = true
 
 const DBName = 'SeenWordsDB'
 
+const TableName = 'LocalizedWordsTable'
+
 /**
  * @wordAndLang 'hello_en'
  * @lastNotiTick -1 (not noti yet), 1788888888 did noti.
  * @localizedData not empty
  */
-const CreateTableCmd = 'CREATE TABLE IF NOT EXISTS LocalizedWordsTable(wordAndLang VARCHAR(50) PRIMARY KEY, lastNotiTick INT, localizedData TEXT NOT NULL)'
+const CreateTableCmd = `CREATE TABLE IF NOT EXISTS ${TableName}(wordAndLang VARCHAR(50) PRIMARY KEY, lastNotiTick INT, localizedData TEXT NOT NULL)`
 
 var inited = false
 
@@ -25,6 +27,7 @@ export const CheckInitDBAsync = async () => {
     inited = true
 
     await OpenDatabaseAsync(DBName)
+    await SqlDropTableAsync(TableName)
     await ExecuteSqlAsync(CreateTableCmd)
 }
 
