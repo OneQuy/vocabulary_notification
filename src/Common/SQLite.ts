@@ -150,7 +150,7 @@ export const SqlGetAllRowsWithColumnIncludedInArrayAsync = async <T extends obje
         `FROM ${table} ` +
         `WHERE ${columnName} IN ${GenerateValuesInBracketTextFromValues(array)};`
 
-    console.log(cmd);
+    // console.log(cmd);
         
     return await SqlExecuteAsync<T>(cmd)
 }

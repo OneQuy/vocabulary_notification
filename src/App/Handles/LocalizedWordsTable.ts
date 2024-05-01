@@ -47,6 +47,8 @@ const AddOrUpdateLocalizedWordToDbAsync = async (
         return new Error('[AddOrUpdateLocalizedWordAsync] empty values')
     }
 
+    await CheckInitDBAsync()
+
     const res = await SqlInsertOrUpdateAsync(
         TableName,
         [
@@ -98,6 +100,8 @@ export const AddOrUpdateLocalizedWordsToDbAsync = async (words: SavedWordData[])
  * @param seen undefined means get all both seen & unseen
  */
 export const GetLocalizedWordFromDbAsync = async (toLang: string | undefined, seen: boolean | undefined): Promise<SavedWordData[] | Error> => {
+    await CheckInitDBAsync()
+
     let sql =
         `SELECT * ` +
         `FROM ${TableName} `
@@ -116,13 +120,15 @@ export const GetLocalizedWordFromDbAsync = async (toLang: string | undefined, se
     }
 
     // console.log(sql);
-    
+
     return await SqlExecuteAsync<SavedWordData>(sql)
 }
 
 export const GetLocalizedWordsFromDbIfAvailableAsync = async (toLang: string, wordsToCheck: string[]): Promise<SavedWordData[] | Error> => {
+    await CheckInitDBAsync()
+
     return await SqlGetAllRowsWithColumnIncludedInArrayAsync<SavedWordData>(
-        TableName, 
-        Column_wordAndLang, 
+        TableName,
+        Column_wordAndLang,
         wordsToCheck.map(word => ToWordLangString(word, toLang)))
 }
