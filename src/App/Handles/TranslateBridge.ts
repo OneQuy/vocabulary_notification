@@ -5,6 +5,8 @@ import { SavedWordData } from "../Types"
 import { ToWordLangString } from "./AppUtils"
 import { AddOrUpdateLocalizedWordsToDbAsync } from "./LocalizedWordsTable"
 
+const IsLog = true
+
 type BridgeTranslateServiceName = 'deep' | 'systran'
 
 type BridgeTranslateService = {
@@ -66,6 +68,9 @@ export const BridgeTranslateMultiWordAsync = async (
 }
 
 const SaveToDbAsync = async (toLang: string, translatedResults: TranslatedResult[]) => {
+    if (IsLog)
+        console.log('[SaveToDbAsync] add new words to db:')
+
     await AddOrUpdateLocalizedWordsToDbAsync(translatedResults.map(word => {
         const saved: SavedWordData = {
             wordAndLang: ToWordLangString(word.text, toLang),

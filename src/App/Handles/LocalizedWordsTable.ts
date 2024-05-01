@@ -71,7 +71,7 @@ const AddOrUpdateLocalizedWordToDbAsync = async (
     )
 
     if (IsLog)
-        console.log('[AddOrUpdateLocalizedWordAsync] inserting...', wordAndLang, 'success', !(res instanceof Error))
+        console.log('[AddOrUpdateLocalizedWordAsync] ...', wordAndLang, 'success', !(res instanceof Error))
 
     return res
 }
@@ -93,7 +93,7 @@ export const AddOrUpdateLocalizedWordsToDbAsync = async (words: SavedWordData[])
         console.error('[AddOrUpdateLocalizedWordsAsync] errors: ' + errors.length, errors);
     else {
         if (IsLog)
-            console.log('[AddOrUpdateLocalizedWordsAsync] success inserted all', resArr.length)
+            console.log('[AddOrUpdateLocalizedWordsAsync] success all', resArr.length)
     }
 }
 

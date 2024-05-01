@@ -183,13 +183,21 @@ const UpdateSeenWordsAndRefreshCurrentNotiWordsAsync = async (): Promise<void> =
     for (let word of arr) {
         if (word.lastNotiTick > now)
             notPushedArr.push(word)
-        else
+        else {
+            if (IsLog)
+                console.log('[UpdateSeenWordsAndRefreshCurrentNotiWordsAsync] this word is pushed', word.wordAndLang,
+                    'word.lastNotiTick', word.lastNotiTick,
+                    'now', now)
+
             pushedArr.push(word)
+        }
     }
 
     if (IsLog)
         console.log('[UpdateSeenWordsAndRefreshCurrentNotiWordsAsync] pushed words', SafeArrayLength(pushedArr),
-            'not pushed words', notPushedArr.length)
+            'not pushed words', notPushedArr.length,
+            '=> update noti tick of pushed words to db:')
+
 
     // handle seens => save last noti tick to db
 
