@@ -33,7 +33,7 @@ export const CheckInitDBAsync = async () => {
     const res = await SqlExecuteAsync(CreateTableCmd)
 
     if (IsLog)
-        console.log('[CheckInitDBAsync] inited, created table: ', res)
+        console.log('[CheckInitDBAsync] inited db')
 }
 
 export const DropTableAsync = async () => {
