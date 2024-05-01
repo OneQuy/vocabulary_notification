@@ -106,9 +106,11 @@ export const GetLocalizedWordFromDbAsyncWordsAsync = async (lang: string | undef
     }
 
     if (lang !== undefined) {
-        sql += `AND ${Column_wordAndLang} LIKE '%\_${lang}';`
+        sql += `${seen !== undefined ? 'AND' : 'WHERE'} ${Column_wordAndLang} LIKE '%\_${lang}';`
     }
 
+    console.log(sql);
+    
     return await ExecuteSqlAsync<SavedWordData>(sql)
 }
 

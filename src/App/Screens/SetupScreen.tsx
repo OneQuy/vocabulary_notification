@@ -6,7 +6,7 @@ import useLocalText from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PrependZero, RandomInt } from '../../Common/UtilsTS'
+import { AddS, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, LogStringify, PrependZero, RandomInt } from '../../Common/UtilsTS'
 import HairLine from '../../Common/Components/HairLine'
 import { CommonStyles, WindowSize_Max } from '../../Common/CommonConstants'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
@@ -115,16 +115,31 @@ const SetupScreen = () => {
 
     // let res = await SqlInsertOrUpdateAsync_Object('LocalizedWordsTable',
     //   {
-    //     wordAndLang: 'iiii',
-    //     lastNotiTick: 999,
-    //     localizedData: {
-    //       aa: 'cc',
-    //       bb: 88
-    //     }
+    //     wordAndLang: 'hello_en',
+    //     lastNotiTick: Date.now() + 5000000,
+    //     localizedData: 'hellooooo'
     //   }
     // )
 
-    // console.log(res);
+    // res = await SqlInsertOrUpdateAsync_Object('LocalizedWordsTable',
+    //   {
+    //     wordAndLang: 'hello_vi',
+    //     lastNotiTick: -1,
+    //     localizedData: 'viiiiii'
+    //   }
+    // )
+    
+    // res = await SqlInsertOrUpdateAsync_Object('LocalizedWordsTable',
+    //   {
+    //     wordAndLang: 'good_vi',
+    //     lastNotiTick: Date.now(),
+    //     localizedData: 'gooddddddd'
+    //   }
+    // )
+
+    // const a = await GetLocalizedWordFromDbAsyncWordsAsync(undefined, false)
+
+    // console.log(LogStringify(a));
 
     // const rows = await SqlGetAllRowsAsync('LocalizedWordsTable')
 
@@ -132,7 +147,7 @@ const SetupScreen = () => {
     //   return
 
     // console.log(typeof rows[0].localizedData)
-    SqlLogAllRowsAsync('LocalizedWordsTable')
+    // SqlLogAllRowsAsync('LocalizedWordsTable')
 
     // if (res instanceof Error)
     // console.log(res);
