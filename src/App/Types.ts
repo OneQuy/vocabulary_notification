@@ -24,13 +24,12 @@ export interface Word {
 }
 
 export type LocalizedData = {
-    translated?: string,
-    lang: string,
+    translated: string,
 }
 
 export type SavedWordData = {
-    word: string,
-    localizedData: LocalizedData,
+    wordAndLang: string,
+    localizedData: LocalizedData | string,
     lastNotiTick: number,
 }
 

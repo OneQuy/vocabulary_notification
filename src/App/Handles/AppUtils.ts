@@ -1,7 +1,7 @@
 import { Alert } from "react-native"
-import { SafeArrayLength, SafeGetArrayElement, ToCanPrint } from "../../Common/UtilsTS"
+import { SafeArrayLength, SafeGetArrayElement, SafeValue, ToCanPrint } from "../../Common/UtilsTS"
 import { TranslatedResult } from "../../Common/DeepTranslateApi"
-import { PairTime, SavedWordData } from "../Types"
+import { LocalizedData, PairTime, SavedWordData } from "../Types"
 import { TimePickerResult } from "../Components/TimePicker"
 import { GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync } from "./Settings"
 import { SetCurrentAllNotificationsAsync, SetupWordsForSetNotiAsync } from "./WordMan"
@@ -36,23 +36,40 @@ export const TimePickerResultToTimestamp = (idayFromToday: number, time: TimePic
     return d.setSeconds(0, 0)
 }
 
+export const ToWordLangString = (word: string, lang: string): string => {
+    return `${word}_${lang}`
+}
+
+const ExtractWordLangString = (wordAndLang: string): string[] => {
+    return wordAndLang.split('_')
+}
+
+const CheckDeserializeLocalizedData = (saved: SavedWordData): LocalizedData => {
+    if (typeof saved.localizedData === 'string') {
+        saved.localizedData = JSON.parse(saved.localizedData) as LocalizedData
+    }
+
+    return saved.localizedData
+}
+
 export const SavedWordToTranslatedResult = (saved: SavedWordData): TranslatedResult => {
     return {
-        text: saved.word,
-        translated: saved.localizedData.translated,
+        text: ExtractWordLangString(saved.wordAndLang)[0],
+        translated: CheckDeserializeLocalizedData(saved).translated,
     } as TranslatedResult
 }
 
 export const TranslatedResultToSavedWord = (translate: TranslatedResult, lang: string, notiTick: number): SavedWordData => {
-    return {
-        word: translate.text,
+    const res: SavedWordData = {
+        wordAndLang: ToWordLangString(translate.text, lang),
         lastNotiTick: notiTick,
 
         localizedData: {
-            translated: translate.translated,
-            lang,
+            translated: SafeValue(translate.translated, translate.text),
         },
-    } as SavedWordData
+    }
+
+    return res
 }
 
 export const TotalMin = (time: TimePickerResult) => {
@@ -114,7 +131,7 @@ const CalcNotiTimeListPerDay = (intervalInMinute: number, excludePairs: PairTime
     return arr
 }
 
-export const SetNotificationAsync = async () : Promise<boolean> => {
+export const SetNotificationAsync = async (): Promise<boolean> => {
     const intervalInMin = await GetIntervalMinAsync()
     const limitWordsPerDay = await GetLimitWordsPerDayAsync()
     const numDaysToPush = await GetNumDaysToPushAsync()
@@ -180,7 +197,7 @@ export const SetNotificationAsync = async () : Promise<boolean> => {
             const wordToPush = SafeGetArrayElement<SavedWordData>(wordsOfDay, undefined, iPushOfDay, true)
 
             if (!wordToPush ||
-                !wordToPush.localizedData.translated
+                !CheckDeserializeLocalizedData(wordToPush).translated
             ) {
                 AlertError('[SetNotificationAsync] what? wordToPush === undefined OR wordToPush.localized.translated === undefinded')
                 return false
@@ -188,16 +205,18 @@ export const SetNotificationAsync = async () : Promise<boolean> => {
 
             const timestamp = TimePickerResultToTimestamp(iday, pushTimesPerDay[iPushOfDay])
 
+            const wordString = ExtractWordLangString(wordToPush.wordAndLang)[0]
+
             const noti: NotificationOption = {
-                title: wordToPush.word,
-                message: wordToPush.localizedData.translated,
+                title: wordString,
+                message: CheckDeserializeLocalizedData(wordToPush).translated,
                 timestamp,
             }
 
             setNotification(noti)
-            
+
             didSetNotiList.push({
-                word: wordToPush.word,
+                wordAndLang: wordToPush.wordAndLang,
                 localizedData: wordToPush.localizedData,
                 lastNotiTick: timestamp,
             })

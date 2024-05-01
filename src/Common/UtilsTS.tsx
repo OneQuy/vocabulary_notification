@@ -402,7 +402,18 @@ export function SafeGetArrayElement<T>( // main
     }
 }
 
-export function IsValuableArrayOrString(value: any, trimString: boolean = true) {
+export function IsAllValuableString(trimString: boolean, ...values: (string | null | undefined | number | object)[]): boolean { // sub 
+    return values.every((val => {
+        if (typeof val !== 'string')
+            return false
+
+        const s = trimString ? val.trim() : val
+
+        return s.length > 0
+    }))
+}
+
+export function IsValuableArrayOrString(value: any, trimString: boolean = true) { // main 
     if (Array.isArray(value)) {
         return value.length > 0
     }

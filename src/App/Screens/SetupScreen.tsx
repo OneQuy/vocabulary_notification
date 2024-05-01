@@ -17,7 +17,7 @@ import { cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync } 
 import { AuthorizationStatus } from '@notifee/react-native'
 import { Language, Languages } from '../../Common/DeepTranslateApi'
 import { PairTime } from '../Types'
-import { AddSeenWordsAsync, CheckInitDBAsync, LoadAllSeenWordsAsync } from '../Handles/SeenWords'
+import { AddOrUpdateLocalizedWordsAsync, CheckInitDBAsync, LoadAllSeenWordsAsync } from '../Handles/LocalizedWordsTable'
 import { SetNotificationAsync, TotalMin } from '../Handles/AppUtils'
 import { SqlGetAllRowsAsync, SqlInsertOrUpdateAsync, SqlInsertOrUpdateAsync_Object, SqlIsExistedAsync, SqlLogAllRowsAsync } from '../../Common/SQLite'
 
@@ -113,17 +113,26 @@ const SetupScreen = () => {
     // const res = await SqlIsExistedAsync('LocalizedWordsTable', { column: 'lastNotiTick', value: '2' })
     // console.log(res);
 
-    let res = await SqlInsertOrUpdateAsync_Object('LocalizedWordsTable',
-      {
-        wordAndLang: 'iiii',
-        lastNotiTick: 999,
-        localizedData: 'ooooo'
-      }
-    )
+    // let res = await SqlInsertOrUpdateAsync_Object('LocalizedWordsTable',
+    //   {
+    //     wordAndLang: 'iiii',
+    //     lastNotiTick: 999,
+    //     localizedData: {
+    //       aa: 'cc',
+    //       bb: 88
+    //     }
+    //   }
+    // )
 
-    console.log(res);
+    // console.log(res);
 
-    SqlLogAllRowsAsync('LocalizedWordsTable')
+    // const rows = await SqlGetAllRowsAsync('LocalizedWordsTable')
+
+    // if (rows instanceof Error)
+    //   return
+
+    // console.log(typeof rows[0].localizedData)
+    // SqlLogAllRowsAsync('LocalizedWordsTable')
 
     // if (res instanceof Error)
     // console.log(res);
