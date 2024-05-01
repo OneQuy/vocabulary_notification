@@ -79,16 +79,6 @@ export const DeepTranslateSingleTextAsync = async (
  * ### each element:
  * * text translated arr if success (even word is unavailable to translate). but both cases full enough length.
  * * Error() if api failed
- * 
- * ### test cases:
-// [
-//     'the',
-//     'love', 
-//     'rope',
-//     'ring',
-//     'roooaa',
-//     'this'
-// ],
  */
 export const DeepTranslateAsync = async (
     key: string,
@@ -96,39 +86,22 @@ export const DeepTranslateAsync = async (
     toLang: string | Language,
     fromLang?: string | Language,
 ): Promise<TranslatedResult[] | Error> => {
-    const joinChar = '|'
-    const join = texts.join(joinChar)
+    const resArr = await Promise.all(texts.map(text => {
+        return DeepTranslateSingleTextAsync(key, text, toLang, fromLang)
+    }))
 
-    const res = await DeepTranslateSingleTextAsync(
-        key,
-        join,
-        toLang,
-        fromLang)
+    for (let i of resArr) {
+        if (i.error !== undefined)
+            return i.error
+    }
 
-    if (res.error instanceof Error)
-        return res.error
-
-    if (!res.translated)
-        return new Error('DeepTranslateAsync failed')
-
-    const translatedArr = res.translated.split(joinChar)
-
-    if (translatedArr.length !== texts.length)
+    if (resArr.length !== texts.length)
         return new Error('[DeepTranslateAsync] translated arr not same length with texts length')
 
-    return translatedArr.map((translated, index) => {
-        return {
-            text: texts[index],
-            translated: (translated && translated.length > 0) ? translated : texts[index],
-        } as TranslatedResult
-    })
-
-    // return await Promise.all(texts.map(text => {
-    //     return DeepTranslateSingleTextAsync(key, text, toLang, fromLang)
-    // }))
+    return resArr
 }
 
-export const GetLanguage = (codeLang: string) : Language | undefined => {
+export const GetLanguage = (codeLang: string): Language | undefined => {
     return Languages.find(i => i.language === codeLang)
 }
 
