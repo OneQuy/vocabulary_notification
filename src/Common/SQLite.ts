@@ -84,8 +84,16 @@ export const SqlLogAllRowsAsync = async (table: string): Promise<void> => {
         console.log(allrows.rows.item(i));
 }
 
-export const SqlGetAllRowsAsync = async (table: string): Promise<SQLResultSet | Error> => {
-    const cmd = `SELECT * FROM ${table}`
+export const SqlDropTableAsync = async (table: string): Promise<void> => {
+    await ExecuteSqlAsync(`DROP TABLE IF EXISTS ${table}`)
+}
+
+/**
+ * 
+ * @param numRows (<= 0 for get all rows.)
+ */
+export const SqlGetAllRowsAsync = async (table: string, numRows = -1): Promise<SQLResultSet | Error> => {
+    const cmd = `SELECT ${numRows <= 0 ? '*' : numRows} FROM ${table}`
     const res = await ExecuteSqlAsync(cmd)
     return res
 }
@@ -179,28 +187,11 @@ export const ExecuteSqlAsync = async (cmd: string): Promise<SQLResultSet | Error
 //     await ExecuteSqlAsync(CreateTableCmd)
 // }
 
-// DROP TABLE ----------------------------
-
-// let r = await ExecuteSqlAsync('DROP TABLE IF EXISTS Users')
-
 // CREATE TABLE ----------------------------
 
 // r = await ExecuteSqlAsync('CREATE TABLE IF NOT EXISTS Users(user_id INTEGER PRIMARY KEY NOT NULL, name VARCHAR(30))')
 
 // const CreateTableCmd = 'CREATE TABLE IF NOT EXISTS SeenSavedWords(wordAndLang VARCHAR(255) PRIMARY KEY, lastNotiTick INT, savedWordData TEXT)'
-
-// INSERT ----------------------------
-
-// r = await ExecuteSqlAsync(`INSERT INTO Users (name) VALUES ('John')`)
-
-// const cmd = "INSERT OR IGNORE INTO SeenSavedWords" +
-// "(wordAndLang, lastNotiTick, savedWordData) VALUES " +
-// `('${wordAndLang}', ${word.notiTick}, '${savedWordData}')`
-
-// SELECT ----------------------------
-
-// r = await ExecuteSqlAsync('SELECT * FROM `users`')
-// console.log(r.rows)
 
 // AGRS ----------------------------
         

@@ -168,7 +168,7 @@ export const SetupWordsForSetNotiAsync = async (numUniqueWordsOfAllDay: number):
 // Current Noti Words --------------------------------
 
 const AddSeenWordsAndRefreshCurrentNotiWordsAsync = async (): Promise<SavedWordData[] | undefined> => {
-    const arr = await GetCurrentNotiWordsAsync()
+    const arr = await GetCurrentAllNotificationsAsync()
 
     if (arr === undefined)
         return undefined
@@ -197,17 +197,17 @@ const AddSeenWordsAndRefreshCurrentNotiWordsAsync = async (): Promise<SavedWordD
     return notSeenArr
 }
 
-const GetCurrentNotiWordsAsync = async (): Promise<SavedWordData[] | undefined> => {
+const GetCurrentAllNotificationsAsync = async (): Promise<SavedWordData[] | undefined> => {
     return await GetArrayAsync<SavedWordData>(StorageKey_CurrentAllNotifications)
 }
 
 export const SetCurrentAllNotificationsAsync = async (currentAllNotifications: SavedWordData[]) => {
-    const s = await AsyncStorage.getItem(StorageKey_CurrentAllNotifications)
+    // const s = await AsyncStorage.getItem(StorageKey_CurrentAllNotifications)
 
-    if (s) {
-        console.error('pls handle list before saving');
-        return
-    }
+    // if (s) {
+    //     console.error('pls handle list before saving');
+    //     return
+    // }
 
     await SetArrayAsync(StorageKey_CurrentAllNotifications, currentAllNotifications)
 }
