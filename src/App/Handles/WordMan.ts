@@ -30,7 +30,7 @@ export const LoadFromSeenWordsOrTranslateAsync = async (
         if (seenWords instanceof Error)
             return true
 
-        const seen = seenWords.find(seen => seen.word === word && toLang === seen.localized.lang)
+        const seen = seenWords.find(seen => seen.word === word && toLang === seen.localizedData.lang)
 
         if (seen)
             alreadyFetchedWords.push(seen)
@@ -93,7 +93,7 @@ export const SetupWordsForSetNotiAsync = async (numUniqueWordsOfAllDay: number):
 
     let alreadyFetchedAndNotSeenWords_ButNotMatchLang: Word[] | undefined
 
-    if (alreadyFetchedAndNotSeenWords && alreadyFetchedAndNotSeenWords.findIndex(i => i.localized.lang !== targetLang) >= 0) {
+    if (alreadyFetchedAndNotSeenWords && alreadyFetchedAndNotSeenWords.findIndex(i => i.localizedData.lang !== targetLang) >= 0) {
         const wordsDataOrError = await GetWordsDataAsync(alreadyFetchedAndNotSeenWords.map(i => i.word))
 
         if (wordsDataOrError instanceof Error) {

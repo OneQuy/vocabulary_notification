@@ -30,7 +30,7 @@ export type LocalizedData = {
 
 export type SavedWordData = {
     word: string,
-    localized: LocalizedData,
+    localizedData: LocalizedData,
     lastNotiTick: number,
 }
 

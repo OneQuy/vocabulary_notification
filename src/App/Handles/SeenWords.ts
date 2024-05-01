@@ -38,7 +38,7 @@ export const AddSeenWordsAsync = async (addWords: SavedWordData[]): Promise<void
     await CheckInitDBAsync()
 
     const resArr = await Promise.all(addWords.map(word => {
-        const wordAndLang = `${word.word}_${word.localized.lang}`
+        const wordAndLang = `${word.word}_${word.localizedData.lang}`
         const localizedData = null
         // const localizedData = JSON.stringify(word.localized)
 

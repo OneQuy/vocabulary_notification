@@ -39,7 +39,7 @@ export const TimePickerResultToTimestamp = (idayFromToday: number, time: TimePic
 export const SavedWordToTranslatedResult = (saved: SavedWordData): TranslatedResult => {
     return {
         text: saved.word,
-        translated: saved.localized.translated,
+        translated: saved.localizedData.translated,
     } as TranslatedResult
 }
 
@@ -48,7 +48,7 @@ export const TranslatedResultToSavedWord = (translate: TranslatedResult, lang: s
         word: translate.text,
         lastNotiTick: notiTick,
 
-        localized: {
+        localizedData: {
             translated: translate.translated,
             lang,
         },
@@ -180,7 +180,7 @@ export const SetNotificationAsync = async () : Promise<boolean> => {
             const wordToPush = SafeGetArrayElement<SavedWordData>(wordsOfDay, undefined, iPushOfDay, true)
 
             if (!wordToPush ||
-                !wordToPush.localized.translated
+                !wordToPush.localizedData.translated
             ) {
                 AlertError('[SetNotificationAsync] what? wordToPush === undefined OR wordToPush.localized.translated === undefinded')
                 return false
@@ -190,7 +190,7 @@ export const SetNotificationAsync = async () : Promise<boolean> => {
 
             const noti: NotificationOption = {
                 title: wordToPush.word,
-                message: wordToPush.localized.translated,
+                message: wordToPush.localizedData.translated,
                 timestamp,
             }
 
@@ -198,7 +198,7 @@ export const SetNotificationAsync = async () : Promise<boolean> => {
             
             didSetNotiList.push({
                 word: wordToPush.word,
-                localized: wordToPush.localized,
+                localizedData: wordToPush.localizedData,
                 lastNotiTick: timestamp,
             })
         }
