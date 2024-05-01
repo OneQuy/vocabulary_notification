@@ -46,7 +46,7 @@ export const SavedWordToTranslatedResult = (saved: SavedWordData): TranslatedRes
 export const TranslatedResultToSavedWord = (translate: TranslatedResult, lang: string, notiTick: number): SavedWordData => {
     return {
         word: translate.text,
-        notiTick,
+        lastNotiTick: notiTick,
 
         localized: {
             translated: translate.translated,
@@ -199,7 +199,7 @@ export const SetNotificationAsync = async () : Promise<boolean> => {
             didSetNotiList.push({
                 word: wordToPush.word,
                 localized: wordToPush.localized,
-                notiTick: timestamp,
+                lastNotiTick: timestamp,
             })
         }
     }

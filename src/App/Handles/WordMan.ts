@@ -179,7 +179,7 @@ const AddSeenWordsAndRefreshCurrentNotiWordsAsync = async (): Promise<SavedWordD
     const notSeenArr: SavedWordData[] = []
 
     for (let word of arr) {
-        if (word.notiTick > now)
+        if (word.lastNotiTick > now)
             notSeenArr.push(word)
         else
             seenArr.push(word)

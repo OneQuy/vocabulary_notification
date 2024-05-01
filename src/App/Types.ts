@@ -31,7 +31,7 @@ export type LocalizedData = {
 export type SavedWordData = {
     word: string,
     localized: LocalizedData,
-    notiTick: number,
+    lastNotiTick: number,
 }
 
 export type PairTime = TimePickerResult[]

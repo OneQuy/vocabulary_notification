@@ -45,7 +45,7 @@ export const AddSeenWordsAsync = async (addWords: SavedWordData[]): Promise<void
         const insertCmd =
             "INSERT OR IGNORE INTO LocalizedWordsTable" +
             "(wordAndLang, lastNotiTick, localizedData) VALUES " +
-            `('${wordAndLang}', ${word.notiTick}, '${localizedData}')`
+            `('${wordAndLang}', ${word.lastNotiTick}, '${localizedData}')`
 
         if (IsLog) {
             console.log('[AddSeenWordsAsync] inserting...', word.word, ToCanPrint(localizedData));
