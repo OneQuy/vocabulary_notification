@@ -242,7 +242,9 @@ export const SetNotificationAsync = async (): Promise<undefined | SetupNotificat
 
     // numUniqueWordsPerDay
 
-    const numUniqueWordsPerDay = Math.min(pushTimesPerDay.length, limitWordsPerDay)
+    const numUniqueWordsPerDay = limitWordsPerDay > 0 ?
+        Math.min(pushTimesPerDay.length, limitWordsPerDay) : // limit
+        pushTimesPerDay.length // no limit
 
     if (IsLog) {
         console.log('[SetNotificationAsync]',
@@ -274,7 +276,7 @@ export const SetNotificationAsync = async (): Promise<undefined | SetupNotificat
     if (SafeArrayLength(setupWordsResult.words) !== numUniqueWordsOfAllDay ||
         !Array.isArray(setupWordsResult.words)) { // ts
         AlertError('[SetNotificationAsync] what? can not fetch enough words')
-        
+
         return {
             error: new Error('[SetNotificationAsync] what? can not fetch enough words')
         }
