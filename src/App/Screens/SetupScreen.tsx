@@ -6,20 +6,19 @@ import useLocalText from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, LogStringify, PrependZero, RandomInt } from '../../Common/UtilsTS'
+import { AddS, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PrependZero, ToCanPrint } from '../../Common/UtilsTS'
 import HairLine from '../../Common/Components/HairLine'
 import { CommonStyles, WindowSize_Max } from '../../Common/CommonConstants'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { DefaultExcludedTimePairs, DefaultIntervalInMin, IntervalInMinPresets, LimitWordsPerDayPresets, PopuplarityLevelNumber } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
 import { LucideIcon } from '../../Common/Components/LucideIcon'
-import { cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync } from '../../Common/Nofitication'
-import { AuthorizationStatus } from '@notifee/react-native'
 import { Language, Languages } from '../../Common/DeepTranslateApi'
 import { PairTime } from '../Types'
-import { AddOrUpdateLocalizedWordsToDbAsync, CheckInitDBAsync, GetLocalizedWordFromDbAsync } from '../Handles/LocalizedWordsTable'
-import { SetNotificationAsync, TotalMin } from '../Handles/AppUtils'
-import { SqlGetAllRowsAsync, SqlGetAllRowsWithColumnIncludedInArrayAsync, SqlInsertOrUpdateAsync, SqlInsertOrUpdateAsync_Object, SqlIsExistedAsync, SqlLogAllRowsAsync } from '../../Common/SQLite'
+import { CheckInitDBAsync } from '../Handles/LocalizedWordsTable'
+import { AlertError, TotalMin } from '../Handles/AppUtils'
+import { SqlGetAllRowsWithColumnIncludedInArrayAsync } from '../../Common/SQLite'
+import { SetNotificationAsync } from '../Handles/SetupNotification'
 
 type PopupType = 'popularity' | 'interval' | 'limit-word' | 'target-lang' | undefined
 
@@ -128,7 +127,7 @@ const SetupScreen = () => {
     //     localizedData: 'viiiiii'
     //   }
     // )
-    
+
     // res = await SqlInsertOrUpdateAsync_Object('LocalizedWordsTable',
     //   {
     //     wordAndLang: 'good_vi',
@@ -196,19 +195,26 @@ const SetupScreen = () => {
   const onPressSetNotification = useCallback(async () => {
     set_handling(true)
 
-    const resPermission = await requestPermissionNotificationAsync()
+    const res = await SetNotificationAsync()
 
-    if (resPermission.authorizationStatus === AuthorizationStatus.DENIED) {
-      set_handling(false)
-      Alert.alert(texts.popup_error, texts.no_permission)
+    if (res === undefined) { // success
 
-      return
+    }
+    else { // error
+      let s = res.errorText ? texts[res.errorText] : ''
+
+      if (res.error) {
+        if (s !== '')
+          s += '\n\n'
+
+        s += ToCanPrint(res.error)
+      }
+
+      AlertError(s)
     }
 
-    await SetNotificationAsync()
-
     set_handling(false)
-  }, [displayIntervalInMin, displayExcludeTimePairs, texts])
+  }, [texts])
 
   const onConfirmTimePicker = useCallback((time: TimePickerResult) => {
     if (editingExcludeTimePairAndElementIndex.current[0] === undefined ||

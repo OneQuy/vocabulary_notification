@@ -1,21 +1,10 @@
 import { Alert } from "react-native"
-import { SafeArrayLength, SafeGetArrayElement, SafeValue, ToCanPrint } from "../../Common/UtilsTS"
+import { SafeValue, ToCanPrint } from "../../Common/UtilsTS"
 import { TranslatedResult } from "../../Common/DeepTranslateApi"
 import { LocalizedData, PairTime, SavedWordData } from "../Types"
 import { TimePickerResult } from "../Components/TimePicker"
-import { GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync } from "./Settings"
-import { SetCurrentAllNotificationsAsync, SetupWordsForSetNotiAsync } from "./WordMan"
-import { NotificationOption, cancelAllLocalNotificationsAsync, setNotification } from "../../Common/Nofitication"
 
 const IsLog_SetNotification = true
-
-// export const IsSameSavedWord = (s1: SavedWordData, s2: SavedWordData) => {
-//     return (
-//         s1.word === s2.word &&
-//         s1.localized.translated === s2.localized.translated &&
-//         s1.localized.lang === s2.localized.lang
-//     )
-// }
 
 export const HandleError = (title: string, error: any, alert: boolean) => {
     // todo
@@ -40,11 +29,11 @@ export const ToWordLangString = (word: string, lang: string): string => {
     return `${word}_${lang}`
 }
 
-const ExtractWordLangString = (wordAndLang: string): string[] => {
+export const ExtractWordLangString = (wordAndLang: string): string[] => {
     return wordAndLang.split('_')
 }
 
-const CheckDeserializeLocalizedData = (saved: SavedWordData): LocalizedData => {
+export const CheckDeserializeLocalizedData = (saved: SavedWordData): LocalizedData => {
     if (typeof saved.localizedData === 'string') {
         saved.localizedData = JSON.parse(saved.localizedData) as LocalizedData
     }
@@ -92,7 +81,7 @@ const IsInExcludeTime = (hour: number, minute: number, excludePairs: PairTime[])
     return false
 }
 
-const CalcNotiTimeListPerDay = (intervalInMinute: number, excludePairs: PairTime[]): TimePickerResult[] => {
+export const CalcNotiTimeListPerDay = (intervalInMinute: number, excludePairs: PairTime[]): TimePickerResult[] => {
     let lastNoti: TimePickerResult | undefined
     const arr: TimePickerResult[] = []
 
@@ -129,101 +118,4 @@ const CalcNotiTimeListPerDay = (intervalInMinute: number, excludePairs: PairTime
     // LogStringify(arr)
 
     return arr
-}
-
-export const SetNotificationAsync = async (): Promise<boolean> => {
-    const intervalInMin = await GetIntervalMinAsync()
-    const limitWordsPerDay = await GetLimitWordsPerDayAsync()
-    const numDaysToPush = await GetNumDaysToPushAsync()
-    const excludedTimePairs = await GetExcludedTimesAsync()
-
-    // numPushesPerDay
-
-    const pushTimesPerDay = CalcNotiTimeListPerDay(intervalInMin, excludedTimePairs)
-
-    if (IsLog_SetNotification) {
-        console.log('[SetNotificationAsync]',
-            'pushTimesPerDay', pushTimesPerDay.length,
-            'intervalInMin', intervalInMin)
-    }
-
-    // numUniqueWordsPerDay
-
-    const numUniqueWordsPerDay = Math.min(pushTimesPerDay.length, limitWordsPerDay)
-
-    if (IsLog_SetNotification) {
-        console.log('[SetNotificationAsync]',
-            'numUniqueWordsPerDay', numUniqueWordsPerDay,
-            'limitWordsPerDay', limitWordsPerDay)
-    }
-
-    // numUniqueWordsOfAllDay
-
-    const numUniqueWordsOfAllDay = numUniqueWordsPerDay * numDaysToPush
-
-    if (IsLog_SetNotification) {
-        console.log('[SetNotificationAsync]',
-            'numUniqueWordsOfAllDay', numUniqueWordsOfAllDay,
-            'numDaysToPush', numDaysToPush)
-    }
-
-    // uniqueWordsOfAllDay
-
-    const setupWordsResult = await SetupWordsForSetNotiAsync(numUniqueWordsOfAllDay)
-
-    if (setupWordsResult.error || setupWordsResult.errorText) {
-        AlertError(setupWordsResult.error ?? setupWordsResult.errorText)
-        return false
-    }
-
-    if (SafeArrayLength(setupWordsResult.words) !== numUniqueWordsOfAllDay ||
-        !Array.isArray(setupWordsResult.words)) { // ts
-        AlertError('[SetNotificationAsync] what? can not fetch enough words')
-        return false
-    }
-
-    const uniqueWordsOfAllDay = setupWordsResult.words
-
-    // set noti !
-
-    await cancelAllLocalNotificationsAsync()
-
-    const didSetNotiList: SavedWordData[] = []
-
-    for (let iday = 0; iday < numDaysToPush; iday++) { // day by day
-        const wordsOfDay = uniqueWordsOfAllDay.slice(iday * numUniqueWordsPerDay, iday * numUniqueWordsPerDay + numUniqueWordsPerDay)
-
-        for (let iPushOfDay = 0; iPushOfDay < pushTimesPerDay.length; iPushOfDay++) { // pushes of day
-            const wordToPush = SafeGetArrayElement<SavedWordData>(wordsOfDay, undefined, iPushOfDay, true)
-
-            if (!wordToPush ||
-                !CheckDeserializeLocalizedData(wordToPush).translated
-            ) {
-                AlertError('[SetNotificationAsync] what? wordToPush === undefined OR wordToPush.localized.translated === undefinded')
-                return false
-            }
-
-            const timestamp = TimePickerResultToTimestamp(iday, pushTimesPerDay[iPushOfDay])
-
-            const wordString = ExtractWordLangString(wordToPush.wordAndLang)[0]
-
-            const noti: NotificationOption = {
-                title: wordString,
-                message: CheckDeserializeLocalizedData(wordToPush).translated,
-                timestamp,
-            }
-
-            setNotification(noti)
-
-            didSetNotiList.push({
-                wordAndLang: wordToPush.wordAndLang,
-                localizedData: wordToPush.localizedData,
-                lastNotiTick: timestamp,
-            })
-        }
-    }
-
-    SetCurrentAllNotificationsAsync(didSetNotiList)
-
-    return true
 }

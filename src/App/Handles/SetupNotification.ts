@@ -5,20 +5,28 @@ import { BridgeTranslateMultiWordAsync } from "./TranslateBridge";
 import { LocalText } from "../Hooks/useLocalText";
 import { TranslatedResult } from "../../Common/DeepTranslateApi";
 import { AddOrUpdateLocalizedWordsToDbAsync, GetLocalizedWordFromDbAsync, GetLocalizedWordsFromDbIfAvailableAsync } from "./LocalizedWordsTable";
-import { SavedWordToTranslatedResult, ToWordLangString, TranslatedResultToSavedWord } from "./AppUtils";
-import { SafeArrayLength } from "../../Common/UtilsTS";
-import { GetTargetLangAsync } from "./Settings";
+import { AlertError, CalcNotiTimeListPerDay, CheckDeserializeLocalizedData, ExtractWordLangString, SavedWordToTranslatedResult, TimePickerResultToTimestamp, ToWordLangString, TranslatedResultToSavedWord } from "./AppUtils";
+import { SafeArrayLength, SafeGetArrayElement } from "../../Common/UtilsTS";
+import { GetExcludeTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetTargetLangAsync } from "./Settings";
 import { GetNextWordsDataForNotiAsync, SetUsedWordIndexAsync } from "./WordsData";
+import { NotificationOption, cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync, setNotification } from "../../Common/Nofitication";
+import { AuthorizationStatus } from "@notifee/react-native";
 
 const IsLog = true
 
-export type SetupWordsForSetNotiResult = {
+type SetupWordsForSetNotiResult = {
     words?: SavedWordData[],
     errorText?: keyof LocalText,
     error?: Error,
 }
 
-export const LoadFromLocalizedDbOrTranslateWordsAsync = async (
+
+export type SetupNotificationError = {
+    errorText?: keyof LocalText,
+    error?: Error,
+}
+
+const LoadFromLocalizedDbOrTranslateWordsAsync = async (
     words: string[],
     toLang: string,
     fromLang?: string,
@@ -76,7 +84,7 @@ export const LoadFromLocalizedDbOrTranslateWordsAsync = async (
  * ### note:
  * @returns length must === numUniqueWordsOfAllDay
  */
-export const SetupWordsForSetNotiAsync = async (numRequired: number): Promise<SetupWordsForSetNotiResult> => {
+const SetupWordsForSetNotiAsync = async (numRequired: number): Promise<SetupWordsForSetNotiResult> => {
     const targetLang = await GetTargetLangAsync()
 
     // error not set lang yet
@@ -161,8 +169,6 @@ export const SetupWordsForSetNotiAsync = async (numRequired: number): Promise<Se
     }
 }
 
-// Current Noti Words --------------------------------
-
 const UpdateSeenWordsAndRefreshCurrentNotiWordsAsync = async (): Promise<void> => {
     const arr = await GetCurrentAllNotificationsAsync()
 
@@ -199,7 +205,7 @@ const GetCurrentAllNotificationsAsync = async (): Promise<SavedWordData[] | unde
     return await GetArrayAsync<SavedWordData>(StorageKey_CurrentAllNotifications)
 }
 
-export const SetCurrentAllNotificationsAsync = async (currentAllNotifications: SavedWordData[]) => {
+const SetCurrentAllNotificationsAsync = async (currentAllNotifications: SavedWordData[]) => {
     // const s = await AsyncStorage.getItem(StorageKey_CurrentAllNotifications)
 
     // if (s) {
@@ -208,4 +214,120 @@ export const SetCurrentAllNotificationsAsync = async (currentAllNotifications: S
     // }
 
     await SetArrayAsync(StorageKey_CurrentAllNotifications, currentAllNotifications)
+}
+
+export const SetNotificationAsync = async (): Promise<undefined | SetupNotificationError> => {
+    const resPermission = await requestPermissionNotificationAsync()
+
+    if (resPermission.authorizationStatus === AuthorizationStatus.DENIED) {
+        return {
+            errorText: 'no_permission'
+        }
+    }
+
+    const intervalInMin = await GetIntervalMinAsync()
+    const limitWordsPerDay = await GetLimitWordsPerDayAsync()
+    const numDaysToPush = await GetNumDaysToPushAsync()
+    const excludedTimePairs = await GetExcludeTimesAsync()
+
+    // numPushesPerDay
+
+    const pushTimesPerDay = CalcNotiTimeListPerDay(intervalInMin, excludedTimePairs)
+
+    if (IsLog) {
+        console.log('[SetNotificationAsync]',
+            'pushTimesPerDay', pushTimesPerDay.length,
+            'intervalInMin', intervalInMin)
+    }
+
+    // numUniqueWordsPerDay
+
+    const numUniqueWordsPerDay = Math.min(pushTimesPerDay.length, limitWordsPerDay)
+
+    if (IsLog) {
+        console.log('[SetNotificationAsync]',
+            'numUniqueWordsPerDay', numUniqueWordsPerDay,
+            'limitWordsPerDay', limitWordsPerDay)
+    }
+
+    // numUniqueWordsOfAllDay
+
+    const numUniqueWordsOfAllDay = numUniqueWordsPerDay * numDaysToPush
+
+    if (IsLog) {
+        console.log('[SetNotificationAsync]',
+            'numUniqueWordsOfAllDay', numUniqueWordsOfAllDay,
+            'numDaysToPush', numDaysToPush)
+    }
+
+    // uniqueWordsOfAllDay
+
+    const setupWordsResult = await SetupWordsForSetNotiAsync(numUniqueWordsOfAllDay)
+
+    if (setupWordsResult.error || setupWordsResult.errorText) {
+        return {
+            error: setupWordsResult.error,
+            errorText: setupWordsResult.errorText
+        }
+    }
+
+    if (SafeArrayLength(setupWordsResult.words) !== numUniqueWordsOfAllDay ||
+        !Array.isArray(setupWordsResult.words)) { // ts
+        AlertError('[SetNotificationAsync] what? can not fetch enough words')
+        
+        return {
+            error: new Error('[SetNotificationAsync] what? can not fetch enough words')
+        }
+    }
+
+    const uniqueWordsOfAllDay = setupWordsResult.words
+
+    // set noti !
+
+    await cancelAllLocalNotificationsAsync()
+
+    const didSetNotiList: SavedWordData[] = []
+
+    for (let iday = 0; iday < numDaysToPush; iday++) { // day by day
+        const wordsOfDay = uniqueWordsOfAllDay.slice(iday * numUniqueWordsPerDay, iday * numUniqueWordsPerDay + numUniqueWordsPerDay)
+
+        for (let iPushOfDay = 0; iPushOfDay < pushTimesPerDay.length; iPushOfDay++) { // pushes of day
+            const wordToPush = SafeGetArrayElement<SavedWordData>(wordsOfDay, undefined, iPushOfDay, true)
+
+            if (!wordToPush ||
+                !CheckDeserializeLocalizedData(wordToPush).translated
+            ) {
+                return {
+                    error: new Error('[SetNotificationAsync] what? wordToPush === undefined OR CheckDeserializeLocalizedData(wordToPush).translated === undefinded')
+                }
+            }
+
+            const timestamp = TimePickerResultToTimestamp(iday, pushTimesPerDay[iPushOfDay])
+
+            const wordString = ExtractWordLangString(wordToPush.wordAndLang)[0]
+
+            const noti: NotificationOption = {
+                title: wordString,
+                message: CheckDeserializeLocalizedData(wordToPush).translated,
+                timestamp,
+            }
+
+            setNotification(noti)
+
+            didSetNotiList.push({
+                wordAndLang: wordToPush.wordAndLang,
+                localizedData: wordToPush.localizedData,
+                lastNotiTick: timestamp,
+            })
+        }
+    }
+
+    if (IsLog) {
+        console.log('[SetNotificationAsync]',
+            'didSetNotiList', didSetNotiList)
+    }
+
+    SetCurrentAllNotificationsAsync(didSetNotiList)
+
+    return undefined
 }
