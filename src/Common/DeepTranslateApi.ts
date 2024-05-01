@@ -3,7 +3,14 @@
 import { SafeValue } from "./UtilsTS";
 
 export type Language = {
+    /**
+     *  "language": "en",
+     */
     "language": string,
+    
+    /**
+     *  "name": "English",
+     */
     "name": string,
 }
 

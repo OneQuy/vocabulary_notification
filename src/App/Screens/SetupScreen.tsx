@@ -19,6 +19,7 @@ import { CheckInitDBAsync } from '../Handles/LocalizedWordsTable'
 import { AlertError, TotalMin } from '../Handles/AppUtils'
 import { SqlGetAllRowsWithColumnIncludedInArrayAsync } from '../../Common/SQLite'
 import { SetNotificationAsync } from '../Handles/SetupNotification'
+import { SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetPopularityLevelIndexAsync, SettTargetLangAsyncAsync } from '../Handles/Settings'
 
 type PopupType = 'popularity' | 'interval' | 'limit-word' | 'target-lang' | undefined
 
@@ -38,7 +39,7 @@ const SetupScreen = () => {
   const [displayTargetLang, set_displayTargetLang] = useState<Language | undefined>()
   const [searchLangInputTxt, set_searchLangInputTxt] = useState('')
 
-  const [displayExcludeTimePairs, set_displayExcludeTimePairs] = useState<PairTime[]>(DefaultExcludedTimePairs)
+  const [displayExcludedTimePairs, set_displayExcludedTimePairs] = useState<PairTime[]>(DefaultExcludedTimePairs)
   const editingExcludeTimePairAndElementIndex = useRef<[PairTime | undefined, number]>([undefined, -1])
 
   const [showTimePicker, set_showTimePicker] = useState(false)
@@ -220,7 +221,9 @@ const SetupScreen = () => {
     if (editingExcludeTimePairAndElementIndex.current[0] === undefined ||
       editingExcludeTimePairAndElementIndex.current[1] === -1
     ) { // set for interval
-      set_displayIntervalInMin(time.hours * 60 + time.minutes)
+      const min = time.hours * 60 + time.minutes
+      set_displayIntervalInMin(min)
+      SetIntervalMinAsync(min)
     }
     else { // for exclude time
       const totalMin = TotalMin(time)
@@ -244,17 +247,23 @@ const SetupScreen = () => {
 
       editingExcludeTimePairAndElementIndex.current[0][editingExcludeTimePairAndElementIndex.current[1]] = time
       editingExcludeTimePairAndElementIndex.current = [undefined, -1]
-      set_displayExcludeTimePairs(CloneObject(displayExcludeTimePairs))
+
+      set_displayExcludedTimePairs(CloneObject(displayExcludedTimePairs))
+
+      SetExcludedTimesAsync(displayExcludedTimePairs)
     }
-  }, [displayExcludeTimePairs, texts])
+  }, [displayExcludedTimePairs, texts])
 
   // popularity
 
   const onPressPopularityLevel = useCallback((index: number) => {
     set_displayPopularityLevelIdx(index)
 
-    if (popupCloseCallbackRef.current)
-      popupCloseCallbackRef.current()
+    if (popupCloseCallbackRef.current) {
+      popupCloseCallbackRef.current(() => {
+        SetPopularityLevelIndexAsync(index)
+      })
+    }
   }, [])
 
   const onPressShowPopup = useCallback((type: PopupType) => {
@@ -307,7 +316,7 @@ const SetupScreen = () => {
     )
   }, [displayPopularityLevelIdx, theme, style])
 
-  // interval
+  // interval (repeat)
 
   const onPressInterval = useCallback((minutesOrCustom: number | undefined) => {
     if (minutesOrCustom !== undefined)
@@ -317,6 +326,8 @@ const SetupScreen = () => {
       popupCloseCallbackRef.current(() => {
         if (minutesOrCustom === undefined) // custom
           set_showTimePicker(true)
+        else
+          SetIntervalMinAsync(minutesOrCustom)
       })
   }, [])
 
@@ -367,8 +378,11 @@ const SetupScreen = () => {
     if (wordNum !== undefined)
       set_displayWordLimitNumber(wordNum)
 
-    if (popupCloseCallbackRef.current)
-      popupCloseCallbackRef.current()
+    if (popupCloseCallbackRef.current) {
+      popupCloseCallbackRef.current(() => {
+        SetLimitWordsPerDayAsync(wordNum)
+      })
+    }
   }, [])
 
   const renderWordLimits = useCallback(() => {
@@ -412,8 +426,11 @@ const SetupScreen = () => {
   const onPressTargetLang = useCallback((lang: Language) => {
     set_displayTargetLang(lang)
 
-    if (popupCloseCallbackRef.current)
-      popupCloseCallbackRef.current()
+    if (popupCloseCallbackRef.current) {
+      popupCloseCallbackRef.current(() => {
+        SettTargetLangAsyncAsync(lang.language)
+      })
+    }
   }, [])
 
   const renderPickTargetLang = useCallback(() => {
@@ -476,18 +493,18 @@ const SetupScreen = () => {
   // exclude time
 
   const onPressAddExcludeTime = useCallback(() => {
-    displayExcludeTimePairs.push(DefaultExcludedTimePairs[0])
-    set_displayExcludeTimePairs(CloneObject(displayExcludeTimePairs))
-  }, [displayExcludeTimePairs])
+    displayExcludedTimePairs.push(DefaultExcludedTimePairs[0])
+    set_displayExcludedTimePairs(CloneObject(displayExcludedTimePairs))
+  }, [displayExcludedTimePairs])
 
   const onPressRemoveExcludeTime = useCallback((pair: PairTime) => {
-    ArrayRemove(displayExcludeTimePairs, pair)
-    set_displayExcludeTimePairs(CloneObject(displayExcludeTimePairs))
-  }, [displayExcludeTimePairs])
+    ArrayRemove(displayExcludedTimePairs, pair)
+    set_displayExcludedTimePairs(CloneObject(displayExcludedTimePairs))
+  }, [displayExcludedTimePairs])
 
   const renderExcludeTimes = useCallback(() => {
     return (
-      displayExcludeTimePairs.map((pair: PairTime, index: number) => {
+      displayExcludedTimePairs.map((pair: PairTime, index: number) => {
         return (
           <View key={index} style={style.excludeTimeView}>
             {/* from */}
@@ -539,7 +556,7 @@ const SetupScreen = () => {
         )
       })
     )
-  }, [displayExcludeTimePairs, theme, style])
+  }, [displayExcludedTimePairs, theme, style])
 
   // common
 
