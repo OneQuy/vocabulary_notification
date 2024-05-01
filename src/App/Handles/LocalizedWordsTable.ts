@@ -91,7 +91,7 @@ export const AddOrUpdateLocalizedWordsToDbAsync = async (words: SavedWordData[])
     }
 }
 
-export const GetLocalizedWordFromDbAsyncWordsAsync = async (lang: string | undefined, seen: boolean | undefined): Promise<SavedWordData[] | Error> => {
+export const GetLocalizedWordFromDbAsync = async (lang: string | undefined, seen: boolean | undefined): Promise<SavedWordData[] | Error> => {
     let sql =
         `SELECT * ` +
         `FROM ${TableName} `

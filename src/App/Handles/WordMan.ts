@@ -6,7 +6,7 @@ import { SafeArrayLength } from "../../Common/UtilsTS";
 import { BridgeTranslateMultiWordAsync } from "./TranslateBridge";
 import { LocalText } from "../Hooks/useLocalText";
 import { TranslatedResult } from "../../Common/DeepTranslateApi";
-import { AddOrUpdateLocalizedWordsToDbAsync, GetLocalizedWordFromDbAsyncWordsAsync } from "./LocalizedWordsTable";
+import { AddOrUpdateLocalizedWordsAsync, GetLocalizedWordFromDbAsync } from "./LocalizedWordsTable";
 import { SavedWordToTranslatedResult, TranslatedResultToSavedWord } from "./AppUtils";
 import { GetNextWordsDataForNotiAsync, GetWordsDataAsync, SetUsedWordIndexAsync } from "./WordsData";
 import { GetTargetLangAsync } from "./Settings";
@@ -22,7 +22,7 @@ export const LoadFromSeenWordsOrTranslateAsync = async (
     toLang: string,
     fromLang?: string,
 ): Promise<TranslatedResult[] | Error> => {
-    const seenWords = await GetLocalizedWordFromDbAsyncWordsAsync()
+    const seenWords = await GetLocalizedWordFromDbAsync()
 
     const alreadyFetchedWords: SavedWordData[] = []
 
@@ -190,7 +190,7 @@ const AddSeenWordsAndRefreshCurrentNotiWordsAsync = async (): Promise<SavedWordD
     // handle seens => save to db
 
     if (seenArr.length > 0)
-        await AddOrUpdateLocalizedWordsToDbAsync(seenArr)
+        await AddOrUpdateLocalizedWordsAsync(seenArr)
 
     // handle not seens => save back to SetCurrentNotiWordsAsync
 

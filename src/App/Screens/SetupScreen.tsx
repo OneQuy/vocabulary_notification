@@ -17,7 +17,7 @@ import { cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync } 
 import { AuthorizationStatus } from '@notifee/react-native'
 import { Language, Languages } from '../../Common/DeepTranslateApi'
 import { PairTime } from '../Types'
-import { AddOrUpdateLocalizedWordsToDbAsync, CheckInitDBAsync, GetLocalizedWordFromDbAsyncWordsAsync } from '../Handles/LocalizedWordsTable'
+import { AddOrUpdateLocalizedWordsToDbAsync, CheckInitDBAsync, GetLocalizedWordFromDbAsync } from '../Handles/LocalizedWordsTable'
 import { SetNotificationAsync, TotalMin } from '../Handles/AppUtils'
 import { SqlGetAllRowsAsync, SqlInsertOrUpdateAsync, SqlInsertOrUpdateAsync_Object, SqlIsExistedAsync, SqlLogAllRowsAsync } from '../../Common/SQLite'
 
