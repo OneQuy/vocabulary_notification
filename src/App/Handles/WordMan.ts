@@ -35,7 +35,7 @@ export const LoadFromLocalizedDbOrTranslateWordsAsync = async (
     })
 
     if (IsLog)
-        console.log('[LoadFromLocalizedDbOrTranslateWordsAsync] not need fetch', SafeArrayLength(alreadySavedWords),
+        console.log('[LoadFromLocalizedDbOrTranslateWordsAsync] alreadySavedWords', SafeArrayLength(alreadySavedWords),
             'needFetchWords', needFetchWords)
 
     // already fetched all, did not fetch anymore
