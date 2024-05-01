@@ -90,8 +90,11 @@ const SetupScreen = () => {
   }, [theme])
 
   const onPressTestNotification = useCallback(async () => {
-    // await SqlDropTableAsync('LocalizedWordsTable')
-    // return
+    // await CheckInitDBAsync()
+
+    await SqlDropTableAsync('LocalizedWordsTable')
+
+    return
 
     // const intervalInMin = await GetIntervalMinAsync()
 
@@ -119,8 +122,6 @@ const SetupScreen = () => {
 
     // // console.log(res);
     // console.log(JSON.stringify(res, null, 1));
-
-    // await CheckInitDBAsync()
 
     // const res = await SqlIsExistedAsync('LocalizedWordsTable', { column: 'lastNotiTick', value: '2' })
     // console.log(res);

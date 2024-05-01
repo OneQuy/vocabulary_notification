@@ -1,5 +1,5 @@
 import { SqlExecuteAsync, OpenDatabaseAsync, SqlInsertOrUpdateAsync, SqlGetAllRowsWithColumnIncludedInArrayAsync } from "../../Common/SQLite"
-import { IsAllValuableString, ToCanPrint } from "../../Common/UtilsTS"
+import { IsAllValuableString as IsAllValuableStrings, ToCanPrint } from "../../Common/UtilsTS"
 import { SavedWordData } from "../Types"
 import { ToWordLangString } from "./AppUtils"
 
@@ -43,7 +43,7 @@ const AddOrUpdateLocalizedWordToDbAsync = async (
     lastNotiTick: number,
     localizedData: string
 ): Promise<undefined | Error> => {
-    if (!IsAllValuableString(true, wordAndLang, localizedData)) {
+    if (!IsAllValuableStrings(true, wordAndLang, localizedData)) {
         return new Error('[AddOrUpdateLocalizedWordAsync] empty values')
     }
 
