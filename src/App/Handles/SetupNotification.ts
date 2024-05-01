@@ -306,15 +306,19 @@ export const SetNotificationAsync = async (): Promise<undefined | SetupNotificat
 
             const timestamp = TimePickerResultToTimestamp(iday, pushTimesPerDay[iPushOfDay])
 
-            const wordString = ExtractWordLangString(wordToPush.wordAndLang)[0]
+            const title = ExtractWordLangString(wordToPush.wordAndLang)[0]
+            const message = CheckDeserializeLocalizedData(wordToPush).translated
 
             const noti: NotificationOption = {
-                title: wordString,
-                message: CheckDeserializeLocalizedData(wordToPush).translated,
+                title,
+                message,
                 timestamp,
             }
 
             setNotification(noti)
+
+            if (IsLog)
+                console.log(title, new Date(timestamp).toLocaleString(), message)
 
             didSetNotiList.push({
                 wordAndLang: wordToPush.wordAndLang,

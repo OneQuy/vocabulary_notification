@@ -16,8 +16,8 @@ import { LucideIcon } from '../../Common/Components/LucideIcon'
 import { GetLanguage, Language, Languages } from '../../Common/DeepTranslateApi'
 import { PairTime } from '../Types'
 import { CheckInitDBAsync } from '../Handles/LocalizedWordsTable'
-import { AlertError, TotalMin } from '../Handles/AppUtils'
-import { SqlGetAllRowsWithColumnIncludedInArrayAsync } from '../../Common/SQLite'
+import { AlertError, CalcNotiTimeListPerDay, TotalMin } from '../Handles/AppUtils'
+import { SqlDropTableAsync, SqlGetAllRowsWithColumnIncludedInArrayAsync } from '../../Common/SQLite'
 import { SetNotificationAsync } from '../Handles/SetupNotification'
 import { GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetPopularityLevelIndexAsync, SettTargetLangAsyncAsync } from '../Handles/Settings'
 
@@ -90,6 +90,18 @@ const SetupScreen = () => {
   }, [theme])
 
   const onPressTestNotification = useCallback(async () => {
+    // await SqlDropTableAsync('LocalizedWordsTable')
+    // return
+
+    // const intervalInMin = await GetIntervalMinAsync()
+
+    // const excludedTimePairs = await GetExcludedTimesAsync()
+
+    // const pushTimesPerDay = CalcNotiTimeListPerDay(intervalInMin, excludedTimePairs)
+
+    // console.log(pushTimesPerDay);
+    // return
+
     // const res = await systra(
     //   SystranTranslateApiKey,
     // const res = await DeepTranslateAsync(
@@ -108,7 +120,7 @@ const SetupScreen = () => {
     // // console.log(res);
     // console.log(JSON.stringify(res, null, 1));
 
-    await CheckInitDBAsync()
+    // await CheckInitDBAsync()
 
     // const res = await SqlIsExistedAsync('LocalizedWordsTable', { column: 'lastNotiTick', value: '2' })
     // console.log(res);
@@ -141,12 +153,12 @@ const SetupScreen = () => {
 
     // console.log(LogStringify(a));
 
-    const rows = await SqlGetAllRowsWithColumnIncludedInArrayAsync('LocalizedWordsTable', 'lastNotiTick', [-1, 'uu'])
+    // const rows = await SqlGetAllRowsWithColumnIncludedInArrayAsync('LocalizedWordsTable', 'lastNotiTick', [-1, 'uu'])
 
     // if (rows instanceof Error)
     //   return
 
-    console.log(rows)
+    // console.log(rows)
 
     // SqlLogAllRowsAsync('LocalizedWordsTable')
 
@@ -774,7 +786,7 @@ const SetupScreen = () => {
           onPress={onPressSetNotification}
         />
       }
-      
+
       {/* popup */}
       {
         contentToRenderInPopup &&
