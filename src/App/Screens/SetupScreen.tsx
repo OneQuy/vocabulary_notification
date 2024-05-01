@@ -121,11 +121,11 @@ const SetupScreen = () => {
         },
         {
           column: 'lastNotiTick',
-          value: RandomInt(0, 1000),
+          value: null,
         },
         {
           column: 'localizedData',
-          value: null,
+          value: '',
         }
       ]
     )

@@ -13,7 +13,7 @@ const TableName = 'LocalizedWordsTable'
  * @lastNotiTick -1 (not noti yet), 1788888888 did noti.
  * @localizedData not empty
  */
-const CreateTableCmd = `CREATE TABLE IF NOT EXISTS ${TableName}(wordAndLang VARCHAR(50) PRIMARY KEY, lastNotiTick INT, localizedData TEXT NOT NULL)`
+const CreateTableCmd = `CREATE TABLE IF NOT EXISTS ${TableName}(wordAndLang VARCHAR(50) PRIMARY KEY, lastNotiTick INT NOT NULL, localizedData TEXT NOT NULL)`
 
 var inited = false
 

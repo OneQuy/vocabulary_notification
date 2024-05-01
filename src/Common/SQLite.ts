@@ -8,7 +8,7 @@ import SQLite, { SQLResultSet, WebsqlDatabase } from 'react-native-sqlite-2'
 
 export type SqlColumnAndValue = {
     column: string,
-    value: string | number,
+    value: any,
 }
 
 var db: WebsqlDatabase | undefined
@@ -16,18 +16,22 @@ var db: WebsqlDatabase | undefined
 /**
  * @returns (col1, col2, col3)
  */
-const SqlGenerateColumnNamesInBracketText = (values: SqlColumnAndValue[]) => {
+const GenerateColumnNamesInBracketText = (values: SqlColumnAndValue[]) => {
     return `(${values.map(val => val.column).join(',')})`
 }
 
-const SqlConvertValueToSqlType = (val: any) : string => {
+/**
+ * ### note:
+ * undefined will be treated as null.
+ */
+const ConvertValueToSqlType = (val: any) : string => {
     const typee = typeof val
 
     if (typee === 'number')
         return val.toString()
-    else if (typee === 'undefined')
-        return 'undefined'
-    else if (val === null)
+    // else if (typee === 'undefined')
+    //     return 'undefined'
+    else if (typee === 'undefined' || val === null)
         return 'null'
     else if (typee === 'object')
         return `'${JSON.stringify(val)}'`
@@ -35,21 +39,36 @@ const SqlConvertValueToSqlType = (val: any) : string => {
         return `'${val}'`
 }
 
+const ConvertObjectToSqlColumnAndValueArr = (obj: object, emptyStringTreatedAsNull = true) : SqlColumnAndValue[] => {
+    const entries = Object.entries(obj)
+
+    return entries.map(entry => {
+        const value = (emptyStringTreatedAsNull && entry[1] === '') ? null : entries[1] 
+
+        const res: SqlColumnAndValue = {
+            column: entry[0],
+            value
+        }
+
+        return res
+    })
+}
+
 /**
  * @returns ('hello', 5, 'lottie')
  */
-const SqlGenerateValuesInBracketText = (values: SqlColumnAndValue[]) => {
+const GenerateValuesInBracketText = (values: SqlColumnAndValue[]) => {
     return `(${values.map(val => {
-        return SqlConvertValueToSqlType(val.value)
+        return ConvertValueToSqlType(val.value)
     }).join(',')})`
 }
 
 /**
  * @returns ContactName = 'Alfred Schmidt', City= 'Frankfurt'
  */
-const SqlGenerateColumnEqualValueText = (values: SqlColumnAndValue[]) => {
+const GenerateColumnEqualValueText = (values: SqlColumnAndValue[]) => {
     return `${values.map(val => {
-        return `${val.column}=${SqlConvertValueToSqlType(val.value)}`
+        return `${val.column}=${ConvertValueToSqlType(val.value)}`
     }).join(',')}`
 }
 
@@ -72,7 +91,7 @@ export const OpenDatabaseAsync = (dbName: string): Promise<void> => {
 }
 
 export const SqlIsExistedAsync = async (table: string, value: SqlColumnAndValue): Promise<boolean> => {
-    const getRowCmd = `SELECT 1 FROM ${table} WHERE ${value.column} = '${value.value}';`
+    const getRowCmd = `SELECT 1 FROM ${table} WHERE ${GenerateColumnEqualValueText([value])};`
     const res = await ExecuteSqlAsync(getRowCmd)
 
     if (res instanceof Error)
@@ -98,6 +117,8 @@ export const SqlDropTableAsync = async (table: string): Promise<void> => {
 }
 
 /**
+ * ### note:
+ * undefinded can be treated as null
  * 
  * @param numRows (<= 0 for get all rows.)
  */
@@ -107,7 +128,22 @@ export const SqlGetAllRowsAsync = async (table: string, numRows = -1): Promise<S
     return res
 }
 
-export const SqlInsertOrUpdateAsync = async (table: string, values: SqlColumnAndValue[]): Promise<undefined | Error> => {
+/**
+ * 
+ * @returns success: undefined
+ */
+export const SqlInsertOrUpdateAsync_Object = async (table: string, obj: object, emptyStringTreatedAsNull = true): Promise<undefined | Error> => { // sub 
+    return await SqlInsertOrUpdateAsync(
+        table, 
+        ConvertObjectToSqlColumnAndValueArr(obj, emptyStringTreatedAsNull)
+    )
+}
+
+/**
+ * 
+ * @returns success: undefined
+ */
+export const SqlInsertOrUpdateAsync = async (table: string, values: SqlColumnAndValue[]): Promise<undefined | Error> => { // main
     if (values.length <= 0 || table.length <= 0)
         return new Error('[SqlInsertOrUpdateAsync] table or values empty.')
 
@@ -121,14 +157,14 @@ export const SqlInsertOrUpdateAsync = async (table: string, values: SqlColumnAnd
         
             cmd =
             `UPDATE ${table} ` +
-            `SET ${SqlGenerateColumnEqualValueText(values.slice(1))} ` +
-            `WHERE ${SqlGenerateColumnEqualValueText(values.slice(0, 1))};`
+            `SET ${GenerateColumnEqualValueText(values.slice(1))} ` +
+            `WHERE ${GenerateColumnEqualValueText(values.slice(0, 1))};`
     }
     else { // to insert
         cmd =
         `INSERT INTO ${table} ` +
-        `${SqlGenerateColumnNamesInBracketText(values)} ` +
-        `VALUES` + SqlGenerateValuesInBracketText(values)
+        `${GenerateColumnNamesInBracketText(values)} ` +
+        `VALUES` + GenerateValuesInBracketText(values)
     }
 
     console.log(cmd);
@@ -138,6 +174,10 @@ export const SqlInsertOrUpdateAsync = async (table: string, values: SqlColumnAnd
     return res instanceof Error ? res : undefined
 }
 
+/**
+ * ### note:
+ * undefinded can be treated as null
+ */
 export const ExecuteSqlAsync = async (cmd: string): Promise<SQLResultSet | Error> => {
     if (db === undefined) {
         return new Error('[ExecuteSqlAsync] Not OpenDatabase yet.')
