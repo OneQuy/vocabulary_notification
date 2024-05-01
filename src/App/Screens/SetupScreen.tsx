@@ -19,7 +19,7 @@ import { Language, Languages } from '../../Common/DeepTranslateApi'
 import { PairTime } from '../Types'
 import { AddOrUpdateLocalizedWordsToDbAsync, CheckInitDBAsync, GetLocalizedWordFromDbAsync } from '../Handles/LocalizedWordsTable'
 import { SetNotificationAsync, TotalMin } from '../Handles/AppUtils'
-import { SqlGetAllRowsAsync, SqlInsertOrUpdateAsync, SqlInsertOrUpdateAsync_Object, SqlIsExistedAsync, SqlLogAllRowsAsync } from '../../Common/SQLite'
+import { SqlGetAllRowsAsync, SqlGetAllRowsWithColumnIncludedInArrayAsync, SqlInsertOrUpdateAsync, SqlInsertOrUpdateAsync_Object, SqlIsExistedAsync, SqlLogAllRowsAsync } from '../../Common/SQLite'
 
 type PopupType = 'popularity' | 'interval' | 'limit-word' | 'target-lang' | undefined
 
@@ -141,12 +141,13 @@ const SetupScreen = () => {
 
     // console.log(LogStringify(a));
 
-    // const rows = await SqlGetAllRowsAsync('LocalizedWordsTable')
+    const rows = await SqlGetAllRowsWithColumnIncludedInArrayAsync('LocalizedWordsTable', 'lastNotiTick', [-1, 'uu'])
 
     // if (rows instanceof Error)
     //   return
 
-    // console.log(typeof rows[0].localizedData)
+    console.log(rows)
+
     // SqlLogAllRowsAsync('LocalizedWordsTable')
 
     // if (res instanceof Error)

@@ -1,4 +1,4 @@
-import { ExecuteSqlAsync, OpenDatabaseAsync, SqlInsertOrUpdateAsync } from "../../Common/SQLite"
+import { SqlExecuteAsync, OpenDatabaseAsync, SqlInsertOrUpdateAsync } from "../../Common/SQLite"
 import { IsAllValuableString, ToCanPrint } from "../../Common/UtilsTS"
 import { SavedWordData } from "../Types"
 
@@ -34,7 +34,7 @@ export const CheckInitDBAsync = async () => {
 
     // await SqlDropTableAsync(TableName)
 
-    await ExecuteSqlAsync(CreateTableCmd)
+    await SqlExecuteAsync(CreateTableCmd)
 }
 
 const AddOrUpdateLocalizedWordToDbAsync = async (
@@ -111,5 +111,5 @@ export const GetLocalizedWordFromDbAsync = async (lang: string | undefined, seen
 
     // console.log(sql);
     
-    return await ExecuteSqlAsync<SavedWordData>(sql)
+    return await SqlExecuteAsync<SavedWordData>(sql)
 }

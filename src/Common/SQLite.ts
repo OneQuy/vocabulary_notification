@@ -65,13 +65,17 @@ const ConvertObjectToSqlColumnAndValueArr = (obj: object, emptyStringTreatedAsNu
     })
 }
 
+const GenerateValuesInBracketTextFromValues = (values: any[]) => {
+    return `(${values.map(val => {
+        return ConvertValueToSqlType(val)
+    }).join(',')})`
+}
+
 /**
  * @returns ('hello', 5, 'lottie')
  */
 const GenerateValuesInBracketText = (values: SqlColumnAndValue[]) => {
-    return `(${values.map(val => {
-        return ConvertValueToSqlType(val.value)
-    }).join(',')})`
+    return GenerateValuesInBracketTextFromValues(values.map(i => i.value))
 }
 
 /**
@@ -103,7 +107,7 @@ export const OpenDatabaseAsync = (dbName: string): Promise<void> => {
 
 export const SqlIsExistedAsync = async (table: string, value: SqlColumnAndValue): Promise<boolean> => {
     const getRowCmd = `SELECT 1 FROM ${table} WHERE ${GenerateColumnEqualValueText([value])};`
-    const res = await ExecuteSqlAsync(getRowCmd)
+    const res = await SqlExecuteAsync(getRowCmd)
 
     if (res instanceof Error)
         return false
@@ -133,7 +137,22 @@ export const SqlLogAllRowsAsync = async (table: string): Promise<void> => {
 }
 
 export const SqlDropTableAsync = async (table: string): Promise<void> => {
-    await ExecuteSqlAsync(`DROP TABLE IF EXISTS ${table}`)
+    await SqlExecuteAsync(`DROP TABLE IF EXISTS ${table}`)
+}
+
+/**
+ * ### note:
+ * undefinded can be treated as null
+ */
+export const SqlGetAllRowsWithColumnIncludedInArrayAsync = async <T extends object>(table: string, columnName: string, array: any[]): Promise<T[] | Error> => {
+    const cmd = 
+        `SELECT * ` +
+        `FROM ${table} ` +
+        `WHERE ${columnName} IN ${GenerateValuesInBracketTextFromValues(array)};`
+
+    console.log(cmd);
+        
+    return await SqlExecuteAsync<T>(cmd)
 }
 
 /**
@@ -144,7 +163,7 @@ export const SqlDropTableAsync = async (table: string): Promise<void> => {
  */
 export const SqlGetAllRowsAsync = async <T extends object>(table: string, numRows = -1): Promise<T[] | Error> => {
     const cmd = `SELECT ${numRows <= 0 ? '*' : numRows} FROM ${table}`
-    return await ExecuteSqlAsync<T>(cmd)
+    return await SqlExecuteAsync<T>(cmd)
 }
 
 /**
@@ -188,7 +207,7 @@ export const SqlInsertOrUpdateAsync = async (table: string, values: SqlColumnAnd
 
     // console.log(cmd);
 
-    const res = await ExecuteSqlAsync(cmd)
+    const res = await SqlExecuteAsync(cmd)
 
     return res instanceof Error ? res : undefined
 }
@@ -197,7 +216,7 @@ export const SqlInsertOrUpdateAsync = async (table: string, values: SqlColumnAnd
  * ### note:
  * undefinded can be treated as null
  */
-export const ExecuteSqlAsync = async <T extends object>(cmd: string): Promise<T[] | Error> => {
+export const SqlExecuteAsync = async <T extends object>(cmd: string): Promise<T[] | Error> => {
     if (db === undefined) {
         return new Error('[ExecuteSqlAsync] Not OpenDatabase yet.')
     }

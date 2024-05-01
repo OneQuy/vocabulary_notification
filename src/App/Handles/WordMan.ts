@@ -1,15 +1,11 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { SavedWordData, Word } from "../Types";
+import { SavedWordData } from "../Types";
 import { StorageKey_CurrentAllNotifications } from "../Constants/StorageKey";
 import { GetArrayAsync, SetArrayAsync } from "../../Common/AsyncStorageUtils";
-import { SafeArrayLength } from "../../Common/UtilsTS";
 import { BridgeTranslateMultiWordAsync } from "./TranslateBridge";
 import { LocalText } from "../Hooks/useLocalText";
 import { TranslatedResult } from "../../Common/DeepTranslateApi";
-import { AddOrUpdateLocalizedWordsAsync, GetLocalizedWordFromDbAsync } from "./LocalizedWordsTable";
-import { SavedWordToTranslatedResult, TranslatedResultToSavedWord } from "./AppUtils";
-import { GetNextWordsDataForNotiAsync, GetWordsDataAsync, SetUsedWordIndexAsync } from "./WordsData";
-import { GetTargetLangAsync } from "./Settings";
+import { GetLocalizedWordFromDbAsync } from "./LocalizedWordsTable";
+import { SavedWordToTranslatedResult } from "./AppUtils";
 
 export type SetupWordsForSetNotiResult = {
     words?: SavedWordData[],
