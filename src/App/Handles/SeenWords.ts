@@ -6,11 +6,16 @@ const IsLog = true
 
 const DBName = 'SeenWordsDB'
 
-const CreateTableCmd = 'CREATE TABLE IF NOT EXISTS SeenSavedWords(wordAndLang VARCHAR(255) PRIMARY KEY, lastNotiTick INT, savedWordData TEXT)'
+/**
+ * @wordAndLang 'hello_en'
+ * @lastNotiTick -1 (not noti yet), 1788888888 did noti.
+ * @localizedData not empty
+ */
+const CreateTableCmd = 'CREATE TABLE IF NOT EXISTS LocalizedWordsTable(wordAndLang VARCHAR(50) PRIMARY KEY, lastNotiTick INT, localizedData TEXT NOT NULL)'
 
 var inited = false
 
-const CheckInitDBAsync = async () => {
+export const CheckInitDBAsync = async () => {
     if (inited)
         return
 
@@ -31,25 +36,16 @@ export const AddSeenWordsAsync = async (addWords: SavedWordData[]): Promise<void
 
     const resArr = await Promise.all(addWords.map(word => {
         const wordAndLang = `${word.word}_${word.localized.lang}`
-        const savedWordData = JSON.stringify(word)
+        const localizedData = null
+        // const localizedData = JSON.stringify(word.localized)
 
         const insertCmd =
-            // "INSERT INTO SeenSavedWords" +
-
-            "INSERT OR IGNORE INTO SeenSavedWords" +
-            "(wordAndLang, lastNotiTick, savedWordData) VALUES " +
-            `('${wordAndLang}', ${word.notiTick}, '${savedWordData}')`
-
-        // `ON DUPLICATE KEY UPDATE ` +
-        // "(lastNotiTick, savedWordData) VALUES " +
-        // `(${word.notiTick}, '${savedWordData}') `
-
-        // `lastNotiTick = ${word.notiTick}, savedWordData = "8"`
-        // `lastNotiTick = ${word.notiTick}, savedWordData = '${savedWordData}'`
-        // `savedWordData = VALUES('savedWordData')`;
+            "INSERT OR IGNORE INTO LocalizedWordsTable" +
+            "(wordAndLang, lastNotiTick, localizedData) VALUES " +
+            `('${wordAndLang}', ${word.notiTick}, '${localizedData}')`
 
         if (IsLog) {
-            console.log('[AddSeenWordsAsync] inserting...', ToCanPrint(savedWordData));
+            console.log('[AddSeenWordsAsync] inserting...', word.word, ToCanPrint(localizedData));
             // console.log(insertCmd);
         }
 
@@ -71,7 +67,7 @@ export const LoadAllSeenWordsAsync = async (): Promise<SavedWordData[] | Error> 
 
     // await CheckInitDBAsync()
 
-    // const r = await ExecuteSqlAsync('SELECT * FROM `SeenSavedWords`')
+    // const r = await ExecuteSqlAsync('SELECT * FROM `LocalizedWordsTable`')
 
     // if (r instanceof Error)
     //     return r
@@ -83,3 +79,12 @@ export const LoadAllSeenWordsAsync = async (): Promise<SavedWordData[] | Error> 
 
     // }
 }
+
+
+// `ON DUPLICATE KEY UPDATE ` +
+// "(lastNotiTick, savedWordData) VALUES " +
+// `(${word.notiTick}, '${savedWordData}') `
+
+// `lastNotiTick = ${word.notiTick}, savedWordData = "8"`
+// `lastNotiTick = ${word.notiTick}, savedWordData = '${savedWordData}'`
+// `savedWordData = VALUES('savedWordData')`;

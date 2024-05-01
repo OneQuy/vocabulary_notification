@@ -6,7 +6,43 @@
 
 import SQLite, { SQLResultSet, WebsqlDatabase } from 'react-native-sqlite-2'
 
+export type SqlColumnAndValue = {
+    column: string,
+    value: string | number,
+}
+
 var db: WebsqlDatabase | undefined
+
+/**
+ * @returns (col1, col2, col3)
+ */
+const SqlGenerateColumnNamesInBracketText = (values: SqlColumnAndValue[]) => {
+    return `(${values.map(val => val.column).join(',')})`
+}
+
+/**
+ * @returns ('hello', 5, 'lottie')
+ */
+const SqlGenerateValuesInBracketText = (values: SqlColumnAndValue[]) => {
+    return `(${values.map(val => {
+        if (typeof val.value === 'number')
+            return val.value
+        else
+            return `'${val.value}'`
+    }).join(',')})`
+}
+
+/**
+ * @returns ContactName = 'Alfred Schmidt', City= 'Frankfurt'
+ */
+const SqlGenerateColumnEqualValueText = (values: SqlColumnAndValue[]) => {
+    return `${values.map(val => {
+        if (typeof val.value === 'number')
+            return `${val.column}=${val.value}`
+        else
+            return `${val.column}='${val.value}'`
+    }).join(',')}`
+}
 
 export const OpenDatabaseAsync = (dbName: string): Promise<void> => {
     return new Promise((resolve: () => void) => {
@@ -24,6 +60,65 @@ export const OpenDatabaseAsync = (dbName: string): Promise<void> => {
                 resolve()
             })
     })
+}
+
+export const SqlIsExistedAsync = async (table: string, value: SqlColumnAndValue): Promise<boolean> => {
+    const getRowCmd = `SELECT 1 FROM ${table} WHERE ${value.column} = '${value.value}';`
+    const res = await ExecuteSqlAsync(getRowCmd)
+
+    if (res instanceof Error)
+        return false
+
+    return res.rows.length >= 1
+}
+
+export const SqlLogAllRowsAsync = async (table: string): Promise<void> => {
+    const allrows = await SqlGetAllRowsAsync(table)
+
+    if (allrows instanceof Error) {
+        console.log('[SqlLogAllRowsAsync] ' + allrows)
+        return
+    }
+
+    for (let i = 0; i < allrows.rows.length; i++)
+        console.log(allrows.rows.item(i));
+}
+
+export const SqlGetAllRowsAsync = async (table: string): Promise<SQLResultSet | Error> => {
+    const cmd = `SELECT * FROM ${table}`
+    const res = await ExecuteSqlAsync(cmd)
+    return res
+}
+
+export const SqlInsertOrUpdateAsync = async (table: string, values: SqlColumnAndValue[]): Promise<undefined | Error> => {
+    if (values.length <= 0 || table.length <= 0)
+        return new Error('[SqlInsertOrUpdateAsync] table or values empty.')
+
+    const isExisted = await SqlIsExistedAsync(table, values[0])
+    
+    let cmd
+
+    if (isExisted) { // to update
+        if (values.length <= 1)
+            return undefined
+        
+            cmd =
+            `UPDATE ${table} ` +
+            `SET ${SqlGenerateColumnEqualValueText(values.slice(1))} ` +
+            `WHERE ${SqlGenerateColumnEqualValueText(values.slice(0, 1))};`
+    }
+    else { // to insert
+        cmd =
+        `INSERT INTO ${table} ` +
+        `${SqlGenerateColumnNamesInBracketText(values)} ` +
+        `VALUES` + SqlGenerateValuesInBracketText(values)
+    }
+
+    // console.log(cmd);
+
+    const res = await ExecuteSqlAsync(cmd)
+
+    return res instanceof Error ? res : undefined
 }
 
 export const ExecuteSqlAsync = async (cmd: string): Promise<SQLResultSet | Error> => {

@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SavedWordData, Word } from "../Types";
-import { StorageKey_CurrentNotiWords } from "../Constants/StorageKey";
+import { StorageKey_CurrentAllNotifications } from "../Constants/StorageKey";
 import { GetArrayAsync, SetArrayAsync } from "../../Common/AsyncStorageUtils";
 import { SafeArrayLength } from "../../Common/UtilsTS";
 import { BridgeTranslateMultiWordAsync } from "./TranslateBridge";
@@ -192,22 +192,22 @@ const AddSeenWordsAndRefreshCurrentNotiWordsAsync = async (): Promise<SavedWordD
 
     // handle not seens => save back to SetCurrentNotiWordsAsync
 
-    await SetCurrentNotiWordsAsync(notSeenArr)
+    await SetCurrentAllNotificationsAsync(notSeenArr)
 
     return notSeenArr
 }
 
 const GetCurrentNotiWordsAsync = async (): Promise<SavedWordData[] | undefined> => {
-    return await GetArrayAsync<SavedWordData>(StorageKey_CurrentNotiWords)
+    return await GetArrayAsync<SavedWordData>(StorageKey_CurrentAllNotifications)
 }
 
-export const SetCurrentNotiWordsAsync = async (savedDatas: SavedWordData[]) => {
-    const s = await AsyncStorage.getItem(StorageKey_CurrentNotiWords)
+export const SetCurrentAllNotificationsAsync = async (currentAllNotifications: SavedWordData[]) => {
+    const s = await AsyncStorage.getItem(StorageKey_CurrentAllNotifications)
 
     if (s) {
         console.error('pls handle list before saving');
         return
     }
 
-    await SetArrayAsync(StorageKey_CurrentNotiWords, savedDatas)
+    await SetArrayAsync(StorageKey_CurrentAllNotifications, currentAllNotifications)
 }

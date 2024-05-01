@@ -6,7 +6,7 @@ import useLocalText from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PrependZero } from '../../Common/UtilsTS'
+import { AddS, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PrependZero, RandomInt } from '../../Common/UtilsTS'
 import HairLine from '../../Common/Components/HairLine'
 import { CommonStyles, WindowSize_Max } from '../../Common/CommonConstants'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
@@ -17,8 +17,9 @@ import { cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync } 
 import { AuthorizationStatus } from '@notifee/react-native'
 import { Language, Languages } from '../../Common/DeepTranslateApi'
 import { PairTime } from '../Types'
-import { AddSeenWordsAsync, LoadAllSeenWordsAsync } from '../Handles/SeenWords'
+import { AddSeenWordsAsync, CheckInitDBAsync, LoadAllSeenWordsAsync } from '../Handles/SeenWords'
 import { SetNotificationAsync, TotalMin } from '../Handles/AppUtils'
+import { SqlGetAllRowsAsync, SqlInsertOrUpdateAsync, SqlIsExistedAsync, SqlLogAllRowsAsync } from '../../Common/SQLite'
 
 type PopupType = 'popularity' | 'interval' | 'limit-word' | 'target-lang' | undefined
 
@@ -107,40 +108,73 @@ const SetupScreen = () => {
     // // console.log(res);
     // console.log(JSON.stringify(res, null, 1));
 
-    await AddSeenWordsAsync([
-      {
-        word: 'hehe',
+    await CheckInitDBAsync()
 
-        localized: {
-          lang: 'vi',
-          translated: 'huleii'
+    // const res = await SqlIsExistedAsync('LocalizedWordsTable', { column: 'lastNotiTick', value: '2' })
+    // console.log(res);
+
+    let res = await SqlInsertOrUpdateAsync('LocalizedWordsTable',
+      [
+        {
+          column: 'wordAndLang',
+          value: 'xxx',
         },
+        {
+          column: 'lastNotiTick',
+          value: RandomInt(0, 1000),
+        },
+        {
+          column: 'localizedData',
+          value: RandomInt(0, 1000) + 'aaa',
+        }
+      ]
+    )
 
-        notiTick: 1
-      },
-      // {
-      //   word: 'hehe',
+    console.log(res);
 
-      //   localized: {
-      //     lang: 'en',
-      //     translated: 'heheeen'
-      //   },
+    SqlLogAllRowsAsync('LocalizedWordsTable')
 
-      //   notiTick: 3
-      // },
-      // {
-      //   word: 'hehe',
+    // if (res instanceof Error)
+    // console.log(res);
+    // else
+    //   console.log(res.rows);
 
-      //   localized: {
-      //     lang: 'vi',
-      //     translated: 'vi222'
-      //   },
+    // const res = await AddSeenWordsAsync([
+    // {
+    //   word: 'uu',
 
-      //   notiTick: 4
-      // }
-    ])
+    //   localized: {
+    //     lang: 'vi',
+    //     translated: 'huleii'
+    //   },
 
-    await LoadAllSeenWordsAsync()
+    //   notiTick: 1
+    // },
+    // {
+    //   word: 'hehe',
+
+    //   localized: {
+    //     lang: 'en',
+    //     translated: 'heheeen'
+    //   },
+
+    //   notiTick: 3
+    // },
+    // {
+    //   word: 'hehe',
+
+    //   localized: {
+    //     lang: 'vi',
+    //     translated: 'vi222'
+    //   },
+
+    //   notiTick: 4
+    // }
+    // ])
+
+    // console.log(res);
+
+    // await LoadAllSeenWordsAsync()
   }, [])
 
   const onPressSetNotification = useCallback(async () => {
