@@ -1,6 +1,6 @@
 {
   "name": "vocabulary_notification",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -9,9 +9,9 @@
     "start": "react-native start",
     "test": "jest",
     "incver": "node editor/common/incver",
-    "builda": "node editor/common/incver && cd android && ./gradlew assembleRelease && cd .. && npm run sendapk",
+    "builda": "node editor/common/incver && git add . && git commit -am 'comment' && cd android && ./gradlew assembleRelease && cd .. && npm run sendapk",
     "sendapk": "node editor/common/RenameApkAndSendToTelegram",
-    "store": "cd android && ./gradlew bundlerelease"
+    "store": "node editor/common/incver && git add . && git commit -am 'comment'"
   },
   "dependencies": {
     "@notifee/react-native": "^7.8.2",
