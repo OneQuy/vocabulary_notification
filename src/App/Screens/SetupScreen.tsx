@@ -17,7 +17,7 @@ import { cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync } 
 import { AuthorizationStatus } from '@notifee/react-native'
 import { Language, Languages } from '../../Common/DeepTranslateApi'
 import { PairTime } from '../Types'
-import { AddOrUpdateLocalizedWordsAsync, CheckInitDBAsync, LoadAllSeenWordsAsync } from '../Handles/LocalizedWordsTable'
+import { AddOrUpdateLocalizedWordsToDbAsync, CheckInitDBAsync, GetLocalizedWordFromDbAsyncWordsAsync } from '../Handles/LocalizedWordsTable'
 import { SetNotificationAsync, TotalMin } from '../Handles/AppUtils'
 import { SqlGetAllRowsAsync, SqlInsertOrUpdateAsync, SqlInsertOrUpdateAsync_Object, SqlIsExistedAsync, SqlLogAllRowsAsync } from '../../Common/SQLite'
 
@@ -132,7 +132,7 @@ const SetupScreen = () => {
     //   return
 
     // console.log(typeof rows[0].localizedData)
-    // SqlLogAllRowsAsync('LocalizedWordsTable')
+    SqlLogAllRowsAsync('LocalizedWordsTable')
 
     // if (res instanceof Error)
     // console.log(res);

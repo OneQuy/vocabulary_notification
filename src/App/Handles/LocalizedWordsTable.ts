@@ -4,7 +4,7 @@ import { SavedWordData } from "../Types"
 
 const IsLog = true
 
-const DBName = 'SeenWordsDB'
+const DBName = 'LocalizedWordsDB'
 
 const TableName = 'LocalizedWordsTable'
 
@@ -37,16 +37,16 @@ export const CheckInitDBAsync = async () => {
     await ExecuteSqlAsync(CreateTableCmd)
 }
 
-const AddOrUpdateLocalizedWordAsync = async (
+const AddOrUpdateLocalizedWordToDbAsync = async (
     wordAndLang: string,
     lastNotiTick: number,
     localizedData: string
 ): Promise<undefined | Error> => {
     if (!IsAllValuableString(true, wordAndLang, localizedData)) {
-        return new Error('[AddSeenWordAsync] empty values')
+        return new Error('[AddOrUpdateLocalizedWordAsync] empty values')
     }
 
-    return await SqlInsertOrUpdateAsync(
+    const res = await SqlInsertOrUpdateAsync(
         TableName,
         [
             {
@@ -63,9 +63,14 @@ const AddOrUpdateLocalizedWordAsync = async (
             }
         ]
     )
+
+    if (IsLog)
+        console.log('[AddOrUpdateLocalizedWordAsync] inserting...', wordAndLang, 'success', !(res instanceof Error))
+
+    return res
 }
 
-export const AddOrUpdateLocalizedWordsAsync = async (words: SavedWordData[]): Promise<void> => {
+export const AddOrUpdateLocalizedWordsToDbAsync = async (words: SavedWordData[]): Promise<void> => {
     await CheckInitDBAsync()
 
     const resArr = await Promise.all(words.map(word => {
@@ -73,35 +78,38 @@ export const AddOrUpdateLocalizedWordsAsync = async (words: SavedWordData[]): Pr
             return new Error('[AddOrUpdateLocalizedWordsAsync] what? !word.localizedData')
 
         const localizedData = ToCanPrint(word.localizedData)
-        return AddOrUpdateLocalizedWordAsync(word.wordAndLang, word.lastNotiTick, localizedData)
+        return AddOrUpdateLocalizedWordToDbAsync(word.wordAndLang, word.lastNotiTick, localizedData)
     }))
 
     const errors = resArr.filter(i => i instanceof Error)
 
     if (errors.length > 0)
-        console.error('[AddSeenWordsAsync] errors: ' + errors.length, errors);
+        console.error('[AddOrUpdateLocalizedWordsAsync] errors: ' + errors.length, errors);
     else {
         if (IsLog)
-            console.log('[AddSeenWordsAsync] success inserted all')
+            console.log('[AddOrUpdateLocalizedWordsAsync] success inserted all')
     }
 }
 
-export const LoadAllSeenWordsAsync = async (): Promise<SavedWordData[] | Error> => {
-    return []
+export const GetLocalizedWordFromDbAsyncWordsAsync = async (lang: string | undefined, seen: boolean | undefined): Promise<SavedWordData[] | Error> => {
+    let sql =
+        `SELECT * ` +
+        `FROM ${TableName} `
 
-    // await CheckInitDBAsync()
+    if (seen !== undefined) {
+        const now = Date.now()
 
-    // const r = await ExecuteSqlAsync('SELECT * FROM `LocalizedWordsTable`')
+        if (seen)
+            sql += `WHERE ${Column_lastNotiTick} < ${now} AND ${Column_lastNotiTick} > 0 `
+        else
+            sql += `WHERE ${Column_lastNotiTick} < 1 `
+    }
 
-    // if (r instanceof Error)
-    //     return r
+    if (lang !== undefined) {
+        sql += `AND ${Column_wordAndLang} LIKE '%\_${lang}';`
+    }
 
-    // for (let i = 0; i < r.rows.length; i++) {
-    //     const row = r.rows.item(i)
-
-    //     console.log(row);
-
-    // }
+    return await ExecuteSqlAsync<SavedWordData>(sql)
 }
 
 

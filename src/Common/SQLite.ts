@@ -118,9 +118,18 @@ export const SqlLogAllRowsAsync = async (table: string): Promise<void> => {
         console.log('[SqlLogAllRowsAsync] ' + allRows)
         return
     }
+    
+    console.log('[SqlLogAllRowsAsync] -----------------------------')
+    
+    if (allRows.length <= 0) {
+        console.log('[SqlLogAllRowsAsync] table is empty.')
+    }
+    else {
+        for (let i = 0; i < allRows.length; i++)
+            console.log(ToCanPrint(allRows[i]))
+    }
 
-    for (let i = 0; i < allRows.length; i++)
-        console.log(ToCanPrint(allRows[i]))
+    console.log('--------------------------------------------------')
 }
 
 export const SqlDropTableAsync = async (table: string): Promise<void> => {
