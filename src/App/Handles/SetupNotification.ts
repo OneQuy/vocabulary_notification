@@ -295,6 +295,15 @@ export const SetNotificationAsync = async (): Promise<undefined | SetupNotificat
         const wordsOfDay = uniqueWordsOfAllDay.slice(iday * numUniqueWordsPerDay, iday * numUniqueWordsPerDay + numUniqueWordsPerDay)
 
         for (let iPushOfDay = 0; iPushOfDay < pushTimesPerDay.length; iPushOfDay++) { // pushes of day
+            const timestamp = TimePickerResultToTimestamp(iday, pushTimesPerDay[iPushOfDay])
+
+            if (timestamp <= Date.now()) {
+                if (IsLog)
+                    console.log(`skipped today (${new Date(timestamp).toLocaleString()})`)
+
+                continue
+            }
+
             const wordToPush = SafeGetArrayElement<SavedWordData>(wordsOfDay, undefined, iPushOfDay, true)
 
             if (!wordToPush ||
@@ -304,8 +313,6 @@ export const SetNotificationAsync = async (): Promise<undefined | SetupNotificat
                     error: new Error('[SetNotificationAsync] what? wordToPush === undefined OR CheckDeserializeLocalizedData(wordToPush).translated === undefinded')
                 }
             }
-
-            const timestamp = TimePickerResultToTimestamp(iday, pushTimesPerDay[iPushOfDay])
 
             const title = ExtractWordLangString(wordToPush.wordAndLang)[0]
             const message = CheckDeserializeLocalizedData(wordToPush).translated
@@ -319,7 +326,7 @@ export const SetNotificationAsync = async (): Promise<undefined | SetupNotificat
             setNotification(noti)
 
             if (IsLog)
-                console.log(title, new Date(timestamp).toLocaleString(), message)
+                console.log(`${title}: ${message} (${new Date(timestamp).toLocaleString()})`)
 
             didSetNotiList.push({
                 wordAndLang: wordToPush.wordAndLang,
