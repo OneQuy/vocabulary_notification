@@ -42,10 +42,9 @@ const ConvertValueToSqlType = (val: any) : string => {
 
 const SQLResultSetToObjects = <T extends object>(result: SQLResultSet) : T[] => {
     const arr: T[] = []
-
+    
     for (let i = 0; i < result.rows.length; i++) {
-        const obj = JSON.parse(result.rows.item(i)) as T        
-        arr.push(obj)
+        arr.push(result.rows.item(i) as T)
     }
 
     return arr
