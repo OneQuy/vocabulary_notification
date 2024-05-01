@@ -109,16 +109,7 @@ export const GetLocalizedWordFromDbAsyncWordsAsync = async (lang: string | undef
         sql += `${seen !== undefined ? 'AND' : 'WHERE'} ${Column_wordAndLang} LIKE '%\_${lang}';`
     }
 
-    console.log(sql);
+    // console.log(sql);
     
     return await ExecuteSqlAsync<SavedWordData>(sql)
 }
-
-
-// `ON DUPLICATE KEY UPDATE ` +
-// "(lastNotiTick, savedWordData) VALUES " +
-// `(${word.notiTick}, '${savedWordData}') `
-
-// `lastNotiTick = ${word.notiTick}, savedWordData = "8"`
-// `lastNotiTick = ${word.notiTick}, savedWordData = '${savedWordData}'`
-// `savedWordData = VALUES('savedWordData')`;
