@@ -43,7 +43,7 @@ const ConvertObjectToSqlColumnAndValueArr = (obj: object, emptyStringTreatedAsNu
     const entries = Object.entries(obj)
 
     return entries.map(entry => {
-        const value = (emptyStringTreatedAsNull && entry[1] === '') ? null : entries[1] 
+        const value = (emptyStringTreatedAsNull && entry[1] === '') ? null : entry[1]
 
         const res: SqlColumnAndValue = {
             column: entry[0],

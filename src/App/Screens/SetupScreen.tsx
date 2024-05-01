@@ -19,7 +19,7 @@ import { Language, Languages } from '../../Common/DeepTranslateApi'
 import { PairTime } from '../Types'
 import { AddSeenWordsAsync, CheckInitDBAsync, LoadAllSeenWordsAsync } from '../Handles/SeenWords'
 import { SetNotificationAsync, TotalMin } from '../Handles/AppUtils'
-import { SqlGetAllRowsAsync, SqlInsertOrUpdateAsync, SqlIsExistedAsync, SqlLogAllRowsAsync } from '../../Common/SQLite'
+import { SqlGetAllRowsAsync, SqlInsertOrUpdateAsync, SqlInsertOrUpdateAsync_Object, SqlIsExistedAsync, SqlLogAllRowsAsync } from '../../Common/SQLite'
 
 type PopupType = 'popularity' | 'interval' | 'limit-word' | 'target-lang' | undefined
 
@@ -113,21 +113,12 @@ const SetupScreen = () => {
     // const res = await SqlIsExistedAsync('LocalizedWordsTable', { column: 'lastNotiTick', value: '2' })
     // console.log(res);
 
-    let res = await SqlInsertOrUpdateAsync('LocalizedWordsTable',
-      [
-        {
-          column: 'wordAndLang',
-          value: 'xxx',
-        },
-        {
-          column: 'lastNotiTick',
-          value: null,
-        },
-        {
-          column: 'localizedData',
-          value: '',
-        }
-      ]
+    let res = await SqlInsertOrUpdateAsync_Object('LocalizedWordsTable',
+      {
+        wordAndLang: 'iiii',
+        lastNotiTick: 999,
+        localizedData: 'ooooo'
+      }
     )
 
     console.log(res);
