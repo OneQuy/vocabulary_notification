@@ -35,6 +35,10 @@ const GetLocalRlp = (popularityLevelIndex: number) => {
     return `words/index-${popularityLevelIndex}.json`
 }
 
+/**
+ * ### note:
+ * @returns propably not same length cuz diff level
+ */
 export const GetWordsDataCurrentLevelAsync = async (wordStrings: string[]): Promise<Word[] | Error> => {
     const allWordsOrError = await GetAllWordsDataCurrentLevelAsync()
 
@@ -43,8 +47,8 @@ export const GetWordsDataCurrentLevelAsync = async (wordStrings: string[]): Prom
 
     const words = allWordsOrError.filter(w => wordStrings.includes(w.word))
 
-    if (words.length !== wordStrings.length)
-        return new Error('[GetWordsDataAsync] words.length !== wordStrings.length')
+    // if (words.length !== wordStrings.length)
+    //     return new Error('[GetWordsDataAsync] words.length !== wordStrings.length')
 
     return words
 }
