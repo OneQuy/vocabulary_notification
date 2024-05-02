@@ -8,7 +8,7 @@ import { AddOrUpdateLocalizedWordsToDbAsync, GetLocalizedWordFromDbAsync, GetLoc
 import { AlertError, CalcNotiTimeListPerDay, CheckDeserializeLocalizedData, ExtractWordLangString, SavedWordToTranslatedResult, TimePickerResultToTimestamp, ToWordLangString, TranslatedResultToSavedWord } from "./AppUtils";
 import { SafeArrayLength, SafeGetArrayElement } from "../../Common/UtilsTS";
 import { GetExcludeTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetTargetLangAsync } from "./Settings";
-import { GetNextWordsDataForNotiAsync, SetUsedWordIndexAsync } from "./WordsData";
+import { GetNextWordsDataCurrentLevelForNotiAsync, SetUsedWordIndexCurrentLevelAsync } from "./WordsData";
 import { NotificationOption, cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync, setNotification } from "../../Common/Nofitication";
 import { AuthorizationStatus } from "@notifee/react-native";
 
@@ -124,7 +124,7 @@ const SetupWordsForSetNotiAsync = async (numRequired: number): Promise<SetupWord
 
     const neededFetchWordsCount = numRequired - SafeArrayLength(alreadyFetchedAndNotSeenWords)
 
-    const getNextWordsDataForNotiResult = await GetNextWordsDataForNotiAsync(neededFetchWordsCount)
+    const getNextWordsDataForNotiResult = await GetNextWordsDataCurrentLevelForNotiAsync(neededFetchWordsCount)
 
     if (getNextWordsDataForNotiResult instanceof Error) {
         return {
@@ -155,7 +155,7 @@ const SetupWordsForSetNotiAsync = async (numRequired: number): Promise<SetupWord
         if (IsLog)
             console.log('[SetupWordsForSetNotiAsync] translated success all', getNextWordsDataForNotiResult.words.length)
 
-        SetUsedWordIndexAsync(getNextWordsDataForNotiResult.usedWordIndex)
+        SetUsedWordIndexCurrentLevelAsync(getNextWordsDataForNotiResult.usedWordIndex)
 
         const translatedWords: SavedWordData[] = translatedResultArrOrError.map(translatedResult => {
             return TranslatedResultToSavedWord(translatedResult, targetLang, -1)

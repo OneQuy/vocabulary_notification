@@ -35,13 +35,13 @@ const GetLocalRlp = (popularityLevelIndex: number) => {
     return `words/index-${popularityLevelIndex}.json`
 }
 
-export const GetWordsDataAsync = async (wordStrings: string[]): Promise<Word[] | Error> => {
-    const allWords = await GetAllWordsDataAsync()
+export const GetWordsDataCurrentLevelAsync = async (wordStrings: string[]): Promise<Word[] | Error> => {
+    const allWordsOrError = await GetAllWordsDataCurrentLevelAsync()
 
-    if (allWords instanceof Error)
-        return allWords
+    if (allWordsOrError instanceof Error)
+        return allWordsOrError
 
-    const words = allWords.filter(w => wordStrings.includes(w.word))
+    const words = allWordsOrError.filter(w => wordStrings.includes(w.word))
 
     if (words.length !== wordStrings.length)
         return new Error('[GetWordsDataAsync] words.length !== wordStrings.length')
@@ -49,7 +49,7 @@ export const GetWordsDataAsync = async (wordStrings: string[]): Promise<Word[] |
     return words
 }
 
-export const GetAllWordsDataAsync = async (): Promise<Word[] | Error> => {
+export const GetAllWordsDataCurrentLevelAsync = async (): Promise<Word[] | Error> => {
     const popularityIdx = await GetPopularityLevelIndexAsync()
 
     const cache = caches[`index_${popularityIdx}`]
@@ -124,7 +124,7 @@ export const GetAllWordsDataAsync = async (): Promise<Word[] | Error> => {
     return words
 }
 
-export const SetUsedWordIndexAsync = async (usedWordIndex: number): Promise<void> => {
+export const SetUsedWordIndexCurrentLevelAsync = async (usedWordIndex: number): Promise<void> => {
     if (IsLog) {
         console.log('[SetUsedWordIndexAsync] usedWordIndex', usedWordIndex);
     }
@@ -133,8 +133,8 @@ export const SetUsedWordIndexAsync = async (usedWordIndex: number): Promise<void
     await SetNumberAsync(StorageKey_UsedWordIndex(popularityIdx), usedWordIndex)
 }
 
-export const GetNextWordsDataForNotiAsync = async (count: number): Promise<GetNextWordsDataForNotiResult | Error> => {
-    const allWords = await GetAllWordsDataAsync()
+export const GetNextWordsDataCurrentLevelForNotiAsync = async (count: number): Promise<GetNextWordsDataForNotiResult | Error> => {
+    const allWords = await GetAllWordsDataCurrentLevelAsync()
 
     if (allWords instanceof Error)
         return allWords
