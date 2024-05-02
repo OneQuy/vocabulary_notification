@@ -104,25 +104,25 @@ const SetupWordsForSetNotiAsync = async (numRequired: number): Promise<SetupWord
 
     // get not seen words (already have saved data)
 
-    const alreadyFetchedAndNotSeenWords = await GetLocalizedWordFromDbAsync(targetLang, false)
+    const alreadyFetchedAndNotPushedWords = await GetLocalizedWordFromDbAsync(targetLang, false)
 
     if (IsLog)
-        console.log('[SetupWordsForSetNotiAsync] alreadyFetchedAndNotSeenWords', SafeArrayLength(alreadyFetchedAndNotSeenWords))
+        console.log('[SetupWordsForSetNotiAsync] alreadyFetchedAndNotPushedWords', SafeArrayLength(alreadyFetchedAndNotPushedWords))
 
     // enough fetched words, not need fetch more.
 
-    if (!(alreadyFetchedAndNotSeenWords instanceof Error) && alreadyFetchedAndNotSeenWords.length >= numRequired) {
+    if (!(alreadyFetchedAndNotPushedWords instanceof Error) && alreadyFetchedAndNotPushedWords.length >= numRequired) {
         if (IsLog)
-            console.log('[SetupWordsForSetNotiAsync] alreadyFetchedAndNotSeenWords is enough required, not need to fetch any', SafeArrayLength(alreadyFetchedAndNotSeenWords))
+            console.log('[SetupWordsForSetNotiAsync] alreadyFetchedAndNotSeenWords is enough required, not need to fetch any', SafeArrayLength(alreadyFetchedAndNotPushedWords))
 
         return {
-            words: alreadyFetchedAndNotSeenWords.slice(0, numRequired),
+            words: alreadyFetchedAndNotPushedWords.slice(0, numRequired),
         } as SetupWordsForSetNotiResult
     }
 
     // get new words count from data file for enough 'count'
 
-    const neededFetchWordsCount = numRequired - SafeArrayLength(alreadyFetchedAndNotSeenWords)
+    const neededFetchWordsCount = numRequired - SafeArrayLength(alreadyFetchedAndNotPushedWords)
 
     const getNextWordsDataForNotiResult = await GetNextWordsDataCurrentLevelForNotiAsync(neededFetchWordsCount)
 
@@ -162,9 +162,9 @@ const SetupWordsForSetNotiAsync = async (numRequired: number): Promise<SetupWord
         })
 
         return {
-            words: (alreadyFetchedAndNotSeenWords instanceof Error) ?
+            words: (alreadyFetchedAndNotPushedWords instanceof Error) ?
                 translatedWords :
-                translatedWords.concat(alreadyFetchedAndNotSeenWords)
+                translatedWords.concat(alreadyFetchedAndNotPushedWords)
         } as SetupWordsForSetNotiResult
     }
 }
