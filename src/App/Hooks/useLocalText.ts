@@ -21,6 +21,7 @@ const eng = {
     retry: 'Retry',
     cancel: 'Cancel',
     not_show: 'Not show during these time ranges:',
+    more_setting: 'More seting',
     
     popup_error: 'Oops',
     no_permission: 'Can not setup. Please grant the permission to receive vocabulary notifications!',

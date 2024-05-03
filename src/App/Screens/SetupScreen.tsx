@@ -44,6 +44,7 @@ const SetupScreen = () => {
   const editingExcludeTimePairAndElementIndex = useRef<[PairTime | undefined, number]>([undefined, -1])
 
   const [showTimePicker, set_showTimePicker] = useState(false)
+  const [showMoreSetting, set_showMoreSetting] = useState(false)
 
   const [doingSetNotification, set_doingSetNotification] = useState(false)
   const [downloadingOrLoadingLocalWordData, set_downloadingOrLoadingLocalWordData] = useState<'downloading' | 'loading_local' | undefined>(undefined)
@@ -87,12 +88,21 @@ const SetupScreen = () => {
         flexDirection: 'row',
         gap: Gap.Normal,
       },
+      
+      moreSettingBtn: {
+        flexDirection: 'row',
+        gap: Gap.Normal,
+      },
 
       normalBtn_NoBorder: {
         padding: Outline.Normal,
       }
     })
   }, [theme])
+
+  const onPressMoreSetting = useCallback(() => {
+    set_showMoreSetting(v => !v)
+  }, [])
 
   const onPressTestNotification = useCallback(async () => {
     // ClearDbAndNotificationsAsync()
@@ -718,25 +728,6 @@ const SetupScreen = () => {
           onPress={() => onPressShowPopup('interval')}
         />
 
-        {/* limit words */}
-
-        <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
-
-        <Text style={style.header}>{texts.limit_words_per_day}</Text>
-
-        <LucideIconTextEffectButton
-          unselectedColorOfTextAndIcon={theme.counterBackground}
-          notChangeToSelected
-          style={style.normalBtn}
-
-          title={displayWordLimitNumber === 0 ? texts.no_limit : (displayWordLimitNumber + ' ' + AddS(texts.word, displayWordLimitNumber))}
-          titleProps={{ style: style.normalBtnTxt }}
-
-          iconProps={{ name: 'Repeat', size: FontSize.Normal, }}
-
-          onPress={() => onPressShowPopup('limit-word')}
-        />
-
         {/* exclude time */}
 
         <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
@@ -778,22 +769,24 @@ const SetupScreen = () => {
           onPress={() => onPressShowPopup('target-lang')}
         />
 
-        {/* test noti */}
+        {/* more setting */}
 
         <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
-
+        
         <LucideIconTextEffectButton
           unselectedColorOfTextAndIcon={theme.counterBackground}
           notChangeToSelected
-          style={style.normalBtn}
+          style={style.moreSettingBtn}
 
-          title={texts.test_notification}
+          title={texts.more_setting}
+
           titleProps={{ style: style.normalBtnTxt }}
 
-          iconProps={{ name: 'Bell', size: FontSize.Normal, }}
+          iconProps={{ name: showMoreSetting ? 'ChevronUp' : 'ChevronDown', size: FontSize.Normal, }}
 
-          onPress={onPressTestNotification}
+          onPress={onPressMoreSetting}
         />
+        
       </ScrollView>
 
       {/* set notification */}
