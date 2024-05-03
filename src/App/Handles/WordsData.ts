@@ -41,12 +41,12 @@ const GetLocalRlp = (popularityLevelIndex: number) => {
  * @returns propably not same length cuz diff level
  */
 export const GetWordsDataCurrentLevelAsync = async (wordStrings: string[]): Promise<Word[] | Error> => {
-    const allWordsOrError = await GetAllWordsDataCurrentLevelAsync()
+    const allWordsOrUndefined = await GetAllWordsDataCurrentLevelAsync()
 
-    if (allWordsOrError instanceof Error)
-        return allWordsOrError
+    if (allWordsOrUndefined === undefined)
+        return new Error('[GetWordsDataCurrentLevelAsync] what? GetAllWordsDataCurrentLevelAsync === undefined')
 
-    const words = allWordsOrError.filter(w => wordStrings.includes(w.word))
+    const words = allWordsOrUndefined.filter(w => wordStrings.includes(w.word))
 
     if (words.length !== wordStrings.length) {
         if (IsLog) {
@@ -57,12 +57,40 @@ export const GetWordsDataCurrentLevelAsync = async (wordStrings: string[]): Prom
     return words
 }
 
-export const IsDataAvailableAsync = async (popularityLevelIndex: number): Promise<boolean> => {
-    return true
+/**
+ * 
+ * @returns undefined is success
+ */
+export const DownloadWordDataAsync = async (popularityIdx: number): Promise<undefined | Error> => {
+    if (popularityIdx < 1 || popularityIdx > WordDataFirebaseFileUrls.length)
+        return new Error('[DownloadWordDataAsync] out of index WordDataFirebaseFileUrls: ' + popularityIdx)
+
+    const url = WordDataFirebaseFileUrls[popularityIdx - 1]
+
+    const fileDLRes = await DownloadFile_GetJsonAsync(
+        url,
+        GetLocalRlp(popularityIdx),
+        true,
+        true)
+
+    if (fileDLRes.error)
+        return CreateError(fileDLRes.error)
+
+    if (IsLog) {
+        console.log('[GetAllWordsDataAsync] downloaded file word data success, index', popularityIdx);
+    }
+
+    return undefined
 }
 
-export const GetAllWordsDataCurrentLevelAsync = async (): Promise<Word[] | Error> => {
-    const popularityIdx = await GetPopularityLevelIndexAsync()
+/**
+ * @param popularityIdx === -1 for loading current level
+ * @returns undefined is need to dl
+ */
+export const GetAllWordsDataCurrentLevelAsync = async (popularityIdx = -1): Promise<Word[] | undefined> => {
+    popularityIdx = popularityIdx < 0 ?
+        await GetPopularityLevelIndexAsync() :
+        popularityIdx
 
     const cache = caches[`index_${popularityIdx}`]
 
@@ -101,28 +129,10 @@ export const GetAllWordsDataCurrentLevelAsync = async (): Promise<Word[] | Error
             }
         }
 
-        // dl 
+        // need to dl 
 
         else {
-            if (popularityIdx < 1 || popularityIdx > WordDataFirebaseFileUrls.length)
-                return new Error('[GetAllWordsDataAsync] out of index WordDataFirebaseFileUrls: ' + popularityIdx)
-
-            const url = WordDataFirebaseFileUrls[popularityIdx - 1]
-
-            const fileDLRes = await DownloadFile_GetJsonAsync(
-                url,
-                GetLocalRlp(popularityIdx),
-                true,
-                true)
-
-            if (fileDLRes.error)
-                return CreateError(fileDLRes.error)
-
-            words = fileDLRes.json as Word[]
-
-            if (IsLog) {
-                console.log('[GetAllWordsDataAsync] downloaded file success', popularityIdx);
-            }
+            return undefined
         }
     }
 
@@ -148,8 +158,8 @@ export const SetUsedWordIndexCurrentLevelAsync = async (usedWordIndex: number): 
 export const GetNextWordsDataCurrentLevelForNotiAsync = async (count: number): Promise<GetNextWordsDataForNotiResult | Error> => {
     const allWords = await GetAllWordsDataCurrentLevelAsync()
 
-    if (allWords instanceof Error)
-        return allWords
+    if (allWords === undefined)
+        return new Error('[GetNextWordsDataCurrentLevelForNotiAsync] what? GetAllWordsDataCurrentLevelAsync === undefined')
 
     const popularityIdx = await GetPopularityLevelIndexAsync()
 
