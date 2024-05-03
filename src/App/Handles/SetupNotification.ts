@@ -90,7 +90,7 @@ const GetAlreadyFetchedAndNotPushedWordsCurrentLevelAsync = async (targetLang: s
         return allNotPushedWordsInDbOrError
 
     const dataOfNotPushedWordsCurrentLevelOrError = await GetWordsDataCurrentLevelAsync(
-        allNotPushedWordsInDbOrError.map(word => ExtractWordFromWordLang(word.wordAndLang)[0]))
+        allNotPushedWordsInDbOrError.map(word => ExtractWordFromWordLang(word.wordAndLang)))
 
     if (dataOfNotPushedWordsCurrentLevelOrError instanceof Error)
         return dataOfNotPushedWordsCurrentLevelOrError
