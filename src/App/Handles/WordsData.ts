@@ -159,11 +159,12 @@ export const GetAllWordsDataCurrentLevelAsync = async (popularityIdx = -1): Prom
 }
 
 export const SetUsedWordIndexCurrentLevelAsync = async (usedWordIndex: number): Promise<void> => {
+    const popularityIdx = await GetPopularityLevelIndexAsync()
+
     if (IsLog) {
-        console.log('[SetUsedWordIndexAsync] usedWordIndex', usedWordIndex);
+        console.log('[SetUsedWordIndexAsync] usedWordIndex', usedWordIndex, 'popularityIdx', popularityIdx);
     }
 
-    const popularityIdx = await GetPopularityLevelIndexAsync()
     await SetNumberAsync(StorageKey_UsedWordIndex(popularityIdx), usedWordIndex)
 }
 
