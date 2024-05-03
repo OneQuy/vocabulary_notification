@@ -197,7 +197,7 @@ const SetupWordsForSetNotiAsync = async (numRequired: number): Promise<SetupWord
             const saved = TranslatedResultToSavedWord(translatedResult, targetLang, -1)
             const word = nextWordsToFetch.find(w => w.word === translatedResult.text)
 
-            if (word === undefined) {
+            if (word === undefined) { // what?
                 return {
                     errorText: 'fail_translate',
                 } as SetupWordsForSetNotiResult
