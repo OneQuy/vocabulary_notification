@@ -104,10 +104,10 @@ export const GetAllWordsDataCurrentLevelAsync = async (): Promise<Word[] | Error
         // dl 
 
         else {
-            if (popularityIdx < 0 || popularityIdx >= WordDataFirebaseFileUrls.length)
-                return new Error('[GetAllWordsDataAsync] out of index: ' + popularityIdx)
+            if (popularityIdx < 1 || popularityIdx > WordDataFirebaseFileUrls.length)
+                return new Error('[GetAllWordsDataAsync] out of index WordDataFirebaseFileUrls: ' + popularityIdx)
 
-            const url = WordDataFirebaseFileUrls[popularityIdx]
+            const url = WordDataFirebaseFileUrls[popularityIdx - 1]
 
             const fileDLRes = await DownloadFile_GetJsonAsync(
                 url,
@@ -126,7 +126,7 @@ export const GetAllWordsDataCurrentLevelAsync = async (): Promise<Word[] | Error
         }
     }
 
-    // cache
+    // cache to load later
 
     caches[`index_${popularityIdx}`] = {
         data: words,
