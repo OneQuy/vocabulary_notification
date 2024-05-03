@@ -1,25 +1,30 @@
-import { SavedWordData } from "../Types";
+import { SavedWordData, Word } from "../Types";
 import { StorageKey_CurrentAllNotifications } from "../Constants/StorageKey";
 import { GetArrayAsync, SetArrayAsync } from "../../Common/AsyncStorageUtils";
 import { BridgeTranslateMultiWordAsync } from "./TranslateBridge";
 import { LocalText } from "../Hooks/useLocalText";
 import { TranslatedResult } from "../../Common/DeepTranslateApi";
 import { AddOrUpdateLocalizedWordsToDbAsync, GetLocalizedWordFromDbAsync, GetLocalizedWordsFromDbIfAvailableAsync } from "./LocalizedWordsTable";
-import { AlertError, CalcNotiTimeListPerDay, CheckDeserializeLocalizedData, ExtractWordLangString, SavedWordToTranslatedResult, TimePickerResultToTimestamp, ToWordLangString, TranslatedResultToSavedWord } from "./AppUtils";
+import { AlertError, CalcNotiTimeListPerDay, CheckDeserializeLocalizedData, ExtractWordFromWordLang, SavedWordToTranslatedResult, TimePickerResultToTimestamp, ToWordLangString, TranslatedResultToSavedWord } from "./AppUtils";
 import { SafeArrayLength, SafeGetArrayElement } from "../../Common/UtilsTS";
 import { GetExcludeTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetTargetLangAsync } from "./Settings";
-import { GetNextWordsDataCurrentLevelForNotiAsync, SetUsedWordIndexCurrentLevelAsync } from "./WordsData";
+import { GetNextWordsDataCurrentLevelForNotiAsync, GetWordsDataCurrentLevelAsync, SetUsedWordIndexCurrentLevelAsync } from "./WordsData";
 import { NotificationOption, cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync, setNotification } from "../../Common/Nofitication";
 import { AuthorizationStatus } from "@notifee/react-native";
 
 const IsLog = true
 
+type SavedAndWordData = {
+    savedData: SavedWordData,
+    wordData: Word,
+}
+
 type SetupWordsForSetNotiResult = {
-    words?: SavedWordData[],
+    words?: SavedAndWordData[],
+
     errorText?: keyof LocalText,
     error?: Error,
 }
-
 
 export type SetupNotificationError = {
     errorText?: keyof LocalText,
@@ -78,6 +83,35 @@ const LoadFromLocalizedDbOrTranslateWordsAsync = async (
     }
 }
 
+const GetAlreadyFetchedAndNotPushedWordsCurrentLevelAsync = async (targetLang: string): Promise<SavedAndWordData[] | Error> => {
+    let allNotPushedWordsInDbOrError = await GetLocalizedWordFromDbAsync(targetLang, false)
+
+    if (allNotPushedWordsInDbOrError instanceof Error)
+        return allNotPushedWordsInDbOrError
+
+    const dataOfNotPushedWordsCurrentLevelOrError = await GetWordsDataCurrentLevelAsync(
+        allNotPushedWordsInDbOrError.map(word => ExtractWordFromWordLang(word.wordAndLang)[0]))
+
+    if (dataOfNotPushedWordsCurrentLevelOrError instanceof Error)
+        return dataOfNotPushedWordsCurrentLevelOrError
+
+    const arr: SavedAndWordData[] = []
+
+    for (let word of dataOfNotPushedWordsCurrentLevelOrError) {
+        const saved = allNotPushedWordsInDbOrError.find(saved => ExtractWordFromWordLang(saved.wordAndLang) === word.word)
+
+        if (!saved)
+            continue
+
+        arr.push({
+            wordData: word,
+            savedData: saved
+        })
+    }
+
+    return arr
+}
+
 /**
  * do call: AddSeenWordsAndRefreshCurrentNotiWordsAsync
  * 
@@ -102,27 +136,27 @@ const SetupWordsForSetNotiAsync = async (numRequired: number): Promise<SetupWord
 
     await UpdateSeenWordsAndRefreshCurrentNotiWordsAsync()
 
-    // get not seen words (already have saved data)
+    // get not pushed words (already have saved data)
 
-    const alreadyFetchedAndNotPushedWords = await GetLocalizedWordFromDbAsync(targetLang, false)
+    const alreadyFetchedAndNotPushedWordsOfCurrentLevel = await GetAlreadyFetchedAndNotPushedWordsCurrentLevelAsync(targetLang)
 
     if (IsLog)
-        console.log('[SetupWordsForSetNotiAsync] alreadyFetchedAndNotPushedWords', SafeArrayLength(alreadyFetchedAndNotPushedWords))
+        console.log('[SetupWordsForSetNotiAsync] alreadyFetchedAndNotPushedWords', SafeArrayLength(alreadyFetchedAndNotPushedWordsOfCurrentLevel))
 
     // enough fetched words, not need fetch more.
 
-    if (!(alreadyFetchedAndNotPushedWords instanceof Error) && alreadyFetchedAndNotPushedWords.length >= numRequired) {
+    if (!(alreadyFetchedAndNotPushedWordsOfCurrentLevel instanceof Error) && alreadyFetchedAndNotPushedWordsOfCurrentLevel.length >= numRequired) {
         if (IsLog)
-            console.log('[SetupWordsForSetNotiAsync] alreadyFetchedAndNotSeenWords is enough required, not need to fetch any', SafeArrayLength(alreadyFetchedAndNotPushedWords))
+            console.log('[SetupWordsForSetNotiAsync] alreadyFetchedAndNotSeenWords is enough required (not need to fetch any)', SafeArrayLength(alreadyFetchedAndNotPushedWordsOfCurrentLevel))
 
         return {
-            words: alreadyFetchedAndNotPushedWords.slice(0, numRequired),
+            words: alreadyFetchedAndNotPushedWordsOfCurrentLevel.slice(0, numRequired),
         } as SetupWordsForSetNotiResult
     }
 
     // get new words count from data file for enough 'count'
 
-    const neededFetchWordsCount = numRequired - SafeArrayLength(alreadyFetchedAndNotPushedWords)
+    const neededFetchWordsCount = numRequired - SafeArrayLength(alreadyFetchedAndNotPushedWordsOfCurrentLevel)
 
     const getNextWordsDataForNotiResult = await GetNextWordsDataCurrentLevelForNotiAsync(neededFetchWordsCount)
 
@@ -157,14 +191,28 @@ const SetupWordsForSetNotiAsync = async (numRequired: number): Promise<SetupWord
 
         SetUsedWordIndexCurrentLevelAsync(getNextWordsDataForNotiResult.usedWordIndex)
 
-        const translatedWords: SavedWordData[] = translatedResultArrOrError.map(translatedResult => {
-            return TranslatedResultToSavedWord(translatedResult, targetLang, -1)
-        })
+        const translatedWords: SavedAndWordData[] = []
+
+        for (let translatedResult of translatedResultArrOrError) {
+            const saved = TranslatedResultToSavedWord(translatedResult, targetLang, -1)
+            const word = nextWordsToFetch.find(w => w.word === translatedResult.text)
+
+            if (word === undefined) {
+                return {
+                    errorText: 'fail_translate',
+                } as SetupWordsForSetNotiResult
+            }
+
+            translatedWords.push({
+                wordData: word,
+                savedData: saved
+            })
+        }
 
         return {
-            words: (alreadyFetchedAndNotPushedWords instanceof Error) ?
+            words: (alreadyFetchedAndNotPushedWordsOfCurrentLevel instanceof Error) ?
                 translatedWords :
-                translatedWords.concat(alreadyFetchedAndNotPushedWords)
+                translatedWords.concat(alreadyFetchedAndNotPushedWordsOfCurrentLevel)
         } as SetupWordsForSetNotiResult
     }
 }
@@ -314,7 +362,7 @@ export const SetNotificationAsync = async (): Promise<undefined | SetupNotificat
                 }
             }
 
-            const title = ExtractWordLangString(wordToPush.wordAndLang)[0]
+            const title = ExtractWordFromWordLang(wordToPush.wordAndLang)[0]
             const message = CheckDeserializeLocalizedData(wordToPush).translated
 
             const noti: NotificationOption = {

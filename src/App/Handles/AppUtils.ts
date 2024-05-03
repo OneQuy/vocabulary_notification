@@ -38,8 +38,9 @@ export const ToWordLangString = (word: string, lang: string): string => {
     return `${word}_${lang}`
 }
 
-export const ExtractWordLangString = (wordAndLang: string): string[] => {
-    return wordAndLang.split('_')
+export const ExtractWordFromWordLang = (wordAndLang: string): string => {
+    const arr =  wordAndLang.split('_')
+    return arr[0]
 }
 
 export const CheckDeserializeLocalizedData = (saved: SavedWordData): LocalizedData => {
@@ -52,7 +53,7 @@ export const CheckDeserializeLocalizedData = (saved: SavedWordData): LocalizedDa
 
 export const SavedWordToTranslatedResult = (saved: SavedWordData): TranslatedResult => {
     return {
-        text: ExtractWordLangString(saved.wordAndLang)[0],
+        text: ExtractWordFromWordLang(saved.wordAndLang)[0],
         translated: CheckDeserializeLocalizedData(saved).translated,
     } as TranslatedResult
 }

@@ -47,8 +47,11 @@ export const GetWordsDataCurrentLevelAsync = async (wordStrings: string[]): Prom
 
     const words = allWordsOrError.filter(w => wordStrings.includes(w.word))
 
-    // if (words.length !== wordStrings.length)
-    //     return new Error('[GetWordsDataAsync] words.length !== wordStrings.length')
+    if (words.length !== wordStrings.length) {
+        if (IsLog) {
+            console.log('[GetWordsDataCurrentLevelAsync] there are words not in current level', wordStrings.length - words.length);
+        }
+    }
 
     return words
 }
@@ -163,7 +166,7 @@ export const GetNextWordsDataCurrentLevelForNotiAsync = async (count: number): P
     }
 
     if (IsLog) {
-        console.log('[GetNextWordsDataForNotiAsync] end used idx', usedWordIndex);
+        console.log('[GetNextWordsDataForNotiAsync] (est.) end used idx', usedWordIndex);
     }
 
     return {
