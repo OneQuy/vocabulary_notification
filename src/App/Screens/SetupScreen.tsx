@@ -6,7 +6,7 @@ import useLocalText from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PrependZero, ToCanPrint } from '../../Common/UtilsTS'
+import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PrependZero, ToCanPrint } from '../../Common/UtilsTS'
 import HairLine from '../../Common/Components/HairLine'
 import { CommonStyles, WindowSize_Max } from '../../Common/CommonConstants'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
@@ -20,6 +20,7 @@ import { AlertError, CalcNotiTimeListPerDay, ClearDbAndNotificationsAsync, Total
 import { SqlDropTableAsync, SqlGetAllRowsWithColumnIncludedInArrayAsync, SqlLogAllRowsAsync } from '../../Common/SQLite'
 import { SetNotificationAsync } from '../Handles/SetupNotification'
 import { GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetPopularityLevelIndexAsync, SettTargetLangAsyncAsync } from '../Handles/Settings'
+import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync } from '../Handles/WordsData'
 
 type PopupType = 'popularity' | 'interval' | 'limit-word' | 'target-lang' | undefined
 
@@ -44,7 +45,8 @@ const SetupScreen = () => {
 
   const [showTimePicker, set_showTimePicker] = useState(false)
 
-  const [handling, set_handling] = useState(false)
+  const [doingSetNotification, set_doingSetNotification] = useState(false)
+  const [downloadingWordData, set_downloadingWordData] = useState(false)
 
   // common
 
@@ -74,6 +76,9 @@ const SetupScreen = () => {
       },
 
       searchTxt: { fontSize: FontSize.Normal, color: theme.counterPrimary },
+
+      downloadingView: { gap: Gap.Normal, justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', position: 'absolute', backgroundColor: theme.background },
+      downloadingTxt: { fontSize: FontSize.Normal, color: theme.primary },
 
       normalBtn: {
         borderWidth: WindowSize_Max * 0.0015,
@@ -209,7 +214,7 @@ const SetupScreen = () => {
   }, [])
 
   const onPressSetNotification = useCallback(async () => {
-    set_handling(true)
+    set_doingSetNotification(true)
 
     const res = await SetNotificationAsync()
 
@@ -229,7 +234,7 @@ const SetupScreen = () => {
       AlertError(s)
     }
 
-    set_handling(false)
+    set_doingSetNotification(false)
   }, [texts])
 
   const onConfirmTimePicker = useCallback((time: TimePickerResult) => {
@@ -274,14 +279,47 @@ const SetupScreen = () => {
   // popularity
 
   const onPressPopularityLevel = useCallback((index: number) => {
-    set_displayPopularityLevelIdx(index)
+    if (!popupCloseCallbackRef.current)
+      return
 
-    if (popupCloseCallbackRef.current) {
-      popupCloseCallbackRef.current(() => {
-        SetPopularityLevelIndexAsync(index)
-      })
-    }
-  }, [])
+    popupCloseCallbackRef.current(async () => { // on closed
+      set_downloadingWordData(true)
+
+      // check if data available 
+
+      const words = await GetAllWordsDataCurrentLevelAsync(index)
+
+      // need to dl
+
+      if (words === undefined) {
+        while (true) {
+          const dlRes = await DownloadWordDataAsync(index)
+
+          if (dlRes instanceof Error) { // dl fail
+            const isPressRight = await AlertAsync(
+              texts.popup_error,
+              `${texts.fail_download}\n\n${dlRes}`,
+              texts.retry, // right btn
+              texts.cancel) // left btn
+
+            if (!isPressRight) {
+              set_downloadingWordData(false)
+              return
+            }
+          }
+          else // dl success
+            break
+        }
+      }
+
+      // data ok!
+
+      set_displayPopularityLevelIdx(index)
+      SetPopularityLevelIndexAsync(index)
+
+      set_downloadingWordData(false)
+    })
+  }, [texts])
 
   const onPressShowPopup = useCallback((type: PopupType) => {
     set_showPopup(type)
@@ -763,12 +801,12 @@ const SetupScreen = () => {
       <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
 
       {
-        handling &&
+        doingSetNotification &&
         <ActivityIndicator color={theme.counterBackground} />
       }
 
       {
-        !handling &&
+        !doingSetNotification &&
         <LucideIconTextEffectButton
           selectedBackgroundColor={theme.primary}
 
@@ -813,6 +851,15 @@ const SetupScreen = () => {
           initialHour={timePickerInitial[1]}
           initialMinute={timePickerInitial[2]}
         />
+      }
+
+      {/* popup */}
+      {
+        downloadingWordData &&
+        <View style={style.downloadingView}>
+          <ActivityIndicator color={theme.counterBackground} />
+          <Text style={style.downloadingTxt}>{texts.downloading_data}...</Text>
+        </View>
       }
     </View>
   )

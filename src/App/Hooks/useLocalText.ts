@@ -16,11 +16,16 @@ const eng = {
     no_limit: 'No limit',
     custom: 'Custom',
     word: 'word',
+    downloading_data: 'Downloading data',
+    retry: 'Retry',
+    cancel: 'Cancel',
     not_show: 'Not show during these time ranges:',
+    
     popup_error: 'Oops',
     no_permission: 'Can not setup. Please grant the permission to receive vocabulary notifications!',
     pls_set_target_lang: 'Please set a language you wish to translate to',
     fail_translate: 'Can not get words transation.',
+    fail_download: 'Fail to download.',
 } as const
 
 export type LocalText = typeof eng
