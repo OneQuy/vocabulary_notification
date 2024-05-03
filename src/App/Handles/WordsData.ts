@@ -100,7 +100,7 @@ export const GetAllWordsDataCurrentLevelAsync = async (popularityIdx = -1): Prom
 
     if (cache) {
         if (IsLog) {
-            console.log('[GetAllWordsDataAsync] loaded from cached', popularityIdx);
+            console.log('[GetAllWordsDataAsync] loaded from cached, index', popularityIdx);
         }
 
         return cache.data
@@ -112,13 +112,13 @@ export const GetAllWordsDataCurrentLevelAsync = async (popularityIdx = -1): Prom
 
     if (popularityIdx === 0) {
         if (IsLog) {
-            console.log('[GetAllWordsDataAsync] loading from require assets...', popularityIdx);
+            console.log('[GetAllWordsDataAsync] loading from require assets... index', popularityIdx);
         }
 
         words = require('../../../assets/words_0.json') as Word[]
 
         if (IsLog) {
-            console.log('[GetAllWordsDataAsync] loaded from require assets', popularityIdx);
+            console.log('[GetAllWordsDataAsync] loaded from require assets, index', popularityIdx);
         }
     }
 
@@ -128,7 +128,7 @@ export const GetAllWordsDataCurrentLevelAsync = async (popularityIdx = -1): Prom
         // load from local
 
         if (IsLog) {
-            console.log('[GetAllWordsDataAsync] check file for loading from local...', popularityIdx);
+            console.log('[GetAllWordsDataAsync] check file for loading from local... index', popularityIdx);
         }
 
         const jsonOrError = await ReadJsonFileAsync<Word[]>(GetLocalRlp(popularityIdx), true)
@@ -137,7 +137,7 @@ export const GetAllWordsDataCurrentLevelAsync = async (popularityIdx = -1): Prom
             words = jsonOrError
 
             if (IsLog) {
-                console.log('[GetAllWordsDataAsync] loaded from local file', popularityIdx);
+                console.log('[GetAllWordsDataAsync] loaded from local file, index', popularityIdx);
             }
         }
 
