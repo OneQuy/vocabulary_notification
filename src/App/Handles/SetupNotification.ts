@@ -141,13 +141,13 @@ const SetupWordsForSetNotiAsync = async (numRequired: number): Promise<SetupWord
     const alreadyFetchedAndNotPushedWordsOfCurrentLevel = await GetAlreadyFetchedAndNotPushedWordsCurrentLevelAsync(targetLang)
 
     if (IsLog)
-        console.log('[SetupWordsForSetNotiAsync] alreadyFetchedAndNotPushedWords', SafeArrayLength(alreadyFetchedAndNotPushedWordsOfCurrentLevel))
+        console.log('[SetupWordsForSetNotiAsync] alreadyFetchedAndNotPushedWordsOfCurrentLevel', SafeArrayLength(alreadyFetchedAndNotPushedWordsOfCurrentLevel))
 
     // enough fetched words, not need fetch more.
 
     if (!(alreadyFetchedAndNotPushedWordsOfCurrentLevel instanceof Error) && alreadyFetchedAndNotPushedWordsOfCurrentLevel.length >= numRequired) {
         if (IsLog)
-            console.log('[SetupWordsForSetNotiAsync] alreadyFetchedAndNotSeenWords is enough required (not need to fetch any)', SafeArrayLength(alreadyFetchedAndNotPushedWordsOfCurrentLevel))
+            console.log('[SetupWordsForSetNotiAsync] alreadyFetchedAndNotPushedWordsOfCurrentLevel is enough required (not need to fetch any)', SafeArrayLength(alreadyFetchedAndNotPushedWordsOfCurrentLevel))
 
         return {
             words: alreadyFetchedAndNotPushedWordsOfCurrentLevel.slice(0, numRequired),
