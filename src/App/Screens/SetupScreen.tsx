@@ -24,6 +24,13 @@ import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync } from '../Hand
 
 type PopupType = 'popularity' | 'interval' | 'limit-word' | 'target-lang' | undefined
 
+type HandlingType =
+  'downloading' |
+  'loading_local' |
+  'setting_notification' |
+  'done' |
+  undefined
+
 const SetupScreen = () => {
   const theme = useTheme()
   const texts = useLocalText()
@@ -46,8 +53,7 @@ const SetupScreen = () => {
   const [showTimePicker, set_showTimePicker] = useState(false)
   const [showMoreSetting, set_showMoreSetting] = useState(false)
 
-  const [doingSetNotification, set_doingSetNotification] = useState(false)
-  const [downloadingOrLoadingLocalWordData, set_downloadingOrLoadingLocalWordData] = useState<'downloading' | 'loading_local' | undefined>(undefined)
+  const [handlingType, set_handlingType] = useState<HandlingType>('done')
 
   // common
 
@@ -79,7 +85,7 @@ const SetupScreen = () => {
       searchTxt: { fontSize: FontSize.Normal, color: theme.counterPrimary },
 
       downloadingView: { gap: Gap.Normal, justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', position: 'absolute', backgroundColor: theme.background },
-      downloadingTxt: { fontSize: FontSize.Normal, color: theme.primary },
+      downloadingTxt: { fontSize: FontSize.Normal, fontWeight: FontBold.Bold, color: theme.primary },
 
       normalBtn: {
         borderWidth: WindowSize_Max * 0.0015,
@@ -89,6 +95,16 @@ const SetupScreen = () => {
         gap: Gap.Normal,
       },
 
+      handlingBackBtn: {
+        borderWidth: WindowSize_Max * 0.0015,
+        borderRadius: BorderRadius.Medium,
+        padding: Outline.Normal,
+        flexDirection: 'row',
+        gap: Gap.Normal,
+        marginTop: '10%',
+        width: '50%',
+      },
+
       moreSettingBtn: {
         flexDirection: 'row',
         gap: Gap.Normal,
@@ -96,7 +112,14 @@ const SetupScreen = () => {
 
       normalBtn_NoBorder: {
         padding: Outline.Normal,
-      }
+      },
+
+      bottomButtonsView: {
+        flexDirection: 'row',
+        gap: Gap.Normal,
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
     })
   }, [theme])
 
@@ -224,12 +247,12 @@ const SetupScreen = () => {
   }, [])
 
   const onPressSetNotification = useCallback(async () => {
-    set_doingSetNotification(true)
+    set_handlingType('setting_notification')
 
     const res = await SetNotificationAsync()
 
     if (res === undefined) { // success
-
+      set_handlingType('done')
     }
     else { // error
       let s = res.errorText ? texts[res.errorText] : ''
@@ -242,9 +265,10 @@ const SetupScreen = () => {
       }
 
       AlertError(s)
+
+      set_handlingType(undefined)
     }
 
-    set_doingSetNotification(false)
   }, [texts])
 
   const onConfirmTimePicker = useCallback((time: TimePickerResult) => {
@@ -293,7 +317,7 @@ const SetupScreen = () => {
       return
 
     popupCloseCallbackRef.current(async () => { // on closed
-      set_downloadingOrLoadingLocalWordData('loading_local')
+      set_handlingType('loading_local')
 
       // check if data available 
 
@@ -313,7 +337,7 @@ const SetupScreen = () => {
               texts.cancel) // left btn
 
             if (!isPressRight) { // cancel
-              set_downloadingOrLoadingLocalWordData(undefined)
+              set_handlingType(undefined)
               return
             }
           }
@@ -327,7 +351,7 @@ const SetupScreen = () => {
       set_displayPopularityLevelIdx(index)
       SetPopularityLevelIndexAsync(index)
 
-      set_downloadingOrLoadingLocalWordData(undefined)
+      set_handlingType(undefined)
     })
   }, [texts])
 
@@ -810,17 +834,24 @@ const SetupScreen = () => {
         }
       </ScrollView>
 
-      {/* set notification */}
+      {/* set notification & test btn */}
 
       <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
 
-      {
-        doingSetNotification &&
-        <ActivityIndicator color={theme.counterBackground} />
-      }
+      <View style={style.bottomButtonsView}>
+        <LucideIconTextEffectButton
+          unselectedColorOfTextAndIcon={theme.counterBackground}
+          notChangeToSelected
+          style={style.normalBtn}
 
-      {
-        !doingSetNotification &&
+          title={texts.test_notification}
+          titleProps={{ style: style.normalBtnTxt }}
+
+          iconProps={{ name: 'Bell', size: FontSize.Normal, }}
+
+          onPress={onPressTestNotification}
+        />
+
         <LucideIconTextEffectButton
           selectedBackgroundColor={theme.primary}
 
@@ -840,7 +871,7 @@ const SetupScreen = () => {
 
           onPress={onPressSetNotification}
         />
-      }
+      </View>
 
       {/* popup */}
       {
@@ -867,15 +898,57 @@ const SetupScreen = () => {
         />
       }
 
-      {/* downloading */}
+      {/* handling */}
       {
-        downloadingOrLoadingLocalWordData &&
+        handlingType &&
         <View style={style.downloadingView}>
-          <ActivityIndicator color={theme.counterBackground} />
-          <Text style={style.downloadingTxt}>{downloadingOrLoadingLocalWordData === 'downloading' ?
-            texts.downloading_data :
-            texts.loading_data
-          }...</Text>
+          {/* indicator */}
+          {
+            handlingType !== 'done' &&
+            <ActivityIndicator color={theme.counterBackground} />
+          }
+
+          {/* handling text */}
+          {
+            handlingType !== 'done' &&
+            <Text style={style.downloadingTxt}>{handlingType === 'downloading' ?
+              texts.downloading_data :
+              texts.loading_data
+            }...</Text>
+          }
+
+          {/* icon done */}
+          {
+            handlingType === 'done' &&
+            <LucideIcon name='Check' size={FontSize.Normal} color={theme.counterBackground} />
+          }
+
+          {/* done text */}
+          {
+            handlingType === 'done' &&
+            <Text style={style.downloadingTxt}>{texts.done}!</Text>
+          }
+
+          {/* back btn */}
+          {
+            handlingType === 'done' &&
+            <LucideIconTextEffectButton
+              unselectedColorOfTextAndIcon={theme.counterBackground}
+
+              notChangeToSelected
+              manuallySelected={false}
+              canHandlePressWhenSelected
+
+              style={style.handlingBackBtn}
+
+              title={texts.back}
+              titleProps={{ style: style.normalBtnTxt }}
+
+              iconProps={{ name: 'ChevronLeft', size: FontSize.Normal, }}
+
+              onPress={() => set_handlingType(undefined)}
+            />
+          }
         </View>
       }
     </View>

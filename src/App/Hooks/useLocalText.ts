@@ -20,8 +20,10 @@ const eng = {
     loading_data: 'Loading data',
     retry: 'Retry',
     cancel: 'Cancel',
+    done: 'Done',
     not_show: 'Not show during these time ranges:',
     more_setting: 'More seting',
+    back: 'Back',
     
     popup_error: 'Oops',
     no_permission: 'Can not setup. Please grant the permission to receive vocabulary notifications!',
