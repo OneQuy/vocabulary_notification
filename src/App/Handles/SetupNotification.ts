@@ -232,10 +232,10 @@ const UpdateSeenWordsAndRefreshCurrentNotiWordsAsync = async (): Promise<void> =
         if (word.lastNotiTick > now)
             notPushedArr.push(word)
         else {
-            if (IsLog)
-                console.log('[UpdateSeenWordsAndRefreshCurrentNotiWordsAsync] this word is pushed', word.wordAndLang,
-                    'word.lastNotiTick', word.lastNotiTick,
-                    'now', now)
+            // if (IsLog)
+            // console.log('[UpdateSeenWordsAndRefreshCurrentNotiWordsAsync] this word is pushed', word.wordAndLang,
+            //     'lastNotiTick', word.lastNotiTick,
+            //     'now', now)
 
             pushedArr.push(word)
         }
