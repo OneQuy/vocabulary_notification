@@ -88,7 +88,7 @@ const SetupScreen = () => {
         flexDirection: 'row',
         gap: Gap.Normal,
       },
-      
+
       moreSettingBtn: {
         flexDirection: 'row',
         gap: Gap.Normal,
@@ -772,7 +772,7 @@ const SetupScreen = () => {
         {/* more setting */}
 
         <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
-        
+
         <LucideIconTextEffectButton
           unselectedColorOfTextAndIcon={theme.counterBackground}
           notChangeToSelected
@@ -786,7 +786,28 @@ const SetupScreen = () => {
 
           onPress={onPressMoreSetting}
         />
-        
+
+        {/* limit words */}
+
+        {
+          showMoreSetting &&
+          <>
+            <Text style={style.header}>{texts.limit_words_per_day}</Text>
+
+            <LucideIconTextEffectButton
+              unselectedColorOfTextAndIcon={theme.counterBackground}
+              notChangeToSelected
+              style={style.normalBtn}
+
+              title={displayWordLimitNumber === 0 ? texts.no_limit : (displayWordLimitNumber + ' ' + AddS(texts.word, displayWordLimitNumber))}
+              titleProps={{ style: style.normalBtnTxt }}
+
+              iconProps={{ name: 'Repeat', size: FontSize.Normal, }}
+
+              onPress={() => onPressShowPopup('limit-word')}
+            />
+          </>
+        }
       </ScrollView>
 
       {/* set notification */}
