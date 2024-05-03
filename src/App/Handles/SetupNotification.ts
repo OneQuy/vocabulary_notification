@@ -352,18 +352,18 @@ export const SetNotificationAsync = async (): Promise<undefined | SetupNotificat
                 continue
             }
 
-            const wordToPush = SafeGetArrayElement<SavedWordData>(wordsOfDay, undefined, iPushOfDay, true)
+            const wordToPush = SafeGetArrayElement<SavedAndWordData>(wordsOfDay, undefined, iPushOfDay, true)
 
             if (!wordToPush ||
-                !CheckDeserializeLocalizedData(wordToPush).translated
+                !CheckDeserializeLocalizedData(wordToPush.savedData).translated
             ) {
                 return {
                     error: new Error('[SetNotificationAsync] what? wordToPush === undefined OR CheckDeserializeLocalizedData(wordToPush).translated === undefinded')
                 }
             }
 
-            const title = ExtractWordFromWordLang(wordToPush.wordAndLang)[0]
-            const message = CheckDeserializeLocalizedData(wordToPush).translated
+            const title = ExtractWordFromWordLang(wordToPush.savedData.wordAndLang)
+            const message = CheckDeserializeLocalizedData(wordToPush.savedData).translated
 
             const noti: NotificationOption = {
                 title,
@@ -377,8 +377,8 @@ export const SetNotificationAsync = async (): Promise<undefined | SetupNotificat
                 console.log(`${title}: ${message} (${new Date(timestamp).toLocaleString()})`)
 
             didSetNotiList.push({
-                wordAndLang: wordToPush.wordAndLang,
-                localizedData: wordToPush.localizedData,
+                wordAndLang: wordToPush.savedData.wordAndLang,
+                localizedData: wordToPush.savedData.localizedData,
                 lastNotiTick: timestamp,
             })
         }
