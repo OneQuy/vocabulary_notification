@@ -6,7 +6,7 @@
 
 import RNFS, { DownloadProgressCallbackResult, StatResult } from "react-native-fs";
 import { Platform } from "react-native";
-import { LoadJsonFromURLAsync, ShuffleArray, TempDirName, ToCanPrint } from "./UtilsTS";
+import { CreateError, LoadJsonFromURLAsync, ShuffleArray, TempDirName, ToCanPrint } from "./UtilsTS";
 
 /**
  * @returns null if success, otherwise error
@@ -100,6 +100,21 @@ export async function WriteTextAsync(path: string, text: string | null, isRLP: b
   catch (e) {
     return e;
   }
+}
+
+export async function ReadJsonFileAsync<T>(path: string, isRLP: boolean = true): Promise<T | Error> {
+  let readFileLocalRes = await ReadTextAsync(path, isRLP)
+
+  if (readFileLocalRes.text) {
+    try {
+      return JSON.parse(readFileLocalRes.text) as T
+    }
+    catch (e) {
+      return CreateError(e)
+    }
+  }
+  else
+    return CreateError(readFileLocalRes.error)
 }
 
 /**

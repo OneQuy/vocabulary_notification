@@ -1,5 +1,6 @@
+import { ReadFileJsonAsync } from "../../../editor/Common/FileUtils"
 import { GetNumberIntAsync, SetNumberAsync } from "../../Common/AsyncStorageUtils"
-import { DownloadFile_GetJsonAsync, ReadTextAsync } from "../../Common/FileUtils"
+import { DownloadFile_GetJsonAsync, ReadJsonFileAsync, ReadTextAsync } from "../../Common/FileUtils"
 import { CreateError } from "../../Common/UtilsTS"
 import { StorageKey_UsedWordIndex } from "../Constants/StorageKey"
 import { Word } from "../Types"
@@ -56,6 +57,10 @@ export const GetWordsDataCurrentLevelAsync = async (wordStrings: string[]): Prom
     return words
 }
 
+export const IsDataAvailableAsync = async (popularityLevelIndex: number): Promise<boolean> => {
+    return true
+}
+
 export const GetAllWordsDataCurrentLevelAsync = async (): Promise<Word[] | Error> => {
     const popularityIdx = await GetPopularityLevelIndexAsync()
 
@@ -86,10 +91,10 @@ export const GetAllWordsDataCurrentLevelAsync = async (): Promise<Word[] | Error
     else {
         // load from local
 
-        let readFileLocalRes = await ReadTextAsync(GetLocalRlp(popularityIdx), true)
+        const jsonOrError = await ReadJsonFileAsync<Word[]>(GetLocalRlp(popularityIdx), true)
 
-        if (readFileLocalRes.text) {
-            words = JSON.parse(readFileLocalRes.text) as Word[]
+        if (Array.isArray(jsonOrError)) {
+            words = jsonOrError
 
             if (IsLog) {
                 console.log('[GetAllWordsDataAsync] loaded from local file', popularityIdx);
