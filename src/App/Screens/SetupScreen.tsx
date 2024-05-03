@@ -6,7 +6,7 @@ import useLocalText from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PrependZero, ToCanPrint } from '../../Common/UtilsTS'
+import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PrependZero, SafeArrayLength, ToCanPrint } from '../../Common/UtilsTS'
 import HairLine from '../../Common/Components/HairLine'
 import { CommonStyles, WindowSize_Max } from '../../Common/CommonConstants'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
@@ -46,7 +46,7 @@ const SetupScreen = () => {
   const [showTimePicker, set_showTimePicker] = useState(false)
 
   const [doingSetNotification, set_doingSetNotification] = useState(false)
-  const [downloadingWordData, set_downloadingWordData] = useState(false)
+  const [downloadingOrLoadingLocalWordData, set_downloadingOrLoadingLocalWordData] = useState<'downloading' | 'loading_local' | undefined>(undefined)
 
   // common
 
@@ -283,7 +283,7 @@ const SetupScreen = () => {
       return
 
     popupCloseCallbackRef.current(async () => { // on closed
-      set_downloadingWordData(true)
+      set_downloadingOrLoadingLocalWordData('loading_local')
 
       // check if data available 
 
@@ -302,8 +302,8 @@ const SetupScreen = () => {
               texts.retry, // right btn
               texts.cancel) // left btn
 
-            if (!isPressRight) {
-              set_downloadingWordData(false)
+            if (!isPressRight) { // cancel
+              set_downloadingOrLoadingLocalWordData(undefined)
               return
             }
           }
@@ -317,7 +317,7 @@ const SetupScreen = () => {
       set_displayPopularityLevelIdx(index)
       SetPopularityLevelIndexAsync(index)
 
-      set_downloadingWordData(false)
+      set_downloadingOrLoadingLocalWordData(undefined)
     })
   }, [texts])
 
@@ -853,12 +853,15 @@ const SetupScreen = () => {
         />
       }
 
-      {/* popup */}
+      {/* downloading */}
       {
-        downloadingWordData &&
+        downloadingOrLoadingLocalWordData &&
         <View style={style.downloadingView}>
           <ActivityIndicator color={theme.counterBackground} />
-          <Text style={style.downloadingTxt}>{texts.downloading_data}...</Text>
+          <Text style={style.downloadingTxt}>{downloadingOrLoadingLocalWordData === 'downloading' ?
+            texts.downloading_data :
+            texts.loading_data
+          }...</Text>
         </View>
       }
     </View>

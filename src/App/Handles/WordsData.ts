@@ -65,6 +65,10 @@ export const DownloadWordDataAsync = async (popularityIdx: number): Promise<unde
     if (popularityIdx < 1 || popularityIdx > WordDataFirebaseFileUrls.length)
         return new Error('[DownloadWordDataAsync] out of index WordDataFirebaseFileUrls: ' + popularityIdx)
 
+    if (IsLog) {
+        console.log('[GetAllWordsDataAsync] start to download file word data... index', popularityIdx);
+    }
+
     const url = WordDataFirebaseFileUrls[popularityIdx - 1]
 
     const fileDLRes = await DownloadFile_GetJsonAsync(
@@ -107,6 +111,10 @@ export const GetAllWordsDataCurrentLevelAsync = async (popularityIdx = -1): Prom
     // file 0 is assets
 
     if (popularityIdx === 0) {
+        if (IsLog) {
+            console.log('[GetAllWordsDataAsync] loading from require assets...', popularityIdx);
+        }
+
         words = require('../../../assets/words_0.json') as Word[]
 
         if (IsLog) {
@@ -118,6 +126,10 @@ export const GetAllWordsDataCurrentLevelAsync = async (popularityIdx = -1): Prom
 
     else {
         // load from local
+
+        if (IsLog) {
+            console.log('[GetAllWordsDataAsync] check file for loading from local...', popularityIdx);
+        }
 
         const jsonOrError = await ReadJsonFileAsync<Word[]>(GetLocalRlp(popularityIdx), true)
 

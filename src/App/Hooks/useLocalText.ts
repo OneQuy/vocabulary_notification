@@ -17,6 +17,7 @@ const eng = {
     custom: 'Custom',
     word: 'word',
     downloading_data: 'Downloading data',
+    loading_data: 'Loading data',
     retry: 'Retry',
     cancel: 'Cancel',
     not_show: 'Not show during these time ranges:',
