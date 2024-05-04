@@ -265,6 +265,21 @@ export const SetCurrentAllNotificationsAsync = async (currentAllNotifications: S
     await SetArrayAsync(StorageKey_CurrentAllNotifications, currentAllNotifications)
 }
 
+export const DataToNotification = (
+    wordToPush: SavedAndWordData,
+    timestamp: number,
+): NotificationOption => {
+    const title = ExtractWordFromWordLang(wordToPush.savedData.wordAndLang)
+    const message = CheckDeserializeLocalizedData(wordToPush.savedData).translated
+
+    const noti: NotificationOption = {
+        title,
+        message,
+        timestamp,
+    }
+
+    return noti
+}
 export const SetNotificationAsync = async (): Promise<undefined | SetupNotificationError> => {
     const resPermission = await requestPermissionNotificationAsync()
 
@@ -362,19 +377,12 @@ export const SetNotificationAsync = async (): Promise<undefined | SetupNotificat
                 }
             }
 
-            const title = ExtractWordFromWordLang(wordToPush.savedData.wordAndLang)
-            const message = CheckDeserializeLocalizedData(wordToPush.savedData).translated
-
-            const noti: NotificationOption = {
-                title,
-                message,
-                timestamp,
-            }
+            const noti = DataToNotification(wordToPush, timestamp)
 
             setNotification(noti)
 
             if (IsLog)
-                console.log(`${title}: ${message} (${new Date(timestamp).toLocaleString()})`)
+                console.log(`${noti.title}: ${noti.message} (${new Date(timestamp).toLocaleString()})`)
 
             didSetNotiList.push({
                 wordAndLang: wordToPush.savedData.wordAndLang,
