@@ -100,26 +100,26 @@ export const AddOrUpdateLocalizedWordsToDbAsync = async (words: SavedWordData[])
 /**
  * 
  * @param toLang undefined means get all toLang
- * @param seen undefined means get all both seen & unseen
+ * @param pushed undefined means get all both seen & unseen
  */
-export const GetLocalizedWordFromDbAsync = async (toLang: string | undefined, seen: boolean | undefined): Promise<SavedWordData[] | Error> => {
+export const GetLocalizedWordFromDbAsync = async (toLang: string | undefined, pushed: boolean | undefined): Promise<SavedWordData[] | Error> => {
     await CheckInitDBAsync()
 
     let sql =
         `SELECT * ` +
         `FROM ${TableName} `
 
-    if (seen !== undefined) {
+    if (pushed !== undefined) {
         const now = Date.now()
 
-        if (seen)
+        if (pushed)
             sql += `WHERE ${Column_lastNotiTick} < ${now} AND ${Column_lastNotiTick} > 0 `
         else
             sql += `WHERE ${Column_lastNotiTick} < 1 `
     }
 
     if (toLang !== undefined) {
-        sql += `${seen !== undefined ? 'AND' : 'WHERE'} ${Column_wordAndLang} LIKE '%\_${toLang}';`
+        sql += `${pushed !== undefined ? 'AND' : 'WHERE'} ${Column_wordAndLang} LIKE '%\_${toLang}';`
     }
 
     // console.log(sql);
