@@ -1,4 +1,4 @@
-import { SavedWordData, Word } from "../Types";
+import { Phonetic, SavedWordData, Word } from "../Types";
 import { StorageKey_CurrentAllNotifications, StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from "../Constants/StorageKey";
 import { GetArrayAsync, GetBooleanAsync, SetArrayAsync } from "../../Common/AsyncStorageUtils";
 import { BridgeTranslateMultiWordAsync } from "./TranslateBridge";
@@ -6,7 +6,7 @@ import { LocalText } from "../Hooks/useLocalText";
 import { TranslatedResult } from "../../Common/DeepTranslateApi";
 import { AddOrUpdateLocalizedWordsToDbAsync, GetLocalizedWordFromDbAsync, GetLocalizedWordsFromDbIfAvailableAsync } from "./LocalizedWordsTable";
 import { AlertError, CalcNotiTimeListPerDay, CheckDeserializeLocalizedData, ExtractWordFromWordLang, SavedWordToTranslatedResult, TimePickerResultToTimestamp, ToWordLangString, TranslatedResultToSavedWord } from "./AppUtils";
-import { SafeArrayLength, SafeGetArrayElement } from "../../Common/UtilsTS";
+import { NumberWithCommas, SafeArrayLength, SafeGetArrayElement } from "../../Common/UtilsTS";
 import { GetExcludeTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetTargetLangAsync } from "./Settings";
 import { GetNextWordsDataCurrentLevelForNotiAsync, GetWordsDataCurrentLevelAsync, SetUsedWordIndexCurrentLevelAsync } from "./WordsData";
 import { NotificationOption, cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync, setNotification } from "../../Common/Nofitication";
@@ -274,8 +274,40 @@ export const DataToNotification = (
     showExample: boolean,
     showPhonetic: boolean
 ): NotificationOption => {
-    const title = ExtractWordFromWordLang(data.savedData.wordAndLang)
-    const message = CheckDeserializeLocalizedData(data.savedData).translated
+    let title = ExtractWordFromWordLang(data.savedData.wordAndLang)
+
+    const titleExtraInfoArr: string[] = []
+
+    if (showPhonetic) {
+        const phonetic = SafeGetArrayElement<Phonetic>(data.wordData.phonetics)
+
+        if (typeof phonetic?.text === 'string')
+            titleExtraInfoArr.push(phonetic.text)
+    }
+
+    if (showPartOfSpeech)
+        titleExtraInfoArr.push(data.wordData.meanings.map(i => i.partOfSpeech).join(', '))
+
+    if (showRank)
+        titleExtraInfoArr.push('#' + NumberWithCommas(data.wordData.idx))
+
+    if (titleExtraInfoArr.length > 0)
+        title = `${title} (${titleExtraInfoArr.join(', ')})`
+
+    let message = CheckDeserializeLocalizedData(data.savedData).translated
+
+    if (showDefinitions) {
+        const def = data.wordData.meanings[0].definitions[0].definition
+
+        message = `${message} (${def})`
+    }
+
+    if (showExample) {
+        const text = data.wordData.meanings[0].definitions[0].example
+
+        if (text)
+            message = `${message}. Ex: ${text}`
+    }
 
     const noti: NotificationOption = {
         title,
@@ -360,7 +392,7 @@ export const SetNotificationAsync = async (): Promise<undefined | SetupNotificat
     const settingDefinitions = await GetBooleanAsync(StorageKey_ShowDefinitions)
     const settingExample = await GetBooleanAsync(StorageKey_ShowExample)
     const settingShowPartOfSpeech = await GetBooleanAsync(StorageKey_ShowPartOfSpeech)
-    
+
     // set noti !
 
     await cancelAllLocalNotificationsAsync()
@@ -391,7 +423,7 @@ export const SetNotificationAsync = async (): Promise<undefined | SetupNotificat
             }
 
             const noti = DataToNotification(
-                wordToPush, 
+                wordToPush,
                 timestamp,
                 settingRankOfWord,
                 settingDefinitions,
