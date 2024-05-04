@@ -23,8 +23,6 @@ export const IntervalInMinPresets: (undefined | number)[] = [
 
 export const DefaultLimitWords = 5
 
-export const DefaultNumDaysToPush = 5
-
 export const LimitWordsPerDayPresets: (number)[] = [
     0,
     1,
@@ -71,4 +69,13 @@ export const DefaultExcludedTimePairs: PairTime[] = [
             seconds: 0,
         }
     ],
+]
+
+
+export const DefaultNumDaysToPush = 5
+
+export const NumDaysToPushPresets: (number)[] = [
+    5,
+    10,
+    20
 ]
