@@ -53,7 +53,7 @@ const SetupScreen = () => {
   const [showTimePicker, set_showTimePicker] = useState(false)
   const [showMoreSetting, set_showMoreSetting] = useState(false)
 
-  const [handlingType, set_handlingType] = useState<HandlingType>('done')
+  const [handlingType, set_handlingType] = useState<HandlingType>(undefined)
 
   // common
 
@@ -910,11 +910,17 @@ const SetupScreen = () => {
 
           {/* handling text */}
           {
-            handlingType !== 'done' &&
+            handlingType !== 'done' && handlingType !== 'setting_notification' &&
             <Text style={style.downloadingTxt}>{handlingType === 'downloading' ?
               texts.downloading_data :
               texts.loading_data
             }...</Text>
+          }
+
+          {/* set noti text */}
+          {
+            handlingType === 'setting_notification' &&
+            <Text style={style.downloadingTxt}>{texts.setting_notification}...</Text>
           }
 
           {/* icon done */}

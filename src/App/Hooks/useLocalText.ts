@@ -10,6 +10,7 @@ const eng = {
     invalid_start_time: "Start time must be the time that comes before the End time!",
     invalid_input: 'Invalid input',
     set_notification: 'Set notification',
+    setting_notification: 'Setting notifications',
     most_popular: 'Most Popular',
     rarest: 'Rarest',
     limit_words_per_day: 'Limit words per day',
