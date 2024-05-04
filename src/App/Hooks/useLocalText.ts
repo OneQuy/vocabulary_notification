@@ -23,7 +23,7 @@ const eng = {
     cancel: 'Cancel',
     done: 'Done',
     not_show: 'Not show during these time ranges:',
-    more_setting: 'More seting',
+    more_setting: 'More setting',
     back: 'Back',
     
     popup_error: 'Oops',
