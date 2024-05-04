@@ -1,6 +1,6 @@
 import { SavedWordData, Word } from "../Types";
-import { StorageKey_CurrentAllNotifications } from "../Constants/StorageKey";
-import { GetArrayAsync, SetArrayAsync } from "../../Common/AsyncStorageUtils";
+import { StorageKey_CurrentAllNotifications, StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from "../Constants/StorageKey";
+import { GetArrayAsync, GetBooleanAsync, SetArrayAsync } from "../../Common/AsyncStorageUtils";
 import { BridgeTranslateMultiWordAsync } from "./TranslateBridge";
 import { LocalText } from "../Hooks/useLocalText";
 import { TranslatedResult } from "../../Common/DeepTranslateApi";
@@ -266,11 +266,16 @@ export const SetCurrentAllNotificationsAsync = async (currentAllNotifications: S
 }
 
 export const DataToNotification = (
-    wordToPush: SavedAndWordData,
+    data: SavedAndWordData,
     timestamp: number,
+    showRank: boolean,
+    showDefinitions: boolean,
+    showPartOfSpeech: boolean,
+    showExample: boolean,
+    showPhonetic: boolean
 ): NotificationOption => {
-    const title = ExtractWordFromWordLang(wordToPush.savedData.wordAndLang)
-    const message = CheckDeserializeLocalizedData(wordToPush.savedData).translated
+    const title = ExtractWordFromWordLang(data.savedData.wordAndLang)
+    const message = CheckDeserializeLocalizedData(data.savedData).translated
 
     const noti: NotificationOption = {
         title,
@@ -348,6 +353,14 @@ export const SetNotificationAsync = async (): Promise<undefined | SetupNotificat
 
     const uniqueWordsOfAllDay = setupWordsResult.words
 
+    // get display setting
+
+    const settingShowPhonetic = await GetBooleanAsync(StorageKey_ShowPhonetic)
+    const settingRankOfWord = await GetBooleanAsync(StorageKey_ShowRankOfWord)
+    const settingDefinitions = await GetBooleanAsync(StorageKey_ShowDefinitions)
+    const settingExample = await GetBooleanAsync(StorageKey_ShowExample)
+    const settingShowPartOfSpeech = await GetBooleanAsync(StorageKey_ShowPartOfSpeech)
+    
     // set noti !
 
     await cancelAllLocalNotificationsAsync()
@@ -377,7 +390,14 @@ export const SetNotificationAsync = async (): Promise<undefined | SetupNotificat
                 }
             }
 
-            const noti = DataToNotification(wordToPush, timestamp)
+            const noti = DataToNotification(
+                wordToPush, 
+                timestamp,
+                settingRankOfWord,
+                settingDefinitions,
+                settingShowPartOfSpeech,
+                settingExample,
+                settingShowPhonetic)
 
             setNotification(noti)
 
