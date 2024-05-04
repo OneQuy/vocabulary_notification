@@ -10,7 +10,7 @@ import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, Get
 import HairLine from '../../Common/Components/HairLine'
 import { CommonStyles, WindowSize_Max } from '../../Common/CommonConstants'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
-import { DefaultExcludedTimePairs, DefaultIntervalInMin, IntervalInMinPresets, LimitWordsPerDayPresets, PopuplarityLevelNumber } from '../Constants/AppConstants'
+import { DefaultExcludedTimePairs, DefaultIntervalInMin, DefaultNumDaysToPush, IntervalInMinPresets, LimitWordsPerDayPresets, NumDaysToPushPresets, PopuplarityLevelNumber } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
 import { LucideIcon } from '../../Common/Components/LucideIcon'
 import { GetLanguage, Language, Languages } from '../../Common/DeepTranslateApi'
@@ -19,10 +19,16 @@ import { CheckInitDBAsync } from '../Handles/LocalizedWordsTable'
 import { AlertError, CalcNotiTimeListPerDay, ClearDbAndNotificationsAsync, TotalMin } from '../Handles/AppUtils'
 import { SqlDropTableAsync, SqlGetAllRowsWithColumnIncludedInArrayAsync, SqlLogAllRowsAsync } from '../../Common/SQLite'
 import { SetNotificationAsync } from '../Handles/SetupNotification'
-import { GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetPopularityLevelIndexAsync, SettTargetLangAsyncAsync } from '../Handles/Settings'
+import { GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetNumDaysToPushAsync, SetPopularityLevelIndexAsync, SettTargetLangAsyncAsync } from '../Handles/Settings'
 import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync } from '../Handles/WordsData'
 
-type PopupType = 'popularity' | 'interval' | 'limit-word' | 'target-lang' | undefined
+type PopupType =
+  'popularity' |
+  'interval' |
+  'limit-word' |
+  'target-lang' |
+  'num_days_push' |
+  undefined
 
 type HandlingType =
   'downloading' |
@@ -39,10 +45,9 @@ const SetupScreen = () => {
   const popupCloseCallbackRef = useRef<(onFinished?: () => void) => void>()
 
   const [displayPopularityLevelIdx, set_displayPopularityLevelIdx] = useState(0)
-
   const [displayIntervalInMin, set_displayIntervalInMin] = useState<number>(DefaultIntervalInMin)
-
   const [displayWordLimitNumber, set_displayWordLimitNumber] = useState<number>(5)
+  const [displayNumDaysToPush, set_displayNumDaysToPush] = useState<number>(DefaultNumDaysToPush)
 
   const [displayTargetLang, set_displayTargetLang] = useState<Language | undefined>()
   const [searchLangInputTxt, set_searchLangInputTxt] = useState('')
@@ -510,7 +515,54 @@ const SetupScreen = () => {
     )
   }, [displayWordLimitNumber, theme, style])
 
-  // limit words
+  // num days to push
+
+  const onPressNumDaysToPush = useCallback((numDays: number) => {
+    if (popupCloseCallbackRef.current) {
+      popupCloseCallbackRef.current(() => {
+        set_displayNumDaysToPush(numDays)
+        SetNumDaysToPushAsync(numDays)
+      })
+    }
+  }, [])
+
+  const renderNumDaysToPush = useCallback(() => {
+    return (
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={style.scrollViewSlidingPopup}
+      >
+        {
+          NumDaysToPushPresets.map((dayNum: number) => {
+            const isSelected = dayNum === displayNumDaysToPush
+
+            return (
+              <LucideIconTextEffectButton
+                key={dayNum}
+
+                selectedColorOfTextAndIcon={theme.primary}
+                unselectedColorOfTextAndIcon={theme.counterPrimary}
+
+                onPress={() => onPressNumDaysToPush(dayNum)}
+
+                manuallySelected={isSelected}
+                notChangeToSelected
+                canHandlePressWhenSelected
+
+                style={isSelected ? style.normalBtn : style.normalBtn_NoBorder}
+
+                title={dayNum + ' ' + AddS(texts.day, dayNum)}
+
+                titleProps={{ style: style.normalBtnTxt }}
+              />
+            )
+          })
+        }
+      </ScrollView>
+    )
+  }, [displayNumDaysToPush, theme, style])
+
+  // target lang
 
   const onPressTargetLang = useCallback((lang: Language) => {
     set_displayTargetLang(lang)
@@ -669,6 +721,8 @@ const SetupScreen = () => {
     contentToRenderInPopup = renderWordLimits
   else if (showPopup === 'target-lang')
     contentToRenderInPopup = renderPickTargetLang
+  else if (showPopup === 'num_days_push')
+    contentToRenderInPopup = renderNumDaysToPush
   else { // not show any popup
     // reset search lang input
 
@@ -829,6 +883,30 @@ const SetupScreen = () => {
               iconProps={{ name: 'Repeat', size: FontSize.Normal, }}
 
               onPress={() => onPressShowPopup('limit-word')}
+            />
+          </>
+        }
+
+        {/* num days to push */}
+
+        {
+          showMoreSetting &&
+          <>
+            <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
+
+            <Text style={style.header}>{texts.num_days_to_push}</Text>
+
+            <LucideIconTextEffectButton
+              unselectedColorOfTextAndIcon={theme.counterBackground}
+              notChangeToSelected
+              style={style.normalBtn}
+
+              title={displayNumDaysToPush + ' ' + AddS(texts.day, displayNumDaysToPush)}
+              titleProps={{ style: style.normalBtnTxt }}
+
+              iconProps={{ name: 'CalendarDays', size: FontSize.Normal, }}
+
+              onPress={() => onPressShowPopup('num_days_push')}
             />
           </>
         }
