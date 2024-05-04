@@ -21,6 +21,9 @@ import { SqlDropTableAsync, SqlGetAllRowsWithColumnIncludedInArrayAsync, SqlLogA
 import { SetNotificationAsync } from '../Handles/SetupNotification'
 import { GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetNumDaysToPushAsync, SetPopularityLevelIndexAsync, SettTargetLangAsyncAsync } from '../Handles/Settings'
 import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync } from '../Handles/WordsData'
+import { GetBooleanAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
+import { StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from '../Constants/StorageKey'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 type PopupType =
   'popularity' |
@@ -57,6 +60,12 @@ const SetupScreen = () => {
 
   const [showTimePicker, set_showTimePicker] = useState(false)
   const [showMoreSetting, set_showMoreSetting] = useState(false)
+
+  const [displaySettting_ShowPhonetic, set_displaySettting_ShowPhonetic] = useState(false)
+  const [displaySettting_ShowPartOfSpeech, set_displaySettting_ShowPartOfSpeech] = useState(false)
+  const [displaySettting_Definitions, set_displaySettting_Definitions] = useState(false)
+  const [displaySettting_RankOfWord, set_displaySettting_RankOfWord] = useState(false)
+  const [displaySettting_Example, set_displaySettting_Example] = useState(false)
 
   const [handlingType, set_handlingType] = useState<HandlingType>(undefined)
 
@@ -98,6 +107,15 @@ const SetupScreen = () => {
         padding: Outline.Normal,
         flexDirection: 'row',
         gap: Gap.Normal,
+      },
+
+      displaySettingBtn: {
+        // borderWidth: WindowSize_Max * 0.0015,
+        // borderRadius: BorderRadius.Medium,
+        padding: Outline.Normal,
+        flexDirection: 'row',
+        gap: Gap.Normal,
+        justifyContent: 'flex-start',
       },
 
       handlingBackBtn: {
@@ -314,6 +332,40 @@ const SetupScreen = () => {
       SetExcludedTimesAsync(obj)
     }
   }, [displayExcludedTimePairs, texts])
+
+  // noti display
+
+  const onPressDisplaySetting = useCallback((storageKey: string, setter: typeof set_displaySettting_ShowPhonetic) => {
+    setter(val => {
+      const toValue = !val
+
+      SetBooleanAsync(storageKey, toValue)
+
+      return toValue
+    })
+  }, [texts])
+
+  const renderDisplaySettingItem = useCallback((
+    title: string,
+    getter: typeof displaySettting_ShowPhonetic,
+    setter: typeof set_displaySettting_ShowPhonetic,
+    storeKey: string,
+  ) => {
+    return (
+      <LucideIconTextEffectButton
+        unselectedColorOfTextAndIcon={theme.counterBackground}
+        notChangeToSelected
+        style={style.displaySettingBtn}
+
+        title={title}
+        titleProps={{ style: style.normalBtnTxt }}
+
+        iconProps={{ name: getter ? 'CheckSquare' : 'Square', size: FontSize.Normal, }}
+
+        onPress={() => onPressDisplaySetting(storeKey, setter)}
+      />
+    )
+  }, [style, theme])
 
   // popularity
 
@@ -755,13 +807,19 @@ const SetupScreen = () => {
       set_displayWordLimitNumber(limitWordsPerDay)
 
       const numDaysToPush = await GetNumDaysToPushAsync()
-      //
+      set_displayNumDaysToPush(numDaysToPush)
 
       const excludedTimePairs = await GetExcludedTimesAsync()
       set_displayExcludedTimePairs(excludedTimePairs)
 
       const targetLang = await GetTargetLangAsync()
       set_displayTargetLang(targetLang ? GetLanguage(targetLang) : undefined)
+
+      set_displaySettting_ShowPhonetic(await GetBooleanAsync(StorageKey_ShowPhonetic))
+      set_displaySettting_RankOfWord(await GetBooleanAsync(StorageKey_ShowRankOfWord))
+      set_displaySettting_Definitions(await GetBooleanAsync(StorageKey_ShowDefinitions))
+      set_displaySettting_Example(await GetBooleanAsync(StorageKey_ShowExample))
+      set_displaySettting_ShowPartOfSpeech(await GetBooleanAsync(StorageKey_ShowPartOfSpeech))
     })()
   }, [])
 
@@ -909,6 +967,76 @@ const SetupScreen = () => {
               onPress={() => onPressShowPopup('num_days_push')}
             />
           </>
+        }
+
+        {/* display of noti */}
+
+        {
+          showMoreSetting &&
+          <>
+            <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
+            <Text style={style.header}>{texts.noti_display}</Text>
+          </>
+        }
+
+        {/* display of noti - phonetic */}
+
+        {
+          showMoreSetting &&
+          renderDisplaySettingItem(
+            texts.show_phonetic,
+            displaySettting_ShowPhonetic,
+            set_displaySettting_ShowPhonetic,
+            StorageKey_ShowPhonetic
+          )
+        }
+
+        {/* display of noti - part of speech */}
+
+        {
+          showMoreSetting &&
+          renderDisplaySettingItem(
+            texts.show_part_of_speech,
+            displaySettting_ShowPartOfSpeech,
+            set_displaySettting_ShowPartOfSpeech,
+            StorageKey_ShowPartOfSpeech
+          )
+        }
+
+        {/* display of noti - example */}
+
+        {
+          showMoreSetting &&
+          renderDisplaySettingItem(
+            texts.show_examble,
+            displaySettting_Example,
+            set_displaySettting_Example,
+            StorageKey_ShowExample
+          )
+        }
+
+        {/* display of noti - definitions */}
+
+        {
+          showMoreSetting &&
+          renderDisplaySettingItem(
+            texts.show_definitions,
+            displaySettting_Definitions,
+            set_displaySettting_Definitions,
+            StorageKey_ShowDefinitions
+          )
+        }
+        
+        {/* display of noti - rank */}
+
+        {
+          showMoreSetting &&
+          renderDisplaySettingItem(
+            texts.show_rank_of_word,
+            displaySettting_RankOfWord,
+            set_displaySettting_RankOfWord,
+            StorageKey_ShowRankOfWord
+          )
         }
       </ScrollView>
 

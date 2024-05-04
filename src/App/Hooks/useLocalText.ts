@@ -15,6 +15,7 @@ const eng = {
     rarest: 'Rarest',
     limit_words_per_day: 'Limit words per day',
     num_days_to_push: 'Number days to push',
+    noti_display: 'Display settings',
     no_limit: 'No limit',
     custom: 'Custom',
     word: 'word',
@@ -27,6 +28,12 @@ const eng = {
     not_show: 'Not show during these time ranges:',
     more_setting: 'More setting',
     back: 'Back',
+    
+    show_rank_of_word: 'Show popularity #Rank of word',
+    show_part_of_speech: 'Show part of speech (adv, adj, noun,...)',
+    show_examble: 'Show examples (if any)',
+    show_definitions: 'Show word definitions',
+    show_phonetic: 'Show word phonetic',
     
     popup_error: 'Oops',
     no_permission: 'Can not setup. Please grant the permission to receive vocabulary notifications!',

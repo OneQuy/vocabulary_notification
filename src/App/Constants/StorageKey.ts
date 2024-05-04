@@ -2,6 +2,12 @@ export const StorageKey_UsedWordIndex = (popularityIdx: number) => 'StorageKey_U
 
 export const StorageKey_CurrentAllNotifications = 'StorageKey_CurrentAllNotifications'
 
+export const StorageKey_ShowPhonetic = 'StorageKey_ShowPhonetic'
+export const StorageKey_ShowExample = 'StorageKey_ShowExample'
+export const StorageKey_ShowDefinitions = 'StorageKey_ShowDefinitions'
+export const StorageKey_ShowPartOfSpeech = 'StorageKey_ShowPartOfSpeech'
+export const StorageKey_ShowRankOfWord = 'StorageKey_ShowRankOfWord'
+
 // settings
 
 export const StorageKey_TargetLang = 'StorageKey_TargetLang'
