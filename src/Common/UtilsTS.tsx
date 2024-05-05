@@ -427,10 +427,25 @@ export function IsValuableArrayOrString(value: any, trimString: boolean = true) 
         return false
 }
 
-export function PickRandomElement<T>(arr: T[], excludeElement?: T) : T | undefined {
+export function PickRandomElementWithCount<T>(arr: T[], count: number, excludeElement?: T): undefined | T[] {
+    const arrResult: T[] = []
+
+    for (let i = 0; i < count; i++) {
+        const item = PickRandomElement<T>(arr, excludeElement)
+
+        if (item === undefined)
+            return undefined
+
+        arrResult.push(item)
+    }
+
+    return arrResult
+}
+
+export function PickRandomElement<T>(arr: T[], excludeElement?: T): T | undefined {
     if (!IsValuableArrayOrString(arr))
         return undefined
-    
+
     while (true) {
         let idx = Math.floor(Math.random() * arr.length);
 
