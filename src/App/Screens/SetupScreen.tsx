@@ -20,7 +20,7 @@ import { AlertError, CalcNotiTimeListPerDay, ClearDbAndNotificationsAsync, Total
 import { SqlDropTableAsync, SqlGetAllRowsWithColumnIncludedInArrayAsync, SqlLogAllRowsAsync } from '../../Common/SQLite'
 import { SetNotificationAsync, TestNotificationAsync } from '../Handles/SetupNotification'
 import { GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetNumDaysToPushAsync, SetPopularityLevelIndexAsync, SettTargetLangAsyncAsync } from '../Handles/Settings'
-import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync } from '../Handles/WordsData'
+import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync, IsCachedWordsDataCurrentLevelAsync } from '../Handles/WordsData'
 import { GetBooleanAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
 import { StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from '../Constants/StorageKey'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -151,15 +151,19 @@ const SetupScreen = () => {
   }, [])
 
   const onPressTestNotification = useCallback(async () => {
+    if (!await IsCachedWordsDataCurrentLevelAsync())
+      set_handlingType('loading_local')
+
     const res = await TestNotificationAsync()
+
+    set_handlingType(undefined)
 
     if (res instanceof Error) {
       AlertError(res)
       return
     }
 
-    
-    
+
     // ClearDbAndNotificationsAsync()
 
     // await CheckInitDBAsync()
@@ -1035,7 +1039,7 @@ const SetupScreen = () => {
             StorageKey_ShowDefinitions
           )
         }
-        
+
         {/* display of noti - rank */}
 
         {

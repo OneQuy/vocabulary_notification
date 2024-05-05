@@ -89,6 +89,23 @@ export const DownloadWordDataAsync = async (popularityIdx: number): Promise<unde
 
 /**
  * @param popularityIdx === -1 for loading current level
+ */
+export const IsCachedWordsDataCurrentLevelAsync = async (popularityIdx = -1): Promise<boolean> => {
+    popularityIdx = popularityIdx < 0 ?
+        await GetPopularityLevelIndexAsync() :
+        popularityIdx
+
+    const cache = caches[`index_${popularityIdx}`]
+
+    if (cache)
+        return true
+    else
+        return false
+
+}
+
+/**
+ * @param popularityIdx === -1 for loading current level
  * @returns undefined is need to dl
  */
 export const GetAllWordsDataCurrentLevelAsync = async (popularityIdx = -1): Promise<Word[] | undefined> => {
