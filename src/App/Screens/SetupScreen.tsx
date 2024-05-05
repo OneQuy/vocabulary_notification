@@ -150,18 +150,65 @@ const SetupScreen = () => {
     set_showMoreSetting(v => !v)
   }, [])
 
-  const onPressTestNotification = useCallback(async () => {
-    if (!await IsCachedWordsDataCurrentLevelAsync())
-      set_handlingType('loading_local')
+  const setHandlingAndGetReadyDataAsync = async (popularityLevelIdx = -1): Promise<boolean> => {
+    set_handlingType('loading_local')
 
-    const res = await TestNotificationAsync()
+    if (popularityLevelIdx < 0)
+        popularityLevelIdx = await GetPopularityLevelIndexAsync()
+
+    // check if data available 
+
+    const words = await GetAllWordsDataCurrentLevelAsync(popularityLevelIdx)
+
+    // need to dl
+
+    if (words === undefined) {
+      set_handlingType('downloading')
+
+      while (true) {
+        const dlRes = await DownloadWordDataAsync(popularityLevelIdx)
+
+        if (dlRes instanceof Error) { // dl fail
+          const isPressRight = await AlertAsync(
+            texts.popup_error,
+            `${texts.fail_download}\n\n${dlRes}`,
+            texts.retry, // right btn
+            texts.cancel) // left btn
+
+          if (!isPressRight) { // cancel
+            set_handlingType(undefined)
+            return false
+          }
+        }
+        else // dl success
+          return await setHandlingAndGetReadyDataAsync(popularityLevelIdx)
+      }
+    }
+
+    // data ok!
 
     set_handlingType(undefined)
 
-    if (res instanceof Error) {
-      AlertError(res)
+    return true
+  }
+
+  const onPressTestNotification = useCallback(async () => {
+    const dataReady = await setHandlingAndGetReadyDataAsync()
+
+    if (!dataReady)
       return
-    }
+
+    // if (!await IsCachedWordsDataCurrentLevelAsync())
+    //   set_handlingType('loading_local')
+
+    // const res = await TestNotificationAsync()
+
+    // set_handlingType(undefined)
+
+    // if (res instanceof Error) {
+    //   AlertError(res)
+    //   return
+    // }
 
 
     // ClearDbAndNotificationsAsync()
@@ -280,7 +327,7 @@ const SetupScreen = () => {
     // console.log(res);
 
     // await LoadAllSeenWordsAsync()
-  }, [])
+  }, [setHandlingAndGetReadyDataAsync])
 
   const onPressSetNotification = useCallback(async () => {
     set_handlingType('setting_notification')
@@ -382,48 +429,22 @@ const SetupScreen = () => {
 
   // popularity
 
-  const onPressPopularityLevel = useCallback((index: number) => {
+  const onPressPopularityLevel = useCallback((popularityLevelIdx: number) => {
     if (!popupCloseCallbackRef.current)
       return
 
     popupCloseCallbackRef.current(async () => { // on closed
-      set_handlingType('loading_local')
+      const dataReady = await setHandlingAndGetReadyDataAsync(popularityLevelIdx)
 
-      // check if data available 
-
-      const words = await GetAllWordsDataCurrentLevelAsync(index)
-
-      // need to dl
-
-      if (words === undefined) {
-        while (true) {
-          const dlRes = await DownloadWordDataAsync(index)
-
-          if (dlRes instanceof Error) { // dl fail
-            const isPressRight = await AlertAsync(
-              texts.popup_error,
-              `${texts.fail_download}\n\n${dlRes}`,
-              texts.retry, // right btn
-              texts.cancel) // left btn
-
-            if (!isPressRight) { // cancel
-              set_handlingType(undefined)
-              return
-            }
-          }
-          else // dl success
-            break
-        }
-      }
+      if (!dataReady)
+        return
 
       // data ok!
 
-      set_displayPopularityLevelIdx(index)
-      SetPopularityLevelIndexAsync(index)
-
-      set_handlingType(undefined)
+      set_displayPopularityLevelIdx(popularityLevelIdx)
+      SetPopularityLevelIndexAsync(popularityLevelIdx)
     })
-  }, [texts])
+  }, [setHandlingAndGetReadyDataAsync])
 
   const onPressShowPopup = useCallback((type: PopupType) => {
     set_showPopup(type)

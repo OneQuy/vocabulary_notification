@@ -6,10 +6,10 @@ import { LocalText } from "../Hooks/useLocalText";
 import { TranslatedResult } from "../../Common/DeepTranslateApi";
 import { AddOrUpdateLocalizedWordsToDbAsync, GetLocalizedWordFromDbAsync, GetLocalizedWordsFromDbIfAvailableAsync } from "./LocalizedWordsTable";
 import { AlertError, CalcNotiTimeListPerDay, CheckDeserializeLocalizedData, ExtractWordFromWordLang, SavedWordToTranslatedResult, TimePickerResultToTimestamp, ToWordLangString, TranslatedResultToSavedWord } from "./AppUtils";
-import { NumberWithCommas, PickRandomElement, SafeArrayLength, SafeGetArrayElement } from "../../Common/UtilsTS";
+import { NumberWithCommas, PickRandomElement, PickRandomElementWithCount, SafeArrayLength, SafeGetArrayElement, ToCanPrint } from "../../Common/UtilsTS";
 import { GetExcludeTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetTargetLangAsync } from "./Settings";
-import { GetNextWordsDataCurrentLevelForNotiAsync, GetWordsDataCurrentLevelAsync, SetUsedWordIndexCurrentLevelAsync } from "./WordsData";
-import { DisplayNotificationAsync, NotificationOption, cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync, setNotification, setNotification_RemainSeconds } from "../../Common/Nofitication";
+import { GetAllWordsDataCurrentLevelAsync, GetNextWordsDataCurrentLevelForNotiAsync, GetWordsDataCurrentLevelAsync, SetUsedWordIndexCurrentLevelAsync } from "./WordsData";
+import { DisplayNotificationAsync, NotificationOption, cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync, setNotification } from "../../Common/Nofitication";
 import { AuthorizationStatus } from "@notifee/react-native";
 
 const IsLog = true
@@ -277,6 +277,8 @@ export const SetCurrentAllNotificationsAsync = async (currentAllNotifications: S
  * @returns undefined means success
  */
 export const TestNotificationAsync = async (): Promise<Error | undefined> => {
+    // get already fetch words
+
     const words = await GetAlreadyFetchedWordsDataCurrentLevelAsync(undefined, undefined)
 
     if (words instanceof Error) {
@@ -284,6 +286,25 @@ export const TestNotificationAsync = async (): Promise<Error | undefined> => {
     }
 
     const word = PickRandomElement(words)
+
+    if (!word) { // not fetched any word => need to fetch some
+        const allWords = await GetNextWordsDataCurrentLevelForNotiAsync(50)
+
+        if (allWords === undefined)
+            return new Error('[TestNotificationAsync] need to download data first')
+        
+
+        // const translatedArrOrError = await BridgeTranslateMultiWordAsync(
+        //     needFetchWords,
+        //     toLang,
+        //     fromLang)
+
+        // // error overall
+
+        // if (translatedArrOrError instanceof Error) {
+        //     return translatedArrOrError
+        // }
+    }
 
     // get display setting
 
@@ -295,17 +316,17 @@ export const TestNotificationAsync = async (): Promise<Error | undefined> => {
 
     // push
 
-    const noti = DataToNotification(
-        word,
-        0,
-        settingRankOfWord,
-        settingDefinitions,
-        settingShowPartOfSpeech,
-        settingExample,
-        settingShowPhonetic)
+    // const noti = DataToNotification(
+    //     word,
+    //     0,
+    //     settingRankOfWord,
+    //     settingDefinitions,
+    //     settingShowPartOfSpeech,
+    //     settingExample,
+    //     settingShowPhonetic)
 
 
-    DisplayNotificationAsync(noti)
+    // DisplayNotificationAsync(noti)
 
     return undefined
 }
@@ -319,6 +340,9 @@ export const DataToNotification = (
     showExample: boolean,
     showPhonetic: boolean
 ): NotificationOption => {
+    if (!data)
+        console.error('[DataToNotification] data is undefined', ToCanPrint(data));
+
     let title = ExtractWordFromWordLang(data.savedData.wordAndLang)
 
     const titleExtraInfoArr: string[] = []
