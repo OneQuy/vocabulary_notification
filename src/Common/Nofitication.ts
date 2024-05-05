@@ -69,10 +69,20 @@ export const cancelAllLocalNotificationsAsync = async () => {
 }
 
 export const DisplayNotificationAsync = async (option: NotificationOption): Promise<string> => {
+  if (!inited) {
+    console.error('[DisplayNotificationAsync] not inited yet.')
+    return '[DisplayNotificationAsync] not inited yet.'
+  }
+
   return await notifee.displayNotification(ConvertNotificationOptionToNotification(option))
 }
 
 export const setNotification = (option: NotificationOption) => { // main
+  if (!inited) {
+    console.error('[DisplayNotificationAsync] not inited yet.')
+    return '[DisplayNotificationAsync] not inited yet.'
+  }
+
   if (typeof option.timestamp !== 'number' ||
     !option.message ||
     !option.title)
