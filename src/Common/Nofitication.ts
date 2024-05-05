@@ -23,6 +23,22 @@ var androidChannelId: string
 
 var inited: boolean = false
 
+const ConvertNotificationOptionToNotification = (option: NotificationOption): Notification => {
+  const noti: Notification = {
+    title: option.title,
+    body: option.message,
+    android: {
+      channelId: androidChannelId,
+      style: {
+        type: AndroidStyle.BIGTEXT,
+        text: option.message,
+      },
+    } as NotificationAndroid,
+  }
+
+  return noti
+}
+
 /**
  * create channel (android)
  */
@@ -41,15 +57,19 @@ export const initNotificationAsync = async () => {
     sound: 'default',
   } as AndroidChannel);
 
-  notifee.onBackgroundEvent(async (_) => {})
+  notifee.onBackgroundEvent(async (_) => { })
 }
 
-export const requestPermissionNotificationAsync = async () : Promise<NotificationSettings> => {
+export const requestPermissionNotificationAsync = async (): Promise<NotificationSettings> => {
   return await notifee.requestPermission()
 }
 
 export const cancelAllLocalNotificationsAsync = async () => {
   await notifee.cancelAllNotifications()
+}
+
+export const DisplayNotificationAsync = async (option: NotificationOption): Promise<string> => {
+  return await notifee.displayNotification(ConvertNotificationOptionToNotification(option))
 }
 
 export const setNotification = (option: NotificationOption) => { // main
@@ -67,22 +87,11 @@ export const setNotification = (option: NotificationOption) => { // main
     type: TriggerType.TIMESTAMP,
     timestamp: option.timestamp,
   }
-  
+
   // StorageLog_LogAsync('set noti: ' + new Date(option.timestamp).toLocaleString() + ', ' + option.message)
 
   notifee.createTriggerNotification(
-    {
-      title: option.title,
-      body: option.message,
-      android: {
-        channelId: androidChannelId,
-        style: {
-          type: AndroidStyle.BIGTEXT,
-          text: option.message,
-        },
-      } as NotificationAndroid,
-    } as Notification,
-
+    ConvertNotificationOptionToNotification(option),
     trigger,
   );
 }
@@ -96,19 +105,19 @@ export const setNotification_ForNextDay = (  // sub
   option: NotificationOption,
   minute?: number,
   seconds?: number) => {
-    const d = new Date()
-    // minute = d.getMinutes() + RandomInt(1, 3)
-    // hourIn24h = d.getHours()
+  const d = new Date()
+  // minute = d.getMinutes() + RandomInt(1, 3)
+  // hourIn24h = d.getHours()
 
-    d.setDate(d.getDate() + dayIdxFromToday)
-    d.setHours(hourIn24h)
-    d.setMinutes(minute === undefined ? 0 : minute)
-    d.setSeconds(seconds === undefined ? 0 : seconds)
-        
-    setNotification({
-      ...option,
-      timestamp: d.getTime(),
-    } as NotificationOption)
+  d.setDate(d.getDate() + dayIdxFromToday)
+  d.setHours(hourIn24h)
+  d.setMinutes(minute === undefined ? 0 : minute)
+  d.setSeconds(seconds === undefined ? 0 : seconds)
+
+  setNotification({
+    ...option,
+    timestamp: d.getTime(),
+  } as NotificationOption)
 }
 
 export const setNotification_RemainSeconds = (  // sub

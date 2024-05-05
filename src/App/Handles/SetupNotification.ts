@@ -9,7 +9,7 @@ import { AlertError, CalcNotiTimeListPerDay, CheckDeserializeLocalizedData, Extr
 import { NumberWithCommas, PickRandomElement, SafeArrayLength, SafeGetArrayElement } from "../../Common/UtilsTS";
 import { GetExcludeTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetTargetLangAsync } from "./Settings";
 import { GetNextWordsDataCurrentLevelForNotiAsync, GetWordsDataCurrentLevelAsync, SetUsedWordIndexCurrentLevelAsync } from "./WordsData";
-import { NotificationOption, cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync, setNotification, setNotification_RemainSeconds } from "../../Common/Nofitication";
+import { DisplayNotificationAsync, NotificationOption, cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync, setNotification, setNotification_RemainSeconds } from "../../Common/Nofitication";
 import { AuthorizationStatus } from "@notifee/react-native";
 
 const IsLog = true
@@ -305,7 +305,7 @@ export const TestNotificationAsync = async (): Promise<Error | undefined> => {
         settingShowPhonetic)
 
 
-    setNotification_RemainSeconds(1, noti)
+    DisplayNotificationAsync(noti)
 
     return undefined
 }
