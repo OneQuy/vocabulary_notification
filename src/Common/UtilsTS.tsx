@@ -427,7 +427,10 @@ export function IsValuableArrayOrString(value: any, trimString: boolean = true) 
         return false
 }
 
-export function PickRandomElement<T>(arr: T[], excludeElement?: T) {
+export function PickRandomElement<T>(arr: T[], excludeElement?: T) : T | undefined {
+    if (!IsValuableArrayOrString(arr))
+        return undefined
+    
     while (true) {
         let idx = Math.floor(Math.random() * arr.length);
 
