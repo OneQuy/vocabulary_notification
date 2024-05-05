@@ -1,3 +1,6 @@
+export const NoPermissionText = 'No permission. Please grant the permission to receive vocabulary notifications!'
+export const PleaseSelectTargetLangText = 'Please set a language you wish to translate to'
+
 const eng = {
     popularity_level: 'Popuplarity level',
     level: 'Level',
@@ -36,8 +39,8 @@ const eng = {
     show_phonetic: 'Show word phonetic',
     
     popup_error: 'Oops',
-    no_permission: 'Can not setup. Please grant the permission to receive vocabulary notifications!',
-    pls_set_target_lang: 'Please set a language you wish to translate to',
+    no_permission: NoPermissionText,
+    pls_set_target_lang: PleaseSelectTargetLangText,
     fail_translate: 'Can not get words transation.',
     fail_download: 'Fail to download.',
 } as const

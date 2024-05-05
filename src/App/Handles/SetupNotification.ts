@@ -2,7 +2,7 @@ import { Phonetic, SavedWordData, Word } from "../Types";
 import { StorageKey_CurrentAllNotifications, StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from "../Constants/StorageKey";
 import { GetArrayAsync, GetBooleanAsync, SetArrayAsync } from "../../Common/AsyncStorageUtils";
 import { BridgeTranslateMultiWordAsync } from "./TranslateBridge";
-import { LocalText } from "../Hooks/useLocalText";
+import { LocalText, NoPermissionText, PleaseSelectTargetLangText } from "../Hooks/useLocalText";
 import { TranslatedResult } from "../../Common/DeepTranslateApi";
 import { AddOrUpdateLocalizedWordsToDbAsync, GetLocalizedWordFromDbAsync, GetLocalizedWordsFromDbIfAvailableAsync } from "./LocalizedWordsTable";
 import { AlertError, CalcNotiTimeListPerDay, CheckDeserializeLocalizedData, ExtractWordFromWordLang, SavedWordToTranslatedResult, TimePickerResultToTimestamp, ToWordLangString, TranslatedResultToSavedWord } from "./AppUtils";
@@ -277,33 +277,59 @@ export const SetCurrentAllNotificationsAsync = async (currentAllNotifications: S
  * @returns undefined means success
  */
 export const TestNotificationAsync = async (): Promise<Error | undefined> => {
-    // get already fetch words
+    // check permission
 
-    const words = await GetAlreadyFetchedWordsDataCurrentLevelAsync(undefined, undefined)
+    const resPermission = await requestPermissionNotificationAsync()
 
-    if (words instanceof Error) {
-        return words
+    if (resPermission.authorizationStatus === AuthorizationStatus.DENIED) {
+        return new Error(NoPermissionText)
     }
 
-    const word = PickRandomElement(words)
+    // get target lang
 
-    if (!word) { // not fetched any word => need to fetch some
-        const allWords = await GetNextWordsDataCurrentLevelForNotiAsync(50)
+    const targetLang = await GetTargetLangAsync()
 
-        if (allWords === undefined)
-            return new Error('[TestNotificationAsync] need to download data first')
-        
+    if (!targetLang) {
+        return new Error(PleaseSelectTargetLangText)
+    }
 
-        // const translatedArrOrError = await BridgeTranslateMultiWordAsync(
-        //     needFetchWords,
-        //     toLang,
-        //     fromLang)
+    // get already fetch words
 
-        // // error overall
+    const fetchedWords = await GetAlreadyFetchedWordsDataCurrentLevelAsync(undefined, undefined)
 
-        // if (translatedArrOrError instanceof Error) {
-        //     return translatedArrOrError
-        // }
+    if (fetchedWords instanceof Error) {
+        return fetchedWords
+    }
+
+    const word = PickRandomElement(fetchedWords)
+
+    if (IsLog)
+        console.log('[TestNotificationAsync] picked', word?.wordData.word,
+            'GetAlreadyFetchedWordsDataCurrentLevelAsync', fetchedWords.length)
+
+    // not fetched any word => need to fetch some
+
+    if (!word) {
+        const words = await GetNextWordsDataCurrentLevelForNotiAsync(50)
+
+        if (words instanceof Error)
+            return words
+
+        const wordsNeedToFetch = words.words
+
+        const translatedArrOrError = await BridgeTranslateMultiWordAsync(
+            wordsNeedToFetch.map(i => i.word),
+            targetLang)
+
+        // error overall
+
+        if (translatedArrOrError instanceof Error) {
+            return translatedArrOrError
+        }
+
+        // success all
+
+        return await TestNotificationAsync()
     }
 
     // get display setting
@@ -316,17 +342,16 @@ export const TestNotificationAsync = async (): Promise<Error | undefined> => {
 
     // push
 
-    // const noti = DataToNotification(
-    //     word,
-    //     0,
-    //     settingRankOfWord,
-    //     settingDefinitions,
-    //     settingShowPartOfSpeech,
-    //     settingExample,
-    //     settingShowPhonetic)
+    const noti = DataToNotification(
+        word,
+        0,
+        settingRankOfWord,
+        settingDefinitions,
+        settingShowPartOfSpeech,
+        settingExample,
+        settingShowPhonetic)
 
-
-    // DisplayNotificationAsync(noti)
+    DisplayNotificationAsync(noti)
 
     return undefined
 }
