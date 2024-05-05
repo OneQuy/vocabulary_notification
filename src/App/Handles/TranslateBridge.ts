@@ -69,7 +69,7 @@ export const BridgeTranslateMultiWordAsync = async (
 
 const SaveToDbAsync = async (toLang: string, translatedResults: TranslatedResult[]) => {
     if (IsLog)
-        console.log('[SaveToDbAsync] just translated, add new words to db:')
+        console.log('[SaveToDbAsync] just translated by', currentService.service, ', add new words to db:')
 
     await AddOrUpdateLocalizedWordsToDbAsync(translatedResults.map(word => {
         const saved: SavedWordData = {
@@ -80,6 +80,8 @@ const SaveToDbAsync = async (toLang: string, translatedResults: TranslatedResult
             lastNotiTick: -1,
         }
 
+        // console.log(`${word.text} (${word.translated})`);
+        
         return saved
     }))
 }
