@@ -62,14 +62,9 @@ export const MicrosoftTranslateAsync = async (
                     const item = arr[i]
                     const firstChild = SafeGetArrayElement(item?.translations)
 
-                    // @ts-ignore
-                    const translatedText = SafeValue(firstChild?.text, texts[i])
-
-                    // if (!firstChild || !firstChild.text)
-                    //     return new Error('[MicrosoftTranslateAsync] one of translated childs is failed')
-
                     const t: TranslatedResult = {
-                        translated: translatedText,
+                        // @ts-ignore
+                        translated: SafeValue(firstChild?.text, texts[i]),
                         text: texts[i],
                     }
 
@@ -83,6 +78,9 @@ export const MicrosoftTranslateAsync = async (
             return new Error('[MicrosoftTranslateAsync] response translated arr is not array')
     }
     catch (error) {
+        // if (error && error.stack)
+        //     error.stack = ''
+
         return CreateError(error)
     }
 }
