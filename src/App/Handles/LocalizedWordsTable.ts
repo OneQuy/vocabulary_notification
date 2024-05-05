@@ -2,6 +2,7 @@ import { SqlExecuteAsync, OpenDatabaseAsync, SqlInsertOrUpdateAsync, SqlGetAllRo
 import { IsAllValuableString as IsAllValuableStrings, ToCanPrint } from "../../Common/UtilsTS"
 import { SavedWordData } from "../Types"
 import { ToWordLangString } from "./AppUtils"
+import { GetTargetLangAsync } from "./Settings"
 
 const IsLog = true
 
@@ -99,15 +100,20 @@ export const AddOrUpdateLocalizedWordsToDbAsync = async (words: SavedWordData[])
 
 /**
  * 
- * @param toLang undefined means get all toLang
+ * @param toLang undefined means get current target lang.
  * @param pushed undefined means get all both seen & unseen
  */
-export const GetLocalizedWordFromDbAsync = async (toLang: string | undefined, pushed: boolean | undefined): Promise<SavedWordData[] | Error> => {
+export const GetLocalizedWordFromDbAsync = async (
+    toLang: string | undefined,
+    pushed: boolean | undefined
+): Promise<SavedWordData[] | Error> => {
     await CheckInitDBAsync()
 
     let sql =
         `SELECT * ` +
         `FROM ${TableName} `
+
+    // pushed or not
 
     if (pushed !== undefined) {
         const now = Date.now()
@@ -118,9 +124,18 @@ export const GetLocalizedWordFromDbAsync = async (toLang: string | undefined, pu
             sql += `WHERE ${Column_lastNotiTick} < 1 `
     }
 
-    if (toLang !== undefined) {
-        sql += `${pushed !== undefined ? 'AND' : 'WHERE'} ${Column_wordAndLang} LIKE '%\_${toLang}';`
+    // target lang
+
+    if (toLang === undefined) { // current target lang
+        const lang = await GetTargetLangAsync()
+
+        if (lang === null)
+            return new Error('Please set a language you wish to translate to')
+
+        toLang = lang
     }
+
+    sql += `${pushed !== undefined ? 'AND' : 'WHERE'} ${Column_wordAndLang} LIKE '%\_${toLang}';`
 
     // console.log(sql);
 

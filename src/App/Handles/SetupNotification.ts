@@ -83,22 +83,29 @@ const LoadFromLocalizedDbOrTranslateWordsAsync = async (
     }
 }
 
-const GetAlreadyFetchedAndNotPushedWordsCurrentLevelAsync = async (targetLang: string): Promise<SavedAndWordData[] | Error> => {
-    let allNotPushedWordsInDbOrError = await GetLocalizedWordFromDbAsync(targetLang, false)
+/**
+ * 
+ * @param toLang undefined means get current target lang.
+ */
+const GetAlreadyFetchedWordsDataCurrentLevelAsync = async (
+    targetLang: string | undefined,
+    pushed: boolean | undefined,
+): Promise<SavedAndWordData[] | Error> => {
+    let fetchedWordsInDbOrError = await GetLocalizedWordFromDbAsync(targetLang, pushed)
 
-    if (allNotPushedWordsInDbOrError instanceof Error)
-        return allNotPushedWordsInDbOrError
+    if (fetchedWordsInDbOrError instanceof Error)
+        return fetchedWordsInDbOrError
 
-    const dataOfNotPushedWordsCurrentLevelOrError = await GetWordsDataCurrentLevelAsync(
-        allNotPushedWordsInDbOrError.map(word => ExtractWordFromWordLang(word.wordAndLang)))
+    const dataOfFetchedWordsCurrentLevelOrError = await GetWordsDataCurrentLevelAsync(
+        fetchedWordsInDbOrError.map(word => ExtractWordFromWordLang(word.wordAndLang)))
 
-    if (dataOfNotPushedWordsCurrentLevelOrError instanceof Error)
-        return dataOfNotPushedWordsCurrentLevelOrError
+    if (dataOfFetchedWordsCurrentLevelOrError instanceof Error)
+        return dataOfFetchedWordsCurrentLevelOrError
 
     const arr: SavedAndWordData[] = []
 
-    for (let word of dataOfNotPushedWordsCurrentLevelOrError) {
-        const saved = allNotPushedWordsInDbOrError.find(saved => ExtractWordFromWordLang(saved.wordAndLang) === word.word)
+    for (let word of dataOfFetchedWordsCurrentLevelOrError) {
+        const saved = fetchedWordsInDbOrError.find(saved => ExtractWordFromWordLang(saved.wordAndLang) === word.word)
 
         if (!saved)
             continue
@@ -136,9 +143,9 @@ const SetupWordsForSetNotiAsync = async (numRequired: number): Promise<SetupWord
 
     await UpdateSeenWordsAndRefreshCurrentNotiWordsAsync()
 
-    // get not pushed words (already have saved data)
+    // get not pushed words (already have fetched data)
 
-    const alreadyFetchedAndNotPushedWordsOfCurrentLevel = await GetAlreadyFetchedAndNotPushedWordsCurrentLevelAsync(targetLang)
+    const alreadyFetchedAndNotPushedWordsOfCurrentLevel = await GetAlreadyFetchedWordsDataCurrentLevelAsync(targetLang, false)
 
     if (IsLog)
         console.log('[SetupWordsForSetNotiAsync] alreadyFetchedAndNotPushedWordsOfCurrentLevel', SafeArrayLength(alreadyFetchedAndNotPushedWordsOfCurrentLevel))
@@ -265,6 +272,11 @@ export const SetCurrentAllNotificationsAsync = async (currentAllNotifications: S
     await SetArrayAsync(StorageKey_CurrentAllNotifications, currentAllNotifications)
 }
 
+export const TestNotification = () => {
+
+    // const saved = await GetLocalizedWordFromDbAsync
+}
+
 export const DataToNotification = (
     data: SavedAndWordData,
     timestamp: number,
@@ -317,6 +329,7 @@ export const DataToNotification = (
 
     return noti
 }
+
 export const SetNotificationAsync = async (): Promise<undefined | SetupNotificationError> => {
     const resPermission = await requestPermissionNotificationAsync()
 
