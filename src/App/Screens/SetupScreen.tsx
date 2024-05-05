@@ -6,7 +6,7 @@ import useLocalText from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PrependZero, SafeArrayLength, ToCanPrint } from '../../Common/UtilsTS'
+import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PrependZero, ToCanPrint } from '../../Common/UtilsTS'
 import HairLine from '../../Common/Components/HairLine'
 import { CommonStyles, WindowSize_Max } from '../../Common/CommonConstants'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
@@ -15,15 +15,12 @@ import TimePicker, { TimePickerResult } from '../Components/TimePicker'
 import { LucideIcon } from '../../Common/Components/LucideIcon'
 import { GetLanguage, Language, Languages } from '../../Common/DeepTranslateApi'
 import { PairTime } from '../Types'
-import { CheckInitDBAsync } from '../Handles/LocalizedWordsTable'
-import { AlertError, CalcNotiTimeListPerDay, ClearDbAndNotificationsAsync, TotalMin } from '../Handles/AppUtils'
-import { SqlDropTableAsync, SqlGetAllRowsWithColumnIncludedInArrayAsync, SqlLogAllRowsAsync } from '../../Common/SQLite'
+import { AlertError, TotalMin } from '../Handles/AppUtils'
 import { SetNotificationAsync, TestNotificationAsync } from '../Handles/SetupNotification'
 import { GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetNumDaysToPushAsync, SetPopularityLevelIndexAsync, SettTargetLangAsyncAsync } from '../Handles/Settings'
-import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync, IsCachedWordsDataCurrentLevelAsync } from '../Handles/WordsData'
+import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync } from '../Handles/WordsData'
 import { GetBooleanAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
 import { StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from '../Constants/StorageKey'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 type PopupType =
   'popularity' |
@@ -150,11 +147,15 @@ const SetupScreen = () => {
     set_showMoreSetting(v => !v)
   }, [])
 
+  /**
+   * 
+   * @returns ensuring data got cached
+   */
   const setHandlingAndGetReadyDataAsync = async (popularityLevelIdx = -1): Promise<boolean> => {
     set_handlingType('loading_local')
 
     if (popularityLevelIdx < 0)
-        popularityLevelIdx = await GetPopularityLevelIndexAsync()
+      popularityLevelIdx = await GetPopularityLevelIndexAsync()
 
     // check if data available 
 
@@ -198,136 +199,129 @@ const SetupScreen = () => {
     if (!dataReady)
       return
 
-    // if (!await IsCachedWordsDataCurrentLevelAsync())
-    //   set_handlingType('loading_local')
+    const res = await TestNotificationAsync()
 
-    // const res = await TestNotificationAsync()
-
-    // set_handlingType(undefined)
-
-    // if (res instanceof Error) {
-    //   AlertError(res)
-    //   return
-    // }
-
-
-    // ClearDbAndNotificationsAsync()
-
-    // await CheckInitDBAsync()
-
-    // SqlLogAllRowsAsync('LocalizedWordsTable')
-
-    // return
-
-    // const intervalInMin = await GetIntervalMinAsync()
-
-    // const excludedTimePairs = await GetExcludedTimesAsync()
-
-    // const pushTimesPerDay = CalcNotiTimeListPerDay(intervalInMin, excludedTimePairs)
-
-    // console.log(pushTimesPerDay);
-    // return
-
-    // const res = await systra(
-    //   SystranTranslateApiKey,
-    // const res = await DeepTranslateAsync(
-    //   DeepTranslateApiKey,
-    //   [
-    //     'the',
-    //     'love', 
-    //     'rope',
-    //     'ring',
-    //     'roooaa',
-    //     'this'
-    //   ],
-    //   'vi'
-    // )
-
-    // // console.log(res);
-    // console.log(JSON.stringify(res, null, 1));
-
-    // const res = await SqlIsExistedAsync('LocalizedWordsTable', { column: 'lastNotiTick', value: '2' })
-    // console.log(res);
-
-    // let res = await SqlInsertOrUpdateAsync_Object('LocalizedWordsTable',
-    //   {
-    //     wordAndLang: 'hello_en',
-    //     lastNotiTick: Date.now() + 5000000,
-    //     localizedData: 'hellooooo'
-    //   }
-    // )
-
-    // res = await SqlInsertOrUpdateAsync_Object('LocalizedWordsTable',
-    //   {
-    //     wordAndLang: 'hello_vi',
-    //     lastNotiTick: -1,
-    //     localizedData: 'viiiiii'
-    //   }
-    // )
-
-    // res = await SqlInsertOrUpdateAsync_Object('LocalizedWordsTable',
-    //   {
-    //     wordAndLang: 'good_vi',
-    //     lastNotiTick: Date.now(),
-    //     localizedData: 'gooddddddd'
-    //   }
-    // )
-
-    // const a = await GetLocalizedWordFromDbAsyncWordsAsync(undefined, false)
-
-    // console.log(LogStringify(a));
-
-    // const rows = await SqlGetAllRowsWithColumnIncludedInArrayAsync('LocalizedWordsTable', 'lastNotiTick', [-1, 'uu'])
-
-    // if (rows instanceof Error)
-    //   return
-
-    // console.log(rows)
-
-    // SqlLogAllRowsAsync('LocalizedWordsTable')
-
-    // if (res instanceof Error)
-    // console.log(res);
-    // else
-    //   console.log(res.rows);
-
-    // const res = await AddSeenWordsAsync([
-    // {
-    //   word: 'uu',
-
-    //   localized: {
-    //     lang: 'vi',
-    //     translated: 'huleii'
-    //   },
-
-    //   notiTick: 1
-    // },
-    // {
-    //   word: 'hehe',
-
-    //   localized: {
-    //     lang: 'en',
-    //     translated: 'heheeen'
-    //   },
-
-    //   notiTick: 3
-    // },
-    // {
-    //   word: 'hehe',
-
-    //   localized: {
-    //     lang: 'vi',
-    //     translated: 'vi222'
-    //   },
-
-    //   notiTick: 4
-    // }
-    // ])
-
-    // console.log(res);
-
-    // await LoadAllSeenWordsAsync()
+    if (res instanceof Error) {
+      AlertError(res)
+    }
   }, [setHandlingAndGetReadyDataAsync])
+
+  // ClearDbAndNotificationsAsync()
+
+  // await CheckInitDBAsync()
+
+  // SqlLogAllRowsAsync('LocalizedWordsTable')
+
+  // return
+
+  // const intervalInMin = await GetIntervalMinAsync()
+
+  // const excludedTimePairs = await GetExcludedTimesAsync()
+
+  // const pushTimesPerDay = CalcNotiTimeListPerDay(intervalInMin, excludedTimePairs)
+
+  // console.log(pushTimesPerDay);
+  // return
+
+  // const res = await systra(
+  //   SystranTranslateApiKey,
+  // const res = await DeepTranslateAsync(
+  //   DeepTranslateApiKey,
+  //   [
+  //     'the',
+  //     'love', 
+  //     'rope',
+  //     'ring',
+  //     'roooaa',
+  //     'this'
+  //   ],
+  //   'vi'
+  // )
+
+  // // console.log(res);
+  // console.log(JSON.stringify(res, null, 1));
+
+  // const res = await SqlIsExistedAsync('LocalizedWordsTable', { column: 'lastNotiTick', value: '2' })
+  // console.log(res);
+
+  // let res = await SqlInsertOrUpdateAsync_Object('LocalizedWordsTable',
+  //   {
+  //     wordAndLang: 'hello_en',
+  //     lastNotiTick: Date.now() + 5000000,
+  //     localizedData: 'hellooooo'
+  //   }
+  // )
+
+  // res = await SqlInsertOrUpdateAsync_Object('LocalizedWordsTable',
+  //   {
+  //     wordAndLang: 'hello_vi',
+  //     lastNotiTick: -1,
+  //     localizedData: 'viiiiii'
+  //   }
+  // )
+
+  // res = await SqlInsertOrUpdateAsync_Object('LocalizedWordsTable',
+  //   {
+  //     wordAndLang: 'good_vi',
+  //     lastNotiTick: Date.now(),
+  //     localizedData: 'gooddddddd'
+  //   }
+  // )
+
+  // const a = await GetLocalizedWordFromDbAsyncWordsAsync(undefined, false)
+
+  // console.log(LogStringify(a));
+
+  // const rows = await SqlGetAllRowsWithColumnIncludedInArrayAsync('LocalizedWordsTable', 'lastNotiTick', [-1, 'uu'])
+
+  // if (rows instanceof Error)
+  //   return
+
+  // console.log(rows)
+
+  // SqlLogAllRowsAsync('LocalizedWordsTable')
+
+  // if (res instanceof Error)
+  // console.log(res);
+  // else
+  //   console.log(res.rows);
+
+  // const res = await AddSeenWordsAsync([
+  // {
+  //   word: 'uu',
+
+  //   localized: {
+  //     lang: 'vi',
+  //     translated: 'huleii'
+  //   },
+
+  //   notiTick: 1
+  // },
+  // {
+  //   word: 'hehe',
+
+  //   localized: {
+  //     lang: 'en',
+  //     translated: 'heheeen'
+  //   },
+
+  //   notiTick: 3
+  // },
+  // {
+  //   word: 'hehe',
+
+  //   localized: {
+  //     lang: 'vi',
+  //     translated: 'vi222'
+  //   },
+
+  //   notiTick: 4
+  // }
+  // ])
+
+  // console.log(res);
+
+  // await LoadAllSeenWordsAsync()
 
   const onPressSetNotification = useCallback(async () => {
     set_handlingType('setting_notification')
