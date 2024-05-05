@@ -6,10 +6,10 @@ import { LocalText } from "../Hooks/useLocalText";
 import { TranslatedResult } from "../../Common/DeepTranslateApi";
 import { AddOrUpdateLocalizedWordsToDbAsync, GetLocalizedWordFromDbAsync, GetLocalizedWordsFromDbIfAvailableAsync } from "./LocalizedWordsTable";
 import { AlertError, CalcNotiTimeListPerDay, CheckDeserializeLocalizedData, ExtractWordFromWordLang, SavedWordToTranslatedResult, TimePickerResultToTimestamp, ToWordLangString, TranslatedResultToSavedWord } from "./AppUtils";
-import { NumberWithCommas, SafeArrayLength, SafeGetArrayElement } from "../../Common/UtilsTS";
+import { NumberWithCommas, PickRandomElement, SafeArrayLength, SafeGetArrayElement } from "../../Common/UtilsTS";
 import { GetExcludeTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetTargetLangAsync } from "./Settings";
 import { GetNextWordsDataCurrentLevelForNotiAsync, GetWordsDataCurrentLevelAsync, SetUsedWordIndexCurrentLevelAsync } from "./WordsData";
-import { NotificationOption, cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync, setNotification } from "../../Common/Nofitication";
+import { NotificationOption, cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync, setNotification, setNotification_RemainSeconds } from "../../Common/Nofitication";
 import { AuthorizationStatus } from "@notifee/react-native";
 
 const IsLog = true
@@ -272,9 +272,42 @@ export const SetCurrentAllNotificationsAsync = async (currentAllNotifications: S
     await SetArrayAsync(StorageKey_CurrentAllNotifications, currentAllNotifications)
 }
 
-export const TestNotification = () => {
+/**
+ * 
+ * @returns undefined means success
+ */
+export const TestNotificationAsync = async (): Promise<Error | undefined> => {
+    const words = await GetAlreadyFetchedWordsDataCurrentLevelAsync(undefined, undefined)
 
-    // const saved = await GetLocalizedWordFromDbAsync
+    if (words instanceof Error) {
+        return words
+    }
+
+    const word = PickRandomElement(words)
+
+    // get display setting
+
+    const settingShowPhonetic = await GetBooleanAsync(StorageKey_ShowPhonetic)
+    const settingRankOfWord = await GetBooleanAsync(StorageKey_ShowRankOfWord)
+    const settingDefinitions = await GetBooleanAsync(StorageKey_ShowDefinitions)
+    const settingExample = await GetBooleanAsync(StorageKey_ShowExample)
+    const settingShowPartOfSpeech = await GetBooleanAsync(StorageKey_ShowPartOfSpeech)
+
+    // push
+
+    const noti = DataToNotification(
+        word,
+        0,
+        settingRankOfWord,
+        settingDefinitions,
+        settingShowPartOfSpeech,
+        settingExample,
+        settingShowPhonetic)
+
+
+    setNotification_RemainSeconds(1, noti)
+
+    return undefined
 }
 
 export const DataToNotification = (

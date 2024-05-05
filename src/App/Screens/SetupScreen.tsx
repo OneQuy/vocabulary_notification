@@ -18,7 +18,7 @@ import { PairTime } from '../Types'
 import { CheckInitDBAsync } from '../Handles/LocalizedWordsTable'
 import { AlertError, CalcNotiTimeListPerDay, ClearDbAndNotificationsAsync, TotalMin } from '../Handles/AppUtils'
 import { SqlDropTableAsync, SqlGetAllRowsWithColumnIncludedInArrayAsync, SqlLogAllRowsAsync } from '../../Common/SQLite'
-import { SetNotificationAsync } from '../Handles/SetupNotification'
+import { SetNotificationAsync, TestNotificationAsync } from '../Handles/SetupNotification'
 import { GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetNumDaysToPushAsync, SetPopularityLevelIndexAsync, SettTargetLangAsyncAsync } from '../Handles/Settings'
 import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync } from '../Handles/WordsData'
 import { GetBooleanAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
@@ -151,13 +151,22 @@ const SetupScreen = () => {
   }, [])
 
   const onPressTestNotification = useCallback(async () => {
+    const res = await TestNotificationAsync()
+
+    if (res instanceof Error) {
+      AlertError(res)
+      return
+    }
+
+    
+    
     // ClearDbAndNotificationsAsync()
 
-    await CheckInitDBAsync()
+    // await CheckInitDBAsync()
 
-    SqlLogAllRowsAsync('LocalizedWordsTable')
+    // SqlLogAllRowsAsync('LocalizedWordsTable')
 
-    return
+    // return
 
     // const intervalInMin = await GetIntervalMinAsync()
 
