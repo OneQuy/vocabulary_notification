@@ -11,6 +11,7 @@ import { GetExcludeTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, Ge
 import { GetAllWordsDataCurrentLevelAsync, GetNextWordsDataCurrentLevelForNotiAsync, GetWordsDataCurrentLevelAsync, SetUsedWordIndexCurrentLevelAsync } from "./WordsData";
 import { DisplayNotificationAsync, NotificationOption, cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync, setNotification } from "../../Common/Nofitication";
 import { AuthorizationStatus } from "@notifee/react-native";
+import { HandlingType } from "../Screens/SetupScreen";
 
 const IsLog = true
 
@@ -276,7 +277,7 @@ export const SetCurrentAllNotificationsAsync = async (currentAllNotifications: S
  * 
  * @returns undefined means success
  */
-export const TestNotificationAsync = async (): Promise<Error | undefined> => {
+export const TestNotificationAsync = async (setHandling: (type: HandlingType) => void): Promise<Error | undefined> => {
     // check permission
 
     const resPermission = await requestPermissionNotificationAsync()
@@ -310,15 +311,15 @@ export const TestNotificationAsync = async (): Promise<Error | undefined> => {
     // not fetched any word => need to fetch some
 
     if (!word) {
+        setHandling('downloading')
+
         const words = await GetNextWordsDataCurrentLevelForNotiAsync(50)
 
         if (words instanceof Error)
             return words
 
-        const wordsNeedToFetch = words.words
-
         const translatedArrOrError = await BridgeTranslateMultiWordAsync(
-            wordsNeedToFetch.map(i => i.word),
+            words.words.map(i => i.word),
             targetLang)
 
         // error overall
@@ -328,8 +329,10 @@ export const TestNotificationAsync = async (): Promise<Error | undefined> => {
         }
 
         // success all
-
-        return await TestNotificationAsync()
+        
+        setHandling(undefined)
+        
+        return await TestNotificationAsync(setHandling)
     }
 
     // get display setting

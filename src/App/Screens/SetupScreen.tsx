@@ -30,7 +30,7 @@ type PopupType =
   'num_days_push' |
   undefined
 
-type HandlingType =
+export type HandlingType =
   'downloading' |
   'loading_local' |
   'setting_notification' |
@@ -193,13 +193,13 @@ const SetupScreen = () => {
     return true
   }
 
-  const onPressTestNotification = useCallback(async () => {
+  const onPressTestNotificationAsync = useCallback(async () => {
     const dataReady = await setHandlingAndGetReadyDataAsync()
 
     if (!dataReady)
       return
 
-    const res = await TestNotificationAsync()
+    const res = await TestNotificationAsync(set_handlingType)
 
     if (res instanceof Error) {
       AlertError(res)
@@ -1083,7 +1083,7 @@ const SetupScreen = () => {
 
           iconProps={{ name: 'Bell', size: FontSize.Normal, }}
 
-          onPress={onPressTestNotification}
+          onPress={onPressTestNotificationAsync}
         />
 
         <LucideIconTextEffectButton
