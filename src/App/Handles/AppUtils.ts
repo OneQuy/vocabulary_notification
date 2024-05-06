@@ -5,6 +5,7 @@ import { TimePickerResult } from "../Components/TimePicker"
 import { DropTableAsync } from "./LocalizedWordsTable"
 import { SetCurrentAllNotificationsAsync } from "./SetupNotification"
 import { cancelAllLocalNotificationsAsync } from "../../Common/Nofitication"
+import { HandleError } from "../../Common/Tracking"
 
 export const ClearDbAndNotificationsAsync = async () => {
     await DropTableAsync()
@@ -24,7 +25,7 @@ export const TimePickerResultToTimestamp = (idayFromToday: number, time: TimePic
 
 export const ToWordLangString = (word: string, lang: string): string => {
     if (!word || !lang) {
-        console.error('[ToWordLangString] null');
+        HandleError('null', 'ToWordLangString', false);
         return '[ToWordLangString] null'
     }
 
@@ -33,14 +34,14 @@ export const ToWordLangString = (word: string, lang: string): string => {
 
 export const ExtractWordFromWordLang = (wordAndLang: string): string => {
     if (!wordAndLang) {
-        console.error('[ExtractWordFromWordLang] null');
+        HandleError('null', 'ExtractWordFromWordLang', false);
         return '[ExtractWordFromWordLang] null'
     }
 
     const arr = wordAndLang.split('_')
 
     if (arr.length !== 2) {
-        console.error('[ExtractWordFromWordLang] arr.length !== 2');
+        HandleError('arr.length !== 2', 'ExtractWordFromWordLang', false);
         return '[ExtractWordFromWordLang] arr.length !== 2'
     }
 
