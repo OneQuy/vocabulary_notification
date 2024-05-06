@@ -1,4 +1,3 @@
-import { Alert } from "react-native"
 import { SafeValue, ToCanPrint } from "../../Common/UtilsTS"
 import { TranslatedResult } from "../../Common/DeepTranslateApi"
 import { LocalizedData, PairTime, SavedWordData } from "../Types"
@@ -7,21 +6,10 @@ import { DropTableAsync } from "./LocalizedWordsTable"
 import { SetCurrentAllNotificationsAsync } from "./SetupNotification"
 import { cancelAllLocalNotificationsAsync } from "../../Common/Nofitication"
 
-export const HandleError = (title: string, error: any, alert: boolean) => {
-    // todo
-
-    if (alert)
-        Alert.alert(title, ToCanPrint(error))
-}
-
 export const ClearDbAndNotificationsAsync = async () => {
     await DropTableAsync()
     await SetCurrentAllNotificationsAsync([])
     cancelAllLocalNotificationsAsync()
-}
-
-export const AlertError = (error: any) => {
-    Alert.alert('Error', ToCanPrint(error))
 }
 
 export const TimePickerResultToTimestamp = (idayFromToday: number, time: TimePickerResult): number => {

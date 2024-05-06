@@ -15,13 +15,14 @@ import TimePicker, { TimePickerResult } from '../Components/TimePicker'
 import { LucideIcon } from '../../Common/Components/LucideIcon'
 import { GetLanguage, Language, Languages } from '../../Common/DeepTranslateApi'
 import { PairTime } from '../Types'
-import { AlertError, TotalMin } from '../Handles/AppUtils'
+import { TotalMin } from '../Handles/AppUtils'
 import { SetNotificationAsync, TestNotificationAsync } from '../Handles/SetupNotification'
 import { GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetNumDaysToPushAsync, SetPopularityLevelIndexAsync, SettTargetLangAsyncAsync } from '../Handles/Settings'
 import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync } from '../Handles/WordsData'
 import { GetBooleanAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
 import { StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from '../Constants/StorageKey'
 import HistoryScreen from './HistoryScreen'
+import { HandleError } from '../../Common/Tracking'
 
 type SubView =
   'setup' |
@@ -216,7 +217,7 @@ const SetupScreen = () => {
     const res = await TestNotificationAsync(set_handlingType)
 
     if (res instanceof Error) {
-      AlertError(res)
+      HandleError(res, 'onPressTestNotificationAsync', true)
     }
   }, [setHandlingAndGetReadyDataAsync])
 
@@ -355,7 +356,7 @@ const SetupScreen = () => {
         s += ToCanPrint(res.error)
       }
 
-      AlertError(s)
+      HandleError(s, 'onPressSetNotification')
 
       set_handlingType(undefined)
     }

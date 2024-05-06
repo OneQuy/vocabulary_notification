@@ -5,13 +5,14 @@ import { BridgeTranslateMultiWordAsync } from "./TranslateBridge";
 import { LocalText, NoPermissionText, PleaseSelectTargetLangText } from "../Hooks/useLocalText";
 import { TranslatedResult } from "../../Common/DeepTranslateApi";
 import { AddOrUpdateLocalizedWordsToDbAsync, GetLocalizedWordFromDbAsync, GetLocalizedWordsFromDbIfAvailableAsync } from "./LocalizedWordsTable";
-import { AlertError, CalcNotiTimeListPerDay, CheckDeserializeLocalizedData, ExtractWordFromWordLang, SavedWordToTranslatedResult, TimePickerResultToTimestamp, ToWordLangString, TranslatedResultToSavedWord } from "./AppUtils";
-import { NumberWithCommas, PickRandomElement, PickRandomElementWithCount, SafeArrayLength, SafeGetArrayElement, ToCanPrint } from "../../Common/UtilsTS";
+import { CalcNotiTimeListPerDay, CheckDeserializeLocalizedData, ExtractWordFromWordLang, SavedWordToTranslatedResult, TimePickerResultToTimestamp, ToWordLangString, TranslatedResultToSavedWord } from "./AppUtils";
+import { NumberWithCommas, PickRandomElement, SafeArrayLength, SafeGetArrayElement, ToCanPrint } from "../../Common/UtilsTS";
 import { GetExcludeTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetTargetLangAsync } from "./Settings";
-import { GetAllWordsDataCurrentLevelAsync, GetNextWordsDataCurrentLevelForNotiAsync, GetWordsDataCurrentLevelAsync, SetUsedWordIndexCurrentLevelAsync } from "./WordsData";
+import { GetNextWordsDataCurrentLevelForNotiAsync, GetWordsDataCurrentLevelAsync, SetUsedWordIndexCurrentLevelAsync } from "./WordsData";
 import { DisplayNotificationAsync, NotificationOption, cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync, setNotification } from "../../Common/Nofitication";
 import { AuthorizationStatus } from "@notifee/react-native";
 import { HandlingType } from "../Screens/SetupScreen";
+import { HandleError } from "../../Common/Tracking";
 
 const IsLog = true
 
@@ -477,7 +478,7 @@ export const SetNotificationAsync = async (): Promise<undefined | SetupNotificat
 
     if (SafeArrayLength(setupWordsResult.words) !== numUniqueWordsOfAllDay ||
         !Array.isArray(setupWordsResult.words)) { // ts
-        AlertError('[SetNotificationAsync] what? can not fetch enough words')
+        HandleError('what? can not fetch enough words', 'SetNotificationAsync-X', false)
 
         return {
             error: new Error('[SetNotificationAsync] what? can not fetch enough words')
