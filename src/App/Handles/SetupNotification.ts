@@ -330,9 +330,9 @@ export const TestNotificationAsync = async (setHandling: (type: HandlingType) =>
         }
 
         // success all
-        
+
         setHandling(undefined)
-        
+
         return await TestNotificationAsync(setHandling)
     }
 
@@ -372,8 +372,14 @@ const DataToNotification = (
     if (!data ||
         !data.savedData ||
         !data.wordData
-    )
-        console.error('[DataToNotification] data is undefined', ToCanPrint(data));
+    ) {
+        HandleError(data, 'DataToNotification', false)
+
+        return {
+            title: '',
+            message: ''
+        }
+    }
 
     let title = ExtractWordFromWordLang(data.savedData.wordAndLang)
 
@@ -478,7 +484,7 @@ export const SetNotificationAsync = async (): Promise<undefined | SetupNotificat
 
     if (SafeArrayLength(setupWordsResult.words) !== numUniqueWordsOfAllDay ||
         !Array.isArray(setupWordsResult.words)) { // ts
-        HandleError('what? can not fetch enough words', 'SetNotificationAsync-X', false)
+        HandleError('what? can not fetch enough words', 'SetNotificationAsync', false)
 
         return {
             error: new Error('[SetNotificationAsync] what? can not fetch enough words')
