@@ -368,7 +368,10 @@ const DataToNotification = (
     showExample: boolean,
     showPhonetic: boolean
 ): NotificationOption => {
-    if (!data)
+    if (!data ||
+        !data.savedData ||
+        !data.wordData
+    )
         console.error('[DataToNotification] data is undefined', ToCanPrint(data));
 
     let title = ExtractWordFromWordLang(data.savedData.wordAndLang)

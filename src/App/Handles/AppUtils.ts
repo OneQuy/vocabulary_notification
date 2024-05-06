@@ -9,7 +9,9 @@ import { cancelAllLocalNotificationsAsync } from "../../Common/Nofitication"
 
 export const HandleError = (title: string, error: any, alert: boolean) => {
     // todo
-    Alert.alert(title, ToCanPrint(error))
+
+    if (alert)
+        Alert.alert(title, ToCanPrint(error))
 }
 
 export const ClearDbAndNotificationsAsync = async () => {
@@ -19,7 +21,7 @@ export const ClearDbAndNotificationsAsync = async () => {
 }
 
 export const AlertError = (error: any) => {
-    Alert.alert(ToCanPrint(error))
+    Alert.alert('Error', ToCanPrint(error))
 }
 
 export const TimePickerResultToTimestamp = (idayFromToday: number, time: TimePickerResult): number => {
@@ -33,15 +35,32 @@ export const TimePickerResultToTimestamp = (idayFromToday: number, time: TimePic
 }
 
 export const ToWordLangString = (word: string, lang: string): string => {
+    if (!word || !lang) {
+        console.error('[ToWordLangString] null');
+        return '[ToWordLangString] null'
+    }
+
     return `${word}_${lang}`
 }
 
 export const ExtractWordFromWordLang = (wordAndLang: string): string => {
-    const arr =  wordAndLang.split('_')
+    if (!wordAndLang) {
+        console.error('[ExtractWordFromWordLang] null');
+        return '[ExtractWordFromWordLang] null'
+    }
+
+    const arr = wordAndLang.split('_')
+
+    if (arr.length !== 2) {
+        console.error('[ExtractWordFromWordLang] arr.length !== 2');
+        return '[ExtractWordFromWordLang] arr.length !== 2'
+    }
+
     return arr[0]
 }
 
 export const CheckDeserializeLocalizedData = (saved: SavedWordData): LocalizedData => {
+
     if (typeof saved.localizedData === 'string') {
         saved.localizedData = JSON.parse(saved.localizedData) as LocalizedData
     }
