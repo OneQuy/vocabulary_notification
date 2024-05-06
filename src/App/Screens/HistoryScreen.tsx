@@ -6,7 +6,7 @@ import { Gap, Outline } from '../Constants/Constants_Outline'
 import { UpdatePushedWordsAndRefreshCurrentNotiWordsAsync } from '../Handles/SetupNotification'
 import { GetLocalizedWordFromDbAsync } from '../Handles/LocalizedWordsTable'
 import { SavedWordData } from '../Types'
-import { GetElementsOfPageArray, HexToRgb, SafeArrayLength } from '../../Common/UtilsTS'
+import { DelayAsync, GetElementsOfPageArray, HexToRgb, SafeArrayLength } from '../../Common/UtilsTS'
 import { FontSize } from '../Constants/Constants_FontSize'
 import { HandlingType } from './SetupScreen'
 import { CheckDeserializeLocalizedData, ExtractWordFromWordLang } from '../Handles/AppUtils'
@@ -88,7 +88,11 @@ const HistoryScreen = ({
 
   useEffect(() => {
     (async () => {
+      await DelayAsync(200)
+      
       setHandling('loading_local')
+      
+      await DelayAsync(200)
 
       // update pushed word to db
 
