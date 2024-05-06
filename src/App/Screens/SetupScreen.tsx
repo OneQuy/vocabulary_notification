@@ -21,6 +21,7 @@ import { GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, Get
 import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync } from '../Handles/WordsData'
 import { GetBooleanAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
 import { StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from '../Constants/StorageKey'
+import HistoryScreen from './HistoryScreen'
 
 type SubView =
   'setup' |
@@ -883,7 +884,7 @@ const SetupScreen = () => {
           iconProps={{ name: 'Rocket', size: FontSize.Normal, }}
 
           effectType='scale'
-          
+
           manuallySelected={subView === 'setup'}
           onPress={() => onPressSubview('setup')}
         />
@@ -923,257 +924,271 @@ const SetupScreen = () => {
         />
       </View>
 
-      <ScrollView contentContainerStyle={style.scrollView} showsVerticalScrollIndicator={false}>
-        {/* popularity_level */}
+      {
+        subView === 'setup' &&
+        <ScrollView contentContainerStyle={style.scrollView} showsVerticalScrollIndicator={false}>
+          {/* popularity_level */}
 
-        <Text style={style.header}>{texts.popularity_level}</Text>
+          <Text style={style.header}>{texts.popularity_level}</Text>
 
-        <LucideIconTextEffectButton
-          unselectedColorOfTextAndIcon={theme.counterBackground}
-          notChangeToSelected
-          style={style.normalBtn}
-
-          title={texts.level + ' ' + (displayPopularityLevelIdx + 1)}
-          titleProps={{ style: style.normalBtnTxt }}
-
-          iconProps={{ name: 'BookAIcon', size: FontSize.Normal, }}
-
-          onPress={() => onPressShowPopup('popularity')}
-        />
-
-        {/* interval */}
-
-        <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
-
-        <Text style={style.header}>{texts.repeat}</Text>
-
-        <LucideIconTextEffectButton
-          unselectedColorOfTextAndIcon={theme.counterBackground}
-          notChangeToSelected
-          style={style.normalBtn}
-
-          title={GetDayHourMinSecFromMs_ToString(displayIntervalInMin * 60 * 1000, ' ', true, false, '-')}
-          titleProps={{ style: style.normalBtnTxt }}
-
-          iconProps={{ name: 'Clock', size: FontSize.Normal, }}
-
-          onPress={() => onPressShowPopup('interval')}
-        />
-
-        {/* exclude time */}
-
-        <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
-
-        <View style={style.excludeTimeTitleView}>
-          <Text style={style.header}>{texts.not_show}</Text>
-
-          {/* add exclude time */}
           <LucideIconTextEffectButton
             unselectedColorOfTextAndIcon={theme.counterBackground}
             notChangeToSelected
+            style={style.normalBtn}
 
-            iconProps={{ name: 'Plus', size: FontSize.Normal }}
+            title={texts.level + ' ' + (displayPopularityLevelIdx + 1)}
+            titleProps={{ style: style.normalBtnTxt }}
 
-            onPress={onPressAddExcludeTime}
+            iconProps={{ name: 'BookAIcon', size: FontSize.Normal, }}
+
+            onPress={() => onPressShowPopup('popularity')}
           />
-        </View>
 
-        {
-          renderExcludeTimes()
-        }
+          {/* interval */}
 
-        {/* target lang */}
+          <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
 
-        <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
+          <Text style={style.header}>{texts.repeat}</Text>
 
-        <Text style={style.header}>{texts.translate_to}</Text>
+          <LucideIconTextEffectButton
+            unselectedColorOfTextAndIcon={theme.counterBackground}
+            notChangeToSelected
+            style={style.normalBtn}
 
-        <LucideIconTextEffectButton
-          unselectedColorOfTextAndIcon={theme.counterBackground}
-          notChangeToSelected
-          style={style.normalBtn}
+            title={GetDayHourMinSecFromMs_ToString(displayIntervalInMin * 60 * 1000, ' ', true, false, '-')}
+            titleProps={{ style: style.normalBtnTxt }}
 
-          title={displayTargetLang?.name ?? texts.tap_to_select}
-          titleProps={{ style: style.normalBtnTxt }}
+            iconProps={{ name: 'Clock', size: FontSize.Normal, }}
 
-          iconProps={{ name: 'Languages', size: FontSize.Normal, }}
+            onPress={() => onPressShowPopup('interval')}
+          />
 
-          onPress={() => onPressShowPopup('target-lang')}
-        />
+          {/* exclude time */}
 
-        {/* more setting */}
+          <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
 
-        <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
+          <View style={style.excludeTimeTitleView}>
+            <Text style={style.header}>{texts.not_show}</Text>
 
-        <LucideIconTextEffectButton
-          unselectedColorOfTextAndIcon={theme.counterBackground}
-          notChangeToSelected
-          style={style.moreSettingBtn}
-
-          title={texts.more_setting}
-
-          titleProps={{ style: style.normalBtnTxt }}
-
-          iconProps={{ name: showMoreSetting ? 'ChevronUp' : 'ChevronDown', size: FontSize.Normal, }}
-
-          onPress={onPressMoreSetting}
-        />
-
-        {/* limit words */}
-
-        {
-          showMoreSetting &&
-          <>
-            <Text style={style.header}>{texts.limit_words_per_day}</Text>
-
+            {/* add exclude time */}
             <LucideIconTextEffectButton
               unselectedColorOfTextAndIcon={theme.counterBackground}
               notChangeToSelected
-              style={style.normalBtn}
 
-              title={displayWordLimitNumber === 0 ? texts.no_limit : (displayWordLimitNumber + ' ' + AddS(texts.word, displayWordLimitNumber))}
-              titleProps={{ style: style.normalBtnTxt }}
+              iconProps={{ name: 'Plus', size: FontSize.Normal }}
 
-              iconProps={{ name: 'Repeat', size: FontSize.Normal, }}
-
-              onPress={() => onPressShowPopup('limit-word')}
+              onPress={onPressAddExcludeTime}
             />
-          </>
-        }
+          </View>
 
-        {/* num days to push */}
+          {
+            renderExcludeTimes()
+          }
 
-        {
-          showMoreSetting &&
-          <>
-            <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
+          {/* target lang */}
 
-            <Text style={style.header}>{texts.num_days_to_push}</Text>
+          <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
 
-            <LucideIconTextEffectButton
-              unselectedColorOfTextAndIcon={theme.counterBackground}
-              notChangeToSelected
-              style={style.normalBtn}
+          <Text style={style.header}>{texts.translate_to}</Text>
 
-              title={displayNumDaysToPush + ' ' + AddS(texts.day, displayNumDaysToPush)}
-              titleProps={{ style: style.normalBtnTxt }}
+          <LucideIconTextEffectButton
+            unselectedColorOfTextAndIcon={theme.counterBackground}
+            notChangeToSelected
+            style={style.normalBtn}
 
-              iconProps={{ name: 'CalendarDays', size: FontSize.Normal, }}
+            title={displayTargetLang?.name ?? texts.tap_to_select}
+            titleProps={{ style: style.normalBtnTxt }}
 
-              onPress={() => onPressShowPopup('num_days_push')}
-            />
-          </>
-        }
+            iconProps={{ name: 'Languages', size: FontSize.Normal, }}
 
-        {/* display of noti */}
+            onPress={() => onPressShowPopup('target-lang')}
+          />
 
-        {
-          showMoreSetting &&
-          <>
-            <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
-            <Text style={style.header}>{texts.noti_display}</Text>
-          </>
-        }
+          {/* more setting */}
 
-        {/* display of noti - phonetic */}
+          <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
 
-        {
-          showMoreSetting &&
-          renderDisplaySettingItem(
-            texts.show_phonetic,
-            displaySettting_ShowPhonetic,
-            set_displaySettting_ShowPhonetic,
-            StorageKey_ShowPhonetic
-          )
-        }
+          <LucideIconTextEffectButton
+            unselectedColorOfTextAndIcon={theme.counterBackground}
+            notChangeToSelected
+            style={style.moreSettingBtn}
 
-        {/* display of noti - part of speech */}
+            title={texts.more_setting}
 
-        {
-          showMoreSetting &&
-          renderDisplaySettingItem(
-            texts.show_part_of_speech,
-            displaySettting_ShowPartOfSpeech,
-            set_displaySettting_ShowPartOfSpeech,
-            StorageKey_ShowPartOfSpeech
-          )
-        }
+            titleProps={{ style: style.normalBtnTxt }}
 
-        {/* display of noti - example */}
+            iconProps={{ name: showMoreSetting ? 'ChevronUp' : 'ChevronDown', size: FontSize.Normal, }}
 
-        {
-          showMoreSetting &&
-          renderDisplaySettingItem(
-            texts.show_examble,
-            displaySettting_Example,
-            set_displaySettting_Example,
-            StorageKey_ShowExample
-          )
-        }
+            onPress={onPressMoreSetting}
+          />
 
-        {/* display of noti - definitions */}
+          {/* limit words */}
 
-        {
-          showMoreSetting &&
-          renderDisplaySettingItem(
-            texts.show_definitions,
-            displaySettting_Definitions,
-            set_displaySettting_Definitions,
-            StorageKey_ShowDefinitions
-          )
-        }
+          {
+            showMoreSetting &&
+            <>
+              <Text style={style.header}>{texts.limit_words_per_day}</Text>
 
-        {/* display of noti - rank */}
+              <LucideIconTextEffectButton
+                unselectedColorOfTextAndIcon={theme.counterBackground}
+                notChangeToSelected
+                style={style.normalBtn}
 
-        {
-          showMoreSetting &&
-          renderDisplaySettingItem(
-            texts.show_rank_of_word,
-            displaySettting_RankOfWord,
-            set_displaySettting_RankOfWord,
-            StorageKey_ShowRankOfWord
-          )
-        }
-      </ScrollView>
+                title={displayWordLimitNumber === 0 ? texts.no_limit : (displayWordLimitNumber + ' ' + AddS(texts.word, displayWordLimitNumber))}
+                titleProps={{ style: style.normalBtnTxt }}
+
+                iconProps={{ name: 'Repeat', size: FontSize.Normal, }}
+
+                onPress={() => onPressShowPopup('limit-word')}
+              />
+            </>
+          }
+
+          {/* num days to push */}
+
+          {
+            showMoreSetting &&
+            <>
+              <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
+
+              <Text style={style.header}>{texts.num_days_to_push}</Text>
+
+              <LucideIconTextEffectButton
+                unselectedColorOfTextAndIcon={theme.counterBackground}
+                notChangeToSelected
+                style={style.normalBtn}
+
+                title={displayNumDaysToPush + ' ' + AddS(texts.day, displayNumDaysToPush)}
+                titleProps={{ style: style.normalBtnTxt }}
+
+                iconProps={{ name: 'CalendarDays', size: FontSize.Normal, }}
+
+                onPress={() => onPressShowPopup('num_days_push')}
+              />
+            </>
+          }
+
+          {/* display of noti */}
+
+          {
+            showMoreSetting &&
+            <>
+              <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
+              <Text style={style.header}>{texts.noti_display}</Text>
+            </>
+          }
+
+          {/* display of noti - phonetic */}
+
+          {
+            showMoreSetting &&
+            renderDisplaySettingItem(
+              texts.show_phonetic,
+              displaySettting_ShowPhonetic,
+              set_displaySettting_ShowPhonetic,
+              StorageKey_ShowPhonetic
+            )
+          }
+
+          {/* display of noti - part of speech */}
+
+          {
+            showMoreSetting &&
+            renderDisplaySettingItem(
+              texts.show_part_of_speech,
+              displaySettting_ShowPartOfSpeech,
+              set_displaySettting_ShowPartOfSpeech,
+              StorageKey_ShowPartOfSpeech
+            )
+          }
+
+          {/* display of noti - example */}
+
+          {
+            showMoreSetting &&
+            renderDisplaySettingItem(
+              texts.show_examble,
+              displaySettting_Example,
+              set_displaySettting_Example,
+              StorageKey_ShowExample
+            )
+          }
+
+          {/* display of noti - definitions */}
+
+          {
+            showMoreSetting &&
+            renderDisplaySettingItem(
+              texts.show_definitions,
+              displaySettting_Definitions,
+              set_displaySettting_Definitions,
+              StorageKey_ShowDefinitions
+            )
+          }
+
+          {/* display of noti - rank */}
+
+          {
+            showMoreSetting &&
+            renderDisplaySettingItem(
+              texts.show_rank_of_word,
+              displaySettting_RankOfWord,
+              set_displaySettting_RankOfWord,
+              StorageKey_ShowRankOfWord
+            )
+          }
+        </ScrollView>
+      }
 
       {/* set notification & test btn */}
 
-      <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
+      {
+        subView === 'setup' &&
+        <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
+      }
 
-      <View style={style.bottomButtonsView}>
-        <LucideIconTextEffectButton
-          unselectedColorOfTextAndIcon={theme.counterBackground}
-          notChangeToSelected
-          style={style.normalBtn}
+      {
+        subView === 'setup' &&
+        <View style={style.bottomButtonsView}>
+          <LucideIconTextEffectButton
+            unselectedColorOfTextAndIcon={theme.counterBackground}
+            notChangeToSelected
+            style={style.normalBtn}
 
-          title={texts.test_notification}
-          titleProps={{ style: style.normalBtnTxt }}
+            title={texts.test_notification}
+            titleProps={{ style: style.normalBtnTxt }}
 
-          iconProps={{ name: 'Bell', size: FontSize.Normal, }}
+            iconProps={{ name: 'Bell', size: FontSize.Normal, }}
 
-          onPress={onPressTestNotificationAsync}
-        />
+            onPress={onPressTestNotificationAsync}
+          />
 
-        <LucideIconTextEffectButton
-          selectedBackgroundColor={theme.primary}
+          <LucideIconTextEffectButton
+            selectedBackgroundColor={theme.primary}
 
-          selectedColorOfTextAndIcon={theme.counterPrimary}
-          unselectedColorOfTextAndIcon={theme.counterBackground}
+            selectedColorOfTextAndIcon={theme.counterPrimary}
+            unselectedColorOfTextAndIcon={theme.counterBackground}
 
-          notChangeToSelected
-          manuallySelected={true}
-          canHandlePressWhenSelected
+            notChangeToSelected
+            manuallySelected={true}
+            canHandlePressWhenSelected
 
-          style={style.normalBtn}
+            style={style.normalBtn}
 
-          title={texts.set_notification}
-          titleProps={{ style: style.normalBtnTxt }}
+            title={texts.set_notification}
+            titleProps={{ style: style.normalBtnTxt }}
 
-          iconProps={{ name: 'Rocket', size: FontSize.Normal, }}
+            iconProps={{ name: 'Rocket', size: FontSize.Normal, }}
 
-          onPress={onPressSetNotification}
-        />
-      </View>
+            onPress={onPressSetNotification}
+          />
+        </View>
+      }
+
+      {
+        subView === 'history' &&
+        <HistoryScreen />
+      }
 
       {/* popup */}
       {
