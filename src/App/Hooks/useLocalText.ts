@@ -38,6 +38,10 @@ const eng = {
     show_definitions: 'Show word definitions',
     show_phonetic: 'Show word phonetic',
     
+    setup: 'Setup',
+    history: 'History',
+    about: 'About',
+    
     popup_error: 'Oops',
     no_permission: NoPermissionText,
     pls_set_target_lang: PleaseSelectTargetLangText,

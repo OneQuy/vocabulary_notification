@@ -22,6 +22,11 @@ import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync } from '../Hand
 import { GetBooleanAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
 import { StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from '../Constants/StorageKey'
 
+type SubView =
+  'setup' |
+  'history' |
+  'about'
+
 type PopupType =
   'popularity' |
   'interval' |
@@ -41,6 +46,8 @@ const SetupScreen = () => {
   const theme = useTheme()
   const texts = useLocalText()
 
+  const [handlingType, set_handlingType] = useState<HandlingType>(undefined)
+  const [subView, set_subView] = useState<SubView>('setup')
   const [showPopup, set_showPopup] = useState<PopupType>(undefined)
   const popupCloseCallbackRef = useRef<(onFinished?: () => void) => void>()
 
@@ -64,7 +71,6 @@ const SetupScreen = () => {
   const [displaySettting_RankOfWord, set_displaySettting_RankOfWord] = useState(false)
   const [displaySettting_Example, set_displaySettting_Example] = useState(false)
 
-  const [handlingType, set_handlingType] = useState<HandlingType>(undefined)
 
   // common
 
@@ -72,6 +78,9 @@ const SetupScreen = () => {
     return StyleSheet.create({
       master: { flex: 1, paddingBottom: Outline.Normal },
       scrollView: { gap: Gap.Small, padding: Outline.Normal, },
+
+      topbarView: { flexDirection: 'row' },
+      topbarBtn: { flexDirection: 'row', padding: Outline.Small, gap: Gap.Small, flex: 1 },
 
       scrollViewSlidingPopup: { gap: Gap.Small, padding: Outline.Normal, },
 
@@ -142,6 +151,10 @@ const SetupScreen = () => {
       },
     })
   }, [theme])
+
+  const onPressSubview = useCallback((type: SubView) => {
+    set_subView(type)
+  }, [])
 
   const onPressMoreSetting = useCallback(() => {
     set_showMoreSetting(v => !v)
@@ -855,6 +868,61 @@ const SetupScreen = () => {
 
   return (
     <View style={style.master}>
+      {/* topbar */}
+      <View style={style.topbarView}>
+        <LucideIconTextEffectButton
+          unselectedColorOfTextAndIcon={theme.counterBackground}
+          selectedColorOfTextAndIcon={theme.counterPrimary}
+          selectedBackgroundColor={theme.primary}
+
+          style={style.topbarBtn}
+
+          title={texts.setup}
+          titleProps={{ style: style.normalBtnTxt }}
+
+          iconProps={{ name: 'Rocket', size: FontSize.Normal, }}
+
+          effectType='scale'
+          
+          manuallySelected={subView === 'setup'}
+          onPress={() => onPressSubview('setup')}
+        />
+        <LucideIconTextEffectButton
+          unselectedColorOfTextAndIcon={theme.counterBackground}
+          selectedColorOfTextAndIcon={theme.counterPrimary}
+          selectedBackgroundColor={theme.primary}
+
+          style={style.topbarBtn}
+
+          title={texts.history}
+          titleProps={{ style: style.normalBtnTxt }}
+
+          iconProps={{ name: 'History', size: FontSize.Normal, }}
+
+          effectType='scale'
+
+          manuallySelected={subView === 'history'}
+          onPress={() => onPressSubview('history')}
+        />
+        <LucideIconTextEffectButton
+          unselectedColorOfTextAndIcon={theme.counterBackground}
+          selectedColorOfTextAndIcon={theme.counterPrimary}
+          selectedBackgroundColor={theme.primary}
+
+          style={style.topbarBtn}
+
+          title={texts.about}
+          titleProps={{ style: style.normalBtnTxt }}
+
+          iconProps={{ name: 'Info', size: FontSize.Normal, }}
+
+          effectType='scale'
+
+          manuallySelected={subView === 'about'}
+          onPress={() => onPressSubview('about')}
+        />
+      </View>
+
       <ScrollView contentContainerStyle={style.scrollView} showsVerticalScrollIndicator={false}>
         {/* popularity_level */}
 
