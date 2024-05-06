@@ -6,7 +6,7 @@ import { LocalText, NoPermissionText, PleaseSelectTargetLangText } from "../Hook
 import { TranslatedResult } from "../../Common/DeepTranslateApi";
 import { AddOrUpdateLocalizedWordsToDbAsync, GetLocalizedWordFromDbAsync, GetLocalizedWordsFromDbIfAvailableAsync } from "./LocalizedWordsTable";
 import { CalcNotiTimeListPerDay, CheckDeserializeLocalizedData, ExtractWordFromWordLang, SavedWordToTranslatedResult, TimePickerResultToTimestamp, ToWordLangString, TranslatedResultToSavedWord } from "./AppUtils";
-import { NumberWithCommas, PickRandomElement, SafeArrayLength, SafeGetArrayElement, ToCanPrint } from "../../Common/UtilsTS";
+import { CapitalizeFirstLetter, NumberWithCommas, PickRandomElement, SafeArrayLength, SafeGetArrayElement, ToCanPrint } from "../../Common/UtilsTS";
 import { GetExcludeTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetTargetLangAsync } from "./Settings";
 import { GetNextWordsDataCurrentLevelForNotiAsync, GetWordsDataCurrentLevelAsync, SetUsedWordIndexCurrentLevelAsync } from "./WordsData";
 import { DisplayNotificationAsync, NotificationOption, cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync, setNotification } from "../../Common/Nofitication";
@@ -360,6 +360,41 @@ export const TestNotificationAsync = async (setHandling: (type: HandlingType) =>
     return undefined
 }
 
+const ToDisplayPartOfSpeech = (s: string) => {
+    if (s === 'j')
+        return 'adj'
+
+    else if (s === 'v')
+        return 'adv'
+
+    else if (s === 've')
+        return 'verb'
+
+    else if (s === 'n')
+        return 'noun'
+
+    else if (s === 'p')
+        return 'pronoun'
+
+    else if (s === 'pr')
+        return 'preposition'
+
+    else if (s === 'c')
+        return 'conjunction'
+
+    else if (s === 'nu')
+        return 'numeral'
+
+    else if (s === 'i')
+        return 'interjection'
+
+    else if (s === 'pn')
+        return 'proper noun'
+
+    else
+        return s
+}
+
 const DataToNotification = (
     data: SavedAndWordData,
     timestamp: number,
@@ -381,27 +416,42 @@ const DataToNotification = (
         }
     }
 
-    let title = ExtractWordFromWordLang(data.savedData.wordAndLang)
+    // word
+
+    let title = CapitalizeFirstLetter(ExtractWordFromWordLang(data.savedData.wordAndLang))
 
     const titleExtraInfoArr: string[] = []
 
-    if (showPhonetic) {
-        const phonetic = SafeGetArrayElement<Phonetic>(data.wordData.phonetics)
+    // phonetic
 
-        if (typeof phonetic?.text === 'string')
+    if (showPhonetic && data.wordData.phonetics) {
+        const phoneticsWithText = data.wordData.phonetics.filter(ph => ph.text !== undefined)
+        const phonetic = PickRandomElement(phoneticsWithText)
+
+        if (phonetic && phonetic.text)
             titleExtraInfoArr.push(phonetic.text)
     }
+
+    // showPartOfSpeech
 
     if (showPartOfSpeech)
         titleExtraInfoArr.push(data.wordData.meanings.map(i => i.partOfSpeech).join(', '))
 
+    // showRank
+
     if (showRank)
         titleExtraInfoArr.push('#' + NumberWithCommas(data.wordData.idx))
+
+    // titleExtraInfoArr
 
     if (titleExtraInfoArr.length > 0)
         title = `${title} (${titleExtraInfoArr.join(', ')})`
 
+    // translated
+
     let message = CheckDeserializeLocalizedData(data.savedData).translated
+
+    // showDefinitions
 
     if (showDefinitions) {
         const def = data.wordData.meanings[0].definitions[0].definition
@@ -409,12 +459,16 @@ const DataToNotification = (
         message = `${message} (${def})`
     }
 
+    // showExample
+
     if (showExample) {
         const text = data.wordData.meanings[0].definitions[0].example
 
         if (text)
             message = `${message}. Ex: ${text}`
     }
+
+    // return
 
     const noti: NotificationOption = {
         title,

@@ -37,7 +37,7 @@ const eng = {
     show_part_of_speech: 'Show part of speech (adv, adj, noun,...)',
     show_examble: 'Show examples (if any)',
     show_definitions: 'Show word definitions',
-    show_phonetic: 'Show word phonetic',
+    show_phonetic: 'Show word phonetic (if any)',
     
     setup: 'Setup',
     history: 'History',
