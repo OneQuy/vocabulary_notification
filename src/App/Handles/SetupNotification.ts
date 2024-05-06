@@ -359,7 +359,7 @@ export const TestNotificationAsync = async (setHandling: (type: HandlingType) =>
     return undefined
 }
 
-export const DataToNotification = (
+const DataToNotification = (
     data: SavedAndWordData,
     timestamp: number,
     showRank: boolean,
