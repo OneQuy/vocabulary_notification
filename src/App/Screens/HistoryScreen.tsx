@@ -6,7 +6,7 @@ import { Gap, Outline } from '../Constants/Constants_Outline'
 import { UpdatePushedWordsAndRefreshCurrentNotiWordsAsync } from '../Handles/SetupNotification'
 import { GetLocalizedWordFromDbAsync } from '../Handles/LocalizedWordsTable'
 import { SavedWordData } from '../Types'
-import { DelayAsync, GetElementsOfPageArray, HexToRgb, SafeArrayLength } from '../../Common/UtilsTS'
+import { CapitalizeFirstLetter, DelayAsync, GetElementsOfPageArray, HexToRgb, SafeArrayLength } from '../../Common/UtilsTS'
 import { FontSize } from '../Constants/Constants_FontSize'
 import { HandlingType } from './SetupScreen'
 import { CheckDeserializeLocalizedData, ExtractWordFromWordLang } from '../Handles/AppUtils'
@@ -63,7 +63,7 @@ const HistoryScreen = ({
     set_curPageIdx(currentPageItemData.pageIdx + (next ? 1 : -1))
   }, [currentPageItemData])
 
-  const renderItem = useCallback(({ item, index }: { item: SavedWordData, index: number }) => {
+  const renderItem = useCallback(({ item }: { item: SavedWordData }) => {
     return (
       <TouchableOpacity key={item.wordAndLang}>
         {/* tick */}
@@ -72,12 +72,12 @@ const HistoryScreen = ({
         {/* main line */}
         <View style={style.itemMainLineView}>
           {/* word */}
-          <Text style={style.historyItemTxt_Title}>{ExtractWordFromWordLang(item.wordAndLang)}</Text>
+          <Text style={style.historyItemTxt_Title}>{CapitalizeFirstLetter(ExtractWordFromWordLang(item.wordAndLang))}</Text>
 
           {/* mean */}
           {
             typeof item.localizedData === 'object' &&
-            <Text style={style.historyItemTxt_Content}>{item.localizedData.translated}</Text>
+            <Text style={style.historyItemTxt_Content}>{CapitalizeFirstLetter(item.localizedData.translated)}</Text>
           }
         </View>
       </TouchableOpacity>

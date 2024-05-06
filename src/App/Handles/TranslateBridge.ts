@@ -1,6 +1,7 @@
 import { DeepTranslateApiKey, SystranTranslateApiKey } from "../../../Keys"
 import { DeepTranslateAsync, Language, TranslatedResult } from "../../Common/DeepTranslateApi"
 import { SystranTranslateAsync } from "../../Common/SystranTranslateApi"
+import { CapitalizeFirstLetter } from "../../Common/UtilsTS"
 import { SavedWordData } from "../Types"
 import { ToWordLangString } from "./AppUtils"
 import { AddOrUpdateLocalizedWordsToDbAsync } from "./LocalizedWordsTable"
@@ -36,6 +37,8 @@ export const BridgeTranslateMultiWordAsync = async (
 ): Promise<TranslatedResult[] | Error> => {
     let translatedArrOrError
 
+    texts = texts.map(word => CapitalizeFirstLetter(word))
+    
     if (currentService.service === 'deep') {
         translatedArrOrError = await DeepTranslateAsync(
             currentService.key,
