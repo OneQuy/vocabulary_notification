@@ -1187,7 +1187,9 @@ const SetupScreen = () => {
 
       {
         subView === 'history' &&
-        <HistoryScreen />
+        <HistoryScreen
+          setHandling={set_handlingType}
+        />
       }
 
       {/* popup */}

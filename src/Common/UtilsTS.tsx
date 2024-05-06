@@ -359,6 +359,28 @@ export const IsNumType = (o: any) => {
 
 // array utils ---------------------------
 
+export function GetElementsOfPageArray<T>(array: T[], pageIdx: number, countPerPage: number) {
+    if (!IsValuableArrayOrString(array)) {
+        return {
+            totalPageCount: 0,
+            items: undefined,
+            pageIdx
+        }
+    }
+
+    const totalPageCount = Math.ceil(array.length / countPerPage)
+
+    pageIdx = Clamp(pageIdx, 0, totalPageCount - 1)
+
+    const items = array.slice(pageIdx * countPerPage, pageIdx * countPerPage + countPerPage)
+
+    return {
+        totalPageCount,
+        items,
+        pageIdx
+    }
+}
+
 export const ArrayGroupElements = (array: any[], property: string) => array.reduce((grouped, element) => ({
     ...grouped,
     [element[property]]: [...(grouped[element[property]] || []), element]
