@@ -884,6 +884,7 @@ const SetupScreen = () => {
           iconProps={{ name: 'Rocket', size: FontSize.Normal, }}
 
           effectType='scale'
+          effectDelay={50}
 
           manuallySelected={subView === 'setup'}
           onPress={() => onPressSubview('setup')}
@@ -901,6 +902,7 @@ const SetupScreen = () => {
           iconProps={{ name: 'History', size: FontSize.Normal, }}
 
           effectType='scale'
+          effectDelay={50}
 
           manuallySelected={subView === 'history'}
           onPress={() => onPressSubview('history')}
