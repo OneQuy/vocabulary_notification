@@ -1,8 +1,9 @@
 import { View, StyleSheet } from 'react-native'
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import useTheme from '../Hooks/useTheme'
 import useLocalText from '../Hooks/useLocalText'
 import { Gap, Outline } from '../Constants/Constants_Outline'
+import { UpdatePushedWordsAndRefreshCurrentNotiWordsAsync } from '../Handles/SetupNotification'
 
 const HistoryScreen = () => {
   const theme = useTheme()
@@ -15,6 +16,15 @@ const HistoryScreen = () => {
       flatlistView: { gap: Gap.Small, padding: Outline.Normal, },
     })
   }, [theme])
+
+  useEffect(() => {
+    (async () => {
+      // update pushed word to db
+
+      await UpdatePushedWordsAndRefreshCurrentNotiWordsAsync()
+
+    })()
+  }, [])
 
   // render
 

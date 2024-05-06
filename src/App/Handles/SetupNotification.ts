@@ -142,7 +142,7 @@ const SetupWordsForSetNotiAsync = async (numRequired: number): Promise<SetupWord
 
     // UpdateSeenWordsAndRefreshCurrentNotiWordsAsync
 
-    await UpdateSeenWordsAndRefreshCurrentNotiWordsAsync()
+    await UpdatePushedWordsAndRefreshCurrentNotiWordsAsync()
 
     // get not pushed words (already have fetched data)
 
@@ -225,7 +225,7 @@ const SetupWordsForSetNotiAsync = async (numRequired: number): Promise<SetupWord
     }
 }
 
-const UpdateSeenWordsAndRefreshCurrentNotiWordsAsync = async (): Promise<void> => {
+export const UpdatePushedWordsAndRefreshCurrentNotiWordsAsync = async (): Promise<void> => {
     const arr = await GetCurrentAllNotificationsAsync()
 
     if (arr === undefined)
