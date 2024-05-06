@@ -7,8 +7,6 @@ import { DropTableAsync } from "./LocalizedWordsTable"
 import { SetCurrentAllNotificationsAsync } from "./SetupNotification"
 import { cancelAllLocalNotificationsAsync } from "../../Common/Nofitication"
 
-const IsLog_SetNotification = true
-
 export const HandleError = (title: string, error: any, alert: boolean) => {
     // todo
     Alert.alert(title, ToCanPrint(error))
