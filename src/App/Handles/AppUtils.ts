@@ -1,4 +1,4 @@
-import { SafeValue, ToCanPrint } from "../../Common/UtilsTS"
+import { SafeValue } from "../../Common/UtilsTS"
 import { TranslatedResult } from "../../Common/DeepTranslateApi"
 import { LocalizedData, PairTime, SavedWordData } from "../Types"
 import { TimePickerResult } from "../Components/TimePicker"
