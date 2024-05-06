@@ -1,4 +1,4 @@
-import { Phonetic, SavedWordData, Word } from "../Types";
+import { Definition, Phonetic, SavedWordData, Word } from "../Types";
 import { StorageKey_CurrentAllNotifications, StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from "../Constants/StorageKey";
 import { GetArrayAsync, GetBooleanAsync, SetArrayAsync } from "../../Common/AsyncStorageUtils";
 import { BridgeTranslateMultiWordAsync } from "./TranslateBridge";
@@ -432,15 +432,21 @@ const DataToNotification = (
             titleExtraInfoArr.push(phonetic.text)
     }
 
-    // showPartOfSpeech
+    // // showPartOfSpeech
 
-    if (showPartOfSpeech)
-        titleExtraInfoArr.push(data.wordData.meanings.map(i => i.partOfSpeech).join(', '))
+    // if (showPartOfSpeech) {
+    //     const partOrUndefineds = data.wordData.meanings.map(i => i.partOfSpeech)
+    //     const parts = partOrUndefineds.filter(p => p !== undefined) as string[]
+
+    //     if (parts.length > 0) {
+    //         titleExtraInfoArr.push(parts.map(i => ToDisplayPartOfSpeech(i)).join(', '))
+    //     }
+    // }
 
     // showRank
 
     if (showRank)
-        titleExtraInfoArr.push('#' + NumberWithCommas(data.wordData.idx))
+        titleExtraInfoArr.push(`#${data.wordData.idx}`)
 
     // titleExtraInfoArr
 
@@ -449,23 +455,32 @@ const DataToNotification = (
 
     // translated
 
-    let message = CheckDeserializeLocalizedData(data.savedData).translated
+    const translated = CheckDeserializeLocalizedData(data.savedData).translated
+    let message = CapitalizeFirstLetter(translated)
 
-    // showDefinitions
+    // showDefinitions, showExample, showPartOfSpeech
 
-    if (showDefinitions) {
-        const def = data.wordData.meanings[0].definitions[0].definition
+    if (showDefinitions || showExample || showPartOfSpeech) {
+        const arr: string[] = []
 
-        message = `${message} (${def})`
-    }
+        for (let meaning of data.wordData.meanings) {
+            let def: Definition | undefined
 
-    // showExample
+            if (showExample) {
+                def = meaning.definitions.find(i => i.example !== undefined)
+            }
 
-    if (showExample) {
-        const text = data.wordData.meanings[0].definitions[0].example
+            if (!def)
+                def = meaning.definitions[0]
 
-        if (text)
-            message = `${message}. Ex: ${text}`
+            arr.push(
+                `[${ToDisplayPartOfSpeech(meaning.partOfSpeech ?? '')}]` +
+                (showDefinitions ? ` ${def.definition}` : '') +
+                (showExample && def.example ? ` (Ex: ${def.example})` : '')
+            )
+        }
+
+        message = `${message}. ${arr.join(' | ')}`
     }
 
     // return
