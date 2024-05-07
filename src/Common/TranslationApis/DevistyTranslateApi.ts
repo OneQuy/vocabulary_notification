@@ -1,4 +1,4 @@
-// https://rapidapi.com/gatzuma/api/deep-translate1
+// https://rapidapi.com/dickyagustin/api/text-translator2
 
 import { SafeValue } from "../UtilsTS";
 import { Language, TranslatedResult } from "./TranslationLanguages";
@@ -7,7 +7,7 @@ import { Language, TranslatedResult } from "./TranslationLanguages";
  * @returns text translated if success (even word is unavailable to translate)
  * @returns Error() if api failed
  */
-const DeepTranslateSingleTextAsync = async (
+const DevistyTranslateSingleTextAsync = async (
     key: string,
     text: string,
     toLang: string | Language,
@@ -17,11 +17,7 @@ const DeepTranslateSingleTextAsync = async (
         const from = fromLang ? (typeof fromLang === 'object' ? fromLang.language : fromLang) : 'en'
         const to = typeof toLang === 'object' ? toLang.language : toLang
 
-        const data = JSON.stringify({
-            q: text,
-            source: from,
-            target: to,
-        });
+        const data = `source_language=${from}&target_language=${to}&text=${text}`
 
         const xhr = new XMLHttpRequest();
         xhr.withCredentials = true;
@@ -49,10 +45,10 @@ const DeepTranslateSingleTextAsync = async (
             } as TranslatedResult)
         };
 
-        xhr.open('POST', 'https://deep-translate1.p.rapidapi.com/language/translate/v2');
-        xhr.setRequestHeader('content-type', 'application/json');
+        xhr.open('POST', 'https://text-translator2.p.rapidapi.com/translate');
+        xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
         xhr.setRequestHeader('X-RapidAPI-Key', key);
-        xhr.setRequestHeader('X-RapidAPI-Host', 'deep-translate1.p.rapidapi.com');
+        xhr.setRequestHeader('X-RapidAPI-Host', 'text-translator2.p.rapidapi.com');
 
         xhr.send(data);
     })
@@ -63,14 +59,14 @@ const DeepTranslateSingleTextAsync = async (
  * * text translated arr if success (even word is unavailable to translate). but both cases full enough length.
  * * Error() if api failed
  */
-export const DeepTranslateAsync = async (
+export const DevistyTranslateAsync = async (
     key: string,
     texts: string[],
     toLang: string | Language,
     fromLang?: string | Language,
 ): Promise<TranslatedResult[] | Error> => {
     const resArr = await Promise.all(texts.map(text => {
-        return DeepTranslateSingleTextAsync(key, text, toLang, fromLang)
+        return DevistyTranslateSingleTextAsync(key, text, toLang, fromLang)
     }))
 
     for (let i of resArr) {
@@ -79,542 +75,454 @@ export const DeepTranslateAsync = async (
     }
 
     if (resArr.length !== texts.length)
-        return new Error('[DeepTranslateAsync] translated arr not same length with texts length')
+        return new Error('[DevistyTranslateAsync] translated arr not same length with texts length')
 
     return resArr
 }
 
-export const AllSupportedLanguages_Deep: Language[] = [
+export const AllSupportedLanguages_Devisty: Language[] = [
     {
-        "language": "en",
-        "name": "English",
-    },
-    {
-        "language": "af",
+        language: "af",
         "name": "Afrikaans"
     },
     {
-        "language": "sq",
+        language: "sq",
         "name": "Albanian"
     },
     {
-        "language": "am",
+        language: "am",
         "name": "Amharic"
     },
     {
-        "language": "ar",
+        language: "ar",
         "name": "Arabic"
     },
     {
-        "language": "hy",
+        language: "hy",
         "name": "Armenian"
     },
     {
-        "language": "as",
-        "name": "Assamese"
-    },
-    {
-        "language": "az",
+        language: "az",
         "name": "Azerbaijani"
     },
     {
-        "language": "bm",
-        "name": "Bambara"
-    },
-    {
-        "language": "eu",
+        language: "eu",
         "name": "Basque"
     },
     {
-        "language": "be",
+        language: "be",
         "name": "Belarusian"
     },
     {
-        "language": "bn",
+        language: "bn",
         "name": "Bengali"
     },
     {
-        "language": "bho",
-        "name": "Bhojpuri"
-    },
-    {
-        "language": "bs",
+        language: "bs",
         "name": "Bosnian"
     },
     {
-        "language": "bg",
+        language: "bg",
         "name": "Bulgarian"
     },
     {
-        "language": "ca",
+        language: "ca",
         "name": "Catalan"
     },
     {
-        "language": "ceb",
+        language: "ceb",
         "name": "Cebuano"
     },
     {
-        "language": "zh-CN",
+        language: "ny",
+        "name": "Chichewa"
+    },
+    {
+        language: "zh-CN",
         "name": "Chinese (Simplified)"
     },
     {
-        "language": "zh-TW",
+        language: "zh-TW",
         "name": "Chinese (Traditional)"
     },
     {
-        "language": "co",
+        language: "co",
         "name": "Corsican"
     },
     {
-        "language": "hr",
+        language: "hr",
         "name": "Croatian"
     },
     {
-        "language": "cs",
+        language: "cs",
         "name": "Czech"
     },
     {
-        "language": "da",
+        language: "da",
         "name": "Danish"
     },
     {
-        "language": "dv",
-        "name": "Dhivehi"
-    },
-    {
-        "language": "doi",
-        "name": "Dogri"
-    },
-    {
-        "language": "nl",
+        language: "nl",
         "name": "Dutch"
     },
     {
-        "language": "eo",
+        language: "en",
+        "name": "English"
+    },
+    {
+        language: "eo",
         "name": "Esperanto"
     },
     {
-        "language": "et",
+        language: "et",
         "name": "Estonian"
     },
     {
-        "language": "ee",
-        "name": "Ewe"
+        language: "tl",
+        "name": "Filipino"
     },
     {
-        "language": "fil",
-        "name": "Filipino (Tagalog)"
-    },
-    {
-        "language": "fi",
+        language: "fi",
         "name": "Finnish"
     },
     {
-        "language": "fr",
+        language: "fr",
         "name": "French"
     },
     {
-        "language": "fy",
+        language: "fy",
         "name": "Frisian"
     },
     {
-        "language": "gl",
+        language: "gl",
         "name": "Galician"
     },
     {
-        "language": "ka",
+        language: "ka",
         "name": "Georgian"
     },
     {
-        "language": "de",
+        language: "de",
         "name": "German"
     },
     {
-        "language": "el",
+        language: "el",
         "name": "Greek"
     },
     {
-        "language": "gn",
-        "name": "Guarani"
-    },
-    {
-        "language": "gu",
+        language: "gu",
         "name": "Gujarati"
     },
     {
-        "language": "ht",
+        language: "ht",
         "name": "Haitian Creole"
     },
     {
-        "language": "ha",
+        language: "ha",
         "name": "Hausa"
     },
     {
-        "language": "haw",
+        language: "haw",
         "name": "Hawaiian"
     },
     {
-        "language": "he",
+        language: "iw",
         "name": "Hebrew"
     },
     {
-        "language": "iw",
-        "name": "Hebrew"
-    },
-    {
-        "language": "hi",
+        language: "hi",
         "name": "Hindi"
     },
     {
-        "language": "hmn",
+        language: "hmn",
         "name": "Hmong"
     },
     {
-        "language": "hu",
+        language: "hu",
         "name": "Hungarian"
     },
     {
-        "language": "is",
+        language: "is",
         "name": "Icelandic"
     },
     {
-        "language": "ig",
+        language: "ig",
         "name": "Igbo"
     },
     {
-        "language": "id",
+        language: "id",
         "name": "Indonesian"
     },
     {
-        "language": "ga",
+        language: "ga",
         "name": "Irish"
     },
     {
-        "language": "it",
+        language: "it",
         "name": "Italian"
     },
     {
-        "language": "ja",
+        language: "ja",
         "name": "Japanese"
     },
     {
-        "language": "jv",
+        language: "jw",
         "name": "Javanese"
     },
     {
-        "language": "jw",
-        "name": "Javanese"
-    },
-    {
-        "language": "kn",
+        language: "kn",
         "name": "Kannada"
     },
     {
-        "language": "kk",
+        language: "kk",
         "name": "Kazakh"
     },
     {
-        "language": "km",
+        language: "km",
         "name": "Khmer"
     },
     {
-        "language": "rw",
+        language: "rw",
         "name": "Kinyarwanda"
     },
     {
-        "language": "gom",
-        "name": "Konkani"
-    },
-    {
-        "language": "ko",
+        language: "ko",
         "name": "Korean"
     },
     {
-        "language": "kri",
-        "name": "Krio"
+        language: "ku",
+        "name": "Kurdish (Kurmanji)"
     },
     {
-        "language": "ku",
-        "name": "Kurdish"
-    },
-    {
-        "language": "ckb",
-        "name": "Kurdish (Sorani)"
-    },
-    {
-        "language": "ky",
+        language: "ky",
         "name": "Kyrgyz"
     },
     {
-        "language": "lo",
+        language: "lo",
         "name": "Lao"
     },
     {
-        "language": "la",
+        language: "la",
         "name": "Latin"
     },
     {
-        "language": "lv",
+        language: "lv",
         "name": "Latvian"
     },
     {
-        "language": "lt",
+        language: "lt",
         "name": "Lithuanian"
     },
     {
-        "language": "lg",
-        "name": "Luganda"
-    },
-    {
-        "language": "lb",
+        language: "lb",
         "name": "Luxembourgish"
     },
     {
-        "language": "mk",
+        language: "mk",
         "name": "Macedonian"
     },
     {
-        "language": "mai",
-        "name": "Maithili"
-    },
-    {
-        "language": "mg",
+        language: "mg",
         "name": "Malagasy"
     },
     {
-        "language": "ms",
+        language: "ms",
         "name": "Malay"
     },
     {
-        "language": "ml",
+        language: "ml",
         "name": "Malayalam"
     },
     {
-        "language": "mt",
+        language: "mt",
         "name": "Maltese"
     },
     {
-        "language": "mi",
+        language: "mi",
         "name": "Maori"
     },
     {
-        "language": "mr",
+        language: "mr",
         "name": "Marathi"
     },
     {
-        "language": "mni-Mtei",
-        "name": "Meiteilon (Manipuri)"
-    },
-    {
-        "language": "lus",
-        "name": "Mizo"
-    },
-    {
-        "language": "mn",
+        language: "mn",
         "name": "Mongolian"
     },
     {
-        "language": "my",
+        language: "my",
         "name": "Myanmar (Burmese)"
     },
     {
-        "language": "ne",
+        language: "ne",
         "name": "Nepali"
     },
     {
-        "language": "no",
+        language: "no",
         "name": "Norwegian"
     },
     {
-        "language": "ny",
-        "name": "Nyanja (Chichewa)"
-    },
-    {
-        "language": "or",
+        language: "or",
         "name": "Odia (Oriya)"
     },
     {
-        "language": "om",
-        "name": "Oromo"
-    },
-    {
-        "language": "ps",
+        language: "ps",
         "name": "Pashto"
     },
     {
-        "language": "fa",
+        language: "fa",
         "name": "Persian"
     },
     {
-        "language": "pl",
+        language: "pl",
         "name": "Polish"
     },
     {
-        "language": "pt",
-        "name": "Portuguese (Portugal, Brazil)"
+        language: "pt",
+        "name": "Portuguese"
     },
     {
-        "language": "pa",
+        language: "pa",
         "name": "Punjabi"
     },
     {
-        "language": "qu",
-        "name": "Quechua"
-    },
-    {
-        "language": "ro",
+        language: "ro",
         "name": "Romanian"
     },
     {
-        "language": "ru",
+        language: "ru",
         "name": "Russian"
     },
     {
-        "language": "sm",
+        language: "sm",
         "name": "Samoan"
     },
     {
-        "language": "sa",
-        "name": "Sanskrit"
-    },
-    {
-        "language": "gd",
+        language: "gd",
         "name": "Scots Gaelic"
     },
     {
-        "language": "nso",
-        "name": "Sepedi"
-    },
-    {
-        "language": "sr",
+        language: "sr",
         "name": "Serbian"
     },
     {
-        "language": "st",
+        language: "st",
         "name": "Sesotho"
     },
     {
-        "language": "sn",
+        language: "sn",
         "name": "Shona"
     },
     {
-        "language": "sd",
+        language: "sd",
         "name": "Sindhi"
     },
     {
-        "language": "si",
-        "name": "Sinhala (Sinhalese)"
+        language: "si",
+        "name": "Sinhala"
     },
     {
-        "language": "sk",
+        language: "sk",
         "name": "Slovak"
     },
     {
-        "language": "sl",
+        language: "sl",
         "name": "Slovenian"
     },
     {
-        "language": "so",
+        language: "so",
         "name": "Somali"
     },
     {
-        "language": "es",
+        language: "es",
         "name": "Spanish"
     },
     {
-        "language": "su",
+        language: "su",
         "name": "Sundanese"
     },
     {
-        "language": "sw",
+        language: "sw",
         "name": "Swahili"
     },
     {
-        "language": "sv",
+        language: "sv",
         "name": "Swedish"
     },
     {
-        "language": "tl",
-        "name": "Tagalog (Filipino)"
-    },
-    {
-        "language": "tg",
+        language: "tg",
         "name": "Tajik"
     },
     {
-        "language": "ta",
+        language: "ta",
         "name": "Tamil"
     },
     {
-        "language": "tt",
+        language: "tt",
         "name": "Tatar"
     },
     {
-        "language": "te",
+        language: "te",
         "name": "Telugu"
     },
     {
-        "language": "th",
+        language: "th",
         "name": "Thai"
     },
     {
-        "language": "ti",
-        "name": "Tigrinya"
-    },
-    {
-        "language": "ts",
-        "name": "Tsonga"
-    },
-    {
-        "language": "tr",
+        language: "tr",
         "name": "Turkish"
     },
     {
-        "language": "tk",
+        language: "tk",
         "name": "Turkmen"
     },
     {
-        "language": "ak",
-        "name": "Twi (Akan)"
-    },
-    {
-        "language": "uk",
+        language: "uk",
         "name": "Ukrainian"
     },
     {
-        "language": "ur",
+        language: "ur",
         "name": "Urdu"
     },
     {
-        "language": "ug",
+        language: "ug",
         "name": "Uyghur"
     },
     {
-        "language": "uz",
+        language: "uz",
         "name": "Uzbek"
     },
     {
-        "language": "vi",
+        language: "vi",
         "name": "Vietnamese"
     },
     {
-        "language": "cy",
+        language: "cy",
         "name": "Welsh"
     },
     {
-        "language": "xh",
+        language: "xh",
         "name": "Xhosa"
     },
     {
-        "language": "yi",
+        language: "yi",
         "name": "Yiddish"
     },
     {
-        "language": "yo",
+        language: "yo",
         "name": "Yoruba"
     },
     {
-        "language": "zu",
+        language: "zu",
         "name": "Zulu"
+    },
+    {
+        language: "he",
+        "name": "Hebrew"
+    },
+    {
+        language: "zh",
+        "name": "Chinese (Simplified)"
     }
 ] as const

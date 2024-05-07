@@ -23,7 +23,6 @@ import { StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPart
 import HistoryScreen from './HistoryScreen'
 import { HandleError } from '../../Common/Tracking'
 import { GetLanguageFromCode, Language } from '../../Common/TranslationApis/TranslationLanguages'
-import { GetAllSupportedLanguages_Systran } from '../../Common/TranslationApis/SystranTranslateApi'
 
 type SubView =
   'setup' |
@@ -36,6 +35,7 @@ type PopupType =
   'limit-word' |
   'target-lang' |
   'num_days_push' |
+  'translation_service' |
   undefined
 
 export type HandlingType =
@@ -62,6 +62,8 @@ const SetupScreen = () => {
   const [supportedLanguages, set_supportedLanguages] = useState<Language[]>([])
   const [displayTargetLang, set_displayTargetLang] = useState<Language | undefined>()
   const [searchLangInputTxt, set_searchLangInputTxt] = useState('')
+
+  const [displayTranslationService, set_displayTranslationService] = useState<Language | undefined>()
 
   const [displayExcludedTimePairs, set_displayExcludedTimePairs] = useState<PairTime[]>(DefaultExcludedTimePairs)
   const editingExcludeTimePairAndElementIndex = useRef<[PairTime | undefined, number]>([undefined, -1])
@@ -495,6 +497,49 @@ const SetupScreen = () => {
     )
   }, [displayWordLimitNumber, theme, style])
 
+  // translate service
+
+  const renderPickTranslationService = useCallback(() => {
+    return (
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={style.scrollViewSlidingPopup}
+      >
+        {
+          [].map((min: number | undefined) => {
+            const isSelected = min === undefined ?
+              (!IntervalInMinPresets.includes(displayIntervalInMin)) : // custom
+              (min === displayIntervalInMin) // minutes
+
+            return (
+              <LucideIconTextEffectButton
+                key={min ?? 'custom'}
+
+                selectedColorOfTextAndIcon={theme.primary}
+                unselectedColorOfTextAndIcon={theme.counterPrimary}
+
+                onPress={() => onPressInterval(min)}
+
+                manuallySelected={isSelected}
+                notChangeToSelected
+                canHandlePressWhenSelected
+
+                style={isSelected ? style.normalBtn : style.normalBtn_NoBorder}
+
+                title={min === undefined ?
+                  texts.custom :
+                  GetDayHourMinSecFromMs_ToString(min * 60 * 1000, ' ', true, false, '-')
+                }
+
+                titleProps={{ style: style.normalBtnTxt }}
+              />
+            )
+          })
+        }
+      </ScrollView>
+    )
+  }, [displayIntervalInMin, theme, style])
+  
   // num days to push
 
   const onPressNumDaysToPush = useCallback((numDays: number) => {
@@ -701,6 +746,8 @@ const SetupScreen = () => {
     contentToRenderInPopup = renderWordLimits
   else if (showPopup === 'target-lang')
     contentToRenderInPopup = renderPickTargetLang
+  else if (showPopup === 'translation_service')
+    contentToRenderInPopup = renderPickTranslationService
   else if (showPopup === 'num_days_push')
     contentToRenderInPopup = renderNumDaysToPush
   else { // not show any popup
@@ -931,6 +978,25 @@ const SetupScreen = () => {
               />
             </>
           }
+
+          {/* translate service */}
+
+          <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
+
+          <Text style={style.header}>{texts.translate_to}</Text>
+
+          <LucideIconTextEffectButton
+            unselectedColorOfTextAndIcon={theme.counterBackground}
+            notChangeToSelected
+            style={style.normalBtn}
+
+            title={displayTargetLang?.name ?? texts.tap_to_select}
+            titleProps={{ style: style.normalBtnTxt }}
+
+            iconProps={{ name: 'Languages', size: FontSize.Normal, }}
+
+            onPress={() => onPressShowPopup('translation_service')}
+          />
 
           {/* num days to push */}
 

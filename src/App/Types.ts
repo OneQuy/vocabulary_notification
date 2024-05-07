@@ -33,4 +33,11 @@ export type SavedWordData = {
     lastNotiTick: number,
 }
 
+export type TranslationService =
+    'Deep Translation' |
+    'Microsoft Translation' |
+    'Lingvanex Translation' |
+    'Systran Translation' |
+    'Devisty Translation'
+
 export type PairTime = TimePickerResult[]
