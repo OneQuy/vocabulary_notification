@@ -211,11 +211,6 @@ const SetupScreen = () => {
   }
 
   const onPressTestNotificationAsync = useCallback(async () => {
-    const arr = await GetAllSupportedLanguages_Systran('en')
-
-    LogStringify(arr)
-    return
-
     const dataReady = await setHandlingAndGetReadyDataAsync()
 
     if (!dataReady)
