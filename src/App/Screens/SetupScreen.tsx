@@ -16,7 +16,7 @@ import { LucideIcon } from '../../Common/Components/LucideIcon'
 import { PairTime, TranslationService } from '../Types'
 import { TotalMin } from '../Handles/AppUtils'
 import { SetNotificationAsync, TestNotificationAsync } from '../Handles/SetupNotification'
-import { GetDefaultTranslationService, GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetNumDaysToPushAsync, SetPopularityLevelIndexAsync, SetTranslationServiceAsync, SettTargetLangAsyncAsync } from '../Handles/Settings'
+import { GetDefaultTranslationService, GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, GetTranslationServiceAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetNumDaysToPushAsync, SetPopularityLevelIndexAsync, SetTranslationServiceAsync, SettTargetLangAsyncAsync } from '../Handles/Settings'
 import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync } from '../Handles/WordsData'
 import { GetBooleanAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
 import { StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from '../Constants/StorageKey'
@@ -795,7 +795,12 @@ const SetupScreen = () => {
 
       const targetLang = await GetTargetLangAsync()
       set_displayTargetLang(targetLang ? GetLanguageFromCode(targetLang) : undefined)
+      
+      const service = await GetTranslationServiceAsync()
+      set_displayTranslationService(service)
 
+      // setting display notifition
+      
       set_displaySettting_ShowPhonetic(await GetBooleanAsync(StorageKey_ShowPhonetic))
       set_displaySettting_RankOfWord(await GetBooleanAsync(StorageKey_ShowRankOfWord))
       set_displaySettting_Definitions(await GetBooleanAsync(StorageKey_ShowDefinitions))
