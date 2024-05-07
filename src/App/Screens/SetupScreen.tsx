@@ -6,7 +6,7 @@ import useLocalText from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PrependZero, ToCanPrint } from '../../Common/UtilsTS'
+import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, LogStringify, PrependZero, ToCanPrint } from '../../Common/UtilsTS'
 import HairLine from '../../Common/Components/HairLine'
 import { CommonStyles, WindowSize_Max } from '../../Common/CommonConstants'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
@@ -23,6 +23,7 @@ import { GetBooleanAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils
 import { StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from '../Constants/StorageKey'
 import HistoryScreen from './HistoryScreen'
 import { HandleError } from '../../Common/Tracking'
+import { GetAllSupportedLanguages_Systran } from '../../Common/TranslationApis/SystranTranslateApi'
 
 type SubView =
   'setup' |
@@ -209,6 +210,11 @@ const SetupScreen = () => {
   }
 
   const onPressTestNotificationAsync = useCallback(async () => {
+    const arr = await GetAllSupportedLanguages_Systran()
+
+    LogStringify(arr)
+    return
+
     const dataReady = await setHandlingAndGetReadyDataAsync()
 
     if (!dataReady)

@@ -1,8 +1,10 @@
-// https://translate.systran.net/en/translationTools/text
+// TESTING
+// https://www.systransoft.com/translate/
 
+// DOC
 // https://docs.systran.net/translateAPI/translation
 
-import { Language, TranslatedResult } from "./DeepTranslateApi"
+import { GetLanguage, Language, TranslatedResult } from "./DeepTranslateApi"
 import { CreateError } from "../UtilsTS"
 
 /**
@@ -50,7 +52,7 @@ export const SystranTranslateAsync = async (
 /**
  * https://api-translate.systran.net/translation/supportedLanguages?key=12c94236-dbb3-4234-9639-7dd42c1c4964
  */
-const SystranSupportedLanguagePairs = [
+const AllSupportedLanguagePairs_Systran = [
     {
         "source": "ar",
         "target": "cs"
@@ -1561,9 +1563,29 @@ const SystranSupportedLanguagePairs = [
     }
 ]
 
+export const GetAllSupportedLanguages_Systran = (sourceLangCode?: string): Language[] => {
+    const arr: Language[] = []
+
+    for (let pair of AllSupportedLanguagePairs_Systran) {
+        if (sourceLangCode && pair.source !== sourceLangCode)
+            continue
+
+        const language = GetLanguage(pair.target)
+
+        if (!language) {
+            console.error('[GetAllSupportedLanguages_Systran] not know name of lang: ' + pair.target);
+            continue
+        }
+
+        arr.push(language)
+    }
+
+    return arr
+}
+
 export const IsSupportedLanguagePairs_Systran = (
     sourceLangCode: string,
     targetLangCode: string
 ): boolean => {
-    return SystranSupportedLanguagePairs.find(pair => pair.source === sourceLangCode && pair.target === targetLangCode) !== undefined
+    return AllSupportedLanguagePairs_Systran.find(pair => pair.source === sourceLangCode && pair.target === targetLangCode) !== undefined
 }
