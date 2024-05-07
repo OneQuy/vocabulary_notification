@@ -1,12 +1,12 @@
-import { Definition, Phonetic, SavedWordData, Word } from "../Types";
+import { Definition, SavedWordData, Word } from "../Types";
 import { StorageKey_CurrentAllNotifications, StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from "../Constants/StorageKey";
 import { GetArrayAsync, GetBooleanAsync, SetArrayAsync } from "../../Common/AsyncStorageUtils";
 import { BridgeTranslateMultiWordAsync } from "./TranslateBridge";
 import { LocalText, NoPermissionText, PleaseSelectTargetLangText } from "../Hooks/useLocalText";
-import { TranslatedResult } from "../../Common/DeepTranslateApi";
+import { TranslatedResult } from "../../Common/TranslationApis/DeepTranslateApi";
 import { AddOrUpdateLocalizedWordsToDbAsync, GetLocalizedWordFromDbAsync, GetLocalizedWordsFromDbIfAvailableAsync } from "./LocalizedWordsTable";
 import { CalcNotiTimeListPerDay, CheckDeserializeLocalizedData, ExtractWordFromWordLang, SavedWordToTranslatedResult, TimePickerResultToTimestamp, ToWordLangString, TranslatedResultToSavedWord } from "./AppUtils";
-import { CapitalizeFirstLetter, NumberWithCommas, PickRandomElement, SafeArrayLength, SafeGetArrayElement, ToCanPrint } from "../../Common/UtilsTS";
+import { CapitalizeFirstLetter, PickRandomElement, SafeArrayLength, SafeGetArrayElement } from "../../Common/UtilsTS";
 import { GetExcludeTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetTargetLangAsync } from "./Settings";
 import { GetNextWordsDataCurrentLevelForNotiAsync, GetWordsDataCurrentLevelAsync, SetUsedWordIndexCurrentLevelAsync } from "./WordsData";
 import { DisplayNotificationAsync, NotificationOption, cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync, setNotification } from "../../Common/Nofitication";

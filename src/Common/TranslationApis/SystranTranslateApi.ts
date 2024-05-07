@@ -3,7 +3,7 @@
 // https://docs.systran.net/translateAPI/translation
 
 import { Language, TranslatedResult } from "./DeepTranslateApi"
-import { CreateError } from "./UtilsTS"
+import { CreateError } from "../UtilsTS"
 
 /**
  * @returns success: string[] translated (even word is unavailable to translate). but both cases full enough length.

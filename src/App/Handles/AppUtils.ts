@@ -1,5 +1,5 @@
 import { SafeValue } from "../../Common/UtilsTS"
-import { TranslatedResult } from "../../Common/DeepTranslateApi"
+import { TranslatedResult } from "../../Common/TranslationApis/DeepTranslateApi"
 import { LocalizedData, PairTime, SavedWordData } from "../Types"
 import { TimePickerResult } from "../Components/TimePicker"
 import { DropTableAsync } from "./LocalizedWordsTable"

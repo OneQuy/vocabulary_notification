@@ -9,7 +9,7 @@
 
 import axios from "axios";
 import { Language, TranslatedResult } from "./DeepTranslateApi"
-import { CreateError, SafeGetArrayElement, SafeValue } from "./UtilsTS"
+import { CreateError, SafeGetArrayElement, SafeValue } from "../UtilsTS"
 
 const Location = "southeastasia"; // change your location (region) here. Required if you're using a multi-service or regional (not global) resource. It can be found in the Azure portal on the Keys and Endpoint page. (https://portal.azure.com/#@onequygmail.onmicrosoft.com/resource/subscriptions/3952d4d4-641f-4014-a32e-a1737e788663/resourceGroups/TranslateResourceGroup/providers/Microsoft.CognitiveServices/accounts/RegionSouthEastAsia/cskeys)
 

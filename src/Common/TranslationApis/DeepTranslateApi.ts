@@ -1,6 +1,6 @@
 // https://rapidapi.com/gatzuma/api/deep-translate1
 
-import { SafeValue } from "./UtilsTS";
+import { SafeValue } from "../UtilsTS";
 
 export type Language = {
     /**
