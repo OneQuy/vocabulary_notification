@@ -1,4 +1,4 @@
-import { PairTime } from "../Types"
+import { PairTime, TranslationService } from "../Types"
 
 export const PopuplarityLevelNumber = 10 // todo
 
@@ -78,4 +78,13 @@ export const NumDaysToPushPresets: (number)[] = [
     5,
     10,
     20
+]
+
+
+export const TranslationServicePresets: TranslationService[] = [
+    'Deep Translation',
+    'Devisty Translation',
+    'Microsoft Translation',
+    'Lingvanex Translation',
+    'Systran Translation'
 ]

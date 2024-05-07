@@ -1,8 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { StorageKey_ExcludedTimes, StorageKey_IntervalMin, StorageKey_LimitWordsPerDay, StorageKey_NumDaysToPush, StorageKey_PopularityIndex, StorageKey_TargetLang } from "../Constants/StorageKey"
+import { StorageKey_ExcludedTimes, StorageKey_IntervalMin, StorageKey_LimitWordsPerDay, StorageKey_NumDaysToPush, StorageKey_PopularityIndex, StorageKey_TargetLang, StorageKey_TranslationService } from "../Constants/StorageKey"
 import { GetArrayAsync, GetNumberIntAsync, SetArrayAsync, SetNumberAsync } from "../../Common/AsyncStorageUtils"
-import { DefaultExcludedTimePairs, DefaultIntervalInMin, DefaultLimitWords as DefaultLimitWordsPerDay, DefaultNumDaysToPush } from "../Constants/AppConstants"
-import { PairTime } from "../Types"
+import { DefaultExcludedTimePairs, DefaultIntervalInMin, DefaultLimitWords as DefaultLimitWordsPerDay, DefaultNumDaysToPush, TranslationServicePresets } from "../Constants/AppConstants"
+import { PairTime, TranslationService } from "../Types"
+import { PickRandomElement } from "../../Common/UtilsTS"
 
 export const GetTargetLangAsync = async (): Promise<string | null> => {
     return await AsyncStorage.getItem(StorageKey_TargetLang)
@@ -59,4 +60,27 @@ export const GetExcludeTimesAsync = async (): Promise<PairTime[]> => {
 
 export const SetExcludedTimesAsync = async (pairs: PairTime[]): Promise<void> => {
     await SetArrayAsync(StorageKey_ExcludedTimes, pairs)
+}
+
+
+export const GetDefaultTranslationService = (): TranslationService => {
+    return PickRandomElement(TranslationServicePresets) ?? 'Microsoft Translation'
+}
+
+export const GetTranslationServiceAsync = async (): Promise<TranslationService> => {
+    const s = await AsyncStorage.getItem(StorageKey_TranslationService)
+
+    if (!s || !TranslationServicePresets.includes(s as TranslationService)) {
+        const service = GetDefaultTranslationService()
+
+        await SetTranslationServiceAsync(service)
+
+        return service
+    }
+    else
+        return s as TranslationService
+}
+
+export const SetTranslationServiceAsync = async (value: TranslationService): Promise<void> => {
+    await AsyncStorage.setItem(StorageKey_TranslationService, value)
 }

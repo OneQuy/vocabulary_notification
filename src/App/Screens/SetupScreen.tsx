@@ -10,13 +10,13 @@ import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, Get
 import HairLine from '../../Common/Components/HairLine'
 import { CommonStyles, WindowSize_Max } from '../../Common/CommonConstants'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
-import { DefaultExcludedTimePairs, DefaultIntervalInMin, DefaultNumDaysToPush, IntervalInMinPresets, LimitWordsPerDayPresets, NumDaysToPushPresets, PopuplarityLevelNumber } from '../Constants/AppConstants'
+import { DefaultExcludedTimePairs, DefaultIntervalInMin, DefaultNumDaysToPush, IntervalInMinPresets, LimitWordsPerDayPresets, NumDaysToPushPresets, PopuplarityLevelNumber, TranslationServicePresets } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
 import { LucideIcon } from '../../Common/Components/LucideIcon'
-import { PairTime } from '../Types'
+import { PairTime, TranslationService } from '../Types'
 import { TotalMin } from '../Handles/AppUtils'
 import { SetNotificationAsync, TestNotificationAsync } from '../Handles/SetupNotification'
-import { GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetNumDaysToPushAsync, SetPopularityLevelIndexAsync, SettTargetLangAsyncAsync } from '../Handles/Settings'
+import { GetDefaultTranslationService, GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetNumDaysToPushAsync, SetPopularityLevelIndexAsync, SetTranslationServiceAsync, SettTargetLangAsyncAsync } from '../Handles/Settings'
 import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync } from '../Handles/WordsData'
 import { GetBooleanAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
 import { StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from '../Constants/StorageKey'
@@ -65,7 +65,7 @@ const SetupScreen = () => {
   const [displayTargetLang, set_displayTargetLang] = useState<Language | undefined>()
   const [searchLangInputTxt, set_searchLangInputTxt] = useState('')
 
-  const [displayTranslationService, set_displayTranslationService] = useState<Language | undefined>()
+  const [displayTranslationService, set_displayTranslationService] = useState<TranslationService>(GetDefaultTranslationService())
 
   const [displayExcludedTimePairs, set_displayExcludedTimePairs] = useState<PairTime[]>(DefaultExcludedTimePairs)
   const editingExcludeTimePairAndElementIndex = useRef<[PairTime | undefined, number]>([undefined, -1])
@@ -215,13 +215,6 @@ const SetupScreen = () => {
   }
 
   const onPressTestNotificationAsync = useCallback(async () => {
-    const rrr = await DevistyTranslateAsync(DevistyTranslateApiKey, ['hello', 'master', 'accomplish', 'afdfdfdafsdf', 'whom'], 'vi')
-
-    LogStringify(ToCanPrint(rrr))
-
-    return
-
-    
     const dataReady = await setHandlingAndGetReadyDataAsync()
 
     if (!dataReady)
@@ -508,6 +501,15 @@ const SetupScreen = () => {
 
   // translate service
 
+  const onPressTranslationService = useCallback((service: TranslationService) => {
+    if (popupCloseCallbackRef.current) {
+      popupCloseCallbackRef.current(() => { // closed
+        set_displayTranslationService(service)
+        SetTranslationServiceAsync(service)
+      })
+    }
+  }, [])
+
   const renderPickTranslationService = useCallback(() => {
     return (
       <ScrollView
@@ -515,19 +517,17 @@ const SetupScreen = () => {
         contentContainerStyle={style.scrollViewSlidingPopup}
       >
         {
-          [].map((min: number | undefined) => {
-            const isSelected = min === undefined ?
-              (!IntervalInMinPresets.includes(displayIntervalInMin)) : // custom
-              (min === displayIntervalInMin) // minutes
+          TranslationServicePresets.map((service: TranslationService) => {
+            const isSelected = service === displayTranslationService
 
             return (
               <LucideIconTextEffectButton
-                key={min ?? 'custom'}
+                key={service}
 
                 selectedColorOfTextAndIcon={theme.primary}
                 unselectedColorOfTextAndIcon={theme.counterPrimary}
 
-                onPress={() => onPressInterval(min)}
+                onPress={() => onPressTranslationService(service)}
 
                 manuallySelected={isSelected}
                 notChangeToSelected
@@ -535,10 +535,7 @@ const SetupScreen = () => {
 
                 style={isSelected ? style.normalBtn : style.normalBtn_NoBorder}
 
-                title={min === undefined ?
-                  texts.custom :
-                  GetDayHourMinSecFromMs_ToString(min * 60 * 1000, ' ', true, false, '-')
-                }
+                title={service}
 
                 titleProps={{ style: style.normalBtnTxt }}
               />
@@ -547,7 +544,7 @@ const SetupScreen = () => {
         }
       </ScrollView>
     )
-  }, [displayIntervalInMin, theme, style])
+  }, [displayTranslationService, theme, style])
 
   // num days to push
 
