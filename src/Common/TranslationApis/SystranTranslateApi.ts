@@ -47,7 +47,7 @@ export const SystranTranslateAsync = async (
     }
 }
 
-const SystranSupportedLangguagePairs = [
+const SystranSupportedLanguagePairs = [
     {
         "source": "ar",
         "target": "cs"
@@ -1557,3 +1557,10 @@ const SystranSupportedLangguagePairs = [
         "target": "en"
     }
 ]
+
+export const IsSupportedLanguagePairs_Systran = (
+    sourceLangCode: string,
+    targetLangCode: string
+): boolean => {
+    return SystranSupportedLanguagePairs.find(pair => pair.source === sourceLangCode && pair.target === targetLangCode) !== undefined
+}
