@@ -23,6 +23,7 @@ import { StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPart
 import HistoryScreen from './HistoryScreen'
 import { HandleError } from '../../Common/Tracking'
 import { GetLanguageFromCode, Language } from '../../Common/TranslationApis/TranslationLanguages'
+import { GetAllSupportedLanguages_Systran } from '../../Common/TranslationApis/SystranTranslateApi'
 
 type SubView =
   'setup' |
@@ -210,10 +211,10 @@ const SetupScreen = () => {
   }
 
   const onPressTestNotificationAsync = useCallback(async () => {
-    // const arr = await GetAllSupportedLanguages_Systran()
+    const arr = await GetAllSupportedLanguages_Systran('en')
 
-    // LogStringify(arr)
-    // return
+    LogStringify(arr)
+    return
 
     const dataReady = await setHandlingAndGetReadyDataAsync()
 
