@@ -47,6 +47,9 @@ export const SystranTranslateAsync = async (
     }
 }
 
+/**
+ * https://api-translate.systran.net/translation/supportedLanguages?key=12c94236-dbb3-4234-9639-7dd42c1c4964
+ */
 const SystranSupportedLanguagePairs = [
     {
         "source": "ar",
