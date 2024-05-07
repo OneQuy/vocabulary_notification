@@ -49,7 +49,7 @@ export const BridgeTranslateMultiWordAsync = async (
         )
 
         if (!(translatedArrOrError instanceof Error))
-            await SaveToDbAsync(toLang, translatedArrOrError)
+            await SaveToDbNewWordsAsync(toLang, translatedArrOrError)
 
         return translatedArrOrError
     }
@@ -62,7 +62,7 @@ export const BridgeTranslateMultiWordAsync = async (
         )
 
         if (!(translatedArrOrError instanceof Error))
-            await SaveToDbAsync(toLang, translatedArrOrError)
+            await SaveToDbNewWordsAsync(toLang, translatedArrOrError)
 
         return translatedArrOrError
     }
@@ -71,7 +71,7 @@ export const BridgeTranslateMultiWordAsync = async (
     }
 }
 
-const SaveToDbAsync = async (toLang: string, translatedResults: TranslatedResult[]) => {
+const SaveToDbNewWordsAsync = async (toLang: string, translatedResults: TranslatedResult[]) => {
     if (IsLog)
         console.log('[SaveToDbAsync] just translated by', currentService.service, ', add new words to db:')
 
