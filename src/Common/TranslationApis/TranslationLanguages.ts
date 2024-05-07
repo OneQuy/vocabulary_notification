@@ -98,6 +98,14 @@ const AllLanguageDifinitions: Language[] = [
         "name": "Chinese (Traditional)"
     },
     {
+        "language": "zt",
+        "name": "Chinese (Traditional)"
+    },
+    {
+        "language": "zh",
+        "name": "Chinese"
+    },
+    {
         "language": "co",
         "name": "Corsican"
     },
