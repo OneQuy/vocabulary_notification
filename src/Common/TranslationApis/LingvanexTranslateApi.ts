@@ -3,8 +3,8 @@
 // TEST: https://lingvanex.com/translate/
 // FREE TIER: 200,000 chars once register. 5$ for 1,000,000 chars.
 
-import { Language, TranslatedResult } from "./DeepTranslateApi"
 import { CreateError, SafeValue } from "../UtilsTS"
+import { Language, TranslatedResult } from "./TranslationLanguages"
 
 
 /**

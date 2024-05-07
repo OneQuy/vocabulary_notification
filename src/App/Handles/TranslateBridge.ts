@@ -1,6 +1,7 @@
 import { DeepTranslateApiKey } from "../../../Keys"
-import { DeepTranslateAsync, TranslatedResult } from "../../Common/TranslationApis/DeepTranslateApi"
+import { DeepTranslateAsync } from "../../Common/TranslationApis/DeepTranslateApi"
 import { SystranTranslateAsync } from "../../Common/TranslationApis/SystranTranslateApi"
+import { TranslatedResult } from "../../Common/TranslationApis/TranslationLanguages"
 import { CapitalizeFirstLetter } from "../../Common/UtilsTS"
 import { SavedWordData } from "../Types"
 import { ToWordLangString } from "./AppUtils"

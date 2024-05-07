@@ -1,90 +1,26 @@
-// https://rapidapi.com/gatzuma/api/deep-translate1
+export type Language = {
+    /**
+     *  "language": "en",
+     */
+    "language": string,
 
-import { SafeValue } from "../UtilsTS";
-import { Language, TranslatedResult } from "./TranslationLanguages";
+    /**
+     *  "name": "English",
+     */
+    "name": string,
+}
 
-/**
- * @returns text translated if success (even word is unavailable to translate)
- * @returns Error() if api failed
- */
-export const DeepTranslateSingleTextAsync = async (
-    key: string,
+export type TranslatedResult = {
     text: string,
-    toLang: string | Language,
-    fromLang?: string | Language,
-): Promise<TranslatedResult> => {
-    return new Promise((resolve) => {
-        const from = fromLang ? (typeof fromLang === 'object' ? fromLang.language : fromLang) : 'en'
-        const to = typeof toLang === 'object' ? toLang.language : toLang
-
-        const data = JSON.stringify({
-            q: text,
-            source: from,
-            target: to,
-        });
-
-        const xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
-
-        xhr.onload = function () {
-            const json = JSON.parse(xhr.response)
-            const translatedText = SafeValue(json?.data?.translations?.translatedText, '')
-
-            if (translatedText === '')
-                resolve({
-                    error: new Error(xhr.response),
-                    text,
-                } as TranslatedResult)
-            else
-                resolve({
-                    translated: translatedText,
-                    text,
-                } as TranslatedResult)
-        };
-
-        xhr.onerror = function () {
-            resolve({
-                error: new Error('DeepTranslateAsync failed'),
-                text,
-            } as TranslatedResult)
-        };
-
-        xhr.open('POST', 'https://deep-translate1.p.rapidapi.com/language/translate/v2');
-        xhr.setRequestHeader('content-type', 'application/json');
-        xhr.setRequestHeader('X-RapidAPI-Key', key);
-        xhr.setRequestHeader('X-RapidAPI-Host', 'deep-translate1.p.rapidapi.com');
-
-        xhr.send(data);
-    })
+    translated?: string,
+    error?: Error,
 }
 
-/**
- * ### each element:
- * * text translated arr if success (even word is unavailable to translate). but both cases full enough length.
- * * Error() if api failed
- */
-export const DeepTranslateAsync = async (
-    key: string,
-    texts: string[],
-    toLang: string | Language,
-    fromLang?: string | Language,
-): Promise<TranslatedResult[] | Error> => {
-    const resArr = await Promise.all(texts.map(text => {
-        return DeepTranslateSingleTextAsync(key, text, toLang, fromLang)
-    }))
-
-    for (let i of resArr) {
-        if (i.error !== undefined)
-            return i.error
-    }
-
-    if (resArr.length !== texts.length)
-        return new Error('[DeepTranslateAsync] translated arr not same length with texts length')
-
-    return resArr
+export const GetLanguageFromCode = (codeLang: string): Language | undefined => {
+    return AllLanguageDifinitions.find(i => i.language === codeLang)
 }
 
-export const AllSupportedLanguages_Deep: Language[] = [
+const AllLanguageDifinitions: Language[] = [
     {
         "language": "en",
         "name": "English",

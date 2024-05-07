@@ -13,7 +13,6 @@ import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { DefaultExcludedTimePairs, DefaultIntervalInMin, DefaultNumDaysToPush, IntervalInMinPresets, LimitWordsPerDayPresets, NumDaysToPushPresets, PopuplarityLevelNumber } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
 import { LucideIcon } from '../../Common/Components/LucideIcon'
-import { GetLanguage, Language } from '../../Common/TranslationApis/DeepTranslateApi'
 import { PairTime } from '../Types'
 import { TotalMin } from '../Handles/AppUtils'
 import { SetNotificationAsync, TestNotificationAsync } from '../Handles/SetupNotification'
@@ -23,6 +22,7 @@ import { GetBooleanAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils
 import { StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from '../Constants/StorageKey'
 import HistoryScreen from './HistoryScreen'
 import { HandleError } from '../../Common/Tracking'
+import { GetLanguageFromCode, Language } from '../../Common/TranslationApis/TranslationLanguages'
 
 type SubView =
   'setup' |
@@ -862,7 +862,7 @@ const SetupScreen = () => {
       set_displayExcludedTimePairs(excludedTimePairs)
 
       const targetLang = await GetTargetLangAsync()
-      set_displayTargetLang(targetLang ? GetLanguage(targetLang) : undefined)
+      set_displayTargetLang(targetLang ? GetLanguageFromCode(targetLang) : undefined)
 
       set_displaySettting_ShowPhonetic(await GetBooleanAsync(StorageKey_ShowPhonetic))
       set_displaySettting_RankOfWord(await GetBooleanAsync(StorageKey_ShowRankOfWord))

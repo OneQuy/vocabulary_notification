@@ -4,8 +4,8 @@
 // DOC
 // https://docs.systran.net/translateAPI/translation
 
-import { GetLanguage, Language, TranslatedResult } from "./DeepTranslateApi"
 import { CreateError } from "../UtilsTS"
+import { GetLanguageFromCode, Language, TranslatedResult } from "./TranslationLanguages"
 
 /**
  * @returns success: string[] translated (even word is unavailable to translate). but both cases full enough length.
@@ -1570,7 +1570,7 @@ export const GetAllSupportedLanguages_Systran = (sourceLangCode?: string): Langu
         if (sourceLangCode && pair.source !== sourceLangCode)
             continue
 
-        const language = GetLanguage(pair.target)
+        const language = GetLanguageFromCode(pair.target)
 
         if (!language) {
             console.error('[GetAllSupportedLanguages_Systran] not know name of lang: ' + pair.target);

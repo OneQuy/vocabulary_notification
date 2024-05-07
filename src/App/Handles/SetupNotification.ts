@@ -3,7 +3,6 @@ import { StorageKey_CurrentAllNotifications, StorageKey_ShowDefinitions, Storage
 import { GetArrayAsync, GetBooleanAsync, SetArrayAsync } from "../../Common/AsyncStorageUtils";
 import { BridgeTranslateMultiWordAsync } from "./TranslateBridge";
 import { LocalText, NoPermissionText, PleaseSelectTargetLangText } from "../Hooks/useLocalText";
-import { TranslatedResult } from "../../Common/TranslationApis/DeepTranslateApi";
 import { AddOrUpdateLocalizedWordsToDbAsync, GetLocalizedWordFromDbAsync, GetLocalizedWordsFromDbIfAvailableAsync } from "./LocalizedWordsTable";
 import { CalcNotiTimeListPerDay, CheckDeserializeLocalizedData, ExtractWordFromWordLang, SavedWordToTranslatedResult, TimePickerResultToTimestamp, ToWordLangString, TranslatedResultToSavedWord } from "./AppUtils";
 import { CapitalizeFirstLetter, PickRandomElement, SafeArrayLength, SafeGetArrayElement } from "../../Common/UtilsTS";
@@ -13,6 +12,7 @@ import { DisplayNotificationAsync, NotificationOption, cancelAllLocalNotificatio
 import { AuthorizationStatus } from "@notifee/react-native";
 import { HandlingType } from "../Screens/SetupScreen";
 import { HandleError } from "../../Common/Tracking";
+import { TranslatedResult } from "../../Common/TranslationApis/TranslationLanguages";
 
 const IsLog = true
 
