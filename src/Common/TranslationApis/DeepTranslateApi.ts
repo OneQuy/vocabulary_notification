@@ -102,10 +102,10 @@ export const DeepTranslateAsync = async (
 }
 
 export const GetLanguage = (codeLang: string): Language | undefined => {
-    return Languages.find(i => i.language === codeLang)
+    return AllSupportedLanguages_Deep.find(i => i.language === codeLang)
 }
 
-export const Languages: Language[] = [
+export const AllSupportedLanguages_Deep: Language[] = [
     {
         "language": "en",
         "name": "English",

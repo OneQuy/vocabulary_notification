@@ -13,7 +13,7 @@ import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { DefaultExcludedTimePairs, DefaultIntervalInMin, DefaultNumDaysToPush, IntervalInMinPresets, LimitWordsPerDayPresets, NumDaysToPushPresets, PopuplarityLevelNumber } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
 import { LucideIcon } from '../../Common/Components/LucideIcon'
-import { GetLanguage, Language, Languages } from '../../Common/TranslationApis/DeepTranslateApi'
+import { GetLanguage, Language } from '../../Common/TranslationApis/DeepTranslateApi'
 import { PairTime } from '../Types'
 import { TotalMin } from '../Handles/AppUtils'
 import { SetNotificationAsync, TestNotificationAsync } from '../Handles/SetupNotification'
@@ -23,7 +23,6 @@ import { GetBooleanAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils
 import { StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from '../Constants/StorageKey'
 import HistoryScreen from './HistoryScreen'
 import { HandleError } from '../../Common/Tracking'
-import { GetAllSupportedLanguages_Systran } from '../../Common/TranslationApis/SystranTranslateApi'
 
 type SubView =
   'setup' |
@@ -59,6 +58,7 @@ const SetupScreen = () => {
   const [displayWordLimitNumber, set_displayWordLimitNumber] = useState<number>(5)
   const [displayNumDaysToPush, set_displayNumDaysToPush] = useState<number>(DefaultNumDaysToPush)
 
+  const [supportedLanguages, set_supportedLanguages] = useState<Language[]>([])
   const [displayTargetLang, set_displayTargetLang] = useState<Language | undefined>()
   const [searchLangInputTxt, set_searchLangInputTxt] = useState('')
 
@@ -210,10 +210,10 @@ const SetupScreen = () => {
   }
 
   const onPressTestNotificationAsync = useCallback(async () => {
-    const arr = await GetAllSupportedLanguages_Systran()
+    // const arr = await GetAllSupportedLanguages_Systran()
 
-    LogStringify(arr)
-    return
+    // LogStringify(arr)
+    // return
 
     const dataReady = await setHandlingAndGetReadyDataAsync()
 
@@ -676,7 +676,7 @@ const SetupScreen = () => {
   }, [])
 
   const renderPickTargetLang = useCallback(() => {
-    const langs = Languages.filter(lang => searchLangInputTxt.length === 0 || lang.name.toLowerCase().includes(searchLangInputTxt.toLowerCase()))
+    const langs = supportedLanguages.filter(lang => searchLangInputTxt.length === 0 || lang.name.toLowerCase().includes(searchLangInputTxt.toLowerCase()))
 
     return (
       <View style={CommonStyles.flex_1}>
@@ -730,7 +730,7 @@ const SetupScreen = () => {
         </View>
       </View>
     )
-  }, [displayTargetLang, searchLangInputTxt, texts, theme, style])
+  }, [displayTargetLang, supportedLanguages, searchLangInputTxt, texts, theme, style])
 
   // exclude time
 
