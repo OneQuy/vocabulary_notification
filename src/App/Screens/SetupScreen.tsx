@@ -23,6 +23,8 @@ import { StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPart
 import HistoryScreen from './HistoryScreen'
 import { HandleError } from '../../Common/Tracking'
 import { GetLanguageFromCode, Language } from '../../Common/TranslationApis/TranslationLanguages'
+import { DevistyTranslateAsync } from '../../Common/TranslationApis/DevistyTranslateApi'
+import { DevistyTranslateApiKey } from '../../../Keys'
 
 type SubView =
   'setup' |
@@ -213,6 +215,13 @@ const SetupScreen = () => {
   }
 
   const onPressTestNotificationAsync = useCallback(async () => {
+    const rrr = await DevistyTranslateAsync(DevistyTranslateApiKey, ['hello', 'master', 'accomplish', 'afdfdfdafsdf', 'whom'], 'vi')
+
+    LogStringify(ToCanPrint(rrr))
+
+    return
+
+    
     const dataReady = await setHandlingAndGetReadyDataAsync()
 
     if (!dataReady)
@@ -539,7 +548,7 @@ const SetupScreen = () => {
       </ScrollView>
     )
   }, [displayIntervalInMin, theme, style])
-  
+
   // num days to push
 
   const onPressNumDaysToPush = useCallback((numDays: number) => {

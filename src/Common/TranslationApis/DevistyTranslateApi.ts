@@ -24,7 +24,7 @@ const DevistyTranslateSingleTextAsync = async (
 
         xhr.onload = function () {
             const json = JSON.parse(xhr.response)
-            const translatedText = SafeValue(json?.data?.translations?.translatedText, '')
+            const translatedText = SafeValue(json?.data?.translatedText, '')
 
             if (translatedText === '')
                 resolve({
