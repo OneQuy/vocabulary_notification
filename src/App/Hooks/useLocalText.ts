@@ -6,6 +6,7 @@ const eng = {
     level: 'Level',
     test_notification: 'Test notification',
     translate_to: 'Translate to',
+    translation_service: 'Translation service',
     tap_to_select: 'Tap to select...',
     search_language: 'Search language...',
     repeat: 'Repeat',

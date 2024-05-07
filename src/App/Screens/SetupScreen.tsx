@@ -795,12 +795,12 @@ const SetupScreen = () => {
 
       const targetLang = await GetTargetLangAsync()
       set_displayTargetLang(targetLang ? GetLanguageFromCode(targetLang) : undefined)
-      
+
       const service = await GetTranslationServiceAsync()
       set_displayTranslationService(service)
 
       // setting display notifition
-      
+
       set_displaySettting_ShowPhonetic(await GetBooleanAsync(StorageKey_ShowPhonetic))
       set_displaySettting_RankOfWord(await GetBooleanAsync(StorageKey_ShowRankOfWord))
       set_displaySettting_Definitions(await GetBooleanAsync(StorageKey_ShowDefinitions))
@@ -991,23 +991,28 @@ const SetupScreen = () => {
           }
 
           {/* translate service */}
+          
+          {
+            showMoreSetting &&
+            <>
+              <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
 
-          <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
+              <Text style={style.header}>{texts.translation_service}</Text>
 
-          <Text style={style.header}>{texts.translate_to}</Text>
+              <LucideIconTextEffectButton
+                unselectedColorOfTextAndIcon={theme.counterBackground}
+                notChangeToSelected
+                style={style.normalBtn}
 
-          <LucideIconTextEffectButton
-            unselectedColorOfTextAndIcon={theme.counterBackground}
-            notChangeToSelected
-            style={style.normalBtn}
+                title={displayTranslationService}
+                titleProps={{ style: style.normalBtnTxt }}
 
-            title={displayTargetLang?.name ?? texts.tap_to_select}
-            titleProps={{ style: style.normalBtnTxt }}
+                iconProps={{ name: 'Sliders', size: FontSize.Normal, }}
 
-            iconProps={{ name: 'Languages', size: FontSize.Normal, }}
-
-            onPress={() => onPressShowPopup('translation_service')}
-          />
+                onPress={() => onPressShowPopup('translation_service')}
+              />
+            </>
+          }
 
           {/* num days to push */}
 
