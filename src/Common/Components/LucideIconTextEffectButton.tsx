@@ -1,3 +1,4 @@
+// https://feathericons.com/
 // LucideIconTextEffectButton - 7 Apr 2024 (Creating StyleShot)
 
 import { View, Text, StyleSheet, ColorValue, TouchableOpacity, Animated, ViewStyle, TextStyle, Image, ImagePropsBase, GestureResponderEvent, TextProps } from 'react-native'
@@ -28,6 +29,9 @@ interface Props extends React.ComponentProps<typeof TouchableOpacity> {
     effectType?: 'scale' | 'fade',
     effectDelay?: number,
 
+    /**
+     * https://feathericons.com/
+     */
     iconProps?: LucideIconProps,
 
     title?: string,
