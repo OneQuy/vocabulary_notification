@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
-import React, { useCallback, useMemo, useState } from 'react'
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import useTheme from '../Hooks/useTheme'
 import useLocalText from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
@@ -8,6 +8,7 @@ import { WindowSize_Max } from '../../Common/CommonConstants'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import { TranslationService } from '../Types'
+import { ToCanPrint } from '../../Common/UtilsTS'
 
 export type ValueAndDisplayText = {
     value: any,
@@ -31,6 +32,8 @@ const ExampleWordView = ({
     const texts = useLocalText()
 
     const [selectingValue, set_selectingValue] = useState(initValue)
+    const [examples, set_examples] = useState<undefined | ValueAndDisplayText[]>(undefined)
+    const [examplesState, set_examplesState] = useState<undefined | 'loading' | boolean | Error>(undefined)
 
     const style = useMemo(() => {
         return StyleSheet.create({
@@ -44,9 +47,9 @@ const ExampleWordView = ({
 
             separatorLine: { height: '95%', width: StyleSheet.hairlineWidth, backgroundColor: theme.counterPrimary },
 
-            scrollViewSlidingPopup: { gap: Gap.Small, padding: Outline.Normal, },
+            scrollView: { gap: Gap.Small, padding: Outline.Normal, },
 
-            normalBtnTxt: { fontSize: FontSize.Normal, },
+            normalTxt: { fontSize: FontSize.Normal, },
 
             confirmBtn: {
                 borderWidth: WindowSize_Max * 0.0015,
@@ -74,6 +77,21 @@ const ExampleWordView = ({
 
     }, [])
 
+    useEffect(() => {
+        (async () => {
+            set_examplesState('loading')
+
+            const res = await getExampleAsync(selectingValue?.value, -1)
+
+            if (Array.isArray(res)) {
+                set_examples(res)
+                set_examplesState(undefined)
+            }
+            else
+                set_examplesState(res)
+        })()
+    }, [selectingValue])
+
     return (
         <View style={style.master}>
             {/* 2 panels */}
@@ -85,7 +103,7 @@ const ExampleWordView = ({
 
                     <ScrollView
                         showsVerticalScrollIndicator={false}
-                        contentContainerStyle={style.scrollViewSlidingPopup}
+                        contentContainerStyle={style.scrollView}
                     >
                         {
                             values.map((valueAndDisplayText: ValueAndDisplayText) => {
@@ -107,7 +125,7 @@ const ExampleWordView = ({
 
                                         title={valueAndDisplayText.text}
 
-                                        titleProps={{ style: style.normalBtnTxt }}
+                                        titleProps={{ style: style.normalTxt }}
                                     />
                                 )
                             })
@@ -120,8 +138,46 @@ const ExampleWordView = ({
 
                 {/* right panel */}
                 <View style={style.masterChild}>
+                    {/* title */}
                     <Text style={style.titleChildTxt}>{titleRight}</Text>
 
+                    {/* loading */}
+                    {
+                        examplesState === 'loading' &&
+                        <>
+                            <ActivityIndicator color={theme.counterPrimary} />
+                            <Text style={style.normalTxt}>{texts.loading_data}</Text>
+                        </>
+                    }
+
+                    {/* Error */}
+                    {
+                        (examplesState instanceof Error || examplesState === false) &&
+                        <>
+                            <Text style={style.normalTxt}>{
+                                examplesState === false ?
+                                    texts.fail_translate :
+                                    ToCanPrint(examplesState)
+                            }</Text>
+                        </>
+                    }
+
+                    {/* success list */}
+                    {
+                        (examples) &&
+                        <ScrollView
+                            showsVerticalScrollIndicator={false}
+                            contentContainerStyle={style.scrollView}
+                        >
+                            {
+                                examples.map((valueAndDisplayText: ValueAndDisplayText) => {
+                                    return (
+                                        <Text key={valueAndDisplayText.text} style={style.normalTxt}>{`${valueAndDisplayText.text}\n${valueAndDisplayText.value}`}</Text>
+                                    )
+                                })
+                            }
+                        </ScrollView>
+                    }
                 </View>
             </View>
 
@@ -140,7 +196,7 @@ const ExampleWordView = ({
 
                 title={texts.confirm}
 
-                titleProps={{ style: style.normalBtnTxt }}
+                titleProps={{ style: style.normalTxt }}
             />
         </View>
     )
