@@ -22,7 +22,7 @@ interface Props extends React.ComponentProps<typeof TouchableOpacity> {
      * keep unselected state as always
      */
     notChangeToSelected?: boolean,
-    
+
     canHandlePressWhenSelected?: boolean,
 
     effectDuration?: number,
@@ -206,6 +206,10 @@ const LucideIconTextEffectButton = ({
     }, [masterRestProps.style])
 
     const finalMasterStyle: ViewStyle = useMemo(() => {
+        const gap = title && iconProps ?
+            SafeValue((masterRestProps.style as ViewStyle)?.gap, 0) :
+            undefined
+
         return Object.assign(
             {
                 alignItems: 'center',
@@ -223,8 +227,10 @@ const LucideIconTextEffectButton = ({
                 padding: undefined,
                 paddingHorizontal: undefined,
                 paddingVertical: undefined,
+
+                gap,
             } as ViewStyle)
-    }, [masterRestProps.style])
+    }, [masterRestProps.style, title, iconProps])
 
     const textAndIconColor = useMemo(() => {
         if (isSelected) {
