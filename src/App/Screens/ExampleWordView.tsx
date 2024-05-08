@@ -6,7 +6,8 @@ import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEf
 import { Gap, Outline } from '../Constants/Constants_Outline'
 import { WindowSize_Max } from '../../Common/CommonConstants'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
-import { FontSize } from '../Constants/Constants_FontSize'
+import { FontBold, FontSize } from '../Constants/Constants_FontSize'
+import { Bold } from 'lucide-react-native'
 
 export type ValueAndDisplayText = {
     value: any,
@@ -14,9 +15,13 @@ export type ValueAndDisplayText = {
 }
 
 const ExampleWordView = ({
+    titleLeft,
+    titleRight,
     values,
     initValue,
 }: {
+    titleLeft: string,
+    titleRight: string,
     values: ValueAndDisplayText[],
     initValue?: ValueAndDisplayText,
 }) => {
@@ -32,6 +37,8 @@ const ExampleWordView = ({
             panelView: { flex: 1, flexDirection: 'row', gap: 1, alignItems: 'center', },
 
             masterChild: { flex: 1 },
+
+            titleChildTxt: { fontWeight: FontBold.Bold, fontSize: FontSize.Normal, textAlign: 'center' },
 
             separatorLine: { height: '95%', width: StyleSheet.hairlineWidth, backgroundColor: theme.counterPrimary },
 
@@ -72,6 +79,8 @@ const ExampleWordView = ({
                 {/* left panel */}
                 <View style={style.masterChild}>
 
+                    <Text style={style.titleChildTxt}>{titleLeft}</Text>
+
                     <ScrollView
                         showsVerticalScrollIndicator={false}
                         contentContainerStyle={style.scrollViewSlidingPopup}
@@ -109,6 +118,7 @@ const ExampleWordView = ({
 
                 {/* right panel */}
                 <View style={style.masterChild}>
+                    <Text style={style.titleChildTxt}>{titleRight}</Text>
 
                 </View>
             </View>

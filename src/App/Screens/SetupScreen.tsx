@@ -541,6 +541,8 @@ const SetupScreen = () => {
 
     return (
       <ExampleWordView
+        titleLeft={texts.services}
+        titleRight={texts.example_words}
         values={translationServiceValueAndDisplayTexts}
         initValue={translationServiceValueAndDisplayTexts.find(i => i.value === displayTranslationService)}
       />

@@ -7,6 +7,8 @@ const eng = {
     test_notification: 'Test notification',
     translate_to: 'Translate to',
     translation_service: 'Translation service',
+    services: 'Services',
+    example_words: 'Example words',
     tap_to_select: 'Tap to select...',
     search_language: 'Search language...',
     repeat: 'Repeat',
