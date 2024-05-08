@@ -59,7 +59,7 @@ const ExampleWordView = ({
                 borderRadius: BorderRadius.Medium,
                 padding: Outline.Normal,
                 flexDirection: 'row',
-                gap: Gap.Normal,
+                // gap: Gap.Normal,
             },
 
             normalBtn_NoBorder: {
