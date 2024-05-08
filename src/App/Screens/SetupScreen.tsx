@@ -2,11 +2,11 @@ import { View, Text, StyleSheet, ScrollView, Alert, ActivityIndicator, TextInput
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import useTheme from '../Hooks/useTheme'
-import useLocalText from '../Hooks/useLocalText'
+import useLocalText, { PleaseSelectTargetLangText } from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, LogStringify, PrependZero, ToCanPrint } from '../../Common/UtilsTS'
+import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, LogStringify, PickRandomElementWithCount, PrependZero, ToCanPrint } from '../../Common/UtilsTS'
 import HairLine from '../../Common/Components/HairLine'
 import { CommonStyles, WindowSize_Max } from '../../Common/CommonConstants'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
@@ -16,7 +16,7 @@ import { LucideIcon } from '../../Common/Components/LucideIcon'
 import { PairTime, TranslationService } from '../Types'
 import { TotalMin } from '../Handles/AppUtils'
 import { SetNotificationAsync, TestNotificationAsync } from '../Handles/SetupNotification'
-import { GetDefaultTranslationService, GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, GetTranslationServiceAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetNumDaysToPushAsync, SetPopularityLevelIndexAsync, SetTranslationServiceAsync, SetTargetLangAsyncAsync } from '../Handles/Settings'
+import { GetDefaultTranslationService, GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, GetTranslationServiceAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetNumDaysToPushAsync, SetPopularityLevelIndexAsync, SetTranslationServiceAsync, SetTargetLangAsyncAsync, GetSourceLangAsync } from '../Handles/Settings'
 import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync } from '../Handles/WordsData'
 import { GetBooleanAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
 import { StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from '../Constants/StorageKey'
@@ -25,7 +25,7 @@ import { HandleError } from '../../Common/Tracking'
 import { GetLanguageFromCode, Language } from '../../Common/TranslationApis/TranslationLanguages'
 import { DevistyTranslateAsync } from '../../Common/TranslationApis/DevistyTranslateApi'
 import { DevistyTranslateApiKey } from '../../../Keys'
-import { GetCurrentTranslationServiceSuitAsync } from '../Handles/TranslateBridge'
+import { BridgeTranslateMultiWordAsync, GetCurrentTranslationServiceSuitAsync } from '../Handles/TranslateBridge'
 import ExampleWordView, { ValueAndDisplayText } from './ExampleWordView'
 
 type SubView =
@@ -171,7 +171,7 @@ const SetupScreen = () => {
   }, [])
 
   /**
-   * 
+   * during handle if download failed, an alert showed up
    * @returns ensuring data got cached
    */
   const setHandlingAndGetReadyDataAsync = async (popularityLevelIdx = -1): Promise<boolean> => {
@@ -215,6 +215,49 @@ const SetupScreen = () => {
 
     return true
   }
+
+  const getExampleWordsAsync = useCallback(async (service: TranslationService, popularityLevelIdx = -1): Promise<boolean | Error | ValueAndDisplayText[]> => {
+    const targetLang = await GetTargetLangAsync()
+
+    if (!targetLang) {
+      return new Error(PleaseSelectTargetLangText)
+    }
+
+    const dataReady = await setHandlingAndGetReadyDataAsync()
+
+    if (!dataReady)
+      return false
+
+    const allWords = await GetAllWordsDataCurrentLevelAsync(popularityLevelIdx)
+
+    if (allWords === undefined) // ts
+      return false
+
+    const randomWords = PickRandomElementWithCount(allWords, 10)
+
+    if (randomWords === undefined) // ts
+      return false
+
+    const translatedsOrError = await BridgeTranslateMultiWordAsync(
+      randomWords.map(w => w.word),
+      targetLang,
+      await GetSourceLangAsync(),
+      service,
+      false
+    )
+
+    if (translatedsOrError instanceof Error)
+      return translatedsOrError
+
+    return translatedsOrError.map(t => {
+      const res: ValueAndDisplayText = {
+        value: t.translated,
+        text: t.text,
+      }
+
+      return res
+    })
+  }, [setHandlingAndGetReadyDataAsync])
 
   const onPressTestNotificationAsync = useCallback(async () => {
     const dataReady = await setHandlingAndGetReadyDataAsync()
@@ -538,16 +581,16 @@ const SetupScreen = () => {
   }, [onChangedTranslationService])
 
   const renderPickTranslationService = useCallback(() => {
-
     return (
       <ExampleWordView
+        getExampleAsync={getExampleWordsAsync}
         titleLeft={texts.services}
         titleRight={texts.example_words}
         values={translationServiceValueAndDisplayTexts}
         initValue={translationServiceValueAndDisplayTexts.find(i => i.value === displayTranslationService)}
       />
     )
-  }, [displayTranslationService, translationServiceValueAndDisplayTexts, theme, style])
+  }, [displayTranslationService, getExampleWordsAsync, translationServiceValueAndDisplayTexts, theme, style])
 
   // num days to push
 

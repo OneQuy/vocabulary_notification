@@ -7,7 +7,7 @@ import { Gap, Outline } from '../Constants/Constants_Outline'
 import { WindowSize_Max } from '../../Common/CommonConstants'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
-import { Bold } from 'lucide-react-native'
+import { TranslationService } from '../Types'
 
 export type ValueAndDisplayText = {
     value: any,
@@ -19,11 +19,13 @@ const ExampleWordView = ({
     titleRight,
     values,
     initValue,
+    getExampleAsync,
 }: {
     titleLeft: string,
     titleRight: string,
     values: ValueAndDisplayText[],
     initValue?: ValueAndDisplayText,
+    getExampleAsync: (service: TranslationService, popularityLevelIdx: number) => Promise<boolean | Error | ValueAndDisplayText[]>,
 }) => {
     const theme = useTheme()
     const texts = useLocalText()

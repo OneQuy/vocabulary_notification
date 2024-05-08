@@ -25,7 +25,7 @@ type GetTranslationServiceSuitResult = {
     ) => Promise<TranslatedResult[] | Error>,
 }
 
-var cachedGetTranslationServiceSuitResult: Record<any, any>  = {}
+var cachedGetTranslationServiceSuitResult: Record<any, any> = {}
 
 /**
  * ### each element:
@@ -36,10 +36,12 @@ export const BridgeTranslateMultiWordAsync = async (
     texts: string[],
     toLang: string,
     fromLang?: string,
+    service?: TranslationService,
+    saveToDbNewWords = true
 ): Promise<TranslatedResult[] | Error> => {
     texts = texts.map(word => CapitalizeFirstLetter(word))
 
-    const currentService = await GetCurrentTranslationServiceSuitAsync()
+    const currentService = await GetCurrentTranslationServiceSuitAsync(service)
 
     const translatedArrOrError = await currentService.translateAsync(
         currentService.key,
@@ -48,14 +50,15 @@ export const BridgeTranslateMultiWordAsync = async (
         fromLang
     )
 
-    if (!(translatedArrOrError instanceof Error))
+    if (saveToDbNewWords && !(translatedArrOrError instanceof Error))
         await SaveToDbNewWordsAsync(toLang, translatedArrOrError)
 
     return translatedArrOrError
 }
 
-export const GetCurrentTranslationServiceSuitAsync = async (): Promise<GetTranslationServiceSuitResult> => {
-    const service = await GetTranslationServiceAsync()
+export const GetCurrentTranslationServiceSuitAsync = async (service?: TranslationService): Promise<GetTranslationServiceSuitResult> => {
+    if (service === undefined)
+        service = await GetTranslationServiceAsync()
 
     if (cachedGetTranslationServiceSuitResult) {
         const cached = cachedGetTranslationServiceSuitResult[service]
