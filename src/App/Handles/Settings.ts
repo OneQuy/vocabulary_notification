@@ -1,15 +1,24 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { StorageKey_ExcludedTimes, StorageKey_IntervalMin, StorageKey_LimitWordsPerDay, StorageKey_NumDaysToPush, StorageKey_PopularityIndex, StorageKey_TargetLang, StorageKey_TranslationService } from "../Constants/StorageKey"
+import { StorageKey_ExcludedTimes, StorageKey_IntervalMin, StorageKey_LimitWordsPerDay, StorageKey_NumDaysToPush, StorageKey_PopularityIndex, StorageKey_SourceLang, StorageKey_TargetLang, StorageKey_TranslationService } from "../Constants/StorageKey"
 import { GetArrayAsync, GetNumberIntAsync, SetArrayAsync, SetNumberAsync } from "../../Common/AsyncStorageUtils"
 import { DefaultExcludedTimePairs, DefaultIntervalInMin, DefaultLimitWords as DefaultLimitWordsPerDay, DefaultNumDaysToPush, TranslationServicePresets } from "../Constants/AppConstants"
 import { PairTime, TranslationService } from "../Types"
 import { PickRandomElement } from "../../Common/UtilsTS"
 
+export const GetSourceLangAsync = async (): Promise<string> => {
+    return await AsyncStorage.getItem(StorageKey_SourceLang) || 'en'
+}
+
+export const SetSourceLangAsyncAsync = async (lang: string): Promise<void> => {
+    await AsyncStorage.setItem(StorageKey_SourceLang, lang)
+}
+
+
 export const GetTargetLangAsync = async (): Promise<string | null> => {
     return await AsyncStorage.getItem(StorageKey_TargetLang)
 }
 
-export const SettTargetLangAsyncAsync = async (lang: string): Promise<void> => {
+export const SetTargetLangAsyncAsync = async (lang: string): Promise<void> => {
     await AsyncStorage.setItem(StorageKey_TargetLang, lang)
 }
 

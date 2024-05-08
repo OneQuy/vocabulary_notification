@@ -10,6 +10,7 @@ export const StorageKey_ShowRankOfWord = 'StorageKey_ShowRankOfWord'
 
 // settings
 
+export const StorageKey_SourceLang = 'StorageKey_SourceLang'
 export const StorageKey_TargetLang = 'StorageKey_TargetLang'
 export const StorageKey_PopularityIndex = 'StorageKey_PopularityIndex'
 export const StorageKey_IntervalMin = 'StorageKey_IntervalMin'

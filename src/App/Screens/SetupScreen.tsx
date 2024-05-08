@@ -16,7 +16,7 @@ import { LucideIcon } from '../../Common/Components/LucideIcon'
 import { PairTime, TranslationService } from '../Types'
 import { TotalMin } from '../Handles/AppUtils'
 import { SetNotificationAsync, TestNotificationAsync } from '../Handles/SetupNotification'
-import { GetDefaultTranslationService, GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, GetTranslationServiceAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetNumDaysToPushAsync, SetPopularityLevelIndexAsync, SetTranslationServiceAsync, SettTargetLangAsyncAsync } from '../Handles/Settings'
+import { GetDefaultTranslationService, GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, GetTranslationServiceAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetNumDaysToPushAsync, SetPopularityLevelIndexAsync, SetTranslationServiceAsync, SetTargetLangAsyncAsync } from '../Handles/Settings'
 import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync } from '../Handles/WordsData'
 import { GetBooleanAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
 import { StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from '../Constants/StorageKey'
@@ -600,7 +600,7 @@ const SetupScreen = () => {
 
     if (popupCloseCallbackRef.current) {
       popupCloseCallbackRef.current(() => {
-        SettTargetLangAsyncAsync(lang.language)
+        SetTargetLangAsyncAsync(lang.language)
       })
     }
   }, [])

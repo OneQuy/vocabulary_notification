@@ -1,30 +1,31 @@
-import { DeepTranslateApiKey } from "../../../Keys"
-import { DeepTranslateAsync } from "../../Common/TranslationApis/DeepTranslateApi"
-import { SystranTranslateAsync } from "../../Common/TranslationApis/SystranTranslateApi"
-import { TranslatedResult } from "../../Common/TranslationApis/TranslationLanguages"
+import { DeepTranslateApiKey, DevistyTranslateApiKey, LingvanexTranslateApiKey, MicrosoftTranslateApiKey, SystranTranslateApiKey } from "../../../Keys"
+import { AllSupportedLanguages_Deep, DeepTranslateAsync } from "../../Common/TranslationApis/DeepTranslateApi"
+import { AllSupportedLanguages_Devisty, DevistyTranslateAsync } from "../../Common/TranslationApis/DevistyTranslateApi"
+import { AllSupportedLanguages_Lingvanex, LingvanexTranslateApiAsync } from "../../Common/TranslationApis/LingvanexTranslateApi"
+import { AllSupportedLanguages_Microsoft, MicrosoftTranslateAsync } from "../../Common/TranslationApis/MicrosoftTranslatorApi"
+import { GetAllSupportedLanguages_Systran, SystranTranslateAsync } from "../../Common/TranslationApis/SystranTranslateApi"
+import { Language, TranslatedResult } from "../../Common/TranslationApis/TranslationLanguages"
 import { CapitalizeFirstLetter } from "../../Common/UtilsTS"
-import { SavedWordData } from "../Types"
+import { SavedWordData, TranslationService } from "../Types"
 import { ToWordLangString } from "./AppUtils"
 import { AddOrUpdateLocalizedWordsToDbAsync } from "./LocalizedWordsTable"
+import { GetSourceLangAsync, GetTranslationServiceAsync } from "./Settings"
 
 const IsLog = true
 
-type BridgeTranslateServiceName = 'deep' | 'systran'
-
-type BridgeTranslateService = {
-    service: BridgeTranslateServiceName,
+type GetTranslationServiceSuitResult = {
     key: string,
+    supportedLanguages: Language[]
+
+    translateAsync: (
+        key: string,
+        texts: string[],
+        toLang: string,
+        fromLang?: string,
+    ) => Promise<TranslatedResult[] | Error>,
 }
 
-var currentService: BridgeTranslateService = {
-    service: 'deep',
-    key: DeepTranslateApiKey,
-}
-
-// var currentService: BridgeTranslateService = {
-//     service: 'systran',
-//     key: SystranTranslateApiKey,
-// }
+var cachedGetTranslationServiceSuitResult: undefined | Record<TranslationService, GetTranslationServiceSuitResult> = undefined
 
 /**
  * ### each element:
@@ -36,44 +37,94 @@ export const BridgeTranslateMultiWordAsync = async (
     toLang: string,
     fromLang?: string,
 ): Promise<TranslatedResult[] | Error> => {
-    let translatedArrOrError
-
     texts = texts.map(word => CapitalizeFirstLetter(word))
-    
-    if (currentService.service === 'deep') {
-        translatedArrOrError = await DeepTranslateAsync(
-            currentService.key,
-            texts,
-            toLang,
-            fromLang
-        )
 
-        if (!(translatedArrOrError instanceof Error))
-            await SaveToDbNewWordsAsync(toLang, translatedArrOrError)
+    const currentService = await GetCurrentTranslationServiceSuitAsync()
 
-        return translatedArrOrError
+    const translatedArrOrError = await currentService.translateAsync(
+        currentService.key,
+        texts,
+        toLang,
+        fromLang
+    )
+
+    if (!(translatedArrOrError instanceof Error))
+        await SaveToDbNewWordsAsync(toLang, translatedArrOrError)
+
+    return translatedArrOrError
+}
+
+export const GetCurrentTranslationServiceSuitAsync = async (): Promise<GetTranslationServiceSuitResult> => {
+    const service = await GetTranslationServiceAsync()
+
+    if (cachedGetTranslationServiceSuitResult) {
+        const cached = cachedGetTranslationServiceSuitResult[service]
+
+        if (cached) {
+            if (IsLog)
+                console.log('[GetTranslationServiceSuitAsync] cached');
+
+            return cached
+        }
     }
-    else if (currentService.service === 'systran') {
-        translatedArrOrError = await SystranTranslateAsync(
-            currentService.key,
-            texts,
-            toLang,
-            fromLang
-        )
 
-        if (!(translatedArrOrError instanceof Error))
-            await SaveToDbNewWordsAsync(toLang, translatedArrOrError)
+    if (IsLog)
+        console.log(('[GetTranslationServiceSuitAsync] initing... ' + service));
 
-        return translatedArrOrError
+    let result: GetTranslationServiceSuitResult
+
+    if (service === 'Deep Translation') {
+        result = {
+            key: DeepTranslateApiKey,
+            translateAsync: DeepTranslateAsync,
+            supportedLanguages: AllSupportedLanguages_Deep,
+        }
     }
+
+    else if (service === 'Devisty Translation') {
+        result = {
+            key: DevistyTranslateApiKey,
+            translateAsync: DevistyTranslateAsync,
+            supportedLanguages: AllSupportedLanguages_Devisty,
+        }
+    }
+
+    else if (service === 'Microsoft Translation') {
+        result = {
+            key: MicrosoftTranslateApiKey,
+            translateAsync: MicrosoftTranslateAsync,
+            supportedLanguages: AllSupportedLanguages_Microsoft,
+        }
+    }
+
+    else if (service === 'Lingvanex Translation') {
+        result = {
+            key: LingvanexTranslateApiKey,
+            translateAsync: LingvanexTranslateApiAsync,
+            supportedLanguages: AllSupportedLanguages_Lingvanex,
+        }
+    }
+
+    else if (service === 'Systran Translation') {
+        result = {
+            key: SystranTranslateApiKey,
+            translateAsync: SystranTranslateAsync,
+            supportedLanguages: GetAllSupportedLanguages_Systran(await GetSourceLangAsync()),
+        }
+    }
+
     else {
-        throw new Error('[ne] BridgeTranslateMultiWordAsync')
+        throw new Error('[GetTranslationServiceSuitAsync] no service specificed')
     }
+
+    return result
 }
 
 const SaveToDbNewWordsAsync = async (toLang: string, translatedResults: TranslatedResult[]) => {
+    const currentService = await GetTranslationServiceAsync()
+
     if (IsLog)
-        console.log('[SaveToDbAsync] just translated by', currentService.service, ', add new words to db:')
+        console.log('[SaveToDbAsync] just translated by', currentService, ', add new words to db:')
 
     await AddOrUpdateLocalizedWordsToDbAsync(translatedResults.map(word => {
         const saved: SavedWordData = {
@@ -85,7 +136,7 @@ const SaveToDbNewWordsAsync = async (toLang: string, translatedResults: Translat
         }
 
         // console.log(`${word.text} (${word.translated})`);
-        
+
         return saved
     }))
 }
