@@ -34,6 +34,7 @@ const eng = {
     back: 'Back',
     history_empty: 'History is empty.',
     test: 'Test',
+    confirm: 'Confirm',
     
     show_rank_of_word: 'Show popularity #Rank of word',
     show_part_of_speech: 'Show part of speech (adv, adj, noun,...)',

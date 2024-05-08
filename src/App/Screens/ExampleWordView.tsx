@@ -27,8 +27,10 @@ const ExampleWordView = ({
 
     const style = useMemo(() => {
         return StyleSheet.create({
-            master: { flex: 1, flexDirection: 'row', gap: 1, alignItems: 'center', },
-            
+            master: { flex: 1, gap: 1, },
+
+            panelView: { flex: 1, flexDirection: 'row', gap: 1, alignItems: 'center', },
+
             masterChild: { flex: 1 },
 
             separatorLine: { height: '95%', width: StyleSheet.hairlineWidth, backgroundColor: theme.counterPrimary },
@@ -36,6 +38,14 @@ const ExampleWordView = ({
             scrollViewSlidingPopup: { gap: Gap.Small, padding: Outline.Normal, },
 
             normalBtnTxt: { fontSize: FontSize.Normal, },
+
+            confirmBtn: {
+                borderWidth: WindowSize_Max * 0.0015,
+                borderRadius: BorderRadius.Medium,
+                padding: Outline.Normal,
+                marginBottom: Outline.Normal,
+                marginHorizontal: Outline.Normal
+            },
 
             normalBtn: {
                 borderWidth: WindowSize_Max * 0.0015,
@@ -57,46 +67,69 @@ const ExampleWordView = ({
 
     return (
         <View style={style.master}>
-            {/* left panel */}
-            <View style={style.masterChild}>
+            {/* 2 panels */}
+            <View style={style.panelView}>
+                {/* left panel */}
+                <View style={style.masterChild}>
 
-                <ScrollView
-                    showsVerticalScrollIndicator={false}
-                    contentContainerStyle={style.scrollViewSlidingPopup}
-                >
-                    {
-                        values.map((valueAndDisplayText: ValueAndDisplayText) => {
-                            const isSelected = valueAndDisplayText === selectingValue
+                    <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        contentContainerStyle={style.scrollViewSlidingPopup}
+                    >
+                        {
+                            values.map((valueAndDisplayText: ValueAndDisplayText) => {
+                                const isSelected = valueAndDisplayText === selectingValue
 
-                            return (
-                                < LucideIconTextEffectButton
-                                    selectedColorOfTextAndIcon={theme.primary}
-                                    unselectedColorOfTextAndIcon={theme.counterPrimary}
+                                return (
+                                    < LucideIconTextEffectButton
+                                        key={valueAndDisplayText.text}
+                                        selectedColorOfTextAndIcon={theme.primary}
+                                        unselectedColorOfTextAndIcon={theme.counterPrimary}
 
-                                    onPress={() => onPressValue(valueAndDisplayText)}
+                                        onPress={() => onPressValue(valueAndDisplayText)}
 
-                                    manuallySelected={isSelected}
-                                    notChangeToSelected
-                                    canHandlePressWhenSelected
+                                        manuallySelected={isSelected}
+                                        notChangeToSelected
+                                        canHandlePressWhenSelected
 
-                                    style={isSelected ? style.normalBtn : style.normalBtn_NoBorder}
+                                        style={isSelected ? style.normalBtn : style.normalBtn_NoBorder}
 
-                                    title={valueAndDisplayText.text}
+                                        title={valueAndDisplayText.text}
 
-                                    titleProps={{ style: style.normalBtnTxt }}
-                                />
-                            )
-                        })
-                    }
-                </ScrollView>
+                                        titleProps={{ style: style.normalBtnTxt }}
+                                    />
+                                )
+                            })
+                        }
+                    </ScrollView>
+                </View>
+
+                {/* separatorLine */}
+                <View style={style.separatorLine} />
+
+                {/* right panel */}
+                <View style={style.masterChild}>
+
+                </View>
             </View>
 
-            <View style={style.separatorLine} />
+            {/* confirm btn */}
+            < LucideIconTextEffectButton
+                selectedColorOfTextAndIcon={theme.primary}
+                unselectedColorOfTextAndIcon={theme.counterPrimary}
 
-            {/* right panel */}
-            <View style={style.masterChild}>
+                // onPress={() => onPressValue(valueAndDisplayText)}
 
-            </View>
+                // manuallySelected={isSelected}
+                // notChangeToSelected
+                // canHandlePressWhenSelected
+
+                style={style.confirmBtn}
+
+                title={texts.confirm}
+
+                titleProps={{ style: style.normalBtnTxt }}
+            />
         </View>
     )
 }
