@@ -214,7 +214,7 @@ const ExampleWordView = ({
                             {
                                 examples.map((valueAndDisplayText: ValueAndDisplayText) => {
                                     return (
-                                        <Text key={valueAndDisplayText.text} style={style.exampleTxt}>{`${valueAndDisplayText.text}\n${valueAndDisplayText.value}`}</Text>
+                                        <Text key={valueAndDisplayText.text} style={style.exampleTxt}>{`${valueAndDisplayText.text}\n(${valueAndDisplayText.value})`}</Text>
                                     )
                                 })
                             }
