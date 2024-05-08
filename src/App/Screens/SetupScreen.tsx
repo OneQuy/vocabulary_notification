@@ -124,6 +124,10 @@ const SetupScreen = () => {
         gap: Gap.Normal,
       },
 
+      normalBtn_NoBorder: {
+        padding: Outline.Normal,
+      },
+
       displaySettingBtn: {
         // borderWidth: WindowSize_Max * 0.0015,
         // borderRadius: BorderRadius.Medium,
@@ -148,15 +152,29 @@ const SetupScreen = () => {
         gap: Gap.Normal,
       },
 
-      normalBtn_NoBorder: {
-        padding: Outline.Normal,
-      },
-
       bottomButtonsView: {
         flexDirection: 'row',
         gap: Gap.Normal,
         justifyContent: 'center',
         alignItems: 'center',
+      },
+
+      changeTranslationServiceBtnView: {
+        flexDirection: 'row',
+        gap: Gap.Normal,
+      },
+
+      changeTranslationServiceBtn: {
+        flexDirection: 'row',
+        gap: Gap.Normal,
+        flex: 1,
+        borderWidth: WindowSize_Max * 0.0015,
+        borderRadius: BorderRadius.Medium,
+        padding: Outline.Normal,
+
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        // backgroundColor: 'red'
       },
     })
   }, [theme])
@@ -512,6 +530,10 @@ const SetupScreen = () => {
     set_supportedLanguages(suit.supportedLanguages)
   }, [])
 
+  const onPressTestTranslationService = useCallback((service: TranslationService) => {
+
+  }, [])
+
   const onPressTranslationService = useCallback((service: TranslationService) => {
     if (!popupCloseCallbackRef.current)
       return
@@ -532,24 +554,44 @@ const SetupScreen = () => {
             const isSelected = service === displayTranslationService
 
             return (
-              <LucideIconTextEffectButton
-                key={service}
+              <View key={service} style={style.changeTranslationServiceBtnView}>
+                {/* service */}
+                <LucideIconTextEffectButton
+                  selectedColorOfTextAndIcon={theme.primary}
+                  unselectedColorOfTextAndIcon={theme.counterPrimary}
 
-                selectedColorOfTextAndIcon={theme.primary}
-                unselectedColorOfTextAndIcon={theme.counterPrimary}
+                  onPress={() => onPressTranslationService(service)}
 
-                onPress={() => onPressTranslationService(service)}
+                  manuallySelected={isSelected}
+                  notChangeToSelected
+                  canHandlePressWhenSelected
 
-                manuallySelected={isSelected}
-                notChangeToSelected
-                canHandlePressWhenSelected
+                  style={isSelected ? style.changeTranslationServiceBtn : style.changeTranslationServiceBtn}
 
-                style={isSelected ? style.normalBtn : style.normalBtn_NoBorder}
+                  title={service}
 
-                title={service}
+                  titleProps={{ style: style.normalBtnTxt }}
+                />
 
-                titleProps={{ style: style.normalBtnTxt }}
-              />
+                {/* test */}
+                <LucideIconTextEffectButton
+                  selectedColorOfTextAndIcon={theme.primary}
+                  unselectedColorOfTextAndIcon={theme.counterPrimary}
+
+                  onPress={() => onPressTestTranslationService(service)}
+
+                  manuallySelected={isSelected}
+                  notChangeToSelected
+                  canHandlePressWhenSelected
+
+                  style={isSelected ? style.changeTranslationServiceBtn : style.changeTranslationServiceBtn}
+
+                  title={texts.test}
+                  titleProps={{ style: style.normalBtnTxt }}
+
+                  iconProps={{ name: 'Volume2Icon', size: FontSize.Normal, }}
+                />
+              </View>
             )
           })
         }
