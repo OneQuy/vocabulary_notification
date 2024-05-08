@@ -25,6 +25,7 @@ import { HandleError } from '../../Common/Tracking'
 import { GetLanguageFromCode, Language } from '../../Common/TranslationApis/TranslationLanguages'
 import { DevistyTranslateAsync } from '../../Common/TranslationApis/DevistyTranslateApi'
 import { DevistyTranslateApiKey } from '../../../Keys'
+import { GetCurrentTranslationServiceSuitAsync } from '../Handles/TranslateBridge'
 
 type SubView =
   'setup' |
@@ -501,14 +502,24 @@ const SetupScreen = () => {
 
   // translate service
 
-  const onPressTranslationService = useCallback((service: TranslationService) => {
-    if (popupCloseCallbackRef.current) {
-      popupCloseCallbackRef.current(() => { // closed
-        set_displayTranslationService(service)
-        SetTranslationServiceAsync(service)
-      })
-    }
+  const onChangedTranslationService = useCallback(async (service: TranslationService) => {
+    set_displayTranslationService(service)
+
+    SetTranslationServiceAsync(service)
+
+    const suit = await GetCurrentTranslationServiceSuitAsync()
+
+    set_supportedLanguages(suit.supportedLanguages)
   }, [])
+
+  const onPressTranslationService = useCallback((service: TranslationService) => {
+    if (!popupCloseCallbackRef.current)
+      return
+
+    popupCloseCallbackRef.current(() => { // closed
+      onChangedTranslationService(service)
+    })
+  }, [onChangedTranslationService])
 
   const renderPickTranslationService = useCallback(() => {
     return (
@@ -797,7 +808,7 @@ const SetupScreen = () => {
       set_displayTargetLang(targetLang ? GetLanguageFromCode(targetLang) : undefined)
 
       const service = await GetTranslationServiceAsync()
-      set_displayTranslationService(service)
+      onChangedTranslationService(service)
 
       // setting display notifition
 
@@ -991,7 +1002,7 @@ const SetupScreen = () => {
           }
 
           {/* translate service */}
-          
+
           {
             showMoreSetting &&
             <>

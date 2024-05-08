@@ -25,7 +25,7 @@ type GetTranslationServiceSuitResult = {
     ) => Promise<TranslatedResult[] | Error>,
 }
 
-var cachedGetTranslationServiceSuitResult: undefined | Record<TranslationService, GetTranslationServiceSuitResult> = undefined
+var cachedGetTranslationServiceSuitResult: Record<any, any>  = {}
 
 /**
  * ### each element:
@@ -116,6 +116,8 @@ export const GetCurrentTranslationServiceSuitAsync = async (): Promise<GetTransl
     else {
         throw new Error('[GetTranslationServiceSuitAsync] no service specificed')
     }
+
+    cachedGetTranslationServiceSuitResult[service] = result
 
     return result
 }
