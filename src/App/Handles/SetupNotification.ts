@@ -6,7 +6,7 @@ import { LocalText, NoPermissionText, PleaseSelectTargetLangText } from "../Hook
 import { AddOrUpdateLocalizedWordsToDbAsync, GetLocalizedWordFromDbAsync, GetLocalizedWordsFromDbIfAvailableAsync } from "./LocalizedWordsTable";
 import { CalcNotiTimeListPerDay, CheckDeserializeLocalizedData, ExtractWordFromWordLang, SavedWordToTranslatedResult, TimePickerResultToTimestamp, ToWordLangString, TranslatedResultToSavedWord } from "./AppUtils";
 import { CapitalizeFirstLetter, PickRandomElement, SafeArrayLength, SafeGetArrayElement } from "../../Common/UtilsTS";
-import { GetExcludeTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetTargetLangAsync } from "./Settings";
+import { GetExcludeTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetSourceLangAsync, GetTargetLangAsync } from "./Settings";
 import { GetNextWordsDataCurrentLevelForNotiAsync, GetWordsDataCurrentLevelAsync, SetUsedWordIndexCurrentLevelAsync } from "./WordsData";
 import { DisplayNotificationAsync, NotificationOption, cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync, setNotification } from "../../Common/Nofitication";
 import { AuthorizationStatus } from "@notifee/react-native";
@@ -321,7 +321,8 @@ export const TestNotificationAsync = async (setHandling: (type: HandlingType) =>
 
         const translatedArrOrError = await BridgeTranslateMultiWordAsync(
             words.words.map(i => i.word),
-            targetLang)
+            targetLang,
+            await GetSourceLangAsync())
 
         // error overall
 
