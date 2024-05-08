@@ -62,14 +62,14 @@ export const GetCurrentTranslationServiceSuitAsync = async (): Promise<GetTransl
 
         if (cached) {
             if (IsLog)
-                console.log('[GetTranslationServiceSuitAsync] cached');
+                console.log('[GetTranslationServiceSuitAsync] cached', service);
 
             return cached
         }
     }
 
     if (IsLog)
-        console.log(('[GetTranslationServiceSuitAsync] initing... ' + service));
+        console.log(('[GetTranslationServiceSuitAsync] initted... ' + service));
 
     let result: GetTranslationServiceSuitResult
 
