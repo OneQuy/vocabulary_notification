@@ -41,24 +41,33 @@ const ExampleWordView = ({
 
             panelView: { marginBottom: Outline.Normal, flex: 1, flexDirection: 'row', gap: 1, alignItems: 'center', },
 
-            masterChild: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+            panelChild: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 
             titleChildTxt: { marginBottom: Outline.Normal, fontWeight: FontBold.Bold, fontSize: FontSize.Normal, textAlign: 'center' },
 
             separatorLine: { height: '95%', width: StyleSheet.hairlineWidth, backgroundColor: theme.counterPrimary },
 
             scrollView: { gap: Gap.Small, padding: Outline.Normal, },
-            
+
             scrollViewExample: { gap: Gap.Normal, },
 
             normalTxt: { fontSize: FontSize.Normal, },
-            
+
             exampleTxt: { fontSize: FontSize.Normal, textAlign: 'center', },
 
             confirmBtn: {
                 borderWidth: WindowSize_Max * 0.0015,
                 borderRadius: BorderRadius.Medium,
                 padding: Outline.Normal,
+                marginBottom: Outline.Normal,
+                marginHorizontal: Outline.Normal
+            },
+
+            anotherExampleBtn: {
+                borderWidth: WindowSize_Max * 0.0015,
+                borderRadius: BorderRadius.Medium,
+                padding: Outline.Small,
+
                 marginBottom: Outline.Normal,
                 marginHorizontal: Outline.Normal
             },
@@ -77,24 +86,30 @@ const ExampleWordView = ({
         })
     }, [theme])
 
-    const onPressValue = useCallback((value: ValueAndDisplayText) => {
+    const generateExamplesAsync = useCallback(async () => {
+        set_examplesState('loading')
         set_examples(undefined)
+
+        const res = await getExampleAsync(selectingValue?.value, -1)
+
+        if (Array.isArray(res)) {
+            set_examples(res)
+            set_examplesState(undefined)
+        }
+        else
+            set_examplesState(res)
+    }, [getExampleAsync, selectingValue])
+
+    const onPressConfirm = useCallback((value: ValueAndDisplayText) => {
+
+    }, [selectingValue])
+
+    const onPressValue = useCallback((value: ValueAndDisplayText) => {
         set_selectingValue(value)
     }, [])
 
     useEffect(() => {
-        (async () => {
-            set_examplesState('loading')
-
-            const res = await getExampleAsync(selectingValue?.value, -1)
-
-            if (Array.isArray(res)) {
-                set_examples(res)
-                set_examplesState(undefined)
-            }
-            else
-                set_examplesState(res)
-        })()
+        generateExamplesAsync()
     }, [selectingValue])
 
     return (
@@ -102,7 +117,7 @@ const ExampleWordView = ({
             {/* 2 panels */}
             <View style={style.panelView}>
                 {/* left panel */}
-                <View style={style.masterChild}>
+                <View style={style.panelChild}>
 
                     <Text style={style.titleChildTxt}>{titleLeft}</Text>
 
@@ -142,11 +157,30 @@ const ExampleWordView = ({
                 <View style={style.separatorLine} />
 
                 {/* right panel */}
-                <View style={style.masterChild}>
+                <View style={style.panelChild}>
                     {/* title */}
                     {
                         examples &&
                         <Text style={style.titleChildTxt}>{titleRight}</Text>
+                    }
+
+                    {/* another example btn */}
+                    {
+                        examples &&
+                        < LucideIconTextEffectButton
+                            selectedColorOfTextAndIcon={theme.primary}
+                            unselectedColorOfTextAndIcon={theme.counterPrimary}
+
+                            onPress={generateExamplesAsync}
+
+                            notChangeToSelected
+
+                            style={style.anotherExampleBtn}
+
+                            title={texts.other_words}
+
+                            titleProps={{ style: style.normalTxt }}
+                        />
                     }
 
                     {/* loading */}
