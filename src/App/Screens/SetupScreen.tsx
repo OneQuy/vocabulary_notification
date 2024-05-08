@@ -26,6 +26,7 @@ import { GetLanguageFromCode, Language } from '../../Common/TranslationApis/Tran
 import { DevistyTranslateAsync } from '../../Common/TranslationApis/DevistyTranslateApi'
 import { DevistyTranslateApiKey } from '../../../Keys'
 import { GetCurrentTranslationServiceSuitAsync } from '../Handles/TranslateBridge'
+import ExampleWordView, { ValueAndDisplayText } from './ExampleWordView'
 
 type SubView =
   'setup' |
@@ -157,24 +158,6 @@ const SetupScreen = () => {
         gap: Gap.Normal,
         justifyContent: 'center',
         alignItems: 'center',
-      },
-
-      changeTranslationServiceBtnView: {
-        flexDirection: 'row',
-        gap: Gap.Normal,
-      },
-
-      changeTranslationServiceBtn: {
-        flexDirection: 'row',
-        gap: Gap.Normal,
-        flex: 1,
-        borderWidth: WindowSize_Max * 0.0015,
-        borderRadius: BorderRadius.Medium,
-        padding: Outline.Normal,
-
-        // alignItems: 'center',
-        // justifyContent: 'center',
-        // backgroundColor: 'red'
       },
     })
   }, [theme])
@@ -520,6 +503,17 @@ const SetupScreen = () => {
 
   // translate service
 
+  const translationServiceValueAndDisplayTexts = useMemo(() => {
+    return TranslationServicePresets.map(service => {
+      const s: ValueAndDisplayText = {
+        value: service,
+        text: service
+      }
+
+      return s
+    })
+  }, [TranslationServicePresets])
+
   const onChangedTranslationService = useCallback(async (service: TranslationService) => {
     set_displayTranslationService(service)
 
@@ -531,7 +525,7 @@ const SetupScreen = () => {
   }, [])
 
   const onPressTestTranslationService = useCallback((service: TranslationService) => {
-    
+
   }, [])
 
   const onPressTranslationService = useCallback((service: TranslationService) => {
@@ -544,60 +538,14 @@ const SetupScreen = () => {
   }, [onChangedTranslationService])
 
   const renderPickTranslationService = useCallback(() => {
+
     return (
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={style.scrollViewSlidingPopup}
-      >
-        {
-          TranslationServicePresets.map((service: TranslationService) => {
-            const isSelected = service === displayTranslationService
-
-            return (
-              <View key={service} style={style.changeTranslationServiceBtnView}>
-                {/* service */}
-                <LucideIconTextEffectButton
-                  selectedColorOfTextAndIcon={theme.primary}
-                  unselectedColorOfTextAndIcon={theme.counterPrimary}
-
-                  onPress={() => onPressTranslationService(service)}
-
-                  manuallySelected={isSelected}
-                  notChangeToSelected
-                  canHandlePressWhenSelected
-
-                  style={isSelected ? style.changeTranslationServiceBtn : style.changeTranslationServiceBtn}
-
-                  title={service}
-
-                  titleProps={{ style: style.normalBtnTxt }}
-                />
-
-                {/* test */}
-                <LucideIconTextEffectButton
-                  selectedColorOfTextAndIcon={theme.primary}
-                  unselectedColorOfTextAndIcon={theme.counterPrimary}
-
-                  onPress={() => onPressTestTranslationService(service)}
-
-                  manuallySelected={isSelected}
-                  notChangeToSelected
-                  canHandlePressWhenSelected
-
-                  style={isSelected ? style.changeTranslationServiceBtn : style.changeTranslationServiceBtn}
-
-                  title={texts.test}
-                  titleProps={{ style: style.normalBtnTxt }}
-
-                  iconProps={{ name: 'Volume2Icon', size: FontSize.Normal, }}
-                />
-              </View>
-            )
-          })
-        }
-      </ScrollView>
+      <ExampleWordView
+        values={translationServiceValueAndDisplayTexts}
+        initValue={translationServiceValueAndDisplayTexts.find(i => i.value === displayTranslationService)}
+      />
     )
-  }, [displayTranslationService, theme, style])
+  }, [displayTranslationService, translationServiceValueAndDisplayTexts, theme, style])
 
   // num days to push
 
