@@ -9,7 +9,7 @@
     "start": "react-native start",
     "test": "jest",
     "incver": "node editor/common/incver",
-    "builda": "node editor/common/incver && git add . && git commit -am 'comment' && cd android && ./gradlew assembleRelease && cd .. && npm run sendapk",
+    "builda": "node editor/common/incver && git add . && git commit -am 'builda' && cd android && ./gradlew assembleRelease && cd .. && npm run sendapk",
     "sendapk": "node editor/common/RenameApkAndSendToTelegram",
     "store": "cd android && ./gradlew bundlerelease"
   },
