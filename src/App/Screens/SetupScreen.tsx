@@ -531,7 +531,7 @@ const SetupScreen = () => {
   }, [])
 
   const onPressTestTranslationService = useCallback((service: TranslationService) => {
-
+    
   }, [])
 
   const onPressTranslationService = useCallback((service: TranslationService) => {
