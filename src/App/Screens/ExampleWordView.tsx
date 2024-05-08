@@ -39,17 +39,21 @@ const ExampleWordView = ({
         return StyleSheet.create({
             master: { flex: 1, gap: 1, },
 
-            panelView: { flex: 1, flexDirection: 'row', gap: 1, alignItems: 'center', },
+            panelView: { marginBottom: Outline.Normal, flex: 1, flexDirection: 'row', gap: 1, alignItems: 'center', },
 
-            masterChild: { flex: 1 },
+            masterChild: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 
-            titleChildTxt: { fontWeight: FontBold.Bold, fontSize: FontSize.Normal, textAlign: 'center' },
+            titleChildTxt: { marginBottom: Outline.Normal, fontWeight: FontBold.Bold, fontSize: FontSize.Normal, textAlign: 'center' },
 
             separatorLine: { height: '95%', width: StyleSheet.hairlineWidth, backgroundColor: theme.counterPrimary },
 
             scrollView: { gap: Gap.Small, padding: Outline.Normal, },
+            
+            scrollViewExample: { gap: Gap.Normal, },
 
             normalTxt: { fontSize: FontSize.Normal, },
+            
+            exampleTxt: { fontSize: FontSize.Normal, textAlign: 'center', },
 
             confirmBtn: {
                 borderWidth: WindowSize_Max * 0.0015,
@@ -74,7 +78,8 @@ const ExampleWordView = ({
     }, [theme])
 
     const onPressValue = useCallback((value: ValueAndDisplayText) => {
-
+        set_examples(undefined)
+        set_selectingValue(value)
     }, [])
 
     useEffect(() => {
@@ -139,7 +144,10 @@ const ExampleWordView = ({
                 {/* right panel */}
                 <View style={style.masterChild}>
                     {/* title */}
-                    <Text style={style.titleChildTxt}>{titleRight}</Text>
+                    {
+                        examples &&
+                        <Text style={style.titleChildTxt}>{titleRight}</Text>
+                    }
 
                     {/* loading */}
                     {
@@ -167,12 +175,12 @@ const ExampleWordView = ({
                         (examples) &&
                         <ScrollView
                             showsVerticalScrollIndicator={false}
-                            contentContainerStyle={style.scrollView}
+                            contentContainerStyle={style.scrollViewExample}
                         >
                             {
                                 examples.map((valueAndDisplayText: ValueAndDisplayText) => {
                                     return (
-                                        <Text key={valueAndDisplayText.text} style={style.normalTxt}>{`${valueAndDisplayText.text}\n${valueAndDisplayText.value}`}</Text>
+                                        <Text key={valueAndDisplayText.text} style={style.exampleTxt}>{`${valueAndDisplayText.text}\n${valueAndDisplayText.value}`}</Text>
                                     )
                                 })
                             }
