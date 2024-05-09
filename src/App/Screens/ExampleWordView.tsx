@@ -11,12 +11,19 @@ import { TranslationService } from '../Types'
 import { ToCanPrint } from '../../Common/UtilsTS'
 import TargetLangPicker from '../Components/TargetLangPicker'
 import { Language } from '../../Common/TranslationApis/TranslationLanguages'
+import { CheckCapabilityLanguage } from '../Handles/AppUtils'
+import { TranslationServicePresets } from '../Constants/AppConstants'
+import { GetCurrentTranslationServiceSuitAsync } from '../Handles/TranslateBridge'
 
 export type ValueAndDisplayText = {
     value: any,
     text: string,
 }
 
+
+/**
+ * if this is translation service picker, ValueAndDisplayText both text & value are TranslationService 
+ */
 const ExampleWordView = ({
     titleLeft,
     titleRight,
@@ -32,9 +39,9 @@ const ExampleWordView = ({
     initValue?: ValueAndDisplayText,
     initTargetLang?: Language,
     onConfirmValue: (service?: ValueAndDisplayText) => void,
-    
+
     getExampleAsync: (
-        service: TranslationService, 
+        service: TranslationService,
         popularityLevelIdx?: number,
         targetLang?: string | null,
     ) => Promise<boolean | Error | ValueAndDisplayText[]>,
@@ -100,11 +107,15 @@ const ExampleWordView = ({
         })
     }, [theme])
 
-    const generateExamplesAsync = useCallback(async () => {
+    const generateExamplesAsync = useCallback(async (
+        service: TranslationService,
+        popularityLevelIdx?: number,
+        targetLang?: string | null
+    ) => {
         set_rightPanelState('translating')
         set_examples(undefined)
 
-        const res = await getExampleAsync(selectingValue?.value)
+        const res = await getExampleAsync(service, popularityLevelIdx, targetLang)
 
         if (Array.isArray(res)) {
             set_examples(res)
@@ -112,19 +123,39 @@ const ExampleWordView = ({
         }
         else
             set_rightPanelState(res)
-    }, [getExampleAsync, selectingValue])
+    }, [getExampleAsync])
 
     const onPressTargetLang = useCallback((value: Language) => {
         set_selectingTargetLang(value)
     }, [])
 
-    const onPressValue = useCallback((value: ValueAndDisplayText) => {
-        set_selectingValue(value)
+    const onPressShowPickTargetLang = useCallback(async () => {
+        set_rightPanelState('pick_target_lang')
     }, [])
 
-    useEffect(() => {
-        generateExamplesAsync()
-    }, [selectingValue])
+    const onPressValueLeftPanelAsync = useCallback(async (value: ValueAndDisplayText) => {
+        set_selectingValue(value)
+
+        if (!selectingTargetLang) {
+            set_rightPanelState('pick_target_lang')
+            return
+        }
+
+        const service = value.text as TranslationService
+
+        const suit = await GetCurrentTranslationServiceSuitAsync(service)
+
+        const supportedLang = CheckCapabilityLanguage(selectingTargetLang, suit.supportedLanguages)
+
+        set_selectingTargetLang(supportedLang)
+
+        if (supportedLang) {
+            generateExamplesAsync(service, -1, selectingTargetLang.language)
+        }
+        else {
+            set_rightPanelState('pick_target_lang')
+        }
+    }, [selectingTargetLang, generateExamplesAsync])
 
     return (
         <View style={style.master}>
@@ -149,7 +180,7 @@ const ExampleWordView = ({
                                         selectedColorOfTextAndIcon={theme.primary}
                                         unselectedColorOfTextAndIcon={theme.counterPrimary}
 
-                                        onPress={() => onPressValue(valueAndDisplayText)}
+                                        onPress={() => onPressValueLeftPanelAsync(valueAndDisplayText)}
 
                                         manuallySelected={isSelected}
                                         notChangeToSelected
@@ -187,13 +218,13 @@ const ExampleWordView = ({
                                 selectedColorOfTextAndIcon={theme.primary}
                                 unselectedColorOfTextAndIcon={theme.counterPrimary}
 
-                                onPress={generateExamplesAsync}
+                                onPress={onPressShowPickTargetLang}
 
                                 notChangeToSelected
 
                                 style={style.anotherExampleBtn}
 
-                                title={texts.other_words}
+                                title={selectingTargetLang ? selectingTargetLang.name : texts.translate_to}
 
                                 titleProps={{ style: style.normalTxt }}
                             />
@@ -201,12 +232,12 @@ const ExampleWordView = ({
 
                         {/* another example btn */}
                         {
-                            rightPanelState !== 'translating' &&
+                            (rightPanelState !== 'translating' && selectingTargetLang) &&
                             < LucideIconTextEffectButton
                                 selectedColorOfTextAndIcon={theme.primary}
                                 unselectedColorOfTextAndIcon={theme.counterPrimary}
 
-                                onPress={generateExamplesAsync}
+                                onPress={() => generateExamplesAsync(selectingValue?.text as TranslationService)}
 
                                 notChangeToSelected
 

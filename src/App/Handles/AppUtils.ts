@@ -10,15 +10,15 @@ import { Language, TranslatedResult } from "../../Common/TranslationApis/Transla
 const IsLog = true
 
 export const CheckCapabilityLanguage = (currentLang: Language, supportedLangs: Language[]): Language | undefined => {
-    const findExactly = supportedLangs.find(i =>
+    const find = supportedLangs.find(i =>
         i.language.toLowerCase() === currentLang.language.toLowerCase() ||
         i.name.toLowerCase() === currentLang.name.toLowerCase()
     )
 
     if (IsLog)
-        console.log('[CheckCapabilityLanguage] current lang', currentLang, 'found?', findExactly !== undefined);
+        console.log('[CheckCapabilityLanguage] current lang', currentLang, 'found?', find !== undefined);
     
-    return undefined
+    return find
 
     // // find lang name
 
