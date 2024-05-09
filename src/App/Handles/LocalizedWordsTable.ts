@@ -1,4 +1,4 @@
-import { SqlExecuteAsync, OpenDatabaseAsync, SqlInsertOrUpdateAsync, SqlGetAllRowsWithColumnIncludedInArrayAsync, SqlDropTableAsync } from "../../Common/SQLite"
+import { SqlExecuteAsync, OpenDatabaseAsync, SqlInsertOrUpdateAsync, SqlGetAllRowsWithColumnIncludedInArrayAsync, SqlDeleteAllRowsAsync } from "../../Common/SQLite"
 import { IsAllValuableString as IsAllValuableStrings, ToCanPrint } from "../../Common/UtilsTS"
 import { SavedWordData } from "../Types"
 import { ToWordLangString } from "./AppUtils"
@@ -37,9 +37,9 @@ export const CheckInitDBAsync = async () => {
         console.log('[CheckInitDBAsync] inited db')
 }
 
-export const DropTableAsync = async () => {
+export const DeleteAllRowsTableAsync = async () => {
     await CheckInitDBAsync()
-    await SqlDropTableAsync(TableName)
+    await SqlDeleteAllRowsAsync(TableName)
 }
 
 const AddOrUpdateLocalizedWordToDbAsync = async (

@@ -140,6 +140,10 @@ export const SqlDropTableAsync = async (table: string): Promise<void> => {
     await SqlExecuteAsync(`DROP TABLE IF EXISTS ${table}`)
 }
 
+export const SqlDeleteAllRowsAsync = async (table: string): Promise<void> => {
+    await SqlExecuteAsync(`DELETE FROM ${table}`)
+}
+
 /**
  * ### note:
  * undefinded can be treated as null

@@ -1,14 +1,19 @@
 import { SafeValue } from "../../Common/UtilsTS"
 import { LocalizedData, PairTime, SavedWordData } from "../Types"
 import { TimePickerResult } from "../Components/TimePicker"
-import { DropTableAsync } from "./LocalizedWordsTable"
+import { DeleteAllRowsTableAsync } from "./LocalizedWordsTable"
 import { SetCurrentAllNotificationsAsync } from "./SetupNotification"
 import { cancelAllLocalNotificationsAsync } from "../../Common/Nofitication"
 import { HandleError } from "../../Common/Tracking"
 import { TranslatedResult } from "../../Common/TranslationApis/TranslationLanguages"
 
 export const ClearDbAndNotificationsAsync = async () => {
-    await DropTableAsync()
+    // delete db
+
+    await DeleteAllRowsTableAsync()
+
+    // clear noti
+    
     await SetCurrentAllNotificationsAsync([])
     cancelAllLocalNotificationsAsync()
 }
