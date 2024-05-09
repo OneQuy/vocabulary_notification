@@ -56,6 +56,7 @@ const ExampleWordView = ({
             errorTxt: { fontSize: FontSize.Small, },
 
             exampleTxt: { fontSize: FontSize.Normal, textAlign: 'center', },
+            exampleTxt_Bold: { fontSize: FontSize.Normal, fontWeight: FontBold.Bold, textAlign: 'center', },
 
             confirmBtn: {
                 borderWidth: WindowSize_Max * 0.0015,
@@ -69,8 +70,6 @@ const ExampleWordView = ({
                 borderWidth: WindowSize_Max * 0.0015,
                 borderRadius: BorderRadius.Medium,
                 padding: Outline.Small,
-
-                marginBottom: Outline.Normal,
                 marginHorizontal: Outline.Normal
             },
 
@@ -79,7 +78,6 @@ const ExampleWordView = ({
                 borderRadius: BorderRadius.Medium,
                 padding: Outline.Normal,
                 flexDirection: 'row',
-                // gap: Gap.Normal,
             },
 
             normalBtn_NoBorder: {
@@ -222,7 +220,18 @@ const ExampleWordView = ({
                             {
                                 examples.map((valueAndDisplayText: ValueAndDisplayText) => {
                                     return (
-                                        <Text key={valueAndDisplayText.text} style={style.exampleTxt}>{`${valueAndDisplayText.text}\n(${valueAndDisplayText.value})`}</Text>
+                                        <View key={valueAndDisplayText.text}>
+                                            <Text
+                                                style={style.exampleTxt_Bold}
+                                            >
+                                                {valueAndDisplayText.text}
+                                            </Text>
+                                            <Text
+                                                style={style.exampleTxt}
+                                            >
+                                                {valueAndDisplayText.value}
+                                            </Text>
+                                        </View>
                                     )
                                 })
                             }
