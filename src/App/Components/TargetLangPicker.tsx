@@ -1,5 +1,5 @@
 import { View, Text, TextInput, StyleSheet, ScrollView } from 'react-native'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { CommonStyles, WindowSize_Max } from '../../Common/CommonConstants'
 import useTheme from '../Hooks/useTheme'
 import useLocalText from '../Hooks/useLocalText'
@@ -8,12 +8,16 @@ import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEf
 import { FontSize } from '../Constants/Constants_FontSize'
 import { Gap, Outline } from '../Constants/Constants_Outline'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
+import { GetCurrentTranslationServiceSuitAsync } from '../Handles/TranslateBridge'
+import { TranslationService } from '../Types'
 
 const TargetLangPicker = ({
-    displayTargetLang,
+    initTargetLang,
+    selectingService,
     onPressTargetLang,
 }: {
-    displayTargetLang: Language | undefined,
+    initTargetLang: Language | undefined,
+    selectingService: TranslationService,
     onPressTargetLang: (lang: Language) => void,
 }) => {
     const theme = useTheme()
@@ -56,6 +60,14 @@ const TargetLangPicker = ({
 
     const showingLangs = supportedLanguages.filter(lang => searchLangInputTxt.length === 0 || lang.name.toLowerCase().includes(searchLangInputTxt.toLowerCase()))
 
+    useEffect(() => {
+        (async () => {
+            const suit = await GetCurrentTranslationServiceSuitAsync(selectingService)
+
+            set_supportedLanguages(suit.supportedLanguages)
+        })()
+    }, [selectingService])
+
     return (
         <View style={CommonStyles.flex_1}>
             {/* input search */}
@@ -80,7 +92,7 @@ const TargetLangPicker = ({
                 >
                     {
                         showingLangs.map((lang: Language) => {
-                            const isSelected = lang === displayTargetLang
+                            const isSelected = lang === initTargetLang
 
                             return (
                                 <LucideIconTextEffectButton

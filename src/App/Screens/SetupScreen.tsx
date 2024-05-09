@@ -681,10 +681,11 @@ const SetupScreen = () => {
     return (
       <TargetLangPicker
         onPressTargetLang={onPressTargetLang}
-        displayTargetLang={displayTargetLang}
+        initTargetLang={displayTargetLang}
+        selectingService={displayTranslationService}
       />
     )
-  }, [displayTargetLang, onPressTargetLang])
+  }, [displayTargetLang, onPressTargetLang, displayTranslationService])
 
   // exclude time
 
