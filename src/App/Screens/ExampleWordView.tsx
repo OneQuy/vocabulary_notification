@@ -33,7 +33,7 @@ const ExampleWordView = ({
 
     const [selectingValue, set_selectingValue] = useState(initValue)
     const [examples, set_examples] = useState<undefined | ValueAndDisplayText[]>(undefined)
-    const [examplesState, set_examplesState] = useState<undefined | 'loading' | boolean | Error>(undefined)
+    const [examplesState, set_examplesState] = useState<undefined | 'translating' | boolean | Error>(undefined)
 
     const style = useMemo(() => {
         return StyleSheet.create({
@@ -41,9 +41,9 @@ const ExampleWordView = ({
 
             panelView: { marginBottom: Outline.Normal, flex: 1, flexDirection: 'row', gap: 1, alignItems: 'center', },
 
-            panelChild: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+            panelChild: { flex: 1, gap: Outline.Normal, justifyContent: 'center', alignItems: 'center' },
 
-            titleChildTxt: { marginBottom: Outline.Normal, fontWeight: FontBold.Bold, fontSize: FontSize.Normal, textAlign: 'center' },
+            titleChildTxt: { fontWeight: FontBold.Bold, fontSize: FontSize.Normal, textAlign: 'center' },
 
             separatorLine: { height: '95%', width: StyleSheet.hairlineWidth, backgroundColor: theme.counterPrimary },
 
@@ -52,6 +52,8 @@ const ExampleWordView = ({
             scrollViewExample: { gap: Gap.Normal, },
 
             normalTxt: { fontSize: FontSize.Normal, },
+
+            errorTxt: { fontSize: FontSize.Small, },
 
             exampleTxt: { fontSize: FontSize.Normal, textAlign: 'center', },
 
@@ -87,7 +89,7 @@ const ExampleWordView = ({
     }, [theme])
 
     const generateExamplesAsync = useCallback(async () => {
-        set_examplesState('loading')
+        set_examplesState('translating')
         set_examples(undefined)
 
         const res = await getExampleAsync(selectingValue?.value, -1)
@@ -185,10 +187,10 @@ const ExampleWordView = ({
 
                     {/* loading */}
                     {
-                        examplesState === 'loading' &&
+                        examplesState === 'translating' &&
                         <>
                             <ActivityIndicator color={theme.counterPrimary} />
-                            <Text style={style.normalTxt}>{texts.loading_data}</Text>
+                            <Text style={style.normalTxt}>{texts.translating}...</Text>
                         </>
                     }
 
@@ -196,11 +198,17 @@ const ExampleWordView = ({
                     {
                         (examplesState instanceof Error || examplesState === false) &&
                         <>
-                            <Text style={style.normalTxt}>{
-                                examplesState === false ?
-                                    texts.fail_translate :
-                                    ToCanPrint(examplesState)
-                            }</Text>
+                            <Text style={style.normalTxt}>{texts.fail_translate}</Text>
+                            {
+                                examplesState !== false &&
+                                <Text
+                                    numberOfLines={10}
+                                    adjustsFontSizeToFit
+                                    style={style.errorTxt}
+                                >
+                                    {ToCanPrint(examplesState)}
+                                </Text>
+                            }
                         </>
                     }
 

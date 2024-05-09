@@ -28,6 +28,7 @@ const eng = {
     day: 'day',
     downloading_data: 'Downloading data',
     loading_data: 'Loading data',
+    translating: 'Translating',
     retry: 'Retry',
     cancel: 'Cancel',
     done: 'Done',
