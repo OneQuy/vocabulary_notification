@@ -12,7 +12,7 @@ const Dark_Default: Theme = {
     background: '#1c1c1c',
     counterBackground: '#ffffff',
     
-    primary: '#ffaabb',
+    primary: '#dda',
     counterPrimary: '#1c1c1c',
 
     isDarkTheme: true,
