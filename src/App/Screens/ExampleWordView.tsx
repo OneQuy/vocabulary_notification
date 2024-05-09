@@ -127,7 +127,9 @@ const ExampleWordView = ({
 
     const onPressTargetLang = useCallback((value: Language) => {
         set_selectingTargetLang(value)
-    }, [])
+        
+        generateExamplesAsync(selectingValue?.text as TranslationService, -1, value.language)
+    }, [generateExamplesAsync, selectingValue?.text])
 
     const onPressShowPickTargetLang = useCallback(async () => {
         set_rightPanelState('pick_target_lang')
