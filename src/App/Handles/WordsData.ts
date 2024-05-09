@@ -49,7 +49,9 @@ export const GetWordsDataCurrentLevelAsync = async (wordStrings: string[]): Prom
 
     if (words.length !== wordStrings.length) {
         if (IsLog) {
-            console.log('[GetWordsDataCurrentLevelAsync] there are words not in current level', wordStrings.length - words.length);
+            console.log('[GetWordsDataCurrentLevelAsync] got words in current level', words.length, 
+            'required', wordStrings.length,
+            '=> words not in current level', wordStrings.length - words.length);
         }
     }
 
