@@ -299,7 +299,7 @@ export const TestNotificationAsync = async (setHandling: (type: HandlingType) =>
 
     const fetchedWords = await GetAlreadyFetchedWordsDataCurrentLevelAsync(undefined, undefined)
 
-    if (fetchedWords instanceof Error) {
+    if (!Array.isArray(fetchedWords)) {
         return fetchedWords
     }
 

@@ -44,7 +44,10 @@ export const BridgeTranslateMultiWordAsync = async (
     const currentService = await GetCurrentTranslationServiceSuitAsync(service)
 
     if (IsLog)
-        console.log('[BridgeTranslateMultiWordAsync] translating... toLang', toLang, 'fromLang', fromLang);
+        console.log('[BridgeTranslateMultiWordAsync] translating... toLang', toLang,
+            'fromLang', fromLang,
+            'saveToDbNewWords', saveToDbNewWords,
+            'service', service);
 
     const translatedArrOrError = await currentService.translateAsync(
         currentService.key,
