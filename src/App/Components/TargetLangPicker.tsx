@@ -10,6 +10,7 @@ import { Gap, Outline } from '../Constants/Constants_Outline'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { GetCurrentTranslationServiceSuitAsync } from '../Handles/TranslateBridge'
 import { TranslationService } from '../Types'
+import { DelayAsync } from '../../Common/UtilsTS'
 
 const TargetLangPicker = ({
     initTargetLang,
@@ -23,6 +24,8 @@ const TargetLangPicker = ({
     const theme = useTheme()
     const texts = useLocalText()
 
+    // const [selectingLang, set_selectingLang] = useState<Language | undefined>(initTargetLang)
+    
     const [supportedLanguages, set_supportedLanguages] = useState<Language[]>([])
     const [searchLangInputTxt, set_searchLangInputTxt] = useState('')
 
@@ -62,6 +65,8 @@ const TargetLangPicker = ({
 
     useEffect(() => {
         (async () => {
+            await DelayAsync(500)
+
             const suit = await GetCurrentTranslationServiceSuitAsync(selectingService)
 
             set_supportedLanguages(suit.supportedLanguages)
