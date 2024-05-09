@@ -57,7 +57,7 @@ const ExampleWordView = ({
 
             normalTxt: { fontSize: FontSize.Normal, },
 
-            errorTxt: { fontSize: FontSize.Small, },
+            errorTxt: { fontSize: FontSize.Small, marginHorizontal: Outline.Small },
 
             exampleTxt: { fontSize: FontSize.Normal, textAlign: 'center', },
             exampleTxt_Bold: { fontSize: FontSize.Normal, fontWeight: FontBold.Bold, textAlign: 'center', },
@@ -166,7 +166,7 @@ const ExampleWordView = ({
 
                     {/* another example btn */}
                     {
-                        examples &&
+                        examplesState !== 'translating' &&
                         < LucideIconTextEffectButton
                             selectedColorOfTextAndIcon={theme.primary}
                             unselectedColorOfTextAndIcon={theme.counterPrimary}
@@ -247,9 +247,7 @@ const ExampleWordView = ({
 
                 onPress={() => onConfirmValue(selectingValue)}
 
-                // manuallySelected={isSelected}
-                // notChangeToSelected
-                // canHandlePressWhenSelected
+                notChangeToSelected
 
                 style={style.confirmBtn}
 
