@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet, ScrollView } from 'react-native'
+import { View, TextInput, StyleSheet, ScrollView, ActivityIndicator } from 'react-native'
 import React, { useEffect, useMemo, useState } from 'react'
 import { CommonStyles, WindowSize_Max } from '../../Common/CommonConstants'
 import useTheme from '../Hooks/useTheme'
@@ -25,8 +25,6 @@ const TargetLangPicker = ({
 }) => {
     const theme = useTheme()
     const texts = useLocalText()
-
-    // const [selectingLang, set_selectingLang] = useState<Language | undefined>(initTargetLang)
 
     const [supportedLanguages, set_supportedLanguages] = useState<Language[]>([])
     const [searchLangInputTxt, set_searchLangInputTxt] = useState('')
@@ -63,12 +61,14 @@ const TargetLangPicker = ({
         })
     }, [theme])
 
-    const showingLangs = supportedLanguages.filter(lang => searchLangInputTxt.length === 0 || lang.name.toLowerCase().includes(searchLangInputTxt.toLowerCase()))
+    const showingLangs = useMemo(() => {
+        return supportedLanguages.filter(lang => searchLangInputTxt.length === 0 || lang.name.toLowerCase().includes(searchLangInputTxt.toLowerCase()))
+    }, [searchLangInputTxt, supportedLanguages])
 
     useEffect(() => {
         (async () => {
             if (delayShow)
-                await DelayAsync(500)
+                await DelayAsync(300)
 
             const suit = await GetCurrentTranslationServiceSuitAsync(selectingService)
 
@@ -92,40 +92,51 @@ const TargetLangPicker = ({
                 />
             </View>
 
-            {/* country */}
-            <View style={CommonStyles.flex_1}>
-                <ScrollView
-                    showsVerticalScrollIndicator={false}
-                    contentContainerStyle={style.scrollViewSlidingPopup}
-                >
-                    {
-                        showingLangs.map((lang: Language) => {
-                            const isSelected = lang === initTargetLang
+            {/* lang list */}
+            {
+                showingLangs.length <= 0 &&
+                <View style={CommonStyles.flex_1}>
+                    <ActivityIndicator color={theme.counterPrimary} />
+                </View>
+            }
 
-                            return (
-                                <LucideIconTextEffectButton
-                                    key={lang.language}
+            {/* lang list */}
+            {
+                showingLangs.length > 0 &&
+                <View style={CommonStyles.flex_1}>
+                    <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        contentContainerStyle={style.scrollViewSlidingPopup}
+                    >
+                        {
+                            showingLangs.map((lang: Language) => {
+                                const isSelected = lang === initTargetLang
 
-                                    selectedColorOfTextAndIcon={theme.primary}
-                                    unselectedColorOfTextAndIcon={theme.counterPrimary}
+                                return (
+                                    <LucideIconTextEffectButton
+                                        key={lang.language}
 
-                                    onPress={() => onPressTargetLang(lang)}
+                                        selectedColorOfTextAndIcon={theme.primary}
+                                        unselectedColorOfTextAndIcon={theme.counterPrimary}
 
-                                    manuallySelected={isSelected}
-                                    notChangeToSelected
-                                    canHandlePressWhenSelected
+                                        onPress={() => onPressTargetLang(lang)}
 
-                                    style={isSelected ? style.normalBtn : style.normalBtn_NoBorder}
+                                        manuallySelected={isSelected}
+                                        notChangeToSelected
+                                        canHandlePressWhenSelected
 
-                                    title={lang.name}
+                                        style={isSelected ? style.normalBtn : style.normalBtn_NoBorder}
 
-                                    titleProps={{ style: style.normalBtnTxt }}
-                                />
-                            )
-                        })
-                    }
-                </ScrollView>
-            </View>
+                                        title={lang.name}
+
+                                        titleProps={{ style: style.normalBtnTxt }}
+                                    />
+                                )
+                            })
+                        }
+                    </ScrollView>
+                </View>
+            }
         </View>
     )
 }
