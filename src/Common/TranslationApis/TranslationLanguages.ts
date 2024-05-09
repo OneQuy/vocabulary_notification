@@ -16,8 +16,8 @@ export type TranslatedResult = {
     error?: Error,
 }
 
-export const GetLanguageFromCode = (codeLang: string): Language | undefined => {
-    return AllLanguageDifinitions.find(i => i.language === codeLang)
+export const GetLanguageFromCode = (codeLang: string, langs?: Language[]): Language | undefined => {
+    return (langs ?? AllLanguageDifinitions).find(i => i.language === codeLang)
 }
 
 const AllLanguageDifinitions: Language[] = [

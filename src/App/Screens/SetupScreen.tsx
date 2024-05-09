@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, Alert, ActivityIndicator, TextInput } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Alert, ActivityIndicator } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import useTheme from '../Hooks/useTheme'
@@ -6,15 +6,15 @@ import useLocalText, { PleaseSelectTargetLangText } from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, LogStringify, PickRandomElementWithCount, PrependZero, ToCanPrint } from '../../Common/UtilsTS'
+import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PickRandomElementWithCount, PrependZero, ToCanPrint } from '../../Common/UtilsTS'
 import HairLine from '../../Common/Components/HairLine'
-import { CommonStyles, WindowSize_Max } from '../../Common/CommonConstants'
+import { WindowSize_Max } from '../../Common/CommonConstants'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { DefaultExcludedTimePairs, DefaultIntervalInMin, DefaultNumDaysToPush, IntervalInMinPresets, LimitWordsPerDayPresets, NumDaysToPushPresets, PopuplarityLevelNumber, TranslationServicePresets } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
 import { LucideIcon } from '../../Common/Components/LucideIcon'
 import { PairTime, TranslationService } from '../Types'
-import { CheckCapabilityLanguage, ClearDbAndNotificationsAsync, TotalMin } from '../Handles/AppUtils'
+import { ClearDbAndNotificationsAsync, TotalMin } from '../Handles/AppUtils'
 import { SetNotificationAsync, TestNotificationAsync } from '../Handles/SetupNotification'
 import { GetDefaultTranslationService, GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, GetTranslationServiceAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetNumDaysToPushAsync, SetPopularityLevelIndexAsync, SetTranslationServiceAsync, SetTargetLangAsyncAsync, GetSourceLangAsync } from '../Handles/Settings'
 import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync, IsCachedWordsDataCurrentLevelAsync } from '../Handles/WordsData'
@@ -23,8 +23,6 @@ import { StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPart
 import HistoryScreen from './HistoryScreen'
 import { HandleError } from '../../Common/Tracking'
 import { GetLanguageFromCode, Language } from '../../Common/TranslationApis/TranslationLanguages'
-import { DevistyTranslateAsync } from '../../Common/TranslationApis/DevistyTranslateApi'
-import { DevistyTranslateApiKey } from '../../../Keys'
 import { BridgeTranslateMultiWordAsync, GetCurrentTranslationServiceSuitAsync } from '../Handles/TranslateBridge'
 import ExampleWordView, { ValueAndDisplayText } from './ExampleWordView'
 import { SqlLogAllRowsAsync } from '../../Common/SQLite'
@@ -560,10 +558,10 @@ const SetupScreen = () => {
     SetTranslationServiceAsync(service)
 
     // target lang
-    
+
     set_displayTargetLang(targetLang)
     SetTargetLangAsyncAsync(targetLang.language)
-   
+
     // reset db
 
     if (resetData) {
@@ -821,11 +819,18 @@ const SetupScreen = () => {
       const excludedTimePairs = await GetExcludedTimesAsync()
       set_displayExcludedTimePairs(excludedTimePairs)
 
-      const targetLang = await GetTargetLangAsync()
-      set_displayTargetLang(targetLang ? GetLanguageFromCode(targetLang) : undefined)
-
       const service = await GetTranslationServiceAsync()
       set_displayTranslationService(service)
+
+      const suit = await GetCurrentTranslationServiceSuitAsync(service)
+
+      const targetLang = await GetTargetLangAsync()
+
+      const targetLanguage = targetLang ?
+        GetLanguageFromCode(targetLang, suit.supportedLanguages) :
+        undefined
+
+      set_displayTargetLang(targetLanguage)
 
       // setting display notifition
 
