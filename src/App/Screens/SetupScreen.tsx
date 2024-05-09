@@ -560,7 +560,7 @@ const SetupScreen = () => {
     })
   }, [TranslationServicePresets])
 
-  const onChangedTranslationService = useCallback(async (service: TranslationService) => {
+  const onChangedTranslationServiceAsync = useCallback(async (service: TranslationService) => {
     set_displayTranslationService(service)
 
     SetTranslationServiceAsync(service)
@@ -590,7 +590,7 @@ const SetupScreen = () => {
           {
             text: texts.confirm,
             onPress: () => {
-              onChangedTranslationService(serv)
+              onChangedTranslationServiceAsync(serv)
             }
           },
 
@@ -600,7 +600,7 @@ const SetupScreen = () => {
         ]
       )
     })
-  }, [texts, displayTranslationService, onChangedTranslationService])
+  }, [texts, displayTranslationService, onChangedTranslationServiceAsync])
 
   const renderPickTranslationService = useCallback(() => {
     return (
@@ -866,7 +866,7 @@ const SetupScreen = () => {
       set_displayTargetLang(targetLang ? GetLanguageFromCode(targetLang) : undefined)
 
       const service = await GetTranslationServiceAsync()
-      onChangedTranslationService(service)
+      onChangedTranslationServiceAsync(service)
 
       // setting display notifition
 
