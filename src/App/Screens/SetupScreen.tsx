@@ -28,6 +28,7 @@ import { DevistyTranslateApiKey } from '../../../Keys'
 import { BridgeTranslateMultiWordAsync, GetCurrentTranslationServiceSuitAsync } from '../Handles/TranslateBridge'
 import ExampleWordView, { ValueAndDisplayText } from './ExampleWordView'
 import { SqlLogAllRowsAsync } from '../../Common/SQLite'
+import TargetLangPicker from '../Components/TargetLangPicker'
 
 type SubView =
   'setup' |
@@ -64,9 +65,7 @@ const SetupScreen = () => {
   const [displayWordLimitNumber, set_displayWordLimitNumber] = useState<number>(5)
   const [displayNumDaysToPush, set_displayNumDaysToPush] = useState<number>(DefaultNumDaysToPush)
 
-  const [supportedLanguages, set_supportedLanguages] = useState<Language[]>([])
   const [displayTargetLang, set_displayTargetLang] = useState<Language | undefined>()
-  const [searchLangInputTxt, set_searchLangInputTxt] = useState('')
 
   const [displayTranslationService, set_displayTranslationService] = useState<TranslationService>(GetDefaultTranslationService())
 
@@ -102,18 +101,6 @@ const SetupScreen = () => {
       header: { fontWeight: FontBold.Bold, fontSize: FontSize.Normal, color: theme.primary },
 
       normalBtnTxt: { fontSize: FontSize.Normal, },
-
-      searchCountryView: {
-        borderWidth: StyleSheet.hairlineWidth,
-        borderRadius: BorderRadius.Medium,
-        borderColor: theme.counterPrimary,
-        padding: Outline.Normal,
-        justifyContent: 'center',
-        alignItems: 'center',
-        margin: Outline.Normal,
-      },
-
-      searchTxt: { fontSize: FontSize.Normal, color: theme.counterPrimary },
 
       downloadingView: { gap: Gap.Normal, justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', position: 'absolute', backgroundColor: theme.background },
       downloadingTxt: { fontSize: FontSize.Normal, fontWeight: FontBold.Bold, color: theme.primary },
@@ -566,9 +553,9 @@ const SetupScreen = () => {
 
     await SetTranslationServiceAsync(service)
 
-    const suit = await GetCurrentTranslationServiceSuitAsync()
+    // const suit = await GetCurrentTranslationServiceSuitAsync()
 
-    set_supportedLanguages(suit.supportedLanguages)
+    // set_supportedLanguages(suit.supportedLanguages)
 
     if (resetData) {
       await SqlLogAllRowsAsync('LocalizedWordsTable')
@@ -578,12 +565,12 @@ const SetupScreen = () => {
 
     // reset target lang
 
-    if (displayTargetLang) {
-      const supportedLanguage = CheckCapabilityLanguage(displayTargetLang, suit.supportedLanguages)
-      
-      set_displayTargetLang(supportedLanguage)
-      SetTargetLangAsyncAsync(supportedLanguage ? supportedLanguage.language : undefined)
-    }
+    // if (displayTargetLang) {
+    //   const supportedLanguage = CheckCapabilityLanguage(displayTargetLang, suit.supportedLanguages)
+
+    //   set_displayTargetLang(supportedLanguage)
+    //   SetTargetLangAsyncAsync(supportedLanguage ? supportedLanguage.language : undefined)
+    // }
   }, [displayTargetLang])
 
   const onPressTranslationService = useCallback((service?: ValueAndDisplayText) => {
@@ -691,61 +678,13 @@ const SetupScreen = () => {
   }, [])
 
   const renderPickTargetLang = useCallback(() => {
-    const langs = supportedLanguages.filter(lang => searchLangInputTxt.length === 0 || lang.name.toLowerCase().includes(searchLangInputTxt.toLowerCase()))
-
     return (
-      <View style={CommonStyles.flex_1}>
-        {/* input search */}
-        <View style={style.searchCountryView}>
-          <TextInput
-            style={style.searchTxt}
-            placeholder={texts.search_language}
-            maxLength={20}
-            textContentType='countryName'
-            keyboardType='default'
-            value={searchLangInputTxt}
-            onChangeText={set_searchLangInputTxt}
-            autoCapitalize='none'
-          />
-        </View>
-
-        {/* country */}
-        <View style={CommonStyles.flex_1}>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={style.scrollViewSlidingPopup}
-          >
-            {
-              langs.map((lang: Language) => {
-                const isSelected = lang === displayTargetLang
-
-                return (
-                  <LucideIconTextEffectButton
-                    key={lang.language}
-
-                    selectedColorOfTextAndIcon={theme.primary}
-                    unselectedColorOfTextAndIcon={theme.counterPrimary}
-
-                    onPress={() => onPressTargetLang(lang)}
-
-                    manuallySelected={isSelected}
-                    notChangeToSelected
-                    canHandlePressWhenSelected
-
-                    style={isSelected ? style.normalBtn : style.normalBtn_NoBorder}
-
-                    title={lang.name}
-
-                    titleProps={{ style: style.normalBtnTxt }}
-                  />
-                )
-              })
-            }
-          </ScrollView>
-        </View>
-      </View>
+      <TargetLangPicker
+        onPressTargetLang={onPressTargetLang}
+        displayTargetLang={displayTargetLang}
+      />
     )
-  }, [displayTargetLang, supportedLanguages, searchLangInputTxt, texts, theme, style])
+  }, [displayTargetLang, onPressTargetLang])
 
   // exclude time
 
@@ -828,6 +767,7 @@ const SetupScreen = () => {
   // common
 
   let contentToRenderInPopup = undefined
+  let timePickerInitial = [0, 0, 0, 0]
 
   if (showPopup === 'popularity')
     contentToRenderInPopup = renderPopularityLevels
@@ -842,21 +782,14 @@ const SetupScreen = () => {
   else if (showPopup === 'num_days_push')
     contentToRenderInPopup = renderNumDaysToPush
   else { // not show any popup
-    // reset search lang input
+    if (editingExcludeTimePairAndElementIndex.current[0] === undefined ||
+      editingExcludeTimePairAndElementIndex.current[1] < 0)
+      timePickerInitial = GetDayHourMinSecFromMs(displayIntervalInMin * 60 * 1000)
+    else {
+      const time = editingExcludeTimePairAndElementIndex.current[0][editingExcludeTimePairAndElementIndex.current[1]]
 
-    if (searchLangInputTxt.length > 0)
-      set_searchLangInputTxt('')
-  }
-
-  let timePickerInitial
-
-  if (editingExcludeTimePairAndElementIndex.current[0] === undefined ||
-    editingExcludeTimePairAndElementIndex.current[1] < 0)
-    timePickerInitial = GetDayHourMinSecFromMs(displayIntervalInMin * 60 * 1000)
-  else {
-    const time = editingExcludeTimePairAndElementIndex.current[0][editingExcludeTimePairAndElementIndex.current[1]]
-
-    timePickerInitial = GetDayHourMinSecFromMs((time.hours * 60 + time.minutes) * 60 * 1000)
+      timePickerInitial = GetDayHourMinSecFromMs((time.hours * 60 + time.minutes) * 60 * 1000)
+    }
   }
 
   // load setting

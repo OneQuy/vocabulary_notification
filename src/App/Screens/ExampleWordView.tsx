@@ -35,7 +35,7 @@ const ExampleWordView = ({
 
     const [selectingValue, set_selectingValue] = useState(initValue)
     const [examples, set_examples] = useState<undefined | ValueAndDisplayText[]>(undefined)
-    const [rightPanelState, set_rightPanelState] = useState<undefined | 'translating' | boolean | Error>(undefined)
+    const [rightPanelState, set_rightPanelState] = useState<undefined | 'translating' | 'pick_target_lang' | boolean | Error>(undefined)
 
     const style = useMemo(() => {
         return StyleSheet.create({
@@ -157,87 +157,98 @@ const ExampleWordView = ({
                 <View style={style.separatorLine} />
 
                 {/* right panel */}
-                <View style={style.panelChild}>
-                    {/* title */}
-                    {
-                        examples &&
-                        <Text style={style.titleChildTxt}>{titleRight}</Text>
-                    }
+                {
+                    rightPanelState !== 'pick_target_lang' &&
+                    <View style={style.panelChild}>
+                        {/* title */}
+                        {
+                            examples &&
+                            <Text style={style.titleChildTxt}>{titleRight}</Text>
+                        }
 
-                    {/* another example btn */}
-                    {
-                        rightPanelState !== 'translating' &&
-                        < LucideIconTextEffectButton
-                            selectedColorOfTextAndIcon={theme.primary}
-                            unselectedColorOfTextAndIcon={theme.counterPrimary}
+                        {/* another example btn */}
+                        {
+                            rightPanelState !== 'translating' &&
+                            < LucideIconTextEffectButton
+                                selectedColorOfTextAndIcon={theme.primary}
+                                unselectedColorOfTextAndIcon={theme.counterPrimary}
 
-                            onPress={generateExamplesAsync}
+                                onPress={generateExamplesAsync}
 
-                            notChangeToSelected
+                                notChangeToSelected
 
-                            style={style.anotherExampleBtn}
+                                style={style.anotherExampleBtn}
 
-                            title={texts.other_words}
+                                title={texts.other_words}
 
-                            titleProps={{ style: style.normalTxt }}
-                        />
-                    }
+                                titleProps={{ style: style.normalTxt }}
+                            />
+                        }
 
-                    {/* loading */}
-                    {
-                        rightPanelState === 'translating' &&
-                        <>
-                            <ActivityIndicator color={theme.counterPrimary} />
-                            <Text style={style.normalTxt}>{texts.translating}...</Text>
-                        </>
-                    }
+                        {/* loading */}
+                        {
+                            rightPanelState === 'translating' &&
+                            <>
+                                <ActivityIndicator color={theme.counterPrimary} />
+                                <Text style={style.normalTxt}>{texts.translating}...</Text>
+                            </>
+                        }
 
-                    {/* Error */}
-                    {
-                        (rightPanelState instanceof Error || rightPanelState === false) &&
-                        <>
-                            <Text style={style.normalTxt}>{texts.fail_translate}</Text>
-                            {
-                                rightPanelState !== false &&
-                                <Text
-                                    numberOfLines={10}
-                                    adjustsFontSizeToFit
-                                    style={style.errorTxt}
-                                >
-                                    {ToCanPrint(rightPanelState)}
-                                </Text>
-                            }
-                        </>
-                    }
+                        {/* Error */}
+                        {
+                            (rightPanelState instanceof Error || rightPanelState === false) &&
+                            <>
+                                <Text style={style.normalTxt}>{texts.fail_translate}</Text>
+                                {
+                                    rightPanelState !== false &&
+                                    <Text
+                                        numberOfLines={10}
+                                        adjustsFontSizeToFit
+                                        style={style.errorTxt}
+                                    >
+                                        {ToCanPrint(rightPanelState)}
+                                    </Text>
+                                }
+                            </>
+                        }
 
-                    {/* success list */}
-                    {
-                        (examples) &&
-                        <ScrollView
-                            showsVerticalScrollIndicator={false}
-                            contentContainerStyle={style.scrollViewExample}
-                        >
-                            {
-                                examples.map((valueAndDisplayText: ValueAndDisplayText) => {
-                                    return (
-                                        <View key={valueAndDisplayText.text}>
-                                            <Text
-                                                style={style.exampleTxt_Bold}
-                                            >
-                                                {valueAndDisplayText.text}
-                                            </Text>
-                                            <Text
-                                                style={style.exampleTxt}
-                                            >
-                                                {valueAndDisplayText.value}
-                                            </Text>
-                                        </View>
-                                    )
-                                })
-                            }
-                        </ScrollView>
-                    }
-                </View>
+                        {/* success list */}
+                        {
+                            (examples) &&
+                            <ScrollView
+                                showsVerticalScrollIndicator={false}
+                                contentContainerStyle={style.scrollViewExample}
+                            >
+                                {
+                                    examples.map((valueAndDisplayText: ValueAndDisplayText) => {
+                                        return (
+                                            <View key={valueAndDisplayText.text}>
+                                                <Text
+                                                    style={style.exampleTxt_Bold}
+                                                >
+                                                    {valueAndDisplayText.text}
+                                                </Text>
+                                                <Text
+                                                    style={style.exampleTxt}
+                                                >
+                                                    {valueAndDisplayText.value}
+                                                </Text>
+                                            </View>
+                                        )
+                                    })
+                                }
+                            </ScrollView>
+                        }
+                    </View>
+                }
+
+                {/* right panel - pick target lang */}
+                {
+                    rightPanelState === 'pick_target_lang' &&
+                    <View style={style.panelChild}>
+
+                    </View>
+                }
             </View>
 
             {/* confirm btn */}
@@ -253,7 +264,7 @@ const ExampleWordView = ({
 
                 title={texts.confirm}
 
-                titleProps={{ style: style.normalTxt }}
+                titleProps={{ adjustsFontSizeToFit: false, style: style.normalTxt }}
             />
         </View>
     )
