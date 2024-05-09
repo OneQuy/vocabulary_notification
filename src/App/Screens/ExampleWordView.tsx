@@ -151,7 +151,7 @@ const ExampleWordView = ({
         set_selectingTargetLang(supportedLang)
 
         if (supportedLang) {
-            generateExamplesAsync(service, -1, selectingTargetLang.language)
+            generateExamplesAsync(service, -1, supportedLang.language)
         }
         else { // not support target lang
             set_rightPanelState('pick_target_lang')
