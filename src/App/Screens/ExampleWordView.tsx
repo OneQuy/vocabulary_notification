@@ -35,7 +35,7 @@ const ExampleWordView = ({
 
     const [selectingValue, set_selectingValue] = useState(initValue)
     const [examples, set_examples] = useState<undefined | ValueAndDisplayText[]>(undefined)
-    const [examplesState, set_examplesState] = useState<undefined | 'translating' | boolean | Error>(undefined)
+    const [rightPanelState, set_rightPanelState] = useState<undefined | 'translating' | boolean | Error>(undefined)
 
     const style = useMemo(() => {
         return StyleSheet.create({
@@ -91,17 +91,17 @@ const ExampleWordView = ({
     }, [theme])
 
     const generateExamplesAsync = useCallback(async () => {
-        set_examplesState('translating')
+        set_rightPanelState('translating')
         set_examples(undefined)
 
         const res = await getExampleAsync(selectingValue?.value, -1)
 
         if (Array.isArray(res)) {
             set_examples(res)
-            set_examplesState(undefined)
+            set_rightPanelState(undefined)
         }
         else
-            set_examplesState(res)
+            set_rightPanelState(res)
     }, [getExampleAsync, selectingValue])
 
     const onPressValue = useCallback((value: ValueAndDisplayText) => {
@@ -166,7 +166,7 @@ const ExampleWordView = ({
 
                     {/* another example btn */}
                     {
-                        examplesState !== 'translating' &&
+                        rightPanelState !== 'translating' &&
                         < LucideIconTextEffectButton
                             selectedColorOfTextAndIcon={theme.primary}
                             unselectedColorOfTextAndIcon={theme.counterPrimary}
@@ -185,7 +185,7 @@ const ExampleWordView = ({
 
                     {/* loading */}
                     {
-                        examplesState === 'translating' &&
+                        rightPanelState === 'translating' &&
                         <>
                             <ActivityIndicator color={theme.counterPrimary} />
                             <Text style={style.normalTxt}>{texts.translating}...</Text>
@@ -194,17 +194,17 @@ const ExampleWordView = ({
 
                     {/* Error */}
                     {
-                        (examplesState instanceof Error || examplesState === false) &&
+                        (rightPanelState instanceof Error || rightPanelState === false) &&
                         <>
                             <Text style={style.normalTxt}>{texts.fail_translate}</Text>
                             {
-                                examplesState !== false &&
+                                rightPanelState !== false &&
                                 <Text
                                     numberOfLines={10}
                                     adjustsFontSizeToFit
                                     style={style.errorTxt}
                                 >
-                                    {ToCanPrint(examplesState)}
+                                    {ToCanPrint(rightPanelState)}
                                 </Text>
                             }
                         </>
