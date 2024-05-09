@@ -21,11 +21,13 @@ const ExampleWordView = ({
     values,
     initValue,
     getExampleAsync,
+    onConfirmValue,
 }: {
     titleLeft: string,
     titleRight: string,
     values: ValueAndDisplayText[],
     initValue?: ValueAndDisplayText,
+    onConfirmValue: (service?: ValueAndDisplayText) => void,
     getExampleAsync: (service: TranslationService, popularityLevelIdx: number) => Promise<boolean | Error | ValueAndDisplayText[]>,
 }) => {
     const theme = useTheme()
@@ -52,7 +54,7 @@ const ExampleWordView = ({
             scrollViewExample: { gap: Gap.Normal, },
 
             serviceTxt: { fontSize: FontSize.Small, },
-            
+
             normalTxt: { fontSize: FontSize.Normal, },
 
             errorTxt: { fontSize: FontSize.Small, },
@@ -101,10 +103,6 @@ const ExampleWordView = ({
         else
             set_examplesState(res)
     }, [getExampleAsync, selectingValue])
-
-    const onPressConfirm = useCallback((value: ValueAndDisplayText) => {
-
-    }, [selectingValue])
 
     const onPressValue = useCallback((value: ValueAndDisplayText) => {
         set_selectingValue(value)
@@ -247,7 +245,7 @@ const ExampleWordView = ({
                 selectedColorOfTextAndIcon={theme.primary}
                 unselectedColorOfTextAndIcon={theme.counterPrimary}
 
-                // onPress={() => onPressValue(valueAndDisplayText)}
+                onPress={() => onConfirmValue(selectingValue)}
 
                 // manuallySelected={isSelected}
                 // notChangeToSelected

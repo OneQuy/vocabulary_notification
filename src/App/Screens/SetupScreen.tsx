@@ -567,22 +567,19 @@ const SetupScreen = () => {
     set_supportedLanguages(suit.supportedLanguages)
   }, [])
 
-  const onPressTestTranslationService = useCallback((service: TranslationService) => {
-
-  }, [])
-
-  const onPressTranslationService = useCallback((service: TranslationService) => {
+  const onPressTranslationService = useCallback((service?: ValueAndDisplayText) => {
     if (!popupCloseCallbackRef.current)
       return
 
     popupCloseCallbackRef.current(() => { // closed
-      onChangedTranslationService(service)
+      // onChangedTranslationService(service)
     })
   }, [onChangedTranslationService])
 
   const renderPickTranslationService = useCallback(() => {
     return (
       <ExampleWordView
+        onConfirmValue={onPressTranslationService}
         getExampleAsync={getExampleWordsAsync}
         titleLeft={texts.services}
         titleRight={texts.example_words}
