@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Alert } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import useTheme from '../Hooks/useTheme'
 import useLocalText from '../Hooks/useLocalText'
@@ -8,7 +8,7 @@ import { WindowSize_Max } from '../../Common/CommonConstants'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import { TranslationService } from '../Types'
-import { ToCanPrint } from '../../Common/UtilsTS'
+import { AlertAsync, ToCanPrint } from '../../Common/UtilsTS'
 import TargetLangPicker from '../Components/TargetLangPicker'
 import { Language } from '../../Common/TranslationApis/TranslationLanguages'
 import { CheckCapabilityLanguage } from '../Handles/AppUtils'
@@ -115,7 +115,7 @@ const ExampleWordView = ({
         set_rightPanelState('translating')
         set_examples(undefined)
 
-        const res = await getExampleAsync(service, popularityLevelIdx, targetLang)
+        const res = await getExampleAsync(service, popularityLevelIdx, targetLang ?? selectingTargetLang?.language)
 
         if (Array.isArray(res)) {
             set_examples(res)
@@ -123,11 +123,11 @@ const ExampleWordView = ({
         }
         else
             set_rightPanelState(res)
-    }, [getExampleAsync])
+    }, [getExampleAsync, selectingTargetLang])
 
     const onPressTargetLang = useCallback((value: Language) => {
         set_selectingTargetLang(value)
-        
+
         generateExamplesAsync(selectingValue?.text as TranslationService, -1, value.language)
     }, [generateExamplesAsync, selectingValue?.text])
 
@@ -154,10 +154,15 @@ const ExampleWordView = ({
         if (supportedLang) {
             generateExamplesAsync(service, -1, selectingTargetLang.language)
         }
-        else {
+        else { // not support target lang
             set_rightPanelState('pick_target_lang')
+
+            Alert.alert(
+                texts.popup_error,
+                (texts.not_fount_suppport_target_lang).replace('##', selectingTargetLang.name)
+            )
         }
-    }, [selectingTargetLang, generateExamplesAsync])
+    }, [selectingTargetLang, texts, generateExamplesAsync])
 
     return (
         <View style={style.master}>
