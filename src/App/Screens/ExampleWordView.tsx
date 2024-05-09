@@ -9,6 +9,8 @@ import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import { TranslationService } from '../Types'
 import { ToCanPrint } from '../../Common/UtilsTS'
+import TargetLangPicker from '../Components/TargetLangPicker'
+import { Language } from '../../Common/TranslationApis/TranslationLanguages'
 
 export type ValueAndDisplayText = {
     value: any,
@@ -20,6 +22,7 @@ const ExampleWordView = ({
     titleRight,
     values,
     initValue,
+    initTargetLang,
     getExampleAsync,
     onConfirmValue,
 }: {
@@ -27,13 +30,20 @@ const ExampleWordView = ({
     titleRight: string,
     values: ValueAndDisplayText[],
     initValue?: ValueAndDisplayText,
+    initTargetLang?: Language,
     onConfirmValue: (service?: ValueAndDisplayText) => void,
-    getExampleAsync: (service: TranslationService, popularityLevelIdx: number) => Promise<boolean | Error | ValueAndDisplayText[]>,
+    
+    getExampleAsync: (
+        service: TranslationService, 
+        popularityLevelIdx?: number,
+        targetLang?: string | null,
+    ) => Promise<boolean | Error | ValueAndDisplayText[]>,
 }) => {
     const theme = useTheme()
     const texts = useLocalText()
 
     const [selectingValue, set_selectingValue] = useState(initValue)
+    const [selectingTargetLang, set_selectingTargetLang] = useState(initTargetLang)
     const [examples, set_examples] = useState<undefined | ValueAndDisplayText[]>(undefined)
     const [rightPanelState, set_rightPanelState] = useState<undefined | 'translating' | 'pick_target_lang' | boolean | Error>(undefined)
 
@@ -94,7 +104,7 @@ const ExampleWordView = ({
         set_rightPanelState('translating')
         set_examples(undefined)
 
-        const res = await getExampleAsync(selectingValue?.value, -1)
+        const res = await getExampleAsync(selectingValue?.value)
 
         if (Array.isArray(res)) {
             set_examples(res)
@@ -103,6 +113,10 @@ const ExampleWordView = ({
         else
             set_rightPanelState(res)
     }, [getExampleAsync, selectingValue])
+
+    const onPressTargetLang = useCallback((value: Language) => {
+        set_selectingTargetLang(value)
+    }, [])
 
     const onPressValue = useCallback((value: ValueAndDisplayText) => {
         set_selectingValue(value)
@@ -164,6 +178,25 @@ const ExampleWordView = ({
                         {
                             examples &&
                             <Text style={style.titleChildTxt}>{titleRight}</Text>
+                        }
+
+                        {/* pick target lang */}
+                        {
+                            rightPanelState !== 'translating' &&
+                            < LucideIconTextEffectButton
+                                selectedColorOfTextAndIcon={theme.primary}
+                                unselectedColorOfTextAndIcon={theme.counterPrimary}
+
+                                onPress={generateExamplesAsync}
+
+                                notChangeToSelected
+
+                                style={style.anotherExampleBtn}
+
+                                title={texts.other_words}
+
+                                titleProps={{ style: style.normalTxt }}
+                            />
                         }
 
                         {/* another example btn */}
@@ -245,9 +278,11 @@ const ExampleWordView = ({
                 {/* right panel - pick target lang */}
                 {
                     rightPanelState === 'pick_target_lang' &&
-                    <View style={style.panelChild}>
-
-                    </View>
+                    <TargetLangPicker
+                        onPressTargetLang={onPressTargetLang}
+                        initTargetLang={undefined}
+                        selectingService={selectingValue?.value}
+                    />
                 }
             </View>
 

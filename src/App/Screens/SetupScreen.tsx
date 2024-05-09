@@ -207,8 +207,13 @@ const SetupScreen = () => {
     return true
   }
 
-  const getExampleWordsAsync = useCallback(async (service: TranslationService, popularityLevelIdx = -1): Promise<boolean | Error | ValueAndDisplayText[]> => {
-    const targetLang = await GetTargetLangAsync()
+  const getExampleWordsAsync = useCallback(async (
+    service: TranslationService,
+    popularityLevelIdx?: number,
+    targetLang?: string | null,
+  ): Promise<boolean | Error | ValueAndDisplayText[]> => {
+    if (typeof targetLang !== 'string')
+      targetLang = await GetTargetLangAsync()
 
     if (!targetLang) {
       return new Error(PleaseSelectTargetLangText)
@@ -608,6 +613,7 @@ const SetupScreen = () => {
   const renderPickTranslationService = useCallback(() => {
     return (
       <ExampleWordView
+        initTargetLang={displayTargetLang}
         onConfirmValue={onPressTranslationService}
         getExampleAsync={getExampleWordsAsync}
         titleLeft={texts.services}
@@ -616,7 +622,14 @@ const SetupScreen = () => {
         initValue={translationServiceValueAndDisplayTexts.find(i => i.value === displayTranslationService)}
       />
     )
-  }, [displayTranslationService, getExampleWordsAsync, translationServiceValueAndDisplayTexts, theme, style])
+  }, [
+    displayTranslationService,
+    displayTargetLang,
+    getExampleWordsAsync,
+    translationServiceValueAndDisplayTexts,
+    theme,
+    style
+  ])
 
   // num days to push
 
