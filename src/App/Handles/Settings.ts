@@ -18,8 +18,11 @@ export const GetTargetLangAsync = async (): Promise<string | null> => {
     return await AsyncStorage.getItem(StorageKey_TargetLang)
 }
 
-export const SetTargetLangAsyncAsync = async (lang: string): Promise<void> => {
-    await AsyncStorage.setItem(StorageKey_TargetLang, lang)
+export const SetTargetLangAsyncAsync = async (lang: string | undefined): Promise<void> => {
+    if (lang)
+        await AsyncStorage.setItem(StorageKey_TargetLang, lang)
+    else
+        await AsyncStorage.removeItem(StorageKey_TargetLang)
 }
 
 

@@ -14,7 +14,7 @@ import { DefaultExcludedTimePairs, DefaultIntervalInMin, DefaultNumDaysToPush, I
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
 import { LucideIcon } from '../../Common/Components/LucideIcon'
 import { PairTime, TranslationService } from '../Types'
-import { ClearDbAndNotificationsAsync, TotalMin } from '../Handles/AppUtils'
+import { CheckCapabilityLanguage, ClearDbAndNotificationsAsync, TotalMin } from '../Handles/AppUtils'
 import { SetNotificationAsync, TestNotificationAsync } from '../Handles/SetupNotification'
 import { GetDefaultTranslationService, GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, GetTranslationServiceAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetNumDaysToPushAsync, SetPopularityLevelIndexAsync, SetTranslationServiceAsync, SetTargetLangAsyncAsync, GetSourceLangAsync } from '../Handles/Settings'
 import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync, IsCachedWordsDataCurrentLevelAsync } from '../Handles/WordsData'
@@ -250,7 +250,7 @@ const SetupScreen = () => {
       false
     )
 
-    if (translatedsOrError instanceof Error)
+    if (!Array.isArray(translatedsOrError))
       return translatedsOrError
 
     return translatedsOrError.map(t => {
@@ -575,7 +575,16 @@ const SetupScreen = () => {
       await ClearDbAndNotificationsAsync()
       await SqlLogAllRowsAsync('LocalizedWordsTable')
     }
-  }, [])
+
+    // reset target lang
+
+    if (displayTargetLang) {
+      const supportedLanguage = CheckCapabilityLanguage(displayTargetLang, suit.supportedLanguages)
+      
+      set_displayTargetLang(supportedLanguage)
+      SetTargetLangAsyncAsync(supportedLanguage ? supportedLanguage.language : undefined)
+    }
+  }, [displayTargetLang])
 
   const onPressTranslationService = useCallback((service?: ValueAndDisplayText) => {
     if (!popupCloseCallbackRef.current)
@@ -672,10 +681,10 @@ const SetupScreen = () => {
   // target lang
 
   const onPressTargetLang = useCallback((lang: Language) => {
-    set_displayTargetLang(lang)
 
     if (popupCloseCallbackRef.current) {
       popupCloseCallbackRef.current(() => {
+        set_displayTargetLang(lang)
         SetTargetLangAsyncAsync(lang.language)
       })
     }
