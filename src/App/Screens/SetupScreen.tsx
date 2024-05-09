@@ -591,7 +591,6 @@ const SetupScreen = () => {
             text: texts.confirm,
             onPress: () => {
               onChangedTranslationService(serv)
-              SetTranslationServiceAsync(serv)
             }
           },
 
