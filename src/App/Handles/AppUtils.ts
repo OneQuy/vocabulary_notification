@@ -8,6 +8,8 @@ import { HandleError } from "../../Common/Tracking"
 import { TranslatedResult } from "../../Common/TranslationApis/TranslationLanguages"
 
 export const ClearDbAndNotificationsAsync = async () => {
+    console.log('[ClearDbAndNotificationsAsync] CLEARED DB & NOTITICATIONS');
+    
     // delete db
 
     await DeleteAllRowsTableAsync()

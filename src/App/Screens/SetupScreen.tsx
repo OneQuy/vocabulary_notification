@@ -14,7 +14,7 @@ import { DefaultExcludedTimePairs, DefaultIntervalInMin, DefaultNumDaysToPush, I
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
 import { LucideIcon } from '../../Common/Components/LucideIcon'
 import { PairTime, TranslationService } from '../Types'
-import { TotalMin } from '../Handles/AppUtils'
+import { ClearDbAndNotificationsAsync, TotalMin } from '../Handles/AppUtils'
 import { SetNotificationAsync, TestNotificationAsync } from '../Handles/SetupNotification'
 import { GetDefaultTranslationService, GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, GetTranslationServiceAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetNumDaysToPushAsync, SetPopularityLevelIndexAsync, SetTranslationServiceAsync, SetTargetLangAsyncAsync, GetSourceLangAsync } from '../Handles/Settings'
 import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync, IsCachedWordsDataCurrentLevelAsync } from '../Handles/WordsData'
@@ -27,6 +27,7 @@ import { DevistyTranslateAsync } from '../../Common/TranslationApis/DevistyTrans
 import { DevistyTranslateApiKey } from '../../../Keys'
 import { BridgeTranslateMultiWordAsync, GetCurrentTranslationServiceSuitAsync } from '../Handles/TranslateBridge'
 import ExampleWordView, { ValueAndDisplayText } from './ExampleWordView'
+import { SqlLogAllRowsAsync } from '../../Common/SQLite'
 
 type SubView =
   'setup' |
@@ -560,14 +561,20 @@ const SetupScreen = () => {
     })
   }, [TranslationServicePresets])
 
-  const onChangedTranslationServiceAsync = useCallback(async (service: TranslationService) => {
+  const onChangedTranslationServiceAsync = useCallback(async (service: TranslationService, resetData: boolean) => {
     set_displayTranslationService(service)
 
-    SetTranslationServiceAsync(service)
+    await SetTranslationServiceAsync(service)
 
     const suit = await GetCurrentTranslationServiceSuitAsync()
 
     set_supportedLanguages(suit.supportedLanguages)
+
+    if (resetData) {
+      await SqlLogAllRowsAsync('LocalizedWordsTable')
+      await ClearDbAndNotificationsAsync()
+      await SqlLogAllRowsAsync('LocalizedWordsTable')
+    }
   }, [])
 
   const onPressTranslationService = useCallback((service?: ValueAndDisplayText) => {
@@ -590,7 +597,7 @@ const SetupScreen = () => {
           {
             text: texts.confirm,
             onPress: () => {
-              onChangedTranslationServiceAsync(serv)
+              onChangedTranslationServiceAsync(serv, true)
             }
           },
 
@@ -866,7 +873,7 @@ const SetupScreen = () => {
       set_displayTargetLang(targetLang ? GetLanguageFromCode(targetLang) : undefined)
 
       const service = await GetTranslationServiceAsync()
-      onChangedTranslationServiceAsync(service)
+      onChangedTranslationServiceAsync(service, false)
 
       // setting display notifition
 
