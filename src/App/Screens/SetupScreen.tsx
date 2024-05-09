@@ -572,9 +572,33 @@ const SetupScreen = () => {
       return
 
     popupCloseCallbackRef.current(() => { // closed
-      // onChangedTranslationService(service)
+      if (!service)
+        return
+
+      const serv = service.text as TranslationService
+
+      if (displayTranslationService === serv)
+        return
+
+      Alert.alert(
+        texts.confirm,
+        texts.warning_clear_db,
+        [
+          {
+            text: texts.confirm,
+            onPress: () => {
+              onChangedTranslationService(serv)
+              SetTranslationServiceAsync(serv)
+            }
+          },
+
+          {
+            text: texts.cancel
+          }
+        ]
+      )
     })
-  }, [onChangedTranslationService])
+  }, [texts, displayTranslationService, onChangedTranslationService])
 
   const renderPickTranslationService = useCallback(() => {
     return (

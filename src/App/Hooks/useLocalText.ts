@@ -39,6 +39,7 @@ const eng = {
     test: 'Test',
     confirm: 'Confirm',
     other_words: 'Other words',
+    warning_clear_db: 'To change the translation service, the database needs to be reset, and all learned words must be deleted. These words will also be cleared from the History panel. Tap Confirm to proceed with the change',
     
     show_rank_of_word: 'Show popularity #Rank of word',
     show_part_of_speech: 'Show part of speech (adv, adj, noun,...)',
