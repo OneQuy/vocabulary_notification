@@ -316,13 +316,17 @@ export const TestNotificationAsync = async (setHandling: (type: HandlingType) =>
 
         const words = await GetNextWordsDataCurrentLevelForNotiAsync(50)
 
-        if (words instanceof Error)
+        if (words instanceof Error) {
+            setHandling(undefined)
             return words
+        }
 
         const translatedArrOrError = await BridgeTranslateMultiWordAsync(
             words.words.map(i => i.word),
             targetLang,
             await GetSourceLangAsync())
+
+        setHandling(undefined)
 
         // error overall
 
@@ -331,8 +335,6 @@ export const TestNotificationAsync = async (setHandling: (type: HandlingType) =>
         }
 
         // success all
-
-        setHandling(undefined)
 
         return await TestNotificationAsync(setHandling)
     }
