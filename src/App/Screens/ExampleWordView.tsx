@@ -37,7 +37,7 @@ const ExampleWordView = ({
     values: ValueAndDisplayText[],
     initValue?: ValueAndDisplayText,
     initTargetLang?: Language,
-    onConfirmValue: (service?: ValueAndDisplayText) => void,
+    onConfirmValue: (service?: ValueAndDisplayText, targetLang?: Language) => void,
 
     getExampleAsync: (
         service: TranslationService,
@@ -328,7 +328,7 @@ const ExampleWordView = ({
                 selectedColorOfTextAndIcon={theme.primary}
                 unselectedColorOfTextAndIcon={theme.counterPrimary}
 
-                onPress={() => onConfirmValue(selectingValue)}
+                onPress={() => onConfirmValue(selectingValue, selectingTargetLang)}
 
                 notChangeToSelected
 
