@@ -553,30 +553,25 @@ const SetupScreen = () => {
     })
   }, [TranslationServicePresets])
 
-  const onChangedTranslationServiceAsync = useCallback(async (service: TranslationService, targetLang: Language, resetData: boolean) => {
+  const onConfirmedChangeTranslationServiceAsync = useCallback(async (service: TranslationService, targetLang: Language, resetData: boolean) => {
+    // Translation Service
+
     set_displayTranslationService(service)
+    SetTranslationServiceAsync(service)
 
-    await SetTranslationServiceAsync(service)
-
-    // const suit = await GetCurrentTranslationServiceSuitAsync()
-
-    // set_supportedLanguages(suit.supportedLanguages)
+    // target lang
+    
+    set_displayTargetLang(targetLang)
+    SetTargetLangAsyncAsync(targetLang.language)
+   
+    // reset db
 
     if (resetData) {
-      await SqlLogAllRowsAsync('LocalizedWordsTable')
+      // await SqlLogAllRowsAsync('LocalizedWordsTable')
       await ClearDbAndNotificationsAsync()
       await SqlLogAllRowsAsync('LocalizedWordsTable')
     }
-
-    // reset target lang
-
-    // if (displayTargetLang) {
-    //   const supportedLanguage = CheckCapabilityLanguage(displayTargetLang, suit.supportedLanguages)
-
-    //   set_displayTargetLang(supportedLanguage)
-    //   SetTargetLangAsyncAsync(supportedLanguage ? supportedLanguage.language : undefined)
-    // }
-  }, [displayTargetLang])
+  }, [])
 
   const onPressTranslationService = useCallback((service?: ValueAndDisplayText, targetLang?: Language) => {
     if (!popupCloseCallbackRef.current)
@@ -598,7 +593,7 @@ const SetupScreen = () => {
           {
             text: texts.confirm,
             onPress: () => {
-              onChangedTranslationServiceAsync(serv, targetLang, true)
+              onConfirmedChangeTranslationServiceAsync(serv, targetLang, true)
             }
           },
 
@@ -608,7 +603,7 @@ const SetupScreen = () => {
         ]
       )
     })
-  }, [texts, displayTranslationService, onChangedTranslationServiceAsync])
+  }, [texts, displayTranslationService, onConfirmedChangeTranslationServiceAsync])
 
   const renderPickTranslationService = useCallback(() => {
     return (
