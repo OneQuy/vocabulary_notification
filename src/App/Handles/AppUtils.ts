@@ -11,30 +11,26 @@ const IsLog = true
 
 export const CheckCapabilityLanguage = (currentLang: Language, supportedLangs: Language[]): Language | undefined => {
     const findExactly = supportedLangs.find(i =>
-        i.language === currentLang.language ||
-        i.name === currentLang.name
-    )
-
-    // existed exactly
-
-    if (findExactly) {
-        if (IsLog)
-            console.log('[CheckCapabilityLanguage] current lang', currentLang, 'findExactly', findExactly !== undefined);
-
-        return findExactly
-    }
-
-    // find lang name
-
-    const find = supportedLangs.find(i =>
-        i.name.toLowerCase().includes(currentLang.name.toLowerCase()) ||
-        currentLang.name.toLowerCase().includes(i.name.toLowerCase())
+        i.language.toLowerCase() === currentLang.language.toLowerCase() ||
+        i.name.toLowerCase() === currentLang.name.toLowerCase()
     )
 
     if (IsLog)
-        console.log('[CheckCapabilityLanguage] current lang', currentLang, 'find NOT Exactly:', find)
+        console.log('[CheckCapabilityLanguage] current lang', currentLang, 'found?', findExactly !== undefined);
+    
+    return undefined
 
-    return find
+    // // find lang name
+
+    // const find = supportedLangs.find(i =>
+    //     i.name.toLowerCase().includes(currentLang.name.toLowerCase()) ||
+    //     currentLang.name.toLowerCase().includes(i.name.toLowerCase())
+    // )
+
+    // if (IsLog)
+    //     console.log('[CheckCapabilityLanguage] current lang', currentLang, 'find NOT Exactly:', find)
+
+    // return find
 }
 
 export const ClearDbAndNotificationsAsync = async () => {
