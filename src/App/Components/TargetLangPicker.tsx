@@ -33,11 +33,11 @@ const TargetLangPicker = ({
         return StyleSheet.create({
             scrollViewSlidingPopup: { gap: Gap.Small, padding: Outline.Normal, },
 
-            searchCountryView: {
+            searchLangView: {
                 borderWidth: StyleSheet.hairlineWidth,
                 borderRadius: BorderRadius.Medium,
                 borderColor: theme.counterPrimary,
-                padding: Outline.Normal,
+                padding: Outline.Small,
                 justifyContent: 'center',
                 alignItems: 'center',
                 margin: Outline.Normal,
@@ -79,7 +79,7 @@ const TargetLangPicker = ({
     return (
         <View style={CommonStyles.flex_1}>
             {/* input search */}
-            <View style={style.searchCountryView}>
+            <View style={style.searchLangView}>
                 <TextInput
                     style={style.searchTxt}
                     placeholder={texts.search_language}
