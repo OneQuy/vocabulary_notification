@@ -16,7 +16,9 @@ const TargetLangPicker = ({
     initTargetLang,
     selectingService,
     onPressTargetLang,
+    delayShow,
 }: {
+    delayShow?: boolean
     initTargetLang: Language | undefined,
     selectingService: TranslationService,
     onPressTargetLang: (lang: Language) => void,
@@ -25,7 +27,7 @@ const TargetLangPicker = ({
     const texts = useLocalText()
 
     // const [selectingLang, set_selectingLang] = useState<Language | undefined>(initTargetLang)
-    
+
     const [supportedLanguages, set_supportedLanguages] = useState<Language[]>([])
     const [searchLangInputTxt, set_searchLangInputTxt] = useState('')
 
@@ -65,7 +67,8 @@ const TargetLangPicker = ({
 
     useEffect(() => {
         (async () => {
-            await DelayAsync(500)
+            if (delayShow)
+                await DelayAsync(500)
 
             const suit = await GetCurrentTranslationServiceSuitAsync(selectingService)
 

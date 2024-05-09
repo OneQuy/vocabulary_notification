@@ -693,6 +693,7 @@ const SetupScreen = () => {
   const renderPickTargetLang = useCallback(() => {
     return (
       <TargetLangPicker
+        delayShow
         onPressTargetLang={onPressTargetLang}
         initTargetLang={displayTargetLang}
         selectingService={displayTranslationService}
