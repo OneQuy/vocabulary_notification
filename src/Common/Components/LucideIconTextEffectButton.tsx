@@ -1,7 +1,7 @@
 // https://feathericons.com/
 // LucideIconTextEffectButton - 7 Apr 2024 (Creating StyleShot)
 
-import { View, Text, StyleSheet, ColorValue, TouchableOpacity, Animated, ViewStyle, TextStyle, Image, ImagePropsBase, GestureResponderEvent, TextProps } from 'react-native'
+import { View, Text, StyleSheet, ColorValue, TouchableOpacity, Animated, ViewStyle, TextStyle, Image, ImagePropsBase, GestureResponderEvent, TextProps, Platform } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { LucideIcon, LucideIconProps } from './LucideIcon'
 import { SafeValue } from '../UtilsTS'
@@ -424,7 +424,7 @@ const LucideIconTextEffectButton = ({
             {
                 title &&
                 <Text
-                    adjustsFontSizeToFit={true}
+                    adjustsFontSizeToFit={Platform.OS === 'android' ? false : true}
                     numberOfLines={1}
                     {...titleProps}
                     style={styles.title}
