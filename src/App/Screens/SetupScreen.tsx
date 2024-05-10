@@ -549,7 +549,7 @@ const SetupScreen = () => {
     })
   }, [TranslationServicePresets])
 
-  const onConfirmedChangeTranslationServiceAsync = useCallback(async (service: TranslationService, targetLang: Language, resetData: boolean) => {
+  const handleChangedTranslationServiceAsync = useCallback(async (service: TranslationService, targetLang: Language, resetData: boolean) => {
     // Translation Service
 
     set_displayTranslationService(service)
@@ -605,7 +605,7 @@ const SetupScreen = () => {
           {
             text: texts.confirm,
             onPress: () => {
-              onConfirmedChangeTranslationServiceAsync(serv, targetLang, true)
+              handleChangedTranslationServiceAsync(serv, targetLang, true)
             }
           },
 
@@ -615,7 +615,7 @@ const SetupScreen = () => {
         ]
       )
     })
-  }, [texts, displayTranslationService, onConfirmedChangeTranslationServiceAsync])
+  }, [texts, displayTranslationService, handleChangedTranslationServiceAsync])
 
   const renderPickTranslationService = useCallback(() => {
     return (
