@@ -274,7 +274,8 @@ const ExampleWordView = ({
 
                         {/* Error */}
                         {
-                            (rightPanelState instanceof Error || rightPanelState === false) &&
+                            // @ts-ignore
+                            (rightPanelState instanceof Error || rightPanelState?.message || rightPanelState === false) &&
                             <>
                                 <Text style={style.normalTxt}>{texts.fail_translate}</Text>
                                 {

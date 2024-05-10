@@ -40,10 +40,7 @@ export async function FileStat(path: string, isRLP: boolean = true): Promise<Sta
     return await RNFS.stat(path)
   }
   catch (e) {
-    if (e instanceof Error)
-      return e
-    else
-      return new Error(ToCanPrint(e))
+    return CreateError(e)
   }
 }
 
@@ -65,10 +62,7 @@ export async function FileSizeInMB(path: string, isRLP: boolean = true): Promise
     return sizeBytes / 1024 / 1024
   }
   catch (e) {
-    if (e instanceof Error)
-      return e
-    else
-      return new Error(ToCanPrint(e))
+    return CreateError(e)
   }
 }
 

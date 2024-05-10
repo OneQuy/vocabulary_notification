@@ -72,7 +72,7 @@ const AddOrUpdateLocalizedWordToDbAsync = async (
     )
 
     if (IsLog)
-        console.log('[AddOrUpdateLocalizedWordAsync] ...', wordAndLang, 'success', !(res instanceof Error))
+        console.log('[AddOrUpdateLocalizedWordAsync] ...', wordAndLang, 'success', res === undefined)
 
     return res
 }
@@ -88,7 +88,7 @@ export const AddOrUpdateLocalizedWordsToDbAsync = async (words: SavedWordData[])
         return AddOrUpdateLocalizedWordToDbAsync(word.wordAndLang, word.lastNotiTick, localizedData)
     }))
 
-    const errors = resArr.filter(i => i instanceof Error)
+    const errors = resArr.filter(i => i !== undefined)
 
     if (errors.length > 0)
         console.error('[AddOrUpdateLocalizedWordsAsync] errors: ' + errors.length, errors);

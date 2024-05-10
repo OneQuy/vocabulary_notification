@@ -102,7 +102,7 @@ const HistoryScreen = ({
 
       const allPushed = await GetLocalizedWordFromDbAsync(undefined, true)
 
-      if (allPushed instanceof Error) {
+      if (!Array.isArray(allPushed)) {
         set_allPushedWordsOrError(allPushed)
         return
       }

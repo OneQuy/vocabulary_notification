@@ -41,7 +41,7 @@ const LoadFromLocalizedDbOrTranslateWordsAsync = async (
     const alreadySavedWords = await GetLocalizedWordsFromDbIfAvailableAsync(toLang, words)
 
     const needFetchWords = words.filter(wordToCheck => {
-        if (alreadySavedWords instanceof Error)
+        if (!Array.isArray(alreadySavedWords))
             return true
 
         const seen = alreadySavedWords.find(seen => seen.wordAndLang === ToWordLangString(wordToCheck, toLang))
@@ -55,7 +55,7 @@ const LoadFromLocalizedDbOrTranslateWordsAsync = async (
 
     // already fetched all, did not fetch anymore
 
-    if (!(alreadySavedWords instanceof Error) && needFetchWords.length <= 0) {
+    if (Array.isArray(alreadySavedWords) && needFetchWords.length <= 0) {
         return alreadySavedWords.map(saved => {
             return SavedWordToTranslatedResult(saved)
         })
@@ -80,7 +80,7 @@ const LoadFromLocalizedDbOrTranslateWordsAsync = async (
         if (IsLog)
             console.log('[LoadFromLocalizedDbOrTranslateWordsAsync] fetched (translated) success all', translatedArrOrError.length)
 
-        const alreadyArr = (alreadySavedWords instanceof Error) ? [] : alreadySavedWords.map(word => SavedWordToTranslatedResult(word))
+        const alreadyArr = !Array.isArray(alreadySavedWords) ? [] : alreadySavedWords.map(word => SavedWordToTranslatedResult(word))
         return translatedArrOrError.concat(alreadyArr)
     }
 }
@@ -154,7 +154,7 @@ const SetupWordsForSetNotiAsync = async (numRequired: number): Promise<SetupWord
 
     // enough fetched words, not need fetch more.
 
-    if (!(alreadyFetchedAndNotPushedWordsOfCurrentLevel instanceof Error) && alreadyFetchedAndNotPushedWordsOfCurrentLevel.length >= numRequired) {
+    if (Array.isArray(alreadyFetchedAndNotPushedWordsOfCurrentLevel) && alreadyFetchedAndNotPushedWordsOfCurrentLevel.length >= numRequired) {
         if (IsLog)
             console.log('[SetupWordsForSetNotiAsync] alreadyFetchedAndNotPushedWordsOfCurrentLevel is enough required (not need to fetch any)', SafeArrayLength(alreadyFetchedAndNotPushedWordsOfCurrentLevel))
 
@@ -169,7 +169,7 @@ const SetupWordsForSetNotiAsync = async (numRequired: number): Promise<SetupWord
 
     const getNextWordsDataForNotiResult = await GetNextWordsDataCurrentLevelForNotiAsync(neededFetchWordsCount)
 
-    if (getNextWordsDataForNotiResult instanceof Error) {
+    if (getNextWordsDataForNotiResult instanceof Error || !Array.isArray(getNextWordsDataForNotiResult.words)) {
         return {
             error: getNextWordsDataForNotiResult
         } as SetupWordsForSetNotiResult
@@ -185,7 +185,7 @@ const SetupWordsForSetNotiAsync = async (numRequired: number): Promise<SetupWord
 
     // error overall
 
-    if (translatedResultArrOrError instanceof Error) {
+    if (!Array.isArray(translatedResultArrOrError)) {
         return {
             errorText: 'fail_translate',
             error: translatedResultArrOrError,
@@ -219,7 +219,7 @@ const SetupWordsForSetNotiAsync = async (numRequired: number): Promise<SetupWord
         }
 
         return {
-            words: (alreadyFetchedAndNotPushedWordsOfCurrentLevel instanceof Error) ?
+            words: !Array.isArray(alreadyFetchedAndNotPushedWordsOfCurrentLevel) ?
                 translatedWords :
                 translatedWords.concat(alreadyFetchedAndNotPushedWordsOfCurrentLevel)
         } as SetupWordsForSetNotiResult

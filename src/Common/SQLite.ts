@@ -114,7 +114,7 @@ export const SqlIsExistedAsync = async (table: string, value: SqlColumnAndValue)
 export const SqlLogAllRowsAsync = async (table: string): Promise<void> => {
     const allRows = await SqlGetAllRowsAsync(table)
 
-    if (allRows instanceof Error) {
+    if (!Array.isArray(allRows)) {
         console.log('[SqlLogAllRowsAsync] ' + allRows)
         return
     }

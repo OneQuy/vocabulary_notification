@@ -1277,7 +1277,9 @@ export async function ExecuteWithTimeoutAsync<T>(asyncFunction: () => Promise<T>
     } catch (error) {
         return {
             result: undefined,
-            isTimeOut: error instanceof Error && error.message === TimeOutError
+
+            // @ts-ignore
+            isTimeOut: error?.message === TimeOutError
         }
     }
 }
@@ -1299,7 +1301,7 @@ export function SafeValue<T>(anything: any, defaultValue: T, forceNaNToDefault =
 }
 
 export const CreateError = (anything: any): Error => {
-    if (anything instanceof Error)
+    if (anything?.message)
         return anything
     else
         return new Error(ToCanPrint(anything))
