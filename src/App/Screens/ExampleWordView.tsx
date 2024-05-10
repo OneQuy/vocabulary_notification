@@ -304,7 +304,7 @@ const ExampleWordView = ({
                             rightPanelState === 'translating' &&
                             <>
                                 <ActivityIndicator color={theme.counterPrimary} />
-                                <Text style={style.normalTxt}>{texts.translating}...</Text>
+                                <Text style={style.normalTxt}>{notTranslate ? texts.loading_data : texts.translating}...</Text>
                             </>
                         }
 
