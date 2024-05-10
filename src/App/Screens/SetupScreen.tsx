@@ -571,6 +571,15 @@ const SetupScreen = () => {
     }
   }, [])
 
+  const onPressOpenPopupChangeTranslationService = useCallback(() => {
+    if (!displayTargetLang) {
+      Alert.alert(texts.popup_error, texts.pls_set_target_lang)
+      return
+    }
+
+    onPressShowPopup('translation_service')
+  }, [displayTargetLang, onPressShowPopup, texts])
+
   const onPressTranslationService = useCallback((service?: ValueAndDisplayText, targetLang?: Language) => {
     if (!popupCloseCallbackRef.current)
       return
@@ -1042,7 +1051,7 @@ const SetupScreen = () => {
 
                 iconProps={{ name: 'Sliders', size: FontSize.Normal, }}
 
-                onPress={() => onPressShowPopup('translation_service')}
+                onPress={onPressOpenPopupChangeTranslationService}
               />
             </>
           }

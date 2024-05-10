@@ -1,11 +1,11 @@
 export const NoPermissionText = 'No permission. Please grant the permission to receive vocabulary notifications!'
-export const PleaseSelectTargetLangText = 'Please set a language you wish to translate to'
+export const PleaseSelectTargetLangText = 'Please set [Translation language] you wish to translate to firstly.'
 
 const eng = {
     popularity_level: 'Popuplarity level',
     level: 'Level',
     test_notification: 'Test notification',
-    translate_to: 'Translate to',
+    translate_to: 'Translation language',
     translation_service: 'Translation service',
     services: 'Services',
     example_words: 'Example words',
