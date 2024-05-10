@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Alert } from 'react-native'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import useTheme from '../Hooks/useTheme'
 import useLocalText from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
@@ -8,7 +8,7 @@ import { WindowSize_Max } from '../../Common/CommonConstants'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import { TranslationService } from '../Types'
-import { ToCanPrint } from '../../Common/UtilsTS'
+import { DelayAsync, ToCanPrint } from '../../Common/UtilsTS'
 import TargetLangPicker from '../Components/TargetLangPicker'
 import { Language } from '../../Common/TranslationApis/TranslationLanguages'
 import { CheckCapabilityLanguage } from '../Handles/AppUtils'
@@ -162,6 +162,14 @@ const ExampleWordView = ({
             )
         }
     }, [selectingTargetLang, texts, generateExamplesAsync])
+
+    useEffect(() => {
+        (async () => {
+            await DelayAsync(300)
+
+            generateExamplesAsync(selectingValue?.text as TranslationService)
+        })()
+    }, [])
 
     return (
         <View style={style.master}>
