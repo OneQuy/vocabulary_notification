@@ -318,7 +318,6 @@ export const TestNotificationAsync = async (setHandling: (type: HandlingType) =>
 
         if (wordsResultOrError instanceof Error || !Array.isArray(wordsResultOrError.words)) {
             setHandling(undefined)
-            console.log('aaaaaa');
 
             return wordsResultOrError as Error
         }
@@ -333,8 +332,6 @@ export const TestNotificationAsync = async (setHandling: (type: HandlingType) =>
         // error overall
 
         if (!Array.isArray(translatedArrOrError)) {
-            console.log('bbbbb');
-
             return translatedArrOrError
         }
 
