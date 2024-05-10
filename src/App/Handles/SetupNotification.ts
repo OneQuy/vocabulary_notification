@@ -484,7 +484,7 @@ const DataToNotification = (
             )
         }
 
-        message = `${message}. ${arr.join(' | ')}`
+        message = `${message}. ${arr.join(' ')}`
     }
 
     // return
