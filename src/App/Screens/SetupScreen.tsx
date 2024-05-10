@@ -28,6 +28,8 @@ import ExampleWordView, { ValueAndDisplayText } from './ExampleWordView'
 import { SqlLogAllRowsAsync } from '../../Common/SQLite'
 import TargetLangPicker from '../Components/TargetLangPicker'
 
+const IsLog = true
+
 type SubView =
   'setup' |
   'history' |
@@ -210,16 +212,13 @@ const SetupScreen = () => {
   }
 
   const getExampleWordsAsync = useCallback(async (
-    service: TranslationService,
+    service?: TranslationService,
     popularityLevelIdx?: number,
     targetLang?: string | null,
+    notTranslate?: boolean
   ): Promise<boolean | Error | ValueAndDisplayText[]> => {
-    if (typeof targetLang !== 'string')
-      targetLang = await GetTargetLangAsync()
-
-    if (!targetLang) {
-      return new Error(PleaseSelectTargetLangText)
-    }
+    if (IsLog)
+      console.log('[getExampleWordsAsync] notTranslate', notTranslate);
 
     const dataReady = await setHandlingAndGetReadyDataAsync()
 
@@ -235,6 +234,24 @@ const SetupScreen = () => {
 
     if (randomWords === undefined) // ts
       return false
+
+    if (notTranslate === true) {
+      return randomWords.map(t => {
+        const res: ValueAndDisplayText = {
+          value: t.word,
+          text: t.word,
+        }
+
+        return res
+      })
+    }
+
+    if (typeof targetLang !== 'string')
+      targetLang = await GetTargetLangAsync()
+
+    if (!targetLang) {
+      return new Error(PleaseSelectTargetLangText)
+    }
 
     const translatedsOrError = await BridgeTranslateMultiWordAsync(
       randomWords.map(w => w.word),
@@ -414,6 +431,7 @@ const SetupScreen = () => {
   const renderPopularityLevels = useCallback(() => {
     return (
       <ExampleWordView
+        notTranslate
         onConfirmValue={onPressConfirmInPopupPopularityLevel}
         getExampleAsync={getExampleWordsAsync}
         titleLeft={texts.level}
