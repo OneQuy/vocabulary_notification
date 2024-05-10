@@ -573,7 +573,14 @@ const SetupScreen = () => {
 
   const onPressOpenPopupChangeTranslationService = useCallback(() => {
     if (!displayTargetLang) {
-      Alert.alert(texts.popup_error, texts.pls_set_target_lang)
+      Alert.alert(
+        texts.popup_error,
+        texts.pls_set_target_lang, [
+        {
+          onPress: () => onPressShowPopup('target-lang')
+        }
+      ])
+
       return
     }
 
