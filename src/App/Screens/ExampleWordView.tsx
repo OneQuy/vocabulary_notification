@@ -8,7 +8,7 @@ import { WindowSize_Max } from '../../Common/CommonConstants'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import { TranslationService } from '../Types'
-import { DelayAsync, ToCanPrint } from '../../Common/UtilsTS'
+import { CapitalizeFirstLetter, DelayAsync, ToCanPrint } from '../../Common/UtilsTS'
 import TargetLangPicker from '../Components/TargetLangPicker'
 import { Language } from '../../Common/TranslationApis/TranslationLanguages'
 import { CheckCapabilityLanguage } from '../Handles/AppUtils'
@@ -327,15 +327,18 @@ const ExampleWordView = ({
                                     examples.map((valueAndDisplayText: ValueAndDisplayText) => {
                                         return (
                                             <View key={valueAndDisplayText.text}>
-                                                <Text
-                                                    style={style.exampleTxt_Bold}
-                                                >
-                                                    {valueAndDisplayText.text}
-                                                </Text>
+                                                {
+                                                    !notTranslate &&
+                                                    <Text
+                                                        style={style.exampleTxt_Bold}
+                                                    >
+                                                        {valueAndDisplayText.text}
+                                                    </Text>
+                                                }
                                                 <Text
                                                     style={style.exampleTxt}
                                                 >
-                                                    {valueAndDisplayText.value}
+                                                    {CapitalizeFirstLetter(valueAndDisplayText.value)}
                                                 </Text>
                                             </View>
                                         )
