@@ -71,14 +71,16 @@ export const ExtractWordFromWordLang = (wordAndLang: string): string => {
         return '[ExtractWordFromWordLang] null'
     }
 
-    const arr = wordAndLang.split('_')
+    const idx = wordAndLang.indexOf('_')
 
-    if (arr.length !== 2) {
-        HandleError('arr.length !== 2', 'ExtractWordFromWordLang', false);
-        return '[ExtractWordFromWordLang] arr.length !== 2'
+    if (idx <= 0) {
+        HandleError("wordAndLang.indexOf('_') <= 0", 'ExtractWordFromWordLang', false);
+        return "wordAndLang.indexOf('_')"
     }
 
-    return arr[0]
+    // console.log('xxxxx', wordAndLang, wordAndLang.substring(0, idx));
+    
+    return wordAndLang.substring(0, idx)
 }
 
 export const CheckDeserializeLocalizedData = (saved: SavedWordData): LocalizedData => {
