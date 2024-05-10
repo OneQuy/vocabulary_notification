@@ -152,6 +152,10 @@ const SetupScreen = () => {
     set_subView(type)
   }, [])
 
+  const onPressShowPopup = useCallback((type: PopupType) => {
+    set_showPopup(type)
+  }, [])
+
   const onPressMoreSetting = useCallback(() => {
     set_showMoreSetting(v => !v)
   }, [])
@@ -366,11 +370,35 @@ const SetupScreen = () => {
 
   // popularity
 
-  const onPressPopularityLevel = useCallback((popularityLevelIdx: number) => {
+  const popularityValueAndDisplayTexts = useMemo(() => {
+    return Array(PopuplarityLevelNumber).fill(undefined).map((_, index) => {
+      const s: ValueAndDisplayText = {
+        value: index,
+        text: (
+          texts.level +
+          ' ' +
+          (index + 1) +
+          (index === 0 ?
+            ` (${texts.most_popular})` :
+            (index === PopuplarityLevelNumber - 1 ? ` (${texts.rarest})` : '')
+          )
+        )
+      }
+
+      return s
+    })
+  }, [TranslationServicePresets, texts])
+
+  const onPressConfirmInPopupPopularityLevel = useCallback((value?: ValueAndDisplayText, targetLang?: Language) => {
     if (!popupCloseCallbackRef.current)
       return
 
     popupCloseCallbackRef.current(async () => { // on closed
+      if (!value)
+        return
+
+      const popularityLevelIdx = value.value
+
       const dataReady = await setHandlingAndGetReadyDataAsync(popularityLevelIdx)
 
       if (!dataReady)
@@ -383,55 +411,25 @@ const SetupScreen = () => {
     })
   }, [setHandlingAndGetReadyDataAsync])
 
-  const onPressShowPopup = useCallback((type: PopupType) => {
-    set_showPopup(type)
-  }, [])
-
   const renderPopularityLevels = useCallback(() => {
-    const arr = Array(PopuplarityLevelNumber).fill(undefined)
-
     return (
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={style.scrollViewSlidingPopup}
-      >
-        {
-          arr.map((i: any, index: number) => {
-            const isSelected = displayPopularityLevelIdx === index
-
-            return (
-              <LucideIconTextEffectButton
-                key={index}
-
-                selectedColorOfTextAndIcon={theme.primary}
-                unselectedColorOfTextAndIcon={theme.counterPrimary}
-
-                onPress={() => onPressPopularityLevel(index)}
-
-                manuallySelected={isSelected}
-                notChangeToSelected
-                canHandlePressWhenSelected
-
-                style={isSelected ? style.normalBtn : style.normalBtn_NoBorder}
-
-                title={
-                  texts.level +
-                  ' ' +
-                  (index + 1) +
-                  (index === 0 ?
-                    ` (${texts.most_popular})` :
-                    (index === PopuplarityLevelNumber - 1 ? ` (${texts.rarest})` : '')
-                  )
-                }
-
-                titleProps={{ style: style.normalBtnTxt }}
-              />
-            )
-          })
-        }
-      </ScrollView>
+      <ExampleWordView
+        onConfirmValue={onPressConfirmInPopupPopularityLevel}
+        getExampleAsync={getExampleWordsAsync}
+        titleLeft={texts.level}
+        titleRight={texts.example_words}
+        values={popularityValueAndDisplayTexts}
+        initValue={popularityValueAndDisplayTexts.find(i => i.value === displayPopularityLevelIdx)}
+      />
     )
-  }, [displayPopularityLevelIdx, theme, style])
+  }, [
+    theme,
+    style,
+    onPressConfirmInPopupPopularityLevel,
+    getExampleWordsAsync,
+    popularityValueAndDisplayTexts,
+    displayPopularityLevelIdx
+  ])
 
   // interval (repeat)
 
@@ -587,7 +585,7 @@ const SetupScreen = () => {
     onPressShowPopup('translation_service')
   }, [displayTargetLang, onPressShowPopup, texts])
 
-  const onPressTranslationService = useCallback((service?: ValueAndDisplayText, targetLang?: Language) => {
+  const onPressConfirmInPopupTranslationService = useCallback((service?: ValueAndDisplayText, targetLang?: Language) => {
     if (!popupCloseCallbackRef.current)
       return
 
@@ -623,7 +621,7 @@ const SetupScreen = () => {
     return (
       <ExampleWordView
         initTargetLang={displayTargetLang}
-        onConfirmValue={onPressTranslationService}
+        onConfirmValue={onPressConfirmInPopupTranslationService}
         getExampleAsync={getExampleWordsAsync}
         titleLeft={texts.services}
         titleRight={texts.example_words}
