@@ -95,19 +95,19 @@ const GetAlreadyFetchedWordsDataCurrentLevelAsync = async (
 ): Promise<SavedAndWordData[] | Error> => {
     let fetchedWordsInDbOrError = await GetLocalizedWordFromDbAsync(targetLang, pushed)
 
-    if (fetchedWordsInDbOrError instanceof Error)
+    if (!Array.isArray(fetchedWordsInDbOrError))
         return fetchedWordsInDbOrError
 
     const dataOfFetchedWordsCurrentLevelOrError = await GetWordsDataCurrentLevelAsync(
         fetchedWordsInDbOrError.map(word => ExtractWordFromWordLang(word.wordAndLang)))
 
-    if (dataOfFetchedWordsCurrentLevelOrError instanceof Error)
+    if (!Array.isArray(dataOfFetchedWordsCurrentLevelOrError))
         return dataOfFetchedWordsCurrentLevelOrError
 
     const arr: SavedAndWordData[] = []
 
     for (let word of dataOfFetchedWordsCurrentLevelOrError) {
-        const saved = fetchedWordsInDbOrError.find(saved => ExtractWordFromWordLang(saved.wordAndLang) === word.word)
+        const saved = fetchedWordsInDbOrError.find(saved => ExtractWordFromWordLang(saved.wordAndLang).toUpperCase() === word.word)
 
         if (!saved)
             continue
@@ -204,7 +204,7 @@ const SetupWordsForSetNotiAsync = async (numRequired: number): Promise<SetupWord
 
         for (let translatedResult of translatedResultArrOrError) {
             const saved = TranslatedResultToSavedWord(translatedResult, targetLang, -1)
-            const word = nextWordsToFetch.find(w => w.word === translatedResult.text)
+            const word = nextWordsToFetch.find(w => w.word === translatedResult.text.toUpperCase())
 
             if (word === undefined) { // what?
                 return {
@@ -297,7 +297,7 @@ export const TestNotificationAsync = async (setHandling: (type: HandlingType) =>
 
     // get already fetch words
 
-    const fetchedWords = await GetAlreadyFetchedWordsDataCurrentLevelAsync(undefined, undefined)
+    const fetchedWords = await GetAlreadyFetchedWordsDataCurrentLevelAsync(targetLang, undefined)
 
     if (!Array.isArray(fetchedWords)) {
         return fetchedWords
@@ -314,15 +314,17 @@ export const TestNotificationAsync = async (setHandling: (type: HandlingType) =>
     if (!word) {
         setHandling('downloading')
 
-        const words = await GetNextWordsDataCurrentLevelForNotiAsync(50)
+        const wordsResultOrError = await GetNextWordsDataCurrentLevelForNotiAsync(50)
 
-        if (words instanceof Error) {
+        if (wordsResultOrError instanceof Error || !Array.isArray(wordsResultOrError.words)) {
             setHandling(undefined)
-            return words
+            console.log('aaaaaa');
+
+            return wordsResultOrError as Error
         }
 
         const translatedArrOrError = await BridgeTranslateMultiWordAsync(
-            words.words.map(i => i.word),
+            wordsResultOrError.words.map(i => i.word),
             targetLang,
             await GetSourceLangAsync())
 
@@ -330,7 +332,9 @@ export const TestNotificationAsync = async (setHandling: (type: HandlingType) =>
 
         // error overall
 
-        if (translatedArrOrError instanceof Error) {
+        if (!Array.isArray(translatedArrOrError)) {
+            console.log('bbbbb');
+
             return translatedArrOrError
         }
 

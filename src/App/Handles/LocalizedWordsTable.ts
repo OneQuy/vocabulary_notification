@@ -1,5 +1,5 @@
 import { SqlExecuteAsync, OpenDatabaseAsync, SqlInsertOrUpdateAsync, SqlGetAllRowsWithColumnIncludedInArrayAsync, SqlDeleteAllRowsAsync } from "../../Common/SQLite"
-import { IsAllValuableString as IsAllValuableStrings, ToCanPrint } from "../../Common/UtilsTS"
+import { IsAllValuableString as IsAllValuableStrings, SafeArrayLength, ToCanPrint } from "../../Common/UtilsTS"
 import { SavedWordData } from "../Types"
 import { ToWordLangString } from "./AppUtils"
 import { GetTargetLangAsync } from "./Settings"
@@ -139,7 +139,14 @@ export const GetLocalizedWordFromDbAsync = async (
 
     // console.log(sql);
 
-    return await SqlExecuteAsync<SavedWordData>(sql)
+    const res = await SqlExecuteAsync<SavedWordData>(sql)
+
+    if (IsLog)
+        console.log('[GetLocalizedWordFromDbAsync] toLang', toLang,
+            'pushed', pushed, 'res length', SafeArrayLength(res)
+        );
+
+    return res
 }
 
 export const GetLocalizedWordsFromDbIfAvailableAsync = async (toLang: string, wordsToCheck: string[]): Promise<SavedWordData[] | Error> => {

@@ -40,6 +40,8 @@ const GetLocalRlp = (popularityLevelIndex: number) => {
  * @returns propably not same length cuz diff level
  */
 export const GetWordsDataCurrentLevelAsync = async (wordStrings: string[]): Promise<Word[] | Error> => {
+    wordStrings = wordStrings.map(w => w.toUpperCase())
+
     const allWordsOrUndefined = await GetAllWordsDataCurrentLevelAsync()
 
     if (allWordsOrUndefined === undefined)
@@ -47,12 +49,10 @@ export const GetWordsDataCurrentLevelAsync = async (wordStrings: string[]): Prom
 
     const words = allWordsOrUndefined.filter(w => wordStrings.includes(w.word))
 
-    if (words.length !== wordStrings.length) {
-        if (IsLog) {
-            console.log('[GetWordsDataCurrentLevelAsync] got words in current level', words.length, 
+    if (IsLog) {
+        console.log('[GetWordsDataCurrentLevelAsync] got words in current level', words.length,
             'required', wordStrings.length,
-            '=> words not in current level', wordStrings.length - words.length);
-        }
+            '=> words not in current level', wordStrings.length - words.length)
     }
 
     return words
