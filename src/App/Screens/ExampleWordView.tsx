@@ -22,6 +22,7 @@ export type ValueAndDisplayText = {
 
 /**
  * if this is translation service picker, ValueAndDisplayText both text & value are TranslationService 
+ * if this is popularity index picker, ValueAndDisplayText both text & value are number of index 
  */
 const ExampleWordView = ({
     notTranslate,
@@ -136,8 +137,13 @@ const ExampleWordView = ({
     const onPressTargetLang = useCallback((value: Language) => {
         set_selectingTargetLang(value)
 
-        generateExamplesAsync(selectingValue?.text as TranslationService, -1, value.language)
-    }, [generateExamplesAsync, selectingValue?.text])
+        generateExamplesAsync(
+            selectingValue && typeof selectingValue.value === 'string' ? (selectingValue.value as TranslationService) : undefined,
+            -1,
+            value.language,
+            notTranslate
+        )
+    }, [generateExamplesAsync, selectingValue, notTranslate])
 
     const onPressShowPickTargetLang = useCallback(async () => {
         set_rightPanelState('pick_target_lang')
@@ -146,7 +152,7 @@ const ExampleWordView = ({
     const onPressValueLeftPanelAsync = useCallback(async (value: ValueAndDisplayText) => {
         set_selectingValue(value)
 
-        if (notTranslate) {
+        if (notTranslate || typeof value.value === 'number') {
             generateExamplesAsync(
                 undefined,
                 value.value,
@@ -162,7 +168,7 @@ const ExampleWordView = ({
             return
         }
 
-        const service = value.text as TranslationService
+        const service = value.value as TranslationService
 
         const suit = await GetCurrentTranslationServiceSuitAsync(service)
 
@@ -188,7 +194,7 @@ const ExampleWordView = ({
             await DelayAsync(300)
 
             generateExamplesAsync(
-                selectingValue ? (selectingValue.text as TranslationService) : undefined,
+                selectingValue && typeof selectingValue.value === 'string' ? (selectingValue.value as TranslationService) : undefined,
                 -1,
                 undefined,
                 notTranslate
@@ -271,12 +277,17 @@ const ExampleWordView = ({
 
                         {/* another example btn */}
                         {
-                            (rightPanelState !== 'translating' && selectingTargetLang) &&
+                            (rightPanelState !== 'translating' && (notTranslate || selectingTargetLang)) &&
                             < LucideIconTextEffectButton
                                 selectedColorOfTextAndIcon={theme.primary}
                                 unselectedColorOfTextAndIcon={theme.counterPrimary}
 
-                                onPress={() => generateExamplesAsync(selectingValue?.text as TranslationService)}
+                                onPress={() => generateExamplesAsync(
+                                    selectingValue && typeof selectingValue.value === 'string' ? (selectingValue.value as TranslationService) : undefined,
+                                    selectingValue && typeof selectingValue.value === 'number' ? selectingValue.value : undefined,
+                                    selectingTargetLang?.language,
+                                    notTranslate
+                                )}
 
                                 notChangeToSelected
 
