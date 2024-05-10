@@ -335,9 +335,9 @@ const ExampleWordView = ({
                                 contentContainerStyle={style.scrollViewExample}
                             >
                                 {
-                                    examples.map((valueAndDisplayText: ValueAndDisplayText) => {
+                                    examples.map((valueAndDisplayText: ValueAndDisplayText, index: number) => {
                                         return (
-                                            <View key={valueAndDisplayText.text}>
+                                            <View key={valueAndDisplayText.text + index}>
                                                 {
                                                     !notTranslate &&
                                                     <Text
