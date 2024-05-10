@@ -181,7 +181,7 @@ const SetupScreen = () => {
       while (true) {
         const dlRes = await DownloadWordDataAsync(popularityLevelIdx)
 
-        if (dlRes instanceof Error) { // dl fail
+        if (dlRes !== undefined) { // dl fail
           const isPressRight = await AlertAsync(
             texts.popup_error,
             `${texts.fail_download}\n\n${dlRes}`,
@@ -261,7 +261,7 @@ const SetupScreen = () => {
 
     const res = await TestNotificationAsync(set_handlingType)
 
-    if (res instanceof Error) {
+    if (res?.message) {
       HandleError(res, 'onPressTestNotificationAsync', true)
     }
   }, [setHandlingAndGetReadyDataAsync])

@@ -70,7 +70,7 @@ const LoadFromLocalizedDbOrTranslateWordsAsync = async (
 
     // error overall
 
-    if (translatedArrOrError instanceof Error) {
+    if (!Array.isArray(translatedArrOrError)) {
         return translatedArrOrError
     }
 

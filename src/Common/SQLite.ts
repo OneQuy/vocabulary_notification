@@ -5,7 +5,7 @@
 // Just: npm i react-native-sqlite-2
 
 import SQLite, { SQLResultSet, WebsqlDatabase } from 'react-native-sqlite-2'
-import { ToCanPrint } from './UtilsTS'
+import { SafeArrayLength, ToCanPrint } from './UtilsTS'
 
 export type SqlColumnAndValue = {
     column: string,
@@ -108,11 +108,7 @@ export const OpenDatabaseAsync = (dbName: string): Promise<void> => {
 export const SqlIsExistedAsync = async (table: string, value: SqlColumnAndValue): Promise<boolean> => {
     const getRowCmd = `SELECT 1 FROM ${table} WHERE ${GenerateColumnEqualValueText([value])};`
     const res = await SqlExecuteAsync(getRowCmd)
-
-    if (res instanceof Error)
-        return false
-    else
-        return res.length > 0
+    return SafeArrayLength(res) > 0
 }
 
 export const SqlLogAllRowsAsync = async (table: string): Promise<void> => {
@@ -213,7 +209,7 @@ export const SqlInsertOrUpdateAsync = async (table: string, values: SqlColumnAnd
 
     const res = await SqlExecuteAsync(cmd)
 
-    return res instanceof Error ? res : undefined
+    return !Array.isArray(res) ? res : undefined
 }
 
 /**

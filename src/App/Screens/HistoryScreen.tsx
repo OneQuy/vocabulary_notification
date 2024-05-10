@@ -48,7 +48,7 @@ const HistoryScreen = ({
   }, [theme])
 
   const currentPageItemData = useMemo(() => {
-    if (SafeArrayLength(allPushedWordsOrError) <= 0 || allPushedWordsOrError instanceof Error)
+    if (SafeArrayLength(allPushedWordsOrError) <= 0 || !Array.isArray(allPushedWordsOrError))
       return undefined
 
     return GetElementsOfPageArray(allPushedWordsOrError, curPageIdx, PageItemCount)

@@ -56,7 +56,7 @@ export const BridgeTranslateMultiWordAsync = async (
         fromLang
     )
 
-    if (saveToDbNewWords && !(translatedArrOrError instanceof Error))
+    if (saveToDbNewWords && Array.isArray(translatedArrOrError))
         await SaveToDbNewWordsAsync(toLang, translatedArrOrError)
 
     return translatedArrOrError
