@@ -50,7 +50,7 @@ const SettingItemPanel = ({
 
             rightPanelTO: {
                 paddingHorizontal: Outline.Small,
-                width: isLong ? '40%' : '20%',
+                width: isLong ? '30%' : '20%',
                 aspectRatio: isLong ? 3 : 1,
                 borderColor: Color_Text,
                 borderWidth: StyleSheet.hairlineWidth,
