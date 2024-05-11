@@ -37,6 +37,8 @@ const SettingItemPanel = ({
 
                 justifyContent: 'center',
                 alignItems: 'center',
+
+                gap: Gap.Small,
             },
 
             leftPanel: {

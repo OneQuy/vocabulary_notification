@@ -958,7 +958,7 @@ const SetupScreen = () => {
             value={displayIntervalInMin}
             unit={AddS(texts.minute, displayIntervalInMin)}
           />
-          
+
           {/* exclude time */}
 
           <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
@@ -982,12 +982,12 @@ const SetupScreen = () => {
           }
 
           {/* target lang */}
-         
+
           <SettingItemPanel
             onPress={() => onPressShowPopup('target-lang')}
             title={texts.translate_to}
             explain={texts.translate_language_explain}
-            value={displayTargetLang?.name ?? '...'}
+            value={displayTargetLang?.name ?? texts.tap_to_select}
             isLong
           />
 
@@ -1013,22 +1013,13 @@ const SetupScreen = () => {
 
           {
             showMoreSetting &&
-            <>
-              <Text style={style.header}>{texts.limit_words_per_day}</Text>
-
-              <LucideIconTextEffectButton
-                unselectedColorOfTextAndIcon={theme.counterBackground}
-                notChangeToSelected
-                style={style.normalBtn}
-
-                title={displayWordLimitNumber === 0 ? texts.no_limit : (displayWordLimitNumber + ' ' + AddS(texts.word, displayWordLimitNumber))}
-                titleProps={{ style: style.normalBtnTxt }}
-
-                iconProps={{ name: 'Repeat', size: FontSize.Normal, }}
-
-                onPress={() => onPressShowPopup('limit-word')}
-              />
-            </>
+            <SettingItemPanel
+              onPress={() => onPressShowPopup('limit-word')}
+              title={texts.limit_words_per_day}
+              explain={texts.limit_words_per_day_explain}
+              value={displayWordLimitNumber === 0 ? texts.no_limit : displayWordLimitNumber}
+              unit={AddS(texts.word, displayWordLimitNumber)}
+            />
           }
 
           {/* translate service */}
