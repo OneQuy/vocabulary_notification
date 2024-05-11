@@ -220,7 +220,7 @@ const SetupScreen = () => {
     if (IsLog)
       console.log('[getExampleWordsAsync] notTranslate', notTranslate);
 
-    const dataReady = await setHandlingAndGetReadyDataAsync()
+    const dataReady = await setHandlingAndGetReadyDataAsync(popularityLevelIdx)
 
     if (!dataReady)
       return false
