@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:vocabulary_notification.xcodeproj">
+      location = "group:/Users/onequy/Documents/ReactNative/vocabulary_notification/ios/vocabulary_notification.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
