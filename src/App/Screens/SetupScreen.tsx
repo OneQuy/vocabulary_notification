@@ -1026,24 +1026,13 @@ const SetupScreen = () => {
 
           {
             showMoreSetting &&
-            <>
-              <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
-
-              <Text style={style.header}>{texts.translation_service}</Text>
-
-              <LucideIconTextEffectButton
-                unselectedColorOfTextAndIcon={theme.counterBackground}
-                notChangeToSelected
-                style={style.normalBtn}
-
-                title={displayTranslationService}
-                titleProps={{ style: style.normalBtnTxt }}
-
-                iconProps={{ name: 'Sliders', size: FontSize.Normal, }}
-
-                onPress={onPressOpenPopupChangeTranslationService}
-              />
-            </>
+            <SettingItemPanel
+              onPress={onPressOpenPopupChangeTranslationService}
+              title={texts.translation_service}
+              explain={texts.services_explain}
+              value={displayTranslationService.split(' ')[0]}
+              isLong
+            />
           }
 
           {/* num days to push */}
