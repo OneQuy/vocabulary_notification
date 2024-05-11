@@ -1,12 +1,10 @@
 import { Alert } from "react-native"
-import { ToCanPrint } from "./UtilsTS"
+import { SafeValue, ToCanPrint } from "./UtilsTS"
 
 /**
  * HandleError(resOrError, 'DataToNotification', false)
  */
 export const HandleError = (error: any, root: string, alert = true) => {
-    const content = (root ? (root + '\n\n') : '') + ToCanPrint(error)
-
     // todo
     // tracking
 
@@ -14,15 +12,17 @@ export const HandleError = (error: any, root: string, alert = true) => {
 
     }
 
-    // log 
-
-    console.error(content);
-
     // alert
 
     if (alert) {
+        const msg = SafeValue(error?.message, '' + ToCanPrint(error))
+
         Alert.alert(
-            'Error',
-            content)
+            'Oooooops',
+            msg)
+    }
+    else if (__DEV__) {
+        const content = `[${root}] ${ToCanPrint(error)}`
+        console.error(content);
     }
 }
