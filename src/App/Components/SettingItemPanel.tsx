@@ -44,7 +44,7 @@ const SettingItemPanel = ({
             },
 
             rightPanelTO: {
-                // flex: 1,
+                paddingHorizontal: Outline.Small,
                 width: '20%',
                 aspectRatio: 1,
                 borderColor: Color_Text,
