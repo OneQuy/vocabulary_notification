@@ -3,6 +3,7 @@ export const PleaseSelectTargetLangText = 'Please set [Translation language] you
 
 const eng = {
     popularity_level: 'Popuplarity level',
+    popularity_level_explain: "Popularity level of vocabulary words. The higher level, the less common the words are. Choose according to your needs.",
     level: 'Level',
     test_notification: 'Test notification',
     translate_to: 'Translation language',
@@ -12,6 +13,8 @@ const eng = {
     tap_to_select: 'Tap to select...',
     search_language: 'Search language...',
     repeat: 'Repeat',
+    repeat_explain: "How long is the interval\nbetween notifications?",
+    minute: 'Minute',
     invalid_end_time: "End time must be the time that comes after the Start time!",
     invalid_start_time: "Start time must be the time that comes before the End time!",
     invalid_input: 'Invalid input',

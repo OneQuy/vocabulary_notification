@@ -1,14 +1,4 @@
-const Light_Default = {
-    background: '#ffffff',
-    counterBackground: '#1c1c1c',
-    
-    primary: '#ffaabb',
-    counterPrimary: '#1c1c1c',
-
-    isDarkTheme: false,
-}
-
-const Dark_Default: Theme = {
+const Dark_Default = {
     background: '#1c1c1c',
     counterBackground: '#ffffff',
     
@@ -18,10 +8,18 @@ const Dark_Default: Theme = {
     isDarkTheme: true,
 } as const
 
-type Theme = typeof Light_Default
+type Theme = typeof Dark_Default
 
 const useTheme = () : Theme => {
   return Dark_Default
 }
 
 export default useTheme
+
+export const Color_BG = '#151517'
+export const Color_BG2 = '#242423'
+
+export const Color_Border = '#424242'
+
+export const Color_Text = '#ffffff'
+export const Color_Text2 = '#9c9c9c'

@@ -27,6 +27,7 @@ import { BridgeTranslateMultiWordAsync, GetCurrentTranslationServiceSuitAsync } 
 import ExampleWordView, { ValueAndDisplayText } from './ExampleWordView'
 import { SqlLogAllRowsAsync } from '../../Common/SQLite'
 import TargetLangPicker from '../Components/TargetLangPicker'
+import SettingItemPanel from '../Components/SettingItemPanel'
 
 const IsLog = true
 
@@ -940,40 +941,24 @@ const SetupScreen = () => {
         <ScrollView contentContainerStyle={style.scrollView} showsVerticalScrollIndicator={false}>
           {/* popularity_level */}
 
-          <Text style={style.header}>{texts.popularity_level}</Text>
-
-          <LucideIconTextEffectButton
-            unselectedColorOfTextAndIcon={theme.counterBackground}
-            notChangeToSelected
-            style={style.normalBtn}
-
-            title={texts.level + ' ' + (displayPopularityLevelIdx + 1)}
-            titleProps={{ style: style.normalBtnTxt }}
-
-            iconProps={{ name: 'BookAIcon', size: FontSize.Normal, }}
-
+          <SettingItemPanel
             onPress={() => onPressShowPopup('popularity')}
+            title={texts.popularity_level}
+            explain={texts.popularity_level_explain}
+            value={displayPopularityLevelIdx + 1}
+            unit={texts.level}
           />
 
-          {/* interval */}
+          {/* repeat */}
 
-          <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
-
-          <Text style={style.header}>{texts.repeat}</Text>
-
-          <LucideIconTextEffectButton
-            unselectedColorOfTextAndIcon={theme.counterBackground}
-            notChangeToSelected
-            style={style.normalBtn}
-
-            title={GetDayHourMinSecFromMs_ToString(displayIntervalInMin * 60 * 1000, ' ', true, false, '-')}
-            titleProps={{ style: style.normalBtnTxt }}
-
-            iconProps={{ name: 'Clock', size: FontSize.Normal, }}
-
+          <SettingItemPanel
             onPress={() => onPressShowPopup('interval')}
+            title={texts.repeat}
+            explain={texts.repeat_explain}
+            value={displayIntervalInMin}
+            unit={AddS(texts.minute, displayIntervalInMin)}
           />
-
+          
           {/* exclude time */}
 
           <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
