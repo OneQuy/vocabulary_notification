@@ -982,22 +982,13 @@ const SetupScreen = () => {
           }
 
           {/* target lang */}
-
-          <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
-
-          <Text style={style.header}>{texts.translate_to}</Text>
-
-          <LucideIconTextEffectButton
-            unselectedColorOfTextAndIcon={theme.counterBackground}
-            notChangeToSelected
-            style={style.normalBtn}
-
-            title={displayTargetLang?.name ?? texts.tap_to_select}
-            titleProps={{ style: style.normalBtnTxt }}
-
-            iconProps={{ name: 'Languages', size: FontSize.Normal, }}
-
+         
+          <SettingItemPanel
             onPress={() => onPressShowPopup('target-lang')}
+            title={texts.translate_to}
+            explain={texts.translate_language_explain}
+            value={displayTargetLang?.name ?? '...'}
+            isLong
           />
 
           {/* more setting */}

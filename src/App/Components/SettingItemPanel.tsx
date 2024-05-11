@@ -11,12 +11,15 @@ const SettingItemPanel = ({
     value,
     unit,
     onPress,
+    isLong,
 }: {
     title: string,
     explain?: string,
 
     value: any,
-    unit: string,
+    unit?: string,
+
+    isLong?: boolean,
 
     onPress: () => void,
 }) => {
@@ -24,7 +27,7 @@ const SettingItemPanel = ({
         return StyleSheet.create({
             master: {
                 backgroundColor: Color_BG2,
-                
+
                 borderColor: Color_Border,
                 borderWidth: StyleSheet.hairlineWidth,
                 borderRadius: BorderRadius.Medium,
@@ -45,8 +48,8 @@ const SettingItemPanel = ({
 
             rightPanelTO: {
                 paddingHorizontal: Outline.Small,
-                width: '20%',
-                aspectRatio: 1,
+                width: isLong ? '40%' : '20%',
+                aspectRatio: isLong ? 3 : 1,
                 borderColor: Color_Text,
                 borderWidth: StyleSheet.hairlineWidth,
                 borderRadius: BorderRadius.Small,
@@ -77,7 +80,7 @@ const SettingItemPanel = ({
                 // fontWeight: FontBold.Bold,
             },
         })
-    }, [])
+    }, [isLong])
 
     return (
         <View style={style.master}>
@@ -91,7 +94,11 @@ const SettingItemPanel = ({
 
             <TouchableOpacity style={style.rightPanelTO} onPress={onPress}>
                 <Text adjustsFontSizeToFit numberOfLines={1} style={style.valueTxt}>{value}</Text>
-                <Text adjustsFontSizeToFit numberOfLines={1} style={style.unitTxt}>{unit}</Text>
+
+                {
+                    unit &&
+                    <Text adjustsFontSizeToFit numberOfLines={1} style={style.unitTxt}>{unit}</Text>
+                }
             </TouchableOpacity>
         </View>
     )

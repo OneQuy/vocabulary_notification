@@ -7,6 +7,7 @@ const eng = {
     level: 'Level',
     test_notification: 'Test notification',
     translate_to: 'Translation language',
+    translate_language_explain: "Which language would you like to translate to?",
     translation_service: 'Translation service',
     services: 'Services',
     example_words: 'Example words',
