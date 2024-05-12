@@ -7,7 +7,6 @@ import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEf
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
 import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PickRandomElementWithCount, PrependZero, ToCanPrint } from '../../Common/UtilsTS'
-import HairLine from '../../Common/Components/HairLine'
 import { WindowSize_Max } from '../../Common/CommonConstants'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { DefaultExcludedTimePairs, DefaultIntervalInMin, DefaultNumDaysToPush, IntervalInMinPresets, LimitWordsPerDayPresets, NumDaysToPushPresets, PopuplarityLevelNumber, TranslationServicePresets } from '../Constants/AppConstants'
@@ -1004,8 +1003,6 @@ const SetupScreen = () => {
 
           {/* more setting */}
 
-          <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
-
           <LucideIconTextEffectButton
             unselectedColorOfTextAndIcon={theme.counterBackground}
             notChangeToSelected
@@ -1051,8 +1048,6 @@ const SetupScreen = () => {
           {
             showMoreSetting &&
             <>
-              <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
-
               <Text style={style.header}>{texts.num_days_to_push}</Text>
 
               <LucideIconTextEffectButton
@@ -1075,7 +1070,6 @@ const SetupScreen = () => {
           {
             showMoreSetting &&
             <>
-              <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
               <Text style={style.header}>{texts.noti_display}</Text>
             </>
           }
@@ -1143,11 +1137,6 @@ const SetupScreen = () => {
       }
 
       {/* set notification & test btn */}
-
-      {
-        subView === 'setup' &&
-        <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
-      }
 
       {
         subView === 'setup' &&
