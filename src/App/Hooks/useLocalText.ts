@@ -13,7 +13,7 @@ const eng = {
     services_explain: "The translation service you wish to use for translation. Change this only if you encounter incorrectly translated words.",
     example_words: 'Example words',
     search_language: 'Search language...',
-    repeat: 'Repeat',
+    repeat: 'Interval',
     hour: 'Hour',
     repeat_explain: "How long is the interval\nbetween notifications?",
     minute: 'Minute',
