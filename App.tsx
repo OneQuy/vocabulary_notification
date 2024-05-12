@@ -1,17 +1,15 @@
 import { View, SafeAreaView, StyleSheet, StatusBar } from 'react-native'
 import React, { useEffect, useMemo } from 'react'
 import SetupScreen from './src/App/Screens/SetupScreen'
-import useTheme from './src/App/Hooks/useTheme'
+import { Color_BG } from './src/App/Hooks/useTheme'
 import { initNotificationAsync } from './src/Common/Nofitication'
 
 const App = () => {
-  const theme = useTheme()
-
   const style = useMemo(() => {
     return StyleSheet.create({
-      master: { flex: 1, backgroundColor: theme.background }
+      master: { flex: 1, backgroundColor: Color_BG }
     })
-  }, [theme])
+  }, [])
 
   useEffect(() => {
     // init noti
@@ -20,7 +18,7 @@ const App = () => {
   }, [])
   return (
     <SafeAreaView style={style.master}>
-      <StatusBar backgroundColor={theme.background} barStyle={theme.isDarkTheme ? 'light-content' : 'dark-content'} />
+      <StatusBar backgroundColor={Color_BG} barStyle={'light-content'} />
       <View style={style.master}>
         <SetupScreen />
       </View>

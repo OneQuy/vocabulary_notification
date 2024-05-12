@@ -16,7 +16,9 @@ const useTheme = () : Theme => {
 
 export default useTheme
 
-export const Color_BG = '#151517'
+// export const Color_BG = '#151517'
+export const Color_BG = '#1c1c1c'
+
 export const Color_BG2 = '#242423'
 
 export const Color_Border = '#424242'
