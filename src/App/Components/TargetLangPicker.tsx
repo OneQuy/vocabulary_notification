@@ -42,7 +42,7 @@ const TargetLangPicker = ({
                 margin: Outline.Normal,
             },
 
-            searchTxt: { fontSize: FontSize.Normal, color: Color_BG },
+            searchTxt: { width: '100%', fontSize: FontSize.Normal, color: Color_BG },
 
             normalBtnTxt: { fontSize: FontSize.Normal, },
 

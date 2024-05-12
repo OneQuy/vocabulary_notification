@@ -1,6 +1,5 @@
 import { View, StyleSheet, Text, FlatList, TouchableOpacity } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import useTheme from '../Hooks/useTheme'
 import useLocalText from '../Hooks/useLocalText'
 import { Gap, Outline } from '../Constants/Constants_Outline'
 import { UpdatePushedWordsAndRefreshCurrentNotiWordsAsync } from '../Handles/SetupNotification'
@@ -11,6 +10,7 @@ import { FontSize } from '../Constants/Constants_FontSize'
 import { HandlingType } from './SetupScreen'
 import { CheckDeserializeLocalizedData, ExtractWordFromWordLang } from '../Handles/AppUtils'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
+import { Color_Text } from '../Hooks/useTheme'
 
 const PageItemCount = 20
 
@@ -19,7 +19,6 @@ const HistoryScreen = ({
 }: {
   setHandling: (type: HandlingType) => void
 }) => {
-  const theme = useTheme()
   const texts = useLocalText()
 
   const [allPushedWordsOrError, set_allPushedWordsOrError] = useState<Error | SavedWordData[]>([])
@@ -34,18 +33,18 @@ const HistoryScreen = ({
       flatlistView: { gap: Gap.Normal, padding: Outline.Normal, },
       itemMainLineView: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
 
-      historyEmptyTxt: { alignSelf: 'center', marginTop: '70%', fontSize: FontSize.Normal, color: theme.counterBackground },
+      historyEmptyTxt: { alignSelf: 'center', marginTop: '70%', fontSize: FontSize.Normal, color: Color_Text },
 
-      historyItemTxt_Title: { fontSize: FontSize.Normal, color: theme.primary },
-      historyItemTxt_Content: { fontSize: FontSize.Normal, color: theme.counterBackground },
-      historyItemTxt_Tick: { fontSize: FontSize.Small, color: HexToRgb(theme.counterBackground, 0.3) },
+      historyItemTxt_Title: { fontSize: FontSize.Normal, color: Color_Text },
+      historyItemTxt_Content: { fontSize: FontSize.Normal, color: Color_Text },
+      historyItemTxt_Tick: { fontSize: FontSize.Small, color: HexToRgb(Color_Text, 0.3) },
 
       navigationBarView: { flexDirection: 'row', },
       pageNumView: { flexDirection: 'row', },
-      pageNumTxt: { fontSize: FontSize.Normal, color: theme.counterBackground, alignSelf: 'center' },
+      pageNumTxt: { fontSize: FontSize.Normal, color: Color_Text, alignSelf: 'center' },
       navigationBtn: { flex: 1, padding: Outline.Normal, },
     })
-  }, [theme])
+  }, [])
 
   const currentPageItemData = useMemo(() => {
     if (SafeArrayLength(allPushedWordsOrError) <= 0 || !Array.isArray(allPushedWordsOrError))
@@ -143,7 +142,7 @@ const HistoryScreen = ({
       <View style={style.navigationBarView}>
         {/* go previous page btn */}
         <LucideIconTextEffectButton
-          unselectedColorOfTextAndIcon={theme.counterBackground}
+          unselectedColorOfTextAndIcon={Color_Text}
 
           style={style.navigationBtn}
 
@@ -160,7 +159,7 @@ const HistoryScreen = ({
 
         {/* go next page btn */}
         <LucideIconTextEffectButton
-          unselectedColorOfTextAndIcon={theme.counterBackground}
+          unselectedColorOfTextAndIcon={Color_Text}
 
           style={style.navigationBtn}
 
