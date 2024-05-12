@@ -88,7 +88,7 @@ const SetupScreen = () => {
   const style = useMemo(() => {
     return StyleSheet.create({
       master: { flex: 1, paddingBottom: Outline.Normal },
-      scrollView: { gap: Gap.Small, padding: Outline.Normal, },
+      scrollView: { gap: Gap.Normal, padding: Outline.Normal, },
 
       topbarView: { flexDirection: 'row' },
       topbarBtn: { flexDirection: 'row', padding: Outline.Small, gap: Gap.Small, flex: 1 },
@@ -103,8 +103,6 @@ const SetupScreen = () => {
         borderWidth: 0,
         borderRadius: BorderRadius.Small,
         padding: Outline.Small,
-        // flexDirection: 'row',
-        // gap: Gap.Normal,
       },
 
       header: { fontWeight: FontBold.Bold, fontSize: FontSize.Normal, color: theme.primary },
