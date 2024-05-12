@@ -1,4 +1,4 @@
-import { View, TextInput, StyleSheet, ScrollView, ActivityIndicator } from 'react-native'
+import { View, TextInput, StyleSheet, ScrollView, ActivityIndicator, KeyboardAvoidingView } from 'react-native'
 import React, { useEffect, useMemo, useState } from 'react'
 import { CommonStyles, WindowSize_Max } from '../../Common/CommonConstants'
 import useLocalText from '../Hooks/useLocalText'
@@ -67,7 +67,7 @@ const TargetLangPicker = ({
     useEffect(() => {
         (async () => {
             if (delayShow)
-                await DelayAsync(200)
+                await DelayAsync(300)
 
             const suit = await GetCurrentTranslationServiceSuitAsync(selectingService)
 
@@ -78,7 +78,7 @@ const TargetLangPicker = ({
     return (
         <View style={CommonStyles.flex_1}>
             {/* input search */}
-            <View style={style.searchLangView}>
+            <KeyboardAvoidingView keyboardVerticalOffset={undefined} style={style.searchLangView}>
                 <TextInput
                     style={style.searchTxt}
                     placeholder={texts.search_language}
@@ -89,7 +89,7 @@ const TargetLangPicker = ({
                     onChangeText={set_searchLangInputTxt}
                     autoCapitalize='none'
                 />
-            </View>
+            </KeyboardAvoidingView>
 
             {/* lang list */}
             {
