@@ -23,7 +23,7 @@ const eng = {
     set_notification: 'Set notification',
     setting_notification: 'Setting notifications',
     most_popular: 'Most Popular',
-    rarest: 'Rarest',
+    rarest: 'Most unpopular',
     limit_words_per_day: 'Limit words per day',
     limit_words_per_day_explain: "Limit the number of vocabulary words you learn per day. If number of notifications exceeds this limit, the words will loop around.",
     num_days_to_push: 'Number of scheduled days',

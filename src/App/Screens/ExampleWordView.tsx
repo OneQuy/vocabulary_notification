@@ -71,7 +71,7 @@ const ExampleWordView = ({
 
             scrollViewExample: { gap: Gap.Normal, },
 
-            serviceTxt: { fontSize: FontSize.Small, },
+            serviceTxt: { fontSize: FontSize.Small, textAlign: 'center', },
 
             normalTxt: { fontSize: FontSize.Normal, },
 
@@ -233,7 +233,7 @@ const ExampleWordView = ({
 
                                         title={valueAndDisplayText.text}
 
-                                        titleProps={{ style: style.serviceTxt }}
+                                        titleProps={{ numberOfLines: 2, style: style.serviceTxt }}
                                     />
                                 )
                             })

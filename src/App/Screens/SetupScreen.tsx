@@ -398,8 +398,8 @@ const SetupScreen = () => {
           ' ' +
           (index + 1) +
           (index === 0 ?
-            ` (${texts.most_popular})` :
-            (index === PopuplarityLevelNumber - 1 ? ` (${texts.rarest})` : '')
+            `\n(${texts.most_popular})` :
+            (index === PopuplarityLevelNumber - 1 ? `\n(${texts.rarest})` : '')
           )
         )
       }
