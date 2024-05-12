@@ -43,6 +43,7 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-vocabulary_notification.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-vocabulary_notification.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = vocabulary_notification/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-vocabulary_notification-vocabulary_notificationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vocabulary_notification-vocabulary_notificationTests.release.xcconfig"; path = "Target Support Files/Pods-vocabulary_notification-vocabulary_notificationTests/Pods-vocabulary_notification-vocabulary_notificationTests.release.xcconfig"; sourceTree = "<group>"; };
+		C680783C2BF05CFA00D6C5D8 /* vocabulary_notification.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = vocabulary_notification.entitlements; path = vocabulary_notification/vocabulary_notification.entitlements; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -86,6 +87,7 @@
 		13B07FAE1A68108700A75B9A /* vocabulary_notification */ = {
 			isa = PBXGroup;
 			children = (
+				C680783C2BF05CFA00D6C5D8 /* vocabulary_notification.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -465,7 +467,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 19;
+				CODE_SIGN_ENTITLEMENTS = vocabulary_notification/vocabulary_notification.entitlements;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = KDX2P98MXK;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = vocabulary_notification/Info.plist;
@@ -475,7 +478,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.9;
+				MARKETING_VERSION = 0.2.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -486,6 +489,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -499,7 +503,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 19;
+				CODE_SIGN_ENTITLEMENTS = vocabulary_notification/vocabulary_notification.entitlements;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = KDX2P98MXK;
 				INFOPLIST_FILE = vocabulary_notification/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Vocaby;
@@ -508,7 +513,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.9;
+				MARKETING_VERSION = 0.2.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -519,6 +524,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";

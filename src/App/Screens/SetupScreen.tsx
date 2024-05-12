@@ -961,8 +961,6 @@ const SetupScreen = () => {
 
           {/* exclude time */}
 
-          <HairLine marginVertical={Outline.Normal} color={theme.counterBackground} />
-
           <View style={style.excludeTimeTitleView}>
             <Text style={style.header}>{texts.not_show}</Text>
 
