@@ -80,7 +80,6 @@ const SetupScreen = () => {
   const [displaySettting_RankOfWord, set_displaySettting_RankOfWord] = useState(false)
   const [displaySettting_Example, set_displaySettting_Example] = useState(false)
 
-
   // common
 
   const style = useMemo(() => {
