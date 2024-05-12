@@ -591,7 +591,7 @@ export const SetNotificationAsync = async (): Promise<undefined | SetupNotificat
 
             if (timestamp <= Date.now()) {
                 if (IsLog)
-                    console.log(`skipped today (${new Date(timestamp).toLocaleString()})`)
+                    console.log(`(${new Date(timestamp).toLocaleString()}) skipped today`)
 
                 continue
             }
@@ -618,7 +618,7 @@ export const SetNotificationAsync = async (): Promise<undefined | SetupNotificat
             setNotification(noti)
 
             if (IsLog)
-                console.log(`${noti.title}: ${noti.message} (${new Date(timestamp).toLocaleString()})`)
+                console.log(`(${new Date(timestamp).toLocaleString()}) ${noti.title}: ${noti.message}`)
 
             didSetNotiList.push({
                 wordAndLang: wordToPush.savedData.wordAndLang,
