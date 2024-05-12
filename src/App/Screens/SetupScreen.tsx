@@ -909,11 +909,11 @@ const SetupScreen = () => {
 
           style={style.topbarBtn}
 
-          title={texts.setup}
+          title={texts.history}
           titleProps={{ style: style.normalBtnTxt }}
 
-          manuallySelected={subView === 'setup'}
-          onPress={() => onPressSubview('setup')}
+          manuallySelected={subView === 'history'}
+          onPress={() => onPressSubview('history')}
         />
         <LucideIconTextEffectButton
           unselectedColorOfTextAndIcon={Color_Text2}
@@ -922,11 +922,11 @@ const SetupScreen = () => {
 
           style={style.topbarBtn}
 
-          title={texts.history}
+          title={texts.setup}
           titleProps={{ style: style.normalBtnTxt }}
 
-          manuallySelected={subView === 'history'}
-          onPress={() => onPressSubview('history')}
+          manuallySelected={subView === 'setup'}
+          onPress={() => onPressSubview('setup')}
         />
         <LucideIconTextEffectButton
           unselectedColorOfTextAndIcon={Color_Text2}
