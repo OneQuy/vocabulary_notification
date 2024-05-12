@@ -105,6 +105,8 @@ const SetupScreen = () => {
       },
 
       normalBtnTxt: { fontSize: FontSize.Normal, },
+      
+      displaySettingItemTxt: { fontSize: FontSize.Normal, },
 
       downloadingView: { gap: Gap.Normal, justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', position: 'absolute', backgroundColor: theme.background },
       downloadingTxt: { fontSize: FontSize.Normal, fontWeight: FontBold.Bold, color: theme.primary },
@@ -377,7 +379,7 @@ const SetupScreen = () => {
         style={style.displaySettingBtn}
 
         title={title}
-        titleProps={{ style: style.normalBtnTxt }}
+        titleProps={{ style: style.displaySettingItemTxt }}
 
         iconProps={{ name: getter ? 'CheckSquare' : 'Square', size: FontSize.Normal, }}
 
@@ -978,6 +980,7 @@ const SetupScreen = () => {
               />
             </View>
 
+            {/* explain */}
             <Text style={SettingItemPanelStyle.explainTxt}>{texts.not_show_explain}</Text>
 
             {/* list */}
@@ -1058,6 +1061,11 @@ const SetupScreen = () => {
             <View style={SettingItemPanelStyle.master_Column}>
               {/* title */}
               <Text style={SettingItemPanelStyle.titleTxt}>{texts.noti_display}</Text>
+
+              {/* explain */}
+              <Text style={SettingItemPanelStyle.explainTxt}>
+                {texts.noti_display_explain.replace('##', texts.test_notification)}
+              </Text>
 
               {/* display of noti - phonetic */}
 
