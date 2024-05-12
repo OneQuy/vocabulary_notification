@@ -908,17 +908,12 @@ const SetupScreen = () => {
         <LucideIconTextEffectButton
           unselectedColorOfTextAndIcon={Color_Text2}
           selectedColorOfTextAndIcon={Color_Text}
-          selectedBackgroundColor={theme.background}
+          selectedBackgroundColor={Color_BG}
 
           style={style.topbarBtn}
 
           title={texts.setup}
           titleProps={{ style: style.normalBtnTxt }}
-
-          // iconProps={{ name: 'Rocket', size: FontSize.Normal, }}
-
-          // effectType='scale'
-          // effectDelay={50}
 
           manuallySelected={subView === 'setup'}
           onPress={() => onPressSubview('setup')}
@@ -926,17 +921,12 @@ const SetupScreen = () => {
         <LucideIconTextEffectButton
           unselectedColorOfTextAndIcon={Color_Text2}
           selectedColorOfTextAndIcon={Color_Text}
-          selectedBackgroundColor={theme.background}
+          selectedBackgroundColor={Color_BG}
 
           style={style.topbarBtn}
 
           title={texts.history}
           titleProps={{ style: style.normalBtnTxt }}
-
-          // iconProps={{ name: 'History', size: FontSize.Normal, }}
-
-          // effectType='scale'
-          // effectDelay={50}
 
           manuallySelected={subView === 'history'}
           onPress={() => onPressSubview('history')}
@@ -944,16 +934,12 @@ const SetupScreen = () => {
         <LucideIconTextEffectButton
           unselectedColorOfTextAndIcon={Color_Text2}
           selectedColorOfTextAndIcon={Color_Text}
-          selectedBackgroundColor={theme.background}
+          selectedBackgroundColor={Color_BG}
 
           style={style.topbarBtn}
 
           title={texts.about}
           titleProps={{ style: style.normalBtnTxt }}
-
-          // iconProps={{ name: 'Info', size: FontSize.Normal, }}
-
-          // effectType='scale'
 
           manuallySelected={subView === 'about'}
           onPress={() => onPressSubview('about')}
@@ -1154,6 +1140,7 @@ const SetupScreen = () => {
         <View style={style.bottomButtonsView}>
           <LucideIconTextEffectButton
             unselectedColorOfTextAndIcon={theme.counterBackground}
+
             notChangeToSelected
             style={style.normalBtn}
 
