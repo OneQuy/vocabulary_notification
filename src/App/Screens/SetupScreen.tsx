@@ -452,6 +452,27 @@ const SetupScreen = () => {
 
   // interval (repeat)
 
+  const repeatValueAndDisplayText = useMemo(() => {
+    let res: ValueAndDisplayText
+
+    if (displayIntervalInMin % 60 === 0) {
+      const h = Math.floor(displayIntervalInMin / 60)
+
+      res = {
+        value: h,
+        text: texts.hour
+      }
+    }
+    else {
+      res = {
+        value: displayIntervalInMin,
+        text: texts.minute
+      }
+    }
+
+    return res
+  }, [displayIntervalInMin])
+
   const onPressInterval = useCallback((minutesOrCustom: number | undefined) => {
     if (minutesOrCustom !== undefined)
       set_displayIntervalInMin(minutesOrCustom)
@@ -956,8 +977,8 @@ const SetupScreen = () => {
             onPress={() => onPressShowPopup('interval')}
             title={texts.repeat}
             explain={texts.repeat_explain}
-            value={displayIntervalInMin}
-            unit={AddS(texts.minute, displayIntervalInMin)}
+            value={repeatValueAndDisplayText.value}
+            unit={repeatValueAndDisplayText.text}
           />
 
           {/* exclude time */}

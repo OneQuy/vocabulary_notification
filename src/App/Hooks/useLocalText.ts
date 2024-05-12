@@ -14,6 +14,7 @@ const eng = {
     example_words: 'Example words',
     search_language: 'Search language...',
     repeat: 'Repeat',
+    hour: 'Hour',
     repeat_explain: "How long is the interval\nbetween notifications?",
     minute: 'Minute',
     invalid_end_time: "End time must be the time that comes after the Start time!",
