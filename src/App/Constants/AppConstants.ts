@@ -46,12 +46,12 @@ export const LimitWordsPerDayPresets: (number)[] = [
 export const DefaultExcludedTimePairs: PairTime[] = [
     [
         {
-            hours: 0,
+            hours: 12,
             minutes: 0,
             seconds: 0,
         },
         {
-            hours: 7,
+            hours: 14,
             minutes: 0,
             seconds: 0,
         }
@@ -59,13 +59,13 @@ export const DefaultExcludedTimePairs: PairTime[] = [
 
     [
         {
-            hours: 22,
+            hours: 21,
             minutes: 0,
             seconds: 0,
         },
         {
-            hours: 23,
-            minutes: 59,
+            hours: 8,
+            minutes: 0,
             seconds: 0,
         }
     ],
