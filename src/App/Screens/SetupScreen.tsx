@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, Alert, ActivityIndicator } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
-import useTheme, { Color_BG, Color_Text, Color_Text2, Color_Text3 } from '../Hooks/useTheme'
+import { Color_BG, Color_Text, Color_Text2 } from '../Hooks/useTheme'
 import useLocalText, { PleaseSelectTargetLangText } from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
@@ -52,7 +52,6 @@ export type HandlingType =
   undefined
 
 const SetupScreen = () => {
-  const theme = useTheme()
   const texts = useLocalText()
 
   const [handlingType, set_handlingType] = useState<HandlingType>(undefined)
@@ -106,8 +105,8 @@ const SetupScreen = () => {
 
       normalBtnTxt: { fontSize: FontSize.Normal, },
 
-      downloadingView: { gap: Gap.Normal, justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', position: 'absolute', backgroundColor: theme.background },
-      downloadingTxt: { fontSize: FontSize.Normal, fontWeight: FontBold.Bold, color: theme.primary },
+      downloadingView: { gap: Gap.Normal, justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', position: 'absolute', backgroundColor: Color_BG },
+      downloadingTxt: { fontSize: FontSize.Normal, fontWeight: FontBold.Bold, color: Color_Text },
 
       normalBtn: {
         borderWidth: 0,
@@ -151,7 +150,7 @@ const SetupScreen = () => {
         padding: Outline.Normal,
       },
     })
-  }, [theme])
+  }, [])
 
   const onPressSubview = useCallback((type: SubView) => {
     set_subView(type)
@@ -374,7 +373,7 @@ const SetupScreen = () => {
   ) => {
     return (
       <LucideIconTextEffectButton
-        unselectedColorOfTextAndIcon={theme.counterBackground}
+        unselectedColorOfTextAndIcon={Color_Text}
         notChangeToSelected
         style={style.displaySettingBtn}
 
@@ -386,7 +385,7 @@ const SetupScreen = () => {
         onPress={() => onPressDisplaySetting(storeKey, setter)}
       />
     )
-  }, [style, theme])
+  }, [style])
 
   // popularity
 
@@ -444,7 +443,6 @@ const SetupScreen = () => {
       />
     )
   }, [
-    theme,
     style,
     onPressConfirmInPopupPopularityLevel,
     getExampleWordsAsync,
@@ -504,8 +502,8 @@ const SetupScreen = () => {
               <LucideIconTextEffectButton
                 key={min ?? 'custom'}
 
-                selectedColorOfTextAndIcon={theme.primary}
-                unselectedColorOfTextAndIcon={theme.counterPrimary}
+                selectedColorOfTextAndIcon={Color_Text}
+                unselectedColorOfTextAndIcon={Color_BG}
 
                 onPress={() => onPressInterval(min)}
 
@@ -527,7 +525,7 @@ const SetupScreen = () => {
         }
       </ScrollView>
     )
-  }, [displayIntervalInMin, theme, style])
+  }, [displayIntervalInMin, style])
 
   // limit words
 
@@ -556,8 +554,8 @@ const SetupScreen = () => {
               <LucideIconTextEffectButton
                 key={wordNum}
 
-                selectedColorOfTextAndIcon={theme.primary}
-                unselectedColorOfTextAndIcon={theme.counterPrimary}
+                selectedColorOfTextAndIcon={Color_Text}
+                unselectedColorOfTextAndIcon={Color_BG}
 
                 onPress={() => onPressLimitWord(wordNum)}
 
@@ -576,7 +574,7 @@ const SetupScreen = () => {
         }
       </ScrollView>
     )
-  }, [displayWordLimitNumber, theme, style])
+  }, [displayWordLimitNumber, style])
 
   // translate service
 
@@ -676,7 +674,6 @@ const SetupScreen = () => {
     displayTargetLang,
     getExampleWordsAsync,
     translationServiceValueAndDisplayTexts,
-    theme,
     style
   ])
 
@@ -705,8 +702,8 @@ const SetupScreen = () => {
               <LucideIconTextEffectButton
                 key={dayNum}
 
-                selectedColorOfTextAndIcon={theme.primary}
-                unselectedColorOfTextAndIcon={theme.counterPrimary}
+                selectedColorOfTextAndIcon={Color_Text}
+                unselectedColorOfTextAndIcon={Color_BG}
 
                 onPress={() => onPressNumDaysToPush(dayNum)}
 
@@ -725,7 +722,7 @@ const SetupScreen = () => {
         }
       </ScrollView>
     )
-  }, [displayNumDaysToPush, theme, style])
+  }, [displayNumDaysToPush, style])
 
   // target lang
 
@@ -780,7 +777,7 @@ const SetupScreen = () => {
             {/* from */}
             <View style={style.excludeTimeChildView}>
               <LucideIconTextEffectButton
-                unselectedColorOfTextAndIcon={theme.counterBackground}
+                unselectedColorOfTextAndIcon={Color_Text}
                 notChangeToSelected
                 style={style.excludedTimeBtn}
 
@@ -795,12 +792,12 @@ const SetupScreen = () => {
             </View>
 
             {/* arrow icon */}
-            <LucideIcon name='MoveRight' color={theme.counterBackground} />
+            <LucideIcon name='MoveRight' color={Color_Text} />
 
             {/* to */}
             <View style={style.excludeTimeChildView}>
               <LucideIconTextEffectButton
-                unselectedColorOfTextAndIcon={theme.counterBackground}
+                unselectedColorOfTextAndIcon={Color_Text}
                 notChangeToSelected
                 style={style.excludedTimeBtn}
 
@@ -816,7 +813,7 @@ const SetupScreen = () => {
 
             {/* remove btn */}
             <LucideIconTextEffectButton
-              unselectedColorOfTextAndIcon={theme.counterBackground}
+              unselectedColorOfTextAndIcon={Color_Text}
               notChangeToSelected
 
               iconProps={{ name: 'X', size: FontSize.Normal }}
@@ -827,7 +824,7 @@ const SetupScreen = () => {
         )
       })
     )
-  }, [displayExcludedTimePairs, theme, style])
+  }, [displayExcludedTimePairs, style])
 
   // common
 
@@ -978,7 +975,7 @@ const SetupScreen = () => {
 
               {/* add exclude time btn */}
               <LucideIconTextEffectButton
-                unselectedColorOfTextAndIcon={theme.counterBackground}
+                unselectedColorOfTextAndIcon={Color_Text}
                 notChangeToSelected
 
                 iconProps={{ name: 'Plus', size: FontSize.Normal }}
@@ -1009,7 +1006,7 @@ const SetupScreen = () => {
           {/* more setting */}
 
           <LucideIconTextEffectButton
-            unselectedColorOfTextAndIcon={theme.counterBackground}
+            unselectedColorOfTextAndIcon={Color_Text}
             notChangeToSelected
             style={style.moreSettingBtn}
 
@@ -1139,7 +1136,7 @@ const SetupScreen = () => {
         subView === 'setup' &&
         <View style={style.bottomButtonsView}>
           <LucideIconTextEffectButton
-            unselectedColorOfTextAndIcon={theme.counterBackground}
+            unselectedColorOfTextAndIcon={Color_Text}
 
             notChangeToSelected
             style={style.normalBtn}
@@ -1156,7 +1153,7 @@ const SetupScreen = () => {
             selectedBackgroundColor={Color_Text}
 
             selectedColorOfTextAndIcon={Color_BG}
-            unselectedColorOfTextAndIcon={theme.counterBackground}
+            unselectedColorOfTextAndIcon={Color_Text}
 
             notChangeToSelected
             manuallySelected={true}
@@ -1213,7 +1210,7 @@ const SetupScreen = () => {
           {/* indicator */}
           {
             handlingType !== 'done' &&
-            <ActivityIndicator color={theme.counterBackground} />
+            <ActivityIndicator color={Color_Text} />
           }
 
           {/* handling text */}
@@ -1234,7 +1231,7 @@ const SetupScreen = () => {
           {/* icon done */}
           {
             handlingType === 'done' &&
-            <LucideIcon name='Check' size={FontSize.Normal} color={theme.counterBackground} />
+            <LucideIcon name='Check' size={FontSize.Normal} color={Color_Text} />
           }
 
           {/* done text */}
@@ -1247,7 +1244,7 @@ const SetupScreen = () => {
           {
             handlingType === 'done' &&
             <LucideIconTextEffectButton
-              unselectedColorOfTextAndIcon={theme.counterBackground}
+              unselectedColorOfTextAndIcon={Color_Text}
 
               notChangeToSelected
               manuallySelected={false}
