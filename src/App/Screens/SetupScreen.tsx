@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, Alert, ActivityIndicator } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
-import useTheme, { Color_Text, Color_Text2 } from '../Hooks/useTheme'
+import useTheme, { Color_BG, Color_Text, Color_Text2 } from '../Hooks/useTheme'
 import useLocalText, { PleaseSelectTargetLangText } from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
@@ -86,7 +86,7 @@ const SetupScreen = () => {
 
   const style = useMemo(() => {
     return StyleSheet.create({
-      master: { flex: 1, paddingBottom: Outline.Normal },
+      master: { flex: 1 },
       scrollView: { gap: Gap.Normal, padding: Outline.Normal, },
 
       topbarView: { flexDirection: 'row' },
@@ -100,7 +100,7 @@ const SetupScreen = () => {
 
       excludedTimeBtn: {
         borderWidth: 0,
-        borderRadius: BorderRadius.Small,
+        borderRadius: BorderRadius.Medium,
         padding: Outline.Small,
       },
 
@@ -110,11 +110,12 @@ const SetupScreen = () => {
       downloadingTxt: { fontSize: FontSize.Normal, fontWeight: FontBold.Bold, color: theme.primary },
 
       normalBtn: {
-        borderWidth: WindowSize_Max * 0.0015,
-        borderRadius: BorderRadius.Medium,
+        borderWidth: 0,
+        borderRadius: BorderRadius.Small,
         padding: Outline.Normal,
         flexDirection: 'row',
         gap: Gap.Normal,
+        flex: 1,
       },
 
       normalBtn_NoBorder: {
@@ -147,6 +148,7 @@ const SetupScreen = () => {
         gap: Gap.Normal,
         justifyContent: 'center',
         alignItems: 'center',
+        padding: Outline.Normal,
       },
     })
   }, [theme])
@@ -1164,9 +1166,9 @@ const SetupScreen = () => {
           />
 
           <LucideIconTextEffectButton
-            selectedBackgroundColor={theme.primary}
+            selectedBackgroundColor={Color_Text}
 
-            selectedColorOfTextAndIcon={theme.counterPrimary}
+            selectedColorOfTextAndIcon={Color_BG}
             unselectedColorOfTextAndIcon={theme.counterBackground}
 
             notChangeToSelected
