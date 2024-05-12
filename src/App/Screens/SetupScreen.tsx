@@ -27,7 +27,7 @@ import { BridgeTranslateMultiWordAsync, GetCurrentTranslationServiceSuitAsync } 
 import ExampleWordView, { ValueAndDisplayText } from './ExampleWordView'
 import { SqlLogAllRowsAsync } from '../../Common/SQLite'
 import TargetLangPicker from '../Components/TargetLangPicker'
-import SettingItemPanel from '../Components/SettingItemPanel'
+import SettingItemPanel, { SettingItemPanelStyle } from '../Components/SettingItemPanel'
 
 const IsLog = true
 
@@ -97,7 +97,15 @@ const SetupScreen = () => {
 
       excludeTimeView: { flexDirection: 'row', gap: Gap.Normal, alignItems: 'center' },
       excludeTimeChildView: { flex: 1, },
-      excludeTimeTitleView: { flexDirection: 'row', justifyContent: 'space-between' },
+      excludeTimeTitleView: { width: '100%', flexDirection: 'row', justifyContent: 'space-between' },
+
+      excludedTimeBtn: {
+        borderWidth: 0,
+        borderRadius: BorderRadius.Small,
+        padding: Outline.Small,
+        // flexDirection: 'row',
+        // gap: Gap.Normal,
+      },
 
       header: { fontWeight: FontBold.Bold, fontSize: FontSize.Normal, color: theme.primary },
 
@@ -759,7 +767,7 @@ const SetupScreen = () => {
               <LucideIconTextEffectButton
                 unselectedColorOfTextAndIcon={theme.counterBackground}
                 notChangeToSelected
-                style={style.normalBtn}
+                style={style.excludedTimeBtn}
 
                 title={`${PrependZero(pair[0].hours)}:${PrependZero(pair[0].minutes)}`}
                 titleProps={{ style: style.normalBtnTxt }}
@@ -771,6 +779,7 @@ const SetupScreen = () => {
               />
             </View>
 
+            {/* arrow icon */}
             <LucideIcon name='MoveRight' color={theme.counterBackground} />
 
             {/* to */}
@@ -778,7 +787,7 @@ const SetupScreen = () => {
               <LucideIconTextEffectButton
                 unselectedColorOfTextAndIcon={theme.counterBackground}
                 notChangeToSelected
-                style={style.normalBtn}
+                style={style.excludedTimeBtn}
 
                 title={`${PrependZero(pair[1].hours)}:${PrependZero(pair[1].minutes)}`}
                 titleProps={{ style: style.normalBtnTxt }}
@@ -790,7 +799,7 @@ const SetupScreen = () => {
               />
             </View>
 
-            {/* remove */}
+            {/* remove btn */}
             <LucideIconTextEffectButton
               unselectedColorOfTextAndIcon={theme.counterBackground}
               notChangeToSelected
@@ -961,23 +970,29 @@ const SetupScreen = () => {
 
           {/* exclude time */}
 
-          <View style={style.excludeTimeTitleView}>
-            <Text style={style.header}>{texts.not_show}</Text>
+          <View style={SettingItemPanelStyle.master_Column}>
+            {/* title */}
+            <View style={style.excludeTimeTitleView}>
+              <Text style={SettingItemPanelStyle.titleTxt}>{texts.not_show}</Text>
 
-            {/* add exclude time */}
-            <LucideIconTextEffectButton
-              unselectedColorOfTextAndIcon={theme.counterBackground}
-              notChangeToSelected
+              {/* add exclude time btn */}
+              <LucideIconTextEffectButton
+                unselectedColorOfTextAndIcon={theme.counterBackground}
+                notChangeToSelected
 
-              iconProps={{ name: 'Plus', size: FontSize.Normal }}
+                iconProps={{ name: 'Plus', size: FontSize.Normal }}
 
-              onPress={onPressAddExcludeTime}
-            />
+                onPress={onPressAddExcludeTime}
+              />
+            </View>
+
+            <Text style={SettingItemPanelStyle.explainTxt}>{texts.not_show_explain}</Text>
+
+            {/* list */}
+            {
+              renderExcludeTimes()
+            }
           </View>
-
-          {
-            renderExcludeTimes()
-          }
 
           {/* target lang */}
 

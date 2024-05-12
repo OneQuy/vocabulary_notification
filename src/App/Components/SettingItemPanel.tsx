@@ -21,6 +21,22 @@ export const SettingItemPanelStyle = StyleSheet.create({
 
         gap: Gap.Small,
     },
+    
+    master_Column: {
+        backgroundColor: Color_BG2,
+
+        borderColor: Color_Border,
+        borderWidth: StyleSheet.hairlineWidth,
+        borderRadius: BorderRadius.Medium,
+
+        // flexDirection: 'row',
+        padding: Outline.Normal,
+
+        justifyContent: 'center',
+        alignItems: 'center',
+
+        gap: Gap.Small,
+    },
 
     leftPanel: {
         flex: 1,
