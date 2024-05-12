@@ -128,7 +128,7 @@ const SetupScreen = () => {
 
       handlingBackBtn: {
         borderWidth: 0,
-        borderRadius: BorderRadius.Medium,
+        borderRadius: BorderRadius.Small,
         padding: Outline.Normal,
         flexDirection: 'row',
         gap: Gap.Normal,
@@ -1253,8 +1253,6 @@ const SetupScreen = () => {
 
               title={texts.back}
               titleProps={{ style: style.normalBtnTxt }}
-
-              iconProps={{ name: 'ChevronLeft', size: FontSize.Normal, }}
 
               onPress={() => set_handlingType(undefined)}
             />

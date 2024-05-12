@@ -1,4 +1,4 @@
-import { SafeValue } from "../../Common/UtilsTS"
+import { LogStringify, SafeValue } from "../../Common/UtilsTS"
 import { LocalizedData, PairTime, SavedWordData } from "../Types"
 import { TimePickerResult } from "../Components/TimePicker"
 import { DeleteAllRowsTableAsync } from "./LocalizedWordsTable"
@@ -17,7 +17,7 @@ export const CheckCapabilityLanguage = (currentLang: Language, supportedLangs: L
 
     if (IsLog)
         console.log('[CheckCapabilityLanguage] current lang', currentLang, 'found?', find !== undefined);
-    
+
     return find
 
     // // find lang name
@@ -79,7 +79,7 @@ export const ExtractWordFromWordLang = (wordAndLang: string): string => {
     }
 
     // console.log('xxxxx', wordAndLang, wordAndLang.substring(0, idx));
-    
+
     return wordAndLang.substring(0, idx)
 }
 
@@ -116,6 +116,11 @@ export const TotalMin = (time: TimePickerResult) => {
     return time.hours * 60 + time.minutes
 }
 
+/**
+ * 
+ * @param excludePairs: end time must bigger than start time
+ * @returns 
+ */
 const IsInExcludeTime = (hour: number, minute: number, excludePairs: PairTime[]): boolean => {
     const totalMin = hour * 60 + minute
 
@@ -132,7 +137,46 @@ const IsInExcludeTime = (hour: number, minute: number, excludePairs: PairTime[])
     return false
 }
 
+export const SplitPairTimeEnsureEndTimeBiggerStartTime = (pairs: PairTime[]): PairTime[] => {
+    const arr: PairTime[] = []
+
+    for (let pair of pairs) {
+        const start = pair[0]
+        const end = pair[1]
+
+        if (TotalMin(end) >= TotalMin(start)) {
+            arr.push(pair)
+            continue
+        }
+
+        arr.push([
+            start,
+            {
+                hours: 23,
+                minutes: 59
+            }
+        ])
+
+        arr.push([
+            {
+                hours: 0,
+                minutes: 0
+            },
+            end
+        ])
+    }
+
+    return arr
+}
+
+/**
+ * 
+ * @param excludePairs: end time can bigger or smaller (need to split) start time
+ * @returns 
+ */
 export const CalcNotiTimeListPerDay = (intervalInMinute: number, excludePairs: PairTime[]): TimePickerResult[] => {
+    excludePairs = SplitPairTimeEnsureEndTimeBiggerStartTime(excludePairs)
+
     let lastNoti: TimePickerResult | undefined
     const arr: TimePickerResult[] = []
 

@@ -495,8 +495,8 @@ const DataToNotification = (
         timestamp,
     }
 
-    if (IsLog)
-        console.log(`${noti.title}: ${noti.message} (${new Date(timestamp).toLocaleString()})`)
+    // if (IsLog)
+    //     console.log(`${noti.title}: ${noti.message} (${new Date(timestamp).toLocaleString()})`)
 
     return noti
 }
