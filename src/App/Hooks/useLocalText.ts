@@ -28,7 +28,7 @@ const eng = {
     num_days_to_push: 'Number of scheduled days',
     num_days_to_push_explain: "Number of days to schedule notifications for",
     noti_display: 'Notification display settings',
-    noti_display_explain: "What information will be displayed in the notification? Tap '##' for a demo.",
+    noti_display_explain: "What information will be displayed in the notification?\nTap '##' for a demo.",
     no_limit: 'No limit',
     custom: 'Custom',
     word: 'word',

@@ -105,8 +105,6 @@ const SetupScreen = () => {
       },
 
       normalBtnTxt: { fontSize: FontSize.Normal, },
-      
-      displaySettingItemTxt: { fontSize: FontSize.Normal, },
 
       downloadingView: { gap: Gap.Normal, justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', position: 'absolute', backgroundColor: theme.background },
       downloadingTxt: { fontSize: FontSize.Normal, fontWeight: FontBold.Bold, color: theme.primary },
@@ -379,7 +377,7 @@ const SetupScreen = () => {
         style={style.displaySettingBtn}
 
         title={title}
-        titleProps={{ style: style.displaySettingItemTxt }}
+        titleProps={{ numberOfLines: 1, adjustsFontSizeToFit: true, style: style.normalBtnTxt }}
 
         iconProps={{ name: getter ? 'CheckSquare' : 'Square', size: FontSize.Normal, }}
 
