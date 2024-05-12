@@ -987,7 +987,7 @@ const SetupScreen = () => {
             onPress={() => onPressShowPopup('target-lang')}
             title={texts.translate_to}
             explain={texts.translate_language_explain}
-            value={displayTargetLang?.name ?? texts.tap_to_select}
+            value={displayTargetLang?.name ?? '?'}
             isLong
           />
 

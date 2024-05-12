@@ -12,7 +12,6 @@ const eng = {
     services: 'Services',
     services_explain: "The translation service you wish to use for translation. Change this only if you encounter incorrectly translated words.",
     example_words: 'Example words',
-    tap_to_select: 'Tap to select...',
     search_language: 'Search language...',
     repeat: 'Repeat',
     repeat_explain: "How long is the interval\nbetween notifications?",
