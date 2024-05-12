@@ -1,10 +1,9 @@
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Alert } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import useTheme from '../Hooks/useTheme'
+import { Color_BG, Color_Text } from '../Hooks/useTheme'
 import useLocalText from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { WindowSize_Max } from '../../Common/CommonConstants'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import { TranslationService } from '../Types'
@@ -49,7 +48,6 @@ const ExampleWordView = ({
         notTranslate?: boolean
     ) => Promise<boolean | Error | ValueAndDisplayText[]>,
 }) => {
-    const theme = useTheme()
     const texts = useLocalText()
 
     const [selectingValue, set_selectingValue] = useState(initValue)
@@ -67,7 +65,7 @@ const ExampleWordView = ({
 
             titleChildTxt: { fontWeight: FontBold.Bold, fontSize: FontSize.Normal, textAlign: 'center' },
 
-            separatorLine: { height: '95%', width: StyleSheet.hairlineWidth, backgroundColor: theme.counterPrimary },
+            separatorLine: { height: '95%', width: StyleSheet.hairlineWidth, backgroundColor: Color_BG },
 
             scrollView: { gap: Gap.Small, padding: Outline.Normal, },
 
@@ -83,23 +81,23 @@ const ExampleWordView = ({
             exampleTxt_Bold: { fontSize: FontSize.Normal, fontWeight: FontBold.Bold, textAlign: 'center', },
 
             confirmBtn: {
-                borderWidth: WindowSize_Max * 0.0015,
-                borderRadius: BorderRadius.Medium,
+                borderWidth: 0,
+                borderRadius: BorderRadius.Small,
                 padding: Outline.Normal,
                 marginBottom: Outline.Normal,
                 marginHorizontal: Outline.Normal
             },
 
             anotherExampleBtn: {
-                borderWidth: WindowSize_Max * 0.0015,
-                borderRadius: BorderRadius.Medium,
+                borderWidth: 0,
+                borderRadius: BorderRadius.Small,
                 padding: Outline.Small,
                 marginHorizontal: Outline.Normal
             },
 
             normalBtn: {
-                borderWidth: WindowSize_Max * 0.0015,
-                borderRadius: BorderRadius.Medium,
+                borderWidth: 0,
+                borderRadius: BorderRadius.Small,
                 padding: Outline.Normal,
                 flexDirection: 'row',
             },
@@ -108,7 +106,7 @@ const ExampleWordView = ({
                 padding: Outline.Normal,
             },
         })
-    }, [theme])
+    }, [])
 
     const generateExamplesAsync = useCallback(async (
         service?: TranslationService,
@@ -222,8 +220,8 @@ const ExampleWordView = ({
                                 return (
                                     < LucideIconTextEffectButton
                                         key={valueAndDisplayText.text}
-                                        selectedColorOfTextAndIcon={theme.primary}
-                                        unselectedColorOfTextAndIcon={theme.counterPrimary}
+                                        selectedColorOfTextAndIcon={Color_Text}
+                                        unselectedColorOfTextAndIcon={Color_BG}
 
                                         onPress={() => onPressValueLeftPanelAsync(valueAndDisplayText)}
 
@@ -260,8 +258,8 @@ const ExampleWordView = ({
                         {
                             !notTranslate && rightPanelState !== 'translating' &&
                             < LucideIconTextEffectButton
-                                selectedColorOfTextAndIcon={theme.primary}
-                                unselectedColorOfTextAndIcon={theme.counterPrimary}
+                                selectedColorOfTextAndIcon={Color_Text}
+                                unselectedColorOfTextAndIcon={Color_BG}
 
                                 onPress={onPressShowPickTargetLang}
 
@@ -279,8 +277,8 @@ const ExampleWordView = ({
                         {
                             (rightPanelState !== 'translating' && (notTranslate || selectingTargetLang)) &&
                             < LucideIconTextEffectButton
-                                selectedColorOfTextAndIcon={theme.primary}
-                                unselectedColorOfTextAndIcon={theme.counterPrimary}
+                                selectedColorOfTextAndIcon={Color_Text}
+                                unselectedColorOfTextAndIcon={Color_BG}
 
                                 onPress={() => generateExamplesAsync(
                                     selectingValue && typeof selectingValue.value === 'string' ? (selectingValue.value as TranslationService) : undefined,
@@ -303,7 +301,7 @@ const ExampleWordView = ({
                         {
                             rightPanelState === 'translating' &&
                             <>
-                                <ActivityIndicator color={theme.counterPrimary} />
+                                <ActivityIndicator color={Color_BG} />
                                 <Text style={style.normalTxt}>{notTranslate ? texts.loading_data : texts.translating}...</Text>
                             </>
                         }
@@ -373,8 +371,8 @@ const ExampleWordView = ({
 
             {/* confirm btn */}
             < LucideIconTextEffectButton
-                selectedColorOfTextAndIcon={theme.primary}
-                unselectedColorOfTextAndIcon={theme.counterPrimary}
+                selectedColorOfTextAndIcon={Color_Text}
+                unselectedColorOfTextAndIcon={Color_BG}
 
                 onPress={() => onConfirmValue(selectingValue, selectingTargetLang)}
 

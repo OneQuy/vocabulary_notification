@@ -1,7 +1,6 @@
 import { View, TextInput, StyleSheet, ScrollView, ActivityIndicator } from 'react-native'
 import React, { useEffect, useMemo, useState } from 'react'
 import { CommonStyles, WindowSize_Max } from '../../Common/CommonConstants'
-import useTheme from '../Hooks/useTheme'
 import useLocalText from '../Hooks/useLocalText'
 import { Language } from '../../Common/TranslationApis/TranslationLanguages'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
@@ -11,6 +10,7 @@ import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { GetCurrentTranslationServiceSuitAsync } from '../Handles/TranslateBridge'
 import { TranslationService } from '../Types'
 import { DelayAsync } from '../../Common/UtilsTS'
+import { Color_BG, Color_Text } from '../Hooks/useTheme'
 
 const TargetLangPicker = ({
     initTargetLang,
@@ -23,7 +23,6 @@ const TargetLangPicker = ({
     selectingService: TranslationService,
     onPressTargetLang: (lang: Language) => void,
 }) => {
-    const theme = useTheme()
     const texts = useLocalText()
 
     const [supportedLanguages, set_supportedLanguages] = useState<Language[]>([])
@@ -35,21 +34,21 @@ const TargetLangPicker = ({
 
             searchLangView: {
                 borderWidth: StyleSheet.hairlineWidth,
-                borderRadius: BorderRadius.Medium,
-                borderColor: theme.counterPrimary,
+                borderRadius: BorderRadius.Small,
+                borderColor: Color_BG,
                 padding: Outline.Small,
                 justifyContent: 'center',
                 alignItems: 'center',
                 margin: Outline.Normal,
             },
 
-            searchTxt: { fontSize: FontSize.Normal, color: theme.counterPrimary },
+            searchTxt: { fontSize: FontSize.Normal, color: Color_BG },
 
             normalBtnTxt: { fontSize: FontSize.Normal, },
 
             normalBtn: {
                 borderWidth: WindowSize_Max * 0.0015,
-                borderRadius: BorderRadius.Medium,
+                borderRadius: BorderRadius.Small,
                 padding: Outline.Normal,
                 flexDirection: 'row',
                 gap: Gap.Normal,
@@ -59,7 +58,7 @@ const TargetLangPicker = ({
                 padding: Outline.Normal,
             },
         })
-    }, [theme])
+    }, [])
 
     const showingLangs = useMemo(() => {
         return supportedLanguages.filter(lang => searchLangInputTxt.length === 0 || lang.name.toLowerCase().includes(searchLangInputTxt.toLowerCase()))
@@ -68,7 +67,7 @@ const TargetLangPicker = ({
     useEffect(() => {
         (async () => {
             if (delayShow)
-                await DelayAsync(300)
+                await DelayAsync(200)
 
             const suit = await GetCurrentTranslationServiceSuitAsync(selectingService)
 
@@ -96,7 +95,7 @@ const TargetLangPicker = ({
             {
                 showingLangs.length <= 0 &&
                 <View style={CommonStyles.flex_1}>
-                    <ActivityIndicator color={theme.counterPrimary} />
+                    <ActivityIndicator color={Color_BG} />
                 </View>
             }
 
@@ -116,8 +115,8 @@ const TargetLangPicker = ({
                                     <LucideIconTextEffectButton
                                         key={lang.language}
 
-                                        selectedColorOfTextAndIcon={theme.primary}
-                                        unselectedColorOfTextAndIcon={theme.counterPrimary}
+                                        selectedColorOfTextAndIcon={Color_Text}
+                                        unselectedColorOfTextAndIcon={Color_BG}
 
                                         onPress={() => onPressTargetLang(lang)}
 

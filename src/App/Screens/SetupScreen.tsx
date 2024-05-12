@@ -128,7 +128,7 @@ const SetupScreen = () => {
       },
 
       handlingBackBtn: {
-        borderWidth: WindowSize_Max * 0.0015,
+        borderWidth: 0,
         borderRadius: BorderRadius.Medium,
         padding: Outline.Normal,
         flexDirection: 'row',
