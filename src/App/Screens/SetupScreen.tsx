@@ -1047,22 +1047,13 @@ const SetupScreen = () => {
 
           {
             showMoreSetting &&
-            <>
-              <Text style={style.header}>{texts.num_days_to_push}</Text>
-
-              <LucideIconTextEffectButton
-                unselectedColorOfTextAndIcon={theme.counterBackground}
-                notChangeToSelected
-                style={style.normalBtn}
-
-                title={displayNumDaysToPush + ' ' + AddS(texts.day, displayNumDaysToPush)}
-                titleProps={{ style: style.normalBtnTxt }}
-
-                iconProps={{ name: 'CalendarDays', size: FontSize.Normal, }}
-
-                onPress={() => onPressShowPopup('num_days_push')}
-              />
-            </>
+            <SettingItemPanel
+              onPress={() => onPressShowPopup('num_days_push')}
+              title={texts.num_days_to_push}
+              explain={texts.num_days_to_push_explain}
+              value={displayNumDaysToPush}
+              unit={AddS(texts.day, displayNumDaysToPush)}
+            />
           }
 
           {/* display of noti */}
