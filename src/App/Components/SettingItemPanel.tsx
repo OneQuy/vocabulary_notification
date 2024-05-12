@@ -33,7 +33,7 @@ export const SettingItemPanelStyle = StyleSheet.create({
         padding: Outline.Normal,
 
         justifyContent: 'center',
-        alignItems: 'center',
+        // alignItems: 'center',
 
         gap: Gap.Small,
     },

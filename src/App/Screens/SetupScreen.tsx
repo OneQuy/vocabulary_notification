@@ -104,8 +104,6 @@ const SetupScreen = () => {
         padding: Outline.Small,
       },
 
-      header: { fontWeight: FontBold.Bold, fontSize: FontSize.Normal, color: theme.primary },
-
       normalBtnTxt: { fontSize: FontSize.Normal, },
 
       downloadingView: { gap: Gap.Normal, justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', position: 'absolute', backgroundColor: theme.background },
@@ -124,9 +122,6 @@ const SetupScreen = () => {
       },
 
       displaySettingBtn: {
-        // borderWidth: WindowSize_Max * 0.0015,
-        // borderRadius: BorderRadius.Medium,
-        padding: Outline.Normal,
         flexDirection: 'row',
         gap: Gap.Normal,
         justifyContent: 'flex-start',
@@ -1060,69 +1055,65 @@ const SetupScreen = () => {
 
           {
             showMoreSetting &&
-            <>
-              <Text style={style.header}>{texts.noti_display}</Text>
-            </>
-          }
+            <View style={SettingItemPanelStyle.master_Column}>
+              {/* title */}
+              <Text style={SettingItemPanelStyle.titleTxt}>{texts.noti_display}</Text>
 
-          {/* display of noti - phonetic */}
+              {/* display of noti - phonetic */}
 
-          {
-            showMoreSetting &&
-            renderDisplaySettingItem(
-              texts.show_phonetic,
-              displaySettting_ShowPhonetic,
-              set_displaySettting_ShowPhonetic,
-              StorageKey_ShowPhonetic
-            )
-          }
+              {
+                renderDisplaySettingItem(
+                  texts.show_phonetic,
+                  displaySettting_ShowPhonetic,
+                  set_displaySettting_ShowPhonetic,
+                  StorageKey_ShowPhonetic
+                )
+              }
 
-          {/* display of noti - part of speech */}
+              {/* display of noti - part of speech */}
 
-          {
-            showMoreSetting &&
-            renderDisplaySettingItem(
-              texts.show_part_of_speech,
-              displaySettting_ShowPartOfSpeech,
-              set_displaySettting_ShowPartOfSpeech,
-              StorageKey_ShowPartOfSpeech
-            )
-          }
+              {
+                renderDisplaySettingItem(
+                  texts.show_part_of_speech,
+                  displaySettting_ShowPartOfSpeech,
+                  set_displaySettting_ShowPartOfSpeech,
+                  StorageKey_ShowPartOfSpeech
+                )
+              }
 
-          {/* display of noti - example */}
+              {/* display of noti - example */}
 
-          {
-            showMoreSetting &&
-            renderDisplaySettingItem(
-              texts.show_examble,
-              displaySettting_Example,
-              set_displaySettting_Example,
-              StorageKey_ShowExample
-            )
-          }
+              {
+                renderDisplaySettingItem(
+                  texts.show_examble,
+                  displaySettting_Example,
+                  set_displaySettting_Example,
+                  StorageKey_ShowExample
+                )
+              }
 
-          {/* display of noti - definitions */}
+              {/* display of noti - definitions */}
 
-          {
-            showMoreSetting &&
-            renderDisplaySettingItem(
-              texts.show_definitions,
-              displaySettting_Definitions,
-              set_displaySettting_Definitions,
-              StorageKey_ShowDefinitions
-            )
-          }
+              {
+                renderDisplaySettingItem(
+                  texts.show_definitions,
+                  displaySettting_Definitions,
+                  set_displaySettting_Definitions,
+                  StorageKey_ShowDefinitions
+                )
+              }
 
-          {/* display of noti - rank */}
+              {/* display of noti - rank */}
 
-          {
-            showMoreSetting &&
-            renderDisplaySettingItem(
-              texts.show_rank_of_word,
-              displaySettting_RankOfWord,
-              set_displaySettting_RankOfWord,
-              StorageKey_ShowRankOfWord
-            )
+              {
+                renderDisplaySettingItem(
+                  texts.show_rank_of_word,
+                  displaySettting_RankOfWord,
+                  set_displaySettting_RankOfWord,
+                  StorageKey_ShowRankOfWord
+                )
+              }
+            </View>
           }
         </ScrollView>
       }
