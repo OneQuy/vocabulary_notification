@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, Alert, ActivityIndicator } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
-import useTheme from '../Hooks/useTheme'
+import useTheme, { Color_Text, Color_Text2 } from '../Hooks/useTheme'
 import useLocalText, { PleaseSelectTargetLangText } from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
@@ -904,54 +904,54 @@ const SetupScreen = () => {
       {/* topbar */}
       <View style={style.topbarView}>
         <LucideIconTextEffectButton
-          unselectedColorOfTextAndIcon={theme.counterBackground}
-          selectedColorOfTextAndIcon={theme.counterPrimary}
-          selectedBackgroundColor={theme.primary}
+          unselectedColorOfTextAndIcon={Color_Text2}
+          selectedColorOfTextAndIcon={Color_Text}
+          selectedBackgroundColor={theme.background}
 
           style={style.topbarBtn}
 
           title={texts.setup}
           titleProps={{ style: style.normalBtnTxt }}
 
-          iconProps={{ name: 'Rocket', size: FontSize.Normal, }}
+          // iconProps={{ name: 'Rocket', size: FontSize.Normal, }}
 
-          effectType='scale'
-          effectDelay={50}
+          // effectType='scale'
+          // effectDelay={50}
 
           manuallySelected={subView === 'setup'}
           onPress={() => onPressSubview('setup')}
         />
         <LucideIconTextEffectButton
-          unselectedColorOfTextAndIcon={theme.counterBackground}
-          selectedColorOfTextAndIcon={theme.counterPrimary}
-          selectedBackgroundColor={theme.primary}
+          unselectedColorOfTextAndIcon={Color_Text2}
+          selectedColorOfTextAndIcon={Color_Text}
+          selectedBackgroundColor={theme.background}
 
           style={style.topbarBtn}
 
           title={texts.history}
           titleProps={{ style: style.normalBtnTxt }}
 
-          iconProps={{ name: 'History', size: FontSize.Normal, }}
+          // iconProps={{ name: 'History', size: FontSize.Normal, }}
 
-          effectType='scale'
-          effectDelay={50}
+          // effectType='scale'
+          // effectDelay={50}
 
           manuallySelected={subView === 'history'}
           onPress={() => onPressSubview('history')}
         />
         <LucideIconTextEffectButton
-          unselectedColorOfTextAndIcon={theme.counterBackground}
-          selectedColorOfTextAndIcon={theme.counterPrimary}
-          selectedBackgroundColor={theme.primary}
+          unselectedColorOfTextAndIcon={Color_Text2}
+          selectedColorOfTextAndIcon={Color_Text}
+          selectedBackgroundColor={theme.background}
 
           style={style.topbarBtn}
 
           title={texts.about}
           titleProps={{ style: style.normalBtnTxt }}
 
-          iconProps={{ name: 'Info', size: FontSize.Normal, }}
+          // iconProps={{ name: 'Info', size: FontSize.Normal, }}
 
-          effectType='scale'
+          // effectType='scale'
 
           manuallySelected={subView === 'about'}
           onPress={() => onPressSubview('about')}
