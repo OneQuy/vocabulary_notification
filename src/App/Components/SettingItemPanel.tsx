@@ -5,6 +5,53 @@ import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import { Gap, Outline } from '../Constants/Constants_Outline'
 
+export const SettingItemPanelStyle = StyleSheet.create({
+    master: {
+        backgroundColor: Color_BG2,
+
+        borderColor: Color_Border,
+        borderWidth: StyleSheet.hairlineWidth,
+        borderRadius: BorderRadius.Medium,
+
+        flexDirection: 'row',
+        padding: Outline.Normal,
+
+        justifyContent: 'center',
+        alignItems: 'center',
+
+        gap: Gap.Small,
+    },
+
+    leftPanel: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        gap: Gap.Small,
+    },
+
+    titleTxt: {
+        color: Color_Text,
+        fontSize: FontSize.Normal,
+        fontWeight: FontBold.Bold,
+    },
+
+    explainTxt: {
+        color: Color_Text2,
+        fontSize: FontSize.Small,
+    },
+
+    valueTxt: {
+        color: Color_Text,
+        fontSize: FontSize.Big,
+        fontWeight: FontBold.Bold,
+    },
+
+    unitTxt: {
+        color: Color_Text,
+        fontSize: FontSize.Small,
+    },
+})
+
 const SettingItemPanel = ({
     title,
     explain,
@@ -23,31 +70,8 @@ const SettingItemPanel = ({
 
     onPress: () => void,
 }) => {
-    const style = useMemo(() => {
+    const memoStyle = useMemo(() => {
         return StyleSheet.create({
-            master: {
-                backgroundColor: Color_BG2,
-
-                borderColor: Color_Border,
-                borderWidth: StyleSheet.hairlineWidth,
-                borderRadius: BorderRadius.Medium,
-
-                flexDirection: 'row',
-                padding: Outline.Normal,
-
-                justifyContent: 'center',
-                alignItems: 'center',
-
-                gap: Gap.Small,
-            },
-
-            leftPanel: {
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'flex-start',
-                gap: Gap.Small,
-            },
-
             rightPanelTO: {
                 paddingHorizontal: Outline.Small,
                 width: isLong ? '30%' : '20%',
@@ -57,49 +81,26 @@ const SettingItemPanel = ({
                 borderRadius: BorderRadius.Small,
                 justifyContent: 'center',
                 alignItems: 'center',
-            },
-
-            titleTxt: {
-                color: Color_Text,
-                fontSize: FontSize.Normal,
-                fontWeight: FontBold.Bold,
-            },
-
-            explainTxt: {
-                color: Color_Text2,
-                fontSize: FontSize.Small,
-            },
-
-            valueTxt: {
-                color: Color_Text,
-                fontSize: FontSize.Big,
-                fontWeight: FontBold.Bold,
-            },
-
-            unitTxt: {
-                color: Color_Text,
-                fontSize: FontSize.Small,
-                // fontWeight: FontBold.Bold,
-            },
+            }
         })
     }, [isLong])
 
     return (
-        <View style={style.master}>
-            <View style={style.leftPanel}>
-                <Text adjustsFontSizeToFit numberOfLines={1} style={style.titleTxt}>{title}</Text>
+        <View style={SettingItemPanelStyle.master}>
+            <View style={SettingItemPanelStyle.leftPanel}>
+                <Text adjustsFontSizeToFit numberOfLines={1} style={SettingItemPanelStyle.titleTxt}>{title}</Text>
                 {
                     explain &&
-                    <Text adjustsFontSizeToFit numberOfLines={5} style={style.explainTxt}>{explain}</Text>
+                    <Text adjustsFontSizeToFit numberOfLines={5} style={SettingItemPanelStyle.explainTxt}>{explain}</Text>
                 }
             </View>
 
-            <TouchableOpacity style={style.rightPanelTO} onPress={onPress}>
-                <Text adjustsFontSizeToFit numberOfLines={1} style={style.valueTxt}>{value}</Text>
+            <TouchableOpacity style={memoStyle.rightPanelTO} onPress={onPress}>
+                <Text adjustsFontSizeToFit numberOfLines={1} style={SettingItemPanelStyle.valueTxt}>{value}</Text>
 
                 {
                     unit &&
-                    <Text adjustsFontSizeToFit numberOfLines={1} style={style.unitTxt}>{unit}</Text>
+                    <Text adjustsFontSizeToFit numberOfLines={1} style={SettingItemPanelStyle.unitTxt}>{unit}</Text>
                 }
             </TouchableOpacity>
         </View>
