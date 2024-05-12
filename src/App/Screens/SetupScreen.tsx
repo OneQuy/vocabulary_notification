@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, Alert, ActivityIndicator } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
-import useTheme, { Color_BG, Color_Text, Color_Text2 } from '../Hooks/useTheme'
+import useTheme, { Color_BG, Color_Text, Color_Text2, Color_Text3 } from '../Hooks/useTheme'
 import useLocalText, { PleaseSelectTargetLangText } from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
@@ -1185,12 +1185,12 @@ const SetupScreen = () => {
       {
         contentToRenderInPopup &&
         <SlidingPopup
-          backgroundColor={theme.primary}
-          blurBackgroundColorInHex={theme.background}
-          handleColor={theme.counterPrimary}
+          backgroundColor={Color_Text}
+          blurBackgroundColorInHex={Color_BG}
+          handleColor={Color_BG}
           child={contentToRenderInPopup()}
           onFinishedHide={() => set_showPopup(undefined)}
-          childMaxHeight={'80%'}
+          childMaxHeight={'70%'}
           setCloseCallbackRef={popupCloseCallbackRef}
         />
       }
