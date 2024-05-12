@@ -40,6 +40,7 @@ const TargetLangPicker = ({
                 justifyContent: 'center',
                 alignItems: 'center',
                 margin: Outline.Normal,
+                maxHeight: '10%',
             },
 
             searchTxt: { width: '100%', fontSize: FontSize.Normal, color: Color_BG },
