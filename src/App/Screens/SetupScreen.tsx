@@ -27,6 +27,7 @@ import ExampleWordView, { ValueAndDisplayText } from './ExampleWordView'
 import { SqlLogAllRowsAsync } from '../../Common/SQLite'
 import TargetLangPicker from '../Components/TargetLangPicker'
 import SettingItemPanel, { SettingItemPanelStyle } from '../Components/SettingItemPanel'
+import About from './About'
 
 const IsLog = true
 
@@ -1174,6 +1175,12 @@ const SetupScreen = () => {
         subView === 'history' &&
         <HistoryScreen
           setHandling={set_handlingType}
+        />
+      }
+
+      {
+        subView === 'about' &&
+        <About
         />
       }
 
