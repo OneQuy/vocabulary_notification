@@ -21,6 +21,7 @@
     "react": "18.2.0",
     "react-native": "0.73.7",
     "react-native-fs": "^2.20.0",
+    "react-native-iap": "^12.13.1",
     "react-native-sqlite-2": "^3.6.2",
     "react-native-svg": "^15.1.0",
     "react-native-timer-picker": "^1.6.0"
