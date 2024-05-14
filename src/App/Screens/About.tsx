@@ -7,11 +7,23 @@ import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEf
 import { Color_BG, Color_Text } from '../Hooks/useTheme'
 import { FontSize } from '../Constants/Constants_FontSize'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
-import usePremium from '../Hooks/usePremium'
+import usePremium, { AllIAPProducts } from '../Hooks/usePremium'
+import { useMyIAP } from '../../Common/IAP/useMyIAP'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { StorageKey_CachedIAP } from '../Constants/StorageKey'
 
 const About = () => {
     const texts = useLocalText()
     const { isLifetime, set_lifetimeID } = usePremium()
+
+    const { isReadyPurchase, localPrice } = useMyIAP(
+        AllIAPProducts,
+        async (s: string) => AsyncStorage.setItem(StorageKey_CachedIAP, s),
+        async () => AsyncStorage.getItem(StorageKey_CachedIAP),
+        AllIAPProducts[0]
+    )
+
+    console.log(localPrice, isReadyPurchase);
 
     const style = useMemo(() => {
         return StyleSheet.create({

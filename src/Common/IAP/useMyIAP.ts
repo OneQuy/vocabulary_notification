@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { FetchListroductsAsync, IAPProduct, InitIAPAsync } from "./IAP"
+import { FetchListProductsAsync, IAPProduct, InitIAPAsync } from "./IAP"
 import { Product } from "react-native-iap"
 
 /**
@@ -7,7 +7,7 @@ import { Product } from "react-native-iap"
  * ## Usage
  * 1.
  ```tsx
-const { isInited, fetchedProducts } = useMyIAP(
+const { isReadyPurchase, fetchedProducts } = useMyIAP(
     allProducts,
     async (s: string) => AsyncStorage.setItem(StorageKey_CachedIAP, s),
     async () => AsyncStorage.getItem(StorageKey_CachedIAP))
@@ -47,7 +47,7 @@ export const useMyIAP = (
     }, [fetchedProducts, targetProductSku])
 
     const fetchListProducts = useCallback(async () => {
-        const items = await FetchListroductsAsync(allProducts.map(i => i.sku))
+        const items = await FetchListProductsAsync(allProducts.map(i => i.sku))
 
         if (items && items.length > 0)
             setFetchedProducts(items)
