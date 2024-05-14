@@ -52,7 +52,7 @@ const eng = {
     not_fount_suppport_target_lang: 'This service doesnt support ## or something errors. Please pick the language you wish to translate to again!',
     vocaby_lifetime: 'Vocaby Lifetime',
     vocaby_lifetime_explain: "Upgrade once. Unlock all vocabularies and features.",
-    current_price: "Current sale price: ",
+    current_price: "Current sale price",
     upgrade: "Upgrade",
     purchase_success: 'You have just upgraded successfully!\n\nThank you for purchasing. You unlocked all vocabularies and features of Vocaby!',
     
