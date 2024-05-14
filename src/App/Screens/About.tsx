@@ -7,9 +7,11 @@ import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEf
 import { Color_BG, Color_Text } from '../Hooks/useTheme'
 import { FontSize } from '../Constants/Constants_FontSize'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
+import usePremium from '../Hooks/usePremium'
 
 const About = () => {
     const texts = useLocalText()
+    const { isLifetime, set_lifetimeID } = usePremium()
 
     const style = useMemo(() => {
         return StyleSheet.create({
