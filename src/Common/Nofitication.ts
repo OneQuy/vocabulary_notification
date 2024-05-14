@@ -11,7 +11,9 @@
 //  iOS: add Push Notifications on XCode
 // --------------------------------
 
-import notifee, { AndroidChannel, AndroidImportance, AndroidStyle, Notification, NotificationAndroid, NotificationSettings, TimestampTrigger, TriggerType } from '@notifee/react-native';
+import notifee, { AndroidChannel, AndroidImportance, AndroidStyle, AuthorizationStatus, Notification, NotificationAndroid, NotificationSettings, TimestampTrigger, TriggerType } from '@notifee/react-native';
+import { Alert, Platform } from 'react-native';
+import { AlertAsync } from './UtilsTS';
 
 export type NotificationOption = {
   message: string,
@@ -22,6 +24,13 @@ export type NotificationOption = {
 var androidChannelId: string
 
 var inited: boolean = false
+
+const DefaultAndroidLocalTextAlertIfDenied = {
+  title: 'Enable Notifications',
+  content: 'Please enable notifications in your settings.',
+  cancel: 'Cancel',
+  setting: 'Setting',
+}
 
 const ConvertNotificationOptionToNotification = (option: NotificationOption): Notification => {
   const noti: Notification = {
@@ -60,8 +69,39 @@ export const initNotificationAsync = async () => {
   notifee.onBackgroundEvent(async (_) => { })
 }
 
-export const requestPermissionNotificationAsync = async (): Promise<NotificationSettings> => {
-  return await notifee.requestPermission()
+export const requestPermissionNotificationAsync = async (
+  androidAlertOpenSettingIfDenied?: boolean,
+  androidLocalTextAlertIfDenied?: {
+    title?: string,
+    content?: string,
+    cancel?: string,
+    setting?: string,
+  }
+): Promise<boolean> => {
+  const res = await notifee.requestPermission()
+
+  // ok
+
+  if (res.authorizationStatus !== AuthorizationStatus.DENIED) {
+    return true
+  }
+
+  // need alert to open setting (android)
+
+  if (Platform.OS === 'android' && androidAlertOpenSettingIfDenied === true) {
+    const pressedSetting = await AlertAsync(
+      androidLocalTextAlertIfDenied?.title ?? DefaultAndroidLocalTextAlertIfDenied.title,
+      androidLocalTextAlertIfDenied?.content ?? DefaultAndroidLocalTextAlertIfDenied.content,
+      androidLocalTextAlertIfDenied?.setting ?? DefaultAndroidLocalTextAlertIfDenied.setting,
+      androidLocalTextAlertIfDenied?.cancel ?? DefaultAndroidLocalTextAlertIfDenied.cancel,
+    )
+
+    if (pressedSetting) {
+      await notifee.openNotificationSettings()
+    }
+  }
+
+  return false
 }
 
 export const cancelAllLocalNotificationsAsync = async () => {

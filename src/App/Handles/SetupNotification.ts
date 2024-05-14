@@ -281,9 +281,9 @@ export const SetCurrentAllNotificationsAsync = async (currentAllNotifications: S
 export const TestNotificationAsync = async (setHandling: (type: HandlingType) => void): Promise<Error | undefined> => {
     // check permission
 
-    const resPermission = await requestPermissionNotificationAsync()
+    const resPermission = await requestPermissionNotificationAsync(true)
 
-    if (resPermission.authorizationStatus === AuthorizationStatus.DENIED) {
+    if (!resPermission) {
         return new Error(NoPermissionText)
     }
 
@@ -502,9 +502,9 @@ const DataToNotification = (
 }
 
 export const SetNotificationAsync = async (): Promise<undefined | SetupNotificationError> => {
-    const resPermission = await requestPermissionNotificationAsync()
+    const resPermission = await requestPermissionNotificationAsync(true)
 
-    if (resPermission.authorizationStatus === AuthorizationStatus.DENIED) {
+    if (!resPermission) {
         return {
             errorText: 'no_permission'
         }
