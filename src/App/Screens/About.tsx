@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Alert } from 'react-native'
 import React, { useCallback, useMemo, useState } from 'react'
 import { SettingItemPanelStyle } from '../Components/SettingItemPanel'
 import useLocalText from '../Hooks/useLocalText'
@@ -12,17 +12,20 @@ import { useMyIAP } from '../../Common/IAP/useMyIAP'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { StorageKey_CachedIAP } from '../Constants/StorageKey'
 import { PurchaseAsync } from '../../Common/IAP/IAP'
+import { LogStringify, ToCanPrintError } from '../../Common/UtilsTS'
+import { HandleError } from '../../Common/Tracking'
 
 const About = () => {
     const texts = useLocalText()
     const { isLifetime, set_lifetimeID } = usePremium()
-    const [isPurchasing, set_isPurchasing] = useState(false)
+    const [isHandling, set_isHandling] = useState(false)
+    const [currentLifetimeProduct, set_currentLifetimeProduct] = useState(AllIAPProducts[0])
 
-    const { isReadyPurchase, localPrice } = useMyIAP(
+    const { isReadyPurchase, localPrice, initErrorObj } = useMyIAP(
         AllIAPProducts,
         async (s: string) => AsyncStorage.setItem(StorageKey_CachedIAP, s),
         async () => AsyncStorage.getItem(StorageKey_CachedIAP),
-        AllIAPProducts[0]
+        currentLifetimeProduct
     )
 
     const style = useMemo(() => {
@@ -41,9 +44,37 @@ const About = () => {
         })
     }, [])
 
-    const onPressUpgrade = useCallback(() => {
-        // PurchaseAsync()
-    }, [])
+    const onPressUpgrade = useCallback(async () => {
+        if (isHandling || !isReadyPurchase)
+            return
+
+        set_isHandling(true)
+
+        const res = await PurchaseAsync(currentLifetimeProduct.sku)
+
+        LogStringify(res)
+        
+        if (res === undefined) { // success
+            set_lifetimeID(currentLifetimeProduct.sku)
+
+            Alert.alert('Woohooo!', 'You have just upgraded successfully!\n\nThank you for purchasing. You unlocked all vocabularies and features of Vocaby!')
+        }
+
+        else if (res === null) { // user canceled
+
+        }
+
+        else { // error
+            HandleError(res, 'BuyLifetime', true)
+        }
+
+        set_isHandling(false)
+    }, [
+        isHandling, 
+        isReadyPurchase, 
+        currentLifetimeProduct,
+        set_lifetimeID
+    ])
 
     return (
         <View style={style.master}>
@@ -59,22 +90,42 @@ const About = () => {
                         <Text style={SettingItemPanelStyle.explainTxt}>{texts.vocaby_lifetime_explain}</Text>
                         <Text style={SettingItemPanelStyle.explainTxt}>{`${texts.current_price}: ${localPrice ?? '...'}`}</Text>
 
-                        {/* btn */}
-                        <LucideIconTextEffectButton
-                            selectedBackgroundColor={Color_Text}
-                            selectedColorOfTextAndIcon={Color_BG}
+                        {/* isHandling */}
+                        {
+                            isHandling &&
+                            <ActivityIndicator color={Color_Text} />
+                        }
 
-                            notChangeToSelected
-                            manuallySelected={true}
-                            canHandlePressWhenSelected
+                        {/* erroring */}
+                        {
+                            !isReadyPurchase &&
+                            <Text style={SettingItemPanelStyle.explainTxt}>
+                                {
+                                    '[Not ready to purchase]' +
+                                    (initErrorObj === undefined ? '' : ` ${ToCanPrintError(initErrorObj)}`)
+                                }
+                            </Text>
+                        }
 
-                            style={style.normalBtn}
+                        {/* btn upgrade*/}
+                        {
+                            !isHandling && isReadyPurchase &&
+                            <LucideIconTextEffectButton
+                                selectedBackgroundColor={Color_Text}
+                                selectedColorOfTextAndIcon={Color_BG}
 
-                            title={texts.upgrade}
-                            titleProps={{ style: style.normalBtnTxt }}
+                                notChangeToSelected
+                                manuallySelected={true}
+                                canHandlePressWhenSelected
 
-                        // onPress={() => set_handlingType(undefined)}
-                        />
+                                style={style.normalBtn}
+
+                                title={texts.upgrade}
+                                titleProps={{ style: style.normalBtnTxt }}
+
+                                onPress={onPressUpgrade}
+                            />
+                        }
                     </View>
                 }
             </ScrollView>
