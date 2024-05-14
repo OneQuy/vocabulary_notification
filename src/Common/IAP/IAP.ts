@@ -6,11 +6,8 @@
  * DOC
  * https://react-native-iap.dooboolab.com/docs/get-started
  * 
- * USAGE
-        await InitIAPAsync(
-            ids.map(i => i.product),
-            async (s: string) => AsyncStorage.setItem(StorageKey_CachedIAP, s),
-            async () => AsyncStorage.getItem(StorageKey_CachedIAP))
+ * USAGE: should call this first:
+        await InitIAPAsync(...)
  */
 
 
@@ -51,6 +48,14 @@ export var fetchedProducts: Product[] = []
 /**
  * @returns success: return undefined
  * @returns failed: new Error('...')
+ * 
+ * ### USAGE
+ * ```tsx
+        await InitIAPAsync(
+            ids.map(i => i.product),
+            async (s: string) => AsyncStorage.setItem(StorageKey_CachedIAP, s),
+            async () => AsyncStorage.getItem(StorageKey_CachedIAP))
+ * ```
  */
 export const InitIAPAsync = async (
     products: IAPProduct[],

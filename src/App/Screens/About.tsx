@@ -34,6 +34,7 @@ const About = () => {
             <ScrollView style={style.scrollView}>
                 {/* lifetime upgrade */}
                 {
+                    !isLifetime &&
                     <View style={SettingItemPanelStyle.master_Column}>
                         {/* title */}
                         <Text style={SettingItemPanelStyle.titleTxt}>{texts.vocaby_lifetime}</Text>
