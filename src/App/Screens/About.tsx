@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { SettingItemPanelStyle } from '../Components/SettingItemPanel'
 import useLocalText from '../Hooks/useLocalText'
 import { Gap, Outline } from '../Constants/Constants_Outline'
@@ -11,10 +11,12 @@ import usePremium, { AllIAPProducts } from '../Hooks/usePremium'
 import { useMyIAP } from '../../Common/IAP/useMyIAP'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { StorageKey_CachedIAP } from '../Constants/StorageKey'
+import { PurchaseAsync } from '../../Common/IAP/IAP'
 
 const About = () => {
     const texts = useLocalText()
     const { isLifetime, set_lifetimeID } = usePremium()
+    const [isPurchasing, set_isPurchasing] = useState(false)
 
     const { isReadyPurchase, localPrice } = useMyIAP(
         AllIAPProducts,
@@ -22,8 +24,6 @@ const About = () => {
         async () => AsyncStorage.getItem(StorageKey_CachedIAP),
         AllIAPProducts[0]
     )
-
-    console.log(localPrice, isReadyPurchase);
 
     const style = useMemo(() => {
         return StyleSheet.create({
@@ -41,6 +41,10 @@ const About = () => {
         })
     }, [])
 
+    const onPressUpgrade = useCallback(() => {
+        // PurchaseAsync()
+    }, [])
+
     return (
         <View style={style.master}>
             <ScrollView style={style.scrollView}>
@@ -52,7 +56,7 @@ const About = () => {
                         <Text style={SettingItemPanelStyle.titleTxt}>{texts.vocaby_lifetime}</Text>
 
                         {/* explain */}
-                        <Text style={SettingItemPanelStyle.explainTxt}>{texts.vocaby_lifetime_explain}</Text>
+                        <Text style={SettingItemPanelStyle.explainTxt}>{`(${localPrice}) ${texts.vocaby_lifetime_explain}`}</Text>
 
                         {/* btn */}
                         <LucideIconTextEffectButton

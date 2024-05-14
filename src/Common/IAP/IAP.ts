@@ -63,7 +63,7 @@ export const InitIAPAsync = async (
     cachedProductsListGetterAsync?: () => Promise<string | null>,
 ): Promise<Error | undefined> => {
     if (isInited) {
-        console.warn('IAP already inited')
+        // console.warn('IAP already inited')
         return undefined
     }
 

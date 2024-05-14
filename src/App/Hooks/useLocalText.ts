@@ -51,7 +51,7 @@ const eng = {
     warning_clear_db: 'To change the translation service, the database needs resetting, and all learned words must be deleted. These words will also be cleared from the History panel, along with any upcoming notifications. You will need to set them again.\n\nTap Confirm to proceed with the change.',
     not_fount_suppport_target_lang: 'This service doesnt support ## or something errors. Please pick the language you wish to translate to again!',
     vocaby_lifetime: 'Vocaby Lifetime',
-    vocaby_lifetime_explain: "Upgrade once. Unlock all vocabularies and features. Use forever.",
+    vocaby_lifetime_explain: "Upgrade once. Unlock all vocabularies and features.",
     upgrade: "Upgrade",
     
     show_rank_of_word: 'Show popularity #rank',
