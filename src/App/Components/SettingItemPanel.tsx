@@ -19,7 +19,7 @@ export const SettingItemPanelStyle = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
 
-        gap: Gap.Small,
+        gap: Gap.Normal,
     },
     
     master_Column: {
