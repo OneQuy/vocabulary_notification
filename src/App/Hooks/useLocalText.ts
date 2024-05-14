@@ -54,6 +54,7 @@ const eng = {
     vocaby_lifetime_explain: "Upgrade once. Unlock all vocabularies and features.",
     current_price: "Current sale price: ",
     upgrade: "Upgrade",
+    purchase_success: 'You have just upgraded successfully!\n\nThank you for purchasing. You unlocked all vocabularies and features of Vocaby!',
     
     show_rank_of_word: 'Show popularity #rank',
     show_part_of_speech: 'Show part of speech',

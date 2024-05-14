@@ -53,11 +53,11 @@ const About = () => {
         const res = await PurchaseAsync(currentLifetimeProduct.sku)
 
         LogStringify(res)
-        
+
         if (res === undefined) { // success
             set_lifetimeID(currentLifetimeProduct.sku)
 
-            Alert.alert('Woohooo!', 'You have just upgraded successfully!\n\nThank you for purchasing. You unlocked all vocabularies and features of Vocaby!')
+            Alert.alert('Woohooo!', texts.purchase_success)
         }
 
         else if (res === null) { // user canceled
@@ -70,10 +70,11 @@ const About = () => {
 
         set_isHandling(false)
     }, [
-        isHandling, 
-        isReadyPurchase, 
+        isHandling,
+        isReadyPurchase,
         currentLifetimeProduct,
-        set_lifetimeID
+        set_lifetimeID,
+        texts
     ])
 
     return (
