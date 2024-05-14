@@ -52,7 +52,7 @@ const About = () => {
 
         const res = await PurchaseAsync(currentLifetimeProduct.sku)
 
-        LogStringify(res)
+        // LogStringify(res)
 
         if (res === undefined) { // success
             set_lifetimeID(currentLifetimeProduct.sku)
