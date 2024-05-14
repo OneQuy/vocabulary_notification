@@ -4,7 +4,7 @@ import { SettingItemPanelStyle } from '../Components/SettingItemPanel'
 import useLocalText from '../Hooks/useLocalText'
 import { Gap, Outline } from '../Constants/Constants_Outline'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
-import { Color_Text } from '../Hooks/useTheme'
+import { Color_BG, Color_Text } from '../Hooks/useTheme'
 import { FontSize } from '../Constants/Constants_FontSize'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 
@@ -19,13 +19,10 @@ const About = () => {
 
             normalBtn: {
                 borderWidth: 0,
-                borderRadius: BorderRadius.Medium,
+                borderRadius: BorderRadius.Small,
                 maxWidth: '50%',
                 alignSelf: 'center',
                 padding: Outline.Normal,
-                flexDirection: 'row',
-                gap: Gap.Normal,
-                flex: 1,
             },
         })
     }, [])
@@ -44,20 +41,19 @@ const About = () => {
 
                         {/* btn */}
                         <LucideIconTextEffectButton
-                            unselectedColorOfTextAndIcon={Color_Text}
+                            selectedBackgroundColor={Color_Text}
+                            selectedColorOfTextAndIcon={Color_BG}
 
-                            // notChangeToSelected
-                            // manuallySelected={false}
-                            // canHandlePressWhenSelected
+                            notChangeToSelected
+                            manuallySelected={true}
+                            canHandlePressWhenSelected
 
                             style={style.normalBtn}
 
                             title={texts.upgrade}
                             titleProps={{ style: style.normalBtnTxt }}
 
-                            // onPress={() => set_handlingType(undefined)}
-
-                            backgroundImageProps={{ source: { uri: 'https://www.shutterstock.com/image-photo/dark-grainy-color-gradient-wave-600nw-2287686131.jpg'}}}
+                        // onPress={() => set_handlingType(undefined)}
                         />
                     </View>
                 }
