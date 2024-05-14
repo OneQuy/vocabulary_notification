@@ -16,6 +16,7 @@ const App = () => {
 
     initNotificationAsync()
   }, [])
+  
   return (
     <SafeAreaView style={style.master}>
       <StatusBar backgroundColor={Color_BG} barStyle={'light-content'} />
