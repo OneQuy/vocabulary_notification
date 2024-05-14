@@ -56,7 +56,8 @@ const About = () => {
                         <Text style={SettingItemPanelStyle.titleTxt}>{texts.vocaby_lifetime}</Text>
 
                         {/* explain */}
-                        <Text style={SettingItemPanelStyle.explainTxt}>{`(${localPrice}) ${texts.vocaby_lifetime_explain}`}</Text>
+                        <Text style={SettingItemPanelStyle.explainTxt}>{texts.vocaby_lifetime_explain}</Text>
+                        <Text style={SettingItemPanelStyle.explainTxt}>{`${texts.current_price}: ${localPrice ?? '...'}`}</Text>
 
                         {/* btn */}
                         <LucideIconTextEffectButton
