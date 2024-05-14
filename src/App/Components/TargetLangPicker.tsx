@@ -1,6 +1,6 @@
 import { View, TextInput, StyleSheet, ScrollView, ActivityIndicator, KeyboardAvoidingView } from 'react-native'
 import React, { useEffect, useMemo, useState } from 'react'
-import { CommonStyles, WindowSize_Max } from '../../Common/CommonConstants'
+import { CommonStyles } from '../../Common/CommonConstants'
 import useLocalText from '../Hooks/useLocalText'
 import { Language } from '../../Common/TranslationApis/TranslationLanguages'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
@@ -48,7 +48,7 @@ const TargetLangPicker = ({
             normalBtnTxt: { fontSize: FontSize.Normal, },
 
             normalBtn: {
-                borderWidth: WindowSize_Max * 0.0015,
+                borderWidth: 0,
                 borderRadius: BorderRadius.Small,
                 padding: Outline.Normal,
                 flexDirection: 'row',

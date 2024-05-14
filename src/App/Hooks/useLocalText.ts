@@ -2,7 +2,7 @@ export const NoPermissionText = 'No permission. Please grant the permission to r
 export const PleaseSelectTargetLangText = 'Please set [Translation language] you wish to translate to firstly.'
 
 const eng = {
-    popularity_level: 'Popuplarity level',
+    popularity_level: 'Popularity level',
     popularity_level_explain: "Popularity level of vocabulary words. The higher level, the less common the words are. Choose according to your needs.",
     level: 'Level',
     test_notification: 'Test notification',
@@ -50,6 +50,9 @@ const eng = {
     other_words: 'Other words',
     warning_clear_db: 'To change the translation service, the database needs resetting, and all learned words must be deleted. These words will also be cleared from the History panel, along with any upcoming notifications. You will need to set them again.\n\nTap Confirm to proceed with the change.',
     not_fount_suppport_target_lang: 'This service doesnt support ## or something errors. Please pick the language you wish to translate to again!',
+    vocaby_lifetime: 'Vocaby Lifetime',
+    vocaby_lifetime_explain: "Upgrade once. Unlock all vocabularies and features. Use forever.",
+    upgrade: "Upgrade",
     
     show_rank_of_word: 'Show popularity #rank',
     show_part_of_speech: 'Show part of speech',
