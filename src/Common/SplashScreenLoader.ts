@@ -1,7 +1,7 @@
-// NUMBER OF [CHANGE HERE]: 1
+// NUMBER OF [CHANGE HERE]: 2
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FirebaseInit } from "./Firebase/Firebase";
+import { initNotificationAsync } from "./Nofitication";
 
 export type SplashScreenLoaderResult = { // CHANGE HERE 1
     someVariable?: number,
@@ -12,7 +12,11 @@ export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
 
     FirebaseInit();
 
-    // awaits
+    // init notifee
+
+    initNotificationAsync()  // ND
+
+    // awaits // CHANGE HERE 2 (ALL BELOW)
 
     const [
     ] = await Promise.all([
@@ -38,10 +42,6 @@ export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
     // // handle alert update
 
     // await HandldAlertUpdateAppAsync() // alert_priority 2 (doc) // (must after HandleAppConfigAsync)
-
-    // // init notifee
-
-    // await initNotificationAsync() // alert_priority 3 (doc) // no depended
 
     // // init admob
 
