@@ -20,7 +20,7 @@ const App = () => {
     // })()
   }, [])
 
-  if (true)
+  if (!handled)
     return <SplashScreen />
 
   return (

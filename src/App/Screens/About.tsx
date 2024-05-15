@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Alert } from 'react-native'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { SettingItemPanelStyle } from '../Components/SettingItemPanel'
 import useLocalText from '../Hooks/useLocalText'
 import { Gap, Outline } from '../Constants/Constants_Outline'
@@ -15,12 +15,18 @@ import { PurchaseAsync, RestorePurchaseAsync } from '../../Common/IAP/IAP'
 import { LogStringify, SafeGetArrayElement, ToCanPrintError } from '../../Common/UtilsTS'
 import { HandleError } from '../../Common/Tracking'
 import { Purchase } from 'react-native-iap'
+import { GetRemoteConfigWithCheckFetchAsync } from '../../Common/RemoteConfig'
 
 const About = () => {
     const texts = useLocalText()
     const { isLifetime, set_lifetimeID } = usePremium()
     const [isHandling, set_isHandling] = useState(false)
-    const [currentLifetimeProduct, set_currentLifetimeProduct] = useState(AllIAPProducts[0])
+
+    const [currentLifetimeProduct, set_currentLifetimeProduct] = useState(
+        (AllIAPProducts && AllIAPProducts.length > 1) ?
+            AllIAPProducts[1] :
+            AllIAPProducts[0]
+    )
 
     const { isReadyPurchase, localPrice, initErrorObj } = useMyIAP(
         AllIAPProducts,
@@ -106,6 +112,24 @@ const About = () => {
         isReadyPurchase,
         currentLifetimeProduct,
     ])
+
+    useEffect(() => {
+        (async () => {
+            // fetch premium product id
+            
+            const config = await GetRemoteConfigWithCheckFetchAsync(false)
+
+            if (!config)
+                return
+
+            const premiumProduct = AllIAPProducts.find(i => i.sku === config.currentLifetimeId)
+
+            if (!premiumProduct)
+                return
+
+            set_currentLifetimeProduct(premiumProduct)
+        })()
+    }, [])
 
     return (
         <View style={style.master}>
