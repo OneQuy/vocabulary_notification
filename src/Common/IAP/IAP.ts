@@ -26,15 +26,13 @@ import {
     ErrorCode,
     getAvailablePurchases,
 } from 'react-native-iap';
-import { SafeGetArrayElement, ToCanPrint } from '../UtilsTS';
+import { SafeGetArrayElement, ToCanPrint } from '../UtilsTS'
 
 export type IAPProduct = {
     sku: string,
     isConsumable: boolean,
+    displayName: string,
 }
-
-// export type SuccessCallback = (sku: string) => void
-// export type ErrorCallback = (error: PurchaseError) => void
 
 var cachedProductsSetterAsync: ((text: string) => Promise<void>) | undefined = undefined
 var cachedProductsGetterAsync: (() => Promise<string | null>) | undefined = undefined
@@ -64,7 +62,6 @@ export const InitIAPAsync = async (
     cachedProductsListGetterAsync?: () => Promise<string | null>,
 ): Promise<Error | undefined> => {
     if (isInited) {
-        // console.warn('IAP already inited')
         return undefined
     }
 
