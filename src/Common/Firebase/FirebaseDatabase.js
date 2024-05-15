@@ -1,7 +1,9 @@
 // MUST FirebaseInit() first
 
 import { getDatabase, ref, onValue, set, get, remove } from 'firebase/database';
-import { ExecuteWithTimeoutAsync, TimeOutError } from '../handle/UtilsTS';
+import { ExecuteWithTimeoutAsync, TimeOutError } from '../UtilsTS'
+
+export const FirebaseDatabaseTimeOutMs = 5000
 
 var db = null;
 
