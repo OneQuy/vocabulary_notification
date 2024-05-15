@@ -26,6 +26,7 @@ import {
     ErrorCode,
     getAvailablePurchases,
 } from 'react-native-iap';
+import { SafeGetArrayElement, ToCanPrint } from '../UtilsTS';
 
 export type IAPProduct = {
     sku: string,
@@ -96,7 +97,7 @@ export const InitIAPAsync = async (
     }
 
     purchaseUpdatedListener((purchase: SubscriptionPurchase | ProductPurchase) => {
-        const receipt = purchase.transactionReceipt
+        const receipt = purchase?.transactionReceipt
 
         // console.log('receipt', receipt);
 
@@ -110,12 +111,15 @@ export const InitIAPAsync = async (
         // in doing the below. It will also be impossible for the user to purchase consumables
         // again until you do this.
 
-        const product = products.find(i => i.sku === purchase.productId)
+        const product = products?.find(i => i.sku === purchase.productId)
 
-        if (!product)
-            throw new Error('IAP not found product: ' + purchase.productId)
-
-        finishTransaction({ purchase, isConsumable: product.isConsumable })
+        if (!product) {
+            // throw new Error('IAP not found product: ' + purchase.productId)
+            console.error('[purchaseUpdatedListener] IAP not found product: ' + purchase.productId)
+        }
+        else {
+            finishTransaction({ purchase, isConsumable: product.isConsumable })
+        }
     })
 
     return undefined
@@ -197,19 +201,34 @@ export const FetchListProductsAsync = async (skus: string[]) => {
 export const PurchaseAsync = async (sku: string) => {
     try {
         if (!isInited)
-            throw new Error('IAP not inited yet')
+            return new Error('[PurchaseAsync] IAP not inited yet')
 
         if (Platform.OS === 'android' && fetchedProducts.length <= 0) { // need to fetch on android
             await FetchListProductsAsync(initedProducts.map(i => i.sku))
         }
 
-        await requestPurchase({
+        const res = await requestPurchase({
             sku,
             skus: [sku],
             andDangerouslyFinishTransactionAutomaticallyIOS: false,
         })
 
-        return undefined
+        if (typeof res === 'object') {
+            let successProduct: ProductPurchase | undefined = undefined
+
+            if (Array.isArray(res)) {
+                successProduct = SafeGetArrayElement<ProductPurchase>(res)
+            }
+            else
+                successProduct = res
+
+            if (successProduct && successProduct.productId === sku) // success
+                return undefined
+            else // fail
+                return new Error('[PurchaseAsync] Invalid product: ' + sku + ', response: ' + ToCanPrint(res))
+        }
+        else
+            return new Error('[PurchaseAsync] Invalid response: ' + sku + ', response: void')
     } catch (err) {
         const errIAP = err as PurchaseError
 
