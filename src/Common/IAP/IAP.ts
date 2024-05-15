@@ -25,8 +25,9 @@ import {
     Product,
     ErrorCode,
     getAvailablePurchases,
+    Purchase,
 } from 'react-native-iap';
-import { SafeGetArrayElement, ToCanPrint } from '../UtilsTS'
+import { CreateError, SafeGetArrayElement, ToCanPrint } from '../UtilsTS'
 
 export type IAPProduct = {
     sku: string,
@@ -236,29 +237,13 @@ export const PurchaseAsync = async (sku: string) => {
     }
 }
 
-// export const RegisterOnSuccessPurchase = (calback: SuccessCallback) => {
-//     onSuccessListeners.push(calback)
-// }
-
-// export const UnregisterOnSuccessPurchase = (calback: SuccessCallback) => {
-//     ArrayRemove(onSuccessListeners, calback)
-// }
-
-// export const RegisterOnErrorPurchase = (calback: ErrorCallback) => {
-//     onErrorListeners.push(calback)
-// }
-
-// export const UnregisterOnErrorPurchase = (calback: ErrorCallback) => {
-//     ArrayRemove(onErrorListeners, calback)
-// }
-
 /**
- * @returns array if success (can be empty []), or error
+ * @returns Purchase[] if success (can be empty []), or Error()
  */
-export const RestorePurchaseAsync = async () => {
+export const RestorePurchaseAsync = async (): Promise<Purchase[] | Error> => {
     try {
         if (!isInited)
-            throw new Error('IAP not inited yet')
+            return new Error('IAP not inited yet')
 
         const purchases = await getAvailablePurchases();
 
@@ -277,6 +262,26 @@ export const RestorePurchaseAsync = async () => {
 
         return purchases
     } catch (error) {
-        return error
+        return CreateError(error)
     }
-};
+}
+
+
+
+
+
+// export const RegisterOnSuccessPurchase = (calback: SuccessCallback) => {
+//     onSuccessListeners.push(calback)
+// }
+
+// export const UnregisterOnSuccessPurchase = (calback: SuccessCallback) => {
+//     ArrayRemove(onSuccessListeners, calback)
+// }
+
+// export const RegisterOnErrorPurchase = (calback: ErrorCallback) => {
+//     onErrorListeners.push(calback)
+// }
+
+// export const UnregisterOnErrorPurchase = (calback: ErrorCallback) => {
+//     ArrayRemove(onErrorListeners, calback)
+// }
