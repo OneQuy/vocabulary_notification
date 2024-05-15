@@ -32,7 +32,7 @@ import { CreateError, SafeGetArrayElement, ToCanPrint } from '../UtilsTS'
 export type IAPProduct = {
     sku: string,
     isConsumable: boolean,
-    displayName: string,
+    displayName?: string,
 }
 
 var cachedProductsSetterAsync: ((text: string) => Promise<void>) | undefined = undefined
@@ -238,9 +238,11 @@ export const PurchaseAsync = async (sku: string) => {
 }
 
 /**
- * @returns Purchase[] if success (can be empty []), or Error()
+ * @returns success: Purchase[] if  (can be empty []), 
+ * @returns error: Error()
+ * @returns user canceled: null
  */
-export const RestorePurchaseAsync = async (): Promise<Purchase[] | Error> => {
+export const RestorePurchaseAsync = async (): Promise<Purchase[] | Error | null> => {
     try {
         if (!isInited)
             return new Error('IAP not inited yet')
@@ -262,7 +264,11 @@ export const RestorePurchaseAsync = async (): Promise<Purchase[] | Error> => {
 
         return purchases
     } catch (error) {
-        return CreateError(error)
+        // @ts-ignore
+        if (error && error.code === 'E_USER_CANCELLED')
+            return null
+        else
+            return CreateError(error)
     }
 }
 

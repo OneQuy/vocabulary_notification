@@ -16,7 +16,7 @@ export const SettingItemPanelStyle = StyleSheet.create({
         flexDirection: 'row',
         padding: Outline.Normal,
 
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
 
         gap: Gap.Normal,

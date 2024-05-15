@@ -11,9 +11,10 @@ import usePremium, { AllIAPProducts } from '../Hooks/usePremium'
 import { useMyIAP } from '../../Common/IAP/useMyIAP'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { StorageKey_CachedIAP } from '../Constants/StorageKey'
-import { PurchaseAsync } from '../../Common/IAP/IAP'
-import { LogStringify, ToCanPrintError } from '../../Common/UtilsTS'
+import { PurchaseAsync, RestorePurchaseAsync } from '../../Common/IAP/IAP'
+import { LogStringify, SafeGetArrayElement, ToCanPrintError } from '../../Common/UtilsTS'
 import { HandleError } from '../../Common/Tracking'
+import { Purchase } from 'react-native-iap'
 
 const About = () => {
     const texts = useLocalText()
@@ -30,21 +31,55 @@ const About = () => {
 
     const style = useMemo(() => {
         return StyleSheet.create({
-            master: { flex: 1 },
+            master: { flex: 1, },
             scrollView: { gap: Gap.Normal, padding: Outline.Normal, },
+
             normalBtnTxt: { fontSize: FontSize.Normal, },
 
-            normalBtn: {
+            purchaseBtn: {
                 borderWidth: 0,
                 borderRadius: BorderRadius.Small,
                 maxWidth: '50%',
                 alignSelf: 'center',
                 padding: Outline.Normal,
             },
+
+            restoreBtn: {
+                borderWidth: 0,
+                borderRadius: BorderRadius.Small,
+                padding: Outline.Small,
+            },
         })
     }, [])
 
-    const onPressUpgrade = useCallback(async () => {
+    const onPurchasedSuccess = useCallback(async (sku: string) => {
+        set_lifetimeID(sku)
+        Alert.alert('Woohooo!', texts.purchase_success)
+    }, [texts, set_lifetimeID])
+
+    const onPressRestorePurchaseAsync = useCallback(async () => {
+        set_isHandling(true)
+
+        const products = await RestorePurchaseAsync()
+
+        // LogStringify(products)
+
+        if (Array.isArray(products)) { // available products to restore
+            const firstProduct = SafeGetArrayElement<Purchase>(products)
+
+            if (firstProduct)
+                onPurchasedSuccess(firstProduct.productId)
+            else
+                Alert.alert(texts.popup_error, texts.restore_purchase_no_products + '\n\n' + ToCanPrintError(products))
+        }
+        else if (products !== null) {
+            Alert.alert(texts.popup_error, texts.restore_purchase_no_products + '\n\n' + ToCanPrintError(products))
+        }
+
+        set_isHandling(false)
+    }, [texts, onPurchasedSuccess])
+
+    const onPressUpgradeAsync = useCallback(async () => {
         if (isHandling || !isReadyPurchase)
             return
 
@@ -55,14 +90,10 @@ const About = () => {
         // LogStringify(res)
 
         if (res === undefined) { // success
-            set_lifetimeID(currentLifetimeProduct.sku)
-
-            Alert.alert('Woohooo!', texts.purchase_success)
+            onPurchasedSuccess(currentLifetimeProduct.sku)
         }
 
-        else if (res === null) { // user canceled
-
-        }
+        else if (res === null) { } // user canceled
 
         else { // error
             HandleError(res, 'BuyLifetime', true)
@@ -70,16 +101,15 @@ const About = () => {
 
         set_isHandling(false)
     }, [
+        onPurchasedSuccess,
         isHandling,
         isReadyPurchase,
         currentLifetimeProduct,
-        set_lifetimeID,
-        texts
     ])
 
     return (
         <View style={style.master}>
-            <ScrollView style={style.scrollView}>
+            <ScrollView contentContainerStyle={style.scrollView}>
                 {/* lifetime upgrade */}
                 {
                     !isLifetime &&
@@ -119,12 +149,45 @@ const About = () => {
                                 manuallySelected={true}
                                 canHandlePressWhenSelected
 
-                                style={style.normalBtn}
+                                style={style.purchaseBtn}
 
                                 title={texts.upgrade}
                                 titleProps={{ style: style.normalBtnTxt }}
 
-                                onPress={onPressUpgrade}
+                                onPress={onPressUpgradeAsync}
+                            />
+                        }
+                    </View>
+                }
+
+                {/* restore purchase */}
+                {
+                    !isLifetime &&
+                    <View style={SettingItemPanelStyle.master}>
+                        {/* title */}
+                        <Text style={SettingItemPanelStyle.titleTxt}>{texts.restore_purchase}</Text>
+
+                        {/* isHandling */}
+                        {
+                            isHandling &&
+                            <ActivityIndicator color={Color_Text} />
+                        }
+
+                        {/* btn restore */}
+                        {
+                            !isHandling &&
+                            <LucideIconTextEffectButton
+                                unselectedColorOfTextAndIcon={Color_Text}
+
+                                notChangeToSelected
+                                manuallySelected={false}
+
+                                style={style.restoreBtn}
+
+                                title={texts.restore}
+                                titleProps={{ style: style.normalBtnTxt }}
+
+                                onPress={onPressRestorePurchaseAsync}
                             />
                         }
                     </View>

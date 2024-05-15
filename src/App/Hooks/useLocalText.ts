@@ -51,6 +51,8 @@ const eng = {
     warning_clear_db: 'To change the translation service, the database needs resetting, and all learned words must be deleted. These words will also be cleared from the History panel, along with any upcoming notifications. You will need to set them again.\n\nTap Confirm to proceed with the change.',
     not_fount_suppport_target_lang: 'This service doesnt support ## or something errors. Please pick the language you wish to translate to again!',
     vocaby_lifetime: 'Vocaby Lifetime',
+    restore_purchase: 'Restore purchase',
+    restore: 'Restore',
     vocaby_lifetime_explain: "Upgrade once. Unlock all vocabularies and features.",
     current_price: "Current sale price",
     upgrade: "Upgrade",
@@ -71,6 +73,7 @@ const eng = {
     pls_set_target_lang: PleaseSelectTargetLangText,
     fail_translate: 'Can not get words transation.',
     fail_download: 'Fail to download.',
+    restore_purchase_no_products: 'No product to restore',
 } as const
 
 export type LocalText = typeof eng

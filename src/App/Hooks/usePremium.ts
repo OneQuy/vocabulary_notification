@@ -29,8 +29,8 @@ const usePremium = () => {
     }, [])
 
     return {
-        isLifetime: lifetimeID !== null,
-        set_lifetimeID
+        isLifetime: lifetimeID && AllIAPProducts.findIndex(pro => pro.sku === lifetimeID) >= 0,
+        set_lifetimeID,
     }
 }
 
