@@ -103,6 +103,7 @@ const HistoryScreen = ({
 
       if (!Array.isArray(allPushed)) {
         set_allPushedWordsOrError(allPushed)
+        setHandling(undefined)
         return
       }
 
