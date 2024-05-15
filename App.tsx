@@ -16,8 +16,8 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    (async () => {
-    })()
+    // (async () => {
+    // })()
   }, [])
 
   if (true)

@@ -19,6 +19,7 @@ const IsLog = true
 const FirebaseDBPath = 'app/config';
 
 var remoteConfig: RemoteConfig | undefined
+var fetchedCount = 0
 
 // export const GetRemoteConfig = () => remoteConfig
 
@@ -26,8 +27,8 @@ var remoteConfig: RemoteConfig | undefined
  * ### notice:
  * it can take a while (5s) if the config currently not available.
  */
-export async function GetRemoteConfigWithCheckFetchAsync(): Promise<RemoteConfig | undefined> {
-    if (remoteConfig) {
+export async function GetRemoteConfigWithCheckFetchAsync(notFetchFrom2ndTime = true): Promise<RemoteConfig | undefined> {
+    if (remoteConfig || (notFetchFrom2ndTime === true && fetchedCount >= 1)) {
         return remoteConfig
     }
 
@@ -55,20 +56,21 @@ export function GetRemoteFileConfigVersion(file: string) {
 
 /**
  * 
+ * force fetch
  * @returns true if download success
  */
-export async function FetchRemoteConfigAsync(): Promise<boolean> {
+async function FetchRemoteConfigAsync(): Promise<boolean> {
     if (IsLog)
         console.log('[FetchRemoteConfigAsync] fetching...')
 
-    // already fetched
+    // // already fetched
 
-    if (remoteConfig) {
-        if (IsLog)
-            console.log('[FetchRemoteConfigAsync] success (already fetched)')
+    // if (remoteConfig) {
+    //     if (IsLog)
+    //         console.log('[FetchRemoteConfigAsync] success (already fetched)')
 
-        return true
-    }
+    //     return true
+    // }
 
     // start fetch
 
@@ -76,6 +78,8 @@ export async function FetchRemoteConfigAsync(): Promise<boolean> {
         async () => await FirebaseDatabase_GetValueAsync(FirebaseDBPath),
         FirebaseDatabaseTimeOutMs
     )
+
+    fetchedCount++
 
     // fail time out
 
