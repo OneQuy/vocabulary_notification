@@ -19,7 +19,7 @@ import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync, IsCachedWordsD
 import { GetBooleanAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
 import { StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from '../Constants/StorageKey'
 import HistoryScreen from './HistoryScreen'
-import { HandleError } from '../../Common/Tracking'
+import { HandleError, SetPostHog } from '../../Common/Tracking'
 import { GetLanguageFromCode, Language } from '../../Common/TranslationApis/TranslationLanguages'
 import { BridgeTranslateMultiWordAsync, GetCurrentTranslationServiceSuitAsync } from '../Handles/TranslateBridge'
 import ExampleWordView, { ValueAndDisplayText } from './ExampleWordView'
@@ -54,7 +54,7 @@ export type HandlingType =
 
 const SetupScreen = () => {
   const posthog = usePostHog()
-  
+
   const texts = useLocalText()
 
   const [handlingType, set_handlingType] = useState<HandlingType>(undefined)
@@ -855,6 +855,10 @@ const SetupScreen = () => {
       timePickerInitial = GetDayHourMinSecFromMs((time.hours * 60 + time.minutes) * 60 * 1000)
     }
   }
+
+  useEffect(() => {
+    SetPostHog(posthog)
+  }, [posthog])
 
   // load setting
 

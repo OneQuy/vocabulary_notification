@@ -34,6 +34,9 @@ const AptabaseIgnoredEventNamesDefault: string[] = [
 var posthog: PostHog | undefined = undefined
 
 export const SetPostHog = (instance: PostHog) => {
+    if (IsLog)
+        console.log('[SetPostHog] set', instance);
+
     posthog = instance
 }
 
