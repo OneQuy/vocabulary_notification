@@ -27,6 +27,7 @@ import { SqlLogAllRowsAsync } from '../../Common/SQLite'
 import TargetLangPicker from '../Components/TargetLangPicker'
 import SettingItemPanel, { SettingItemPanelStyle } from '../Components/SettingItemPanel'
 import About from './About'
+import { usePostHog } from 'posthog-react-native'
 
 const IsLog = true
 
@@ -52,6 +53,8 @@ export type HandlingType =
   undefined
 
 const SetupScreen = () => {
+  const posthog = usePostHog()
+  
   const texts = useLocalText()
 
   const [handlingType, set_handlingType] = useState<HandlingType>(undefined)

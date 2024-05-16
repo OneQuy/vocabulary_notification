@@ -6,6 +6,15 @@
 //
 // Usage:
 // InitAptabase() (Must after: IsDev, GetRemoteConfigWithCheckFetchAsync)
+//
+// Doc for Posthog: https://posthog.com/docs/libraries/react-native#without-the-posthogprovider
+// 
+// How it works:
+// [Aptabase]
+//      + IsDev === false => prodution mode
+//      + IsDev === true:
+//          * __DEV__ === true => production mode            
+//          * __DEV__ === false => dev mode            
 
 import { Alert } from "react-native"
 import Aptabase, { trackEvent } from "@aptabase/react-native";
@@ -15,13 +24,18 @@ import { ApatabaseKey_Dev, ApatabaseKey_Production } from "../../Keys"; // CHANG
 import { IsValuableArrayOrString, SafeValue, ToCanPrint } from "./UtilsTS";
 import { TodayStringUnderscore } from "./CommonConstants";
 import { FirebaseDatabase_IncreaseNumberAsync } from "./Firebase/FirebaseDatabase";
-
-export const startFreshlyOpenAppTick = Date.now()
+import PostHog from "posthog-react-native";
 
 const IsLog = true
 
 const AptabaseIgnoredEventNamesDefault: string[] = [
 ] as const
+
+var posthog: PostHog | undefined = undefined
+
+export const SetPostHog = (instance: PostHog) => {
+    posthog = instance
+}
 
 /**
  * HandleError(resOrError, 'DataToNotification', false)
@@ -73,7 +87,11 @@ export const InitAptabaseAsync = async () => {
 
     const productionKey = SafeValue(appConfig?.tracking?.aptabaseProductionKey, ApatabaseKey_Production)
 
-    Aptabase.init(IsDev() ? ApatabaseKey_Dev : productionKey)
+    Aptabase.init(
+        (IsDev() && !__DEV__) ? // mobile (release) dev
+            ApatabaseKey_Dev : // dev
+            productionKey // prodution
+    )
 }
 
 const GetFinalAptabaseIgnoredEventNamesAsync = async (): Promise<string[]> => {
@@ -166,16 +184,17 @@ export const TrackingAsync = async (
     }
 
 
-    // track telemetry
+    // track posthog
 
-    // const shouldTrackTelemetry = !appConfig || appConfig.tracking.enableTelemetry
-    // if (signal && shouldTrackTelemetry) {
-    //     signal(eventName, trackingValuesObject)
+    const shouldTrackPosthog = !appConfig || !appConfig.tracking || appConfig.tracking.enablePosthog !== false
 
-    //     if (IsLog) {
-    //         console.log('tracking telemetry: ', eventName, JSON.stringify(trackingValuesObject))
-    //     }
-    // }
+    if (shouldTrackPosthog && posthog) {
+        posthog.capture(eventName, trackingValuesObject)
+
+        if (IsLog) {
+            console.log('tracking [POSTHOG]: ', eventName, JSON.stringify(trackingValuesObject))
+        }
+    }
 
     if (IsLog)
         console.log('****************')

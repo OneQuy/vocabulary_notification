@@ -1,10 +1,13 @@
 import { View, SafeAreaView, StyleSheet, StatusBar } from 'react-native'
-import React, { useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import SetupScreen from './src/App/Screens/SetupScreen'
 import { Color_BG } from './src/App/Hooks/useTheme'
 import useAsyncHandle from './src/Common/Hooks/useAsyncHandle'
 import { SplashScreenLoader } from './src/Common/SplashScreenLoader'
 import SplashScreen from './src/Common/Components/SplashScreen'
+import { PostHogProvider } from 'posthog-react-native'
+import { PostHogKey_Production } from './Keys'
+import { IsDev } from './src/Common/IsDev'
 
 const App = () => {
   const { handled } = useAsyncHandle(async () => SplashScreenLoader());
@@ -24,12 +27,14 @@ const App = () => {
     return <SplashScreen />
 
   return (
-    <SafeAreaView style={style.master}>
-      <StatusBar backgroundColor={Color_BG} barStyle={'light-content'} />
-      <View style={style.master}>
-        <SetupScreen />
-      </View>
-    </SafeAreaView>
+    <PostHogProvider apiKey={PostHogKey_Production} debug={IsDev()}>
+      <SafeAreaView style={style.master}>
+        <StatusBar backgroundColor={Color_BG} barStyle={'light-content'} />
+        <View style={style.master}>
+          <SetupScreen />
+        </View>
+      </SafeAreaView>
+    </PostHogProvider>
   )
 }
 

@@ -52,10 +52,6 @@ export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
 
     // await CheckAndInitAdmobAsync() // alert_priority 4 (doc) // no depended
 
-    // // teleletry
-
-    // const telemetryDeckClient = createTelemetryDeckClient(TELEMETRY_DECK_KEY, UserID(), IsDev())
-
     // return
 
     return {
