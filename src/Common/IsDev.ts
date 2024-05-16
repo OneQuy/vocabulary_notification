@@ -36,7 +36,7 @@ export const CheckIsDevAsync = async (): Promise<void> => {
             isDev = false
         }
         else {
-            isDev = config.force_dev === 1
+            isDev = config.forceDev === 1
         }
     }
 }

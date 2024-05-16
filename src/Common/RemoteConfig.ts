@@ -7,12 +7,18 @@ import { FirebaseDatabaseTimeOutMs, FirebaseDatabase_GetValueAsync } from "./Fir
 type RemoteConfig = { // CHANGE HERE 1
     // common
 
-    force_dev: number,
+    forceDev: number,
     
-    remote_files?: object,
+    remoteFiles?: object,
 
     tracking?: {
         aptabaseProductionKey?: string,
+        aptabaseIgnores?: string,
+        aptabaseRemoveIgnores?: string,
+
+        enableAptabase?: boolean,
+        enableFirebase?: boolean,
+        enablePosthog?: boolean,
     },
 
     // specific
@@ -48,11 +54,11 @@ export async function GetRemoteConfigWithCheckFetchAsync(notFetchFrom2ndTime = t
  * @returns version or NaN if fail to get config
  */
 export function GetRemoteFileConfigVersion(file: string) {
-    if (!remoteConfig || !remoteConfig.remote_files)
+    if (!remoteConfig || !remoteConfig.remoteFiles)
         return Number.NaN
 
     // @ts-ignore
-    const version = remoteConfig.remote_files[file]
+    const version = remoteConfig.remoteFiles[file]
 
     if (typeof version === 'number')
         return version as number

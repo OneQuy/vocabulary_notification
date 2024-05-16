@@ -18,6 +18,8 @@ import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig";
 import { ApatabaseKey_Dev, ApatabaseKey_Production } from "../../Keys"; // CHANGE HERE 1
 import { IsValuableArrayOrString, SafeValue, ToCanPrint } from "./UtilsTS";
 
+const IsLog = true
+
 /**
  * HandleError(resOrError, 'DataToNotification', false)
  */
@@ -44,67 +46,65 @@ export const HandleError = (error: any, root: string, alert = true) => {
     }
 }
 
-// const aptabaseIgnoredEventNamesDefault: string[] = [
-// ] as const
+const AptabaseIgnoredEventNamesDefault: string[] = [
+] as const
 
-// const IsLog = true
+var initedAptabase = false
+var cachedFinalAptabaseIgnoredEventNames: string[] | undefined = undefined
 
-// var initedAptabase = false
-// var finalAptabaseIgnoredEventNames: string[] | undefined = undefined
+const GetPrefixFbTrackPath = () => IsDev() ? 'tracking/dev/' : 'tracking/production/'
 
-// const prefixFbTrackPath = () => IsDev() ? 'tracking/dev/' : 'tracking/production/'
+/**
+ * please call after GetRemoteConfigWithCheckFetchAsync(), IsDev()
+ */
+export const InitAptabaseAsync = async () => {
+    if (initedAptabase)
+        return
 
-// /**
-//  * please call after GetRemoteConfigWithCheckFetchAsync(), IsDev()
-//  */
-// export const InitAptabaseAsync = async () => {
-//     if (initedAptabase)
-//         return
+    initedAptabase = true
 
-//     initedAptabase = true
+    const appConfig = await GetRemoteConfigWithCheckFetchAsync()
 
-//     const appConfig = await GetRemoteConfigWithCheckFetchAsync()
+    const productionKey = SafeValue(appConfig?.tracking?.aptabaseProductionKey, ApatabaseKey_Production)
 
-//     const productionKey = SafeValue(appConfig?.tracking?.aptabaseProductionKey, ApatabaseKey_Production)
+    Aptabase.init(IsDev() ? ApatabaseKey_Dev : productionKey)
+}
 
-//     Aptabase.init(IsDev() ? ApatabaseKey_Dev : productionKey)
-// }
+const GetFinalAptabaseIgnoredEventNamesAsync = async (): Promise<string[]> => {
+    if (cachedFinalAptabaseIgnoredEventNames)
+        return cachedFinalAptabaseIgnoredEventNames
 
-// export const GetFinalAptabaseIgnoredEventNames = () => {
-//     if (finalAptabaseIgnoredEventNames)
-//         return finalAptabaseIgnoredEventNames
+    const appConfig = await GetRemoteConfigWithCheckFetchAsync()
 
-//     const appConfig = GetAppConfig()
+    if (!appConfig)
+        return AptabaseIgnoredEventNamesDefault
 
-//     if (!appConfig)
-//         return aptabaseIgnoredEventNamesDefault
+    let finalArr: string[]
 
-//     let finalArr: string[]
+    const additions = appConfig.tracking?.aptabaseIgnores
 
-//     const additions = appConfig.tracking.aptabaseIgnores
+    if (!IsValuableArrayOrString(additions))
+        finalArr = AptabaseIgnoredEventNamesDefault
+    else {
+        const arr = additions?.split(',')
 
-//     if (!IsValuableArrayOrString(additions))
-//         finalArr = aptabaseIgnoredEventNamesDefault
-//     else {
-//         const arr = additions?.split(',')
+        if (!IsValuableArrayOrString(arr) || !arr)
+            finalArr = AptabaseIgnoredEventNamesDefault
+        else
+            finalArr = arr.concat(AptabaseIgnoredEventNamesDefault)
+    }
 
-//         if (!IsValuableArrayOrString(arr) || !arr)
-//             finalArr = aptabaseIgnoredEventNamesDefault
-//         else
-//             finalArr = arr.concat(aptabaseIgnoredEventNamesDefault)
-//     }
+    const removeIgnoredListText = appConfig.tracking?.aptabaseRemoveIgnores
 
-//     const removeIgnoredListText = appConfig.tracking.aptabaseRemoveIgnores
+    const removeIgnoredList = removeIgnoredListText?.split(',')
 
-//     const removeIgnoredList = removeIgnoredListText?.split(',')
+    if (!IsValuableArrayOrString(removeIgnoredList) || !removeIgnoredList)
+        cachedFinalAptabaseIgnoredEventNames = finalArr
+    else
+        cachedFinalAptabaseIgnoredEventNames = finalArr.filter(i => !removeIgnoredList.includes(i))
 
-//     if (!IsValuableArrayOrString(removeIgnoredList) || !removeIgnoredList)
-//         finalAptabaseIgnoredEventNames = finalArr
-//     else
-//         finalAptabaseIgnoredEventNames = finalArr.filter(i => !removeIgnoredList.includes(i))
-
-//     return finalAptabaseIgnoredEventNames
-// }
+    return cachedFinalAptabaseIgnoredEventNames
+}
 
 // export const TrackErrorOnFirebase = (error: string, subpath?: string) => {
 //     const path = prefixFbTrackPath() + 'errors/' + (subpath ? (subpath + '/') : '') + Date.now()
