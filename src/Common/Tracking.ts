@@ -186,7 +186,10 @@ export const TrackingAsync = async (
 
     // track posthog
 
-    const shouldTrackPosthog = !appConfig || !appConfig.tracking || appConfig.tracking.enablePosthog !== false
+    const shouldTrackPosthog =
+        !appConfig ||
+        !appConfig.tracking ||
+        appConfig.tracking.enablePosthog !== false
 
     if (shouldTrackPosthog && posthog) {
         posthog.capture(eventName, trackingValuesObject)
