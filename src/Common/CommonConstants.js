@@ -1,9 +1,22 @@
 import { Dimensions, StyleSheet } from "react-native";
+import { VersionToNumber } from "./UtilsTS";
+
+// window size
 
 const StartupWindowSize = Dimensions.get('window')
 
 export const WindowSize_Max = Math.max(StartupWindowSize.width, StartupWindowSize.height)
 export const WindowSize_Min = Math.min(StartupWindowSize.width, StartupWindowSize.height)
+
+// today
+
+const today = new Date()
+export const TodayStringUnderscore = 'd' + today.getDate() + '_m' + (today.getMonth() + 1) + '_' + today.getFullYear()
+
+// version
+
+export const VersionText = require('../../package.json').version
+export const VersionAsNumber = VersionToNumber(VersionText)
 
 // regex (https://uibakery.io/regex-library)
 

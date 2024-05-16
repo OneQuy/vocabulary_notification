@@ -13,6 +13,10 @@ import { IsDev } from "./IsDev";
 import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig";
 import { ApatabaseKey_Dev, ApatabaseKey_Production } from "../../Keys"; // CHANGE HERE 1
 import { IsValuableArrayOrString, SafeValue, ToCanPrint } from "./UtilsTS";
+import { TodayStringUnderscore } from "./CommonConstants";
+import { FirebaseDatabase_IncreaseNumberAsync } from "./Firebase/FirebaseDatabase";
+
+export const startFreshlyOpenAppTick = Date.now()
 
 const IsLog = true
 
@@ -125,6 +129,7 @@ export const TrackingAsync = async (
     if (IsLog)
         console.log('------------------------')
 
+
     // track aptabase
 
     const finalAptabaseIgnoredEventNames = await GetFinalAptabaseIgnoredEventNamesAsync()
@@ -142,22 +147,24 @@ export const TrackingAsync = async (
         }
     }
 
+
     // track firebase
 
-    // const shouldTrackFirebase = !appConfig || appConfig.tracking.enableFirebase
+    const shouldTrackFirebase = !appConfig || !appConfig.tracking || appConfig.tracking.enableFirebase !== false
 
-    // if (shouldTrackFirebase) {
-    //     for (let i = 0; i < firebasePaths.length; i++) {
-    //         let path = prefixFbTrackPath() + firebasePaths[i]
-    //         path = path.replaceAll('#d', todayString)
+    if (shouldTrackFirebase) {
+        for (let i = 0; i < firebasePaths.length; i++) {
+            let path = GetPrefixFbTrackPath() + firebasePaths[i]
+            path = path.replaceAll('#d', TodayStringUnderscore)
 
-    //         if (IsLog) {
-    //             console.log('tracking on firebase: ', path);
-    //         }
+            if (IsLog) {
+                console.log('tracking [FIREBASE]: ', path);
+            }
 
-    //         FirebaseDatabase_IncreaseNumberAsync(path, 0)
-    //     }
-    // }
+            FirebaseDatabase_IncreaseNumberAsync(path, 0)
+        }
+    }
+
 
     // track telemetry
 
