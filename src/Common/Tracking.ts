@@ -35,7 +35,7 @@ var posthog: PostHog | undefined = undefined
 
 export const SetPostHog = (instance: PostHog) => {
     if (IsLog)
-        console.log('[SetPostHog] set', instance);
+        console.log('[SetPostHog] set');
 
     posthog = instance
 }
