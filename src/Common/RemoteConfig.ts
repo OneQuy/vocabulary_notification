@@ -11,6 +11,10 @@ type RemoteConfig = { // CHANGE HERE 1
     
     remote_files?: object,
 
+    tracking?: {
+        aptabaseProductionKey?: string,
+    },
+
     // specific
 
     currentLifetimeId: string,

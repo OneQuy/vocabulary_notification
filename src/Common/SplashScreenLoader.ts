@@ -36,9 +36,9 @@ export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
 
     await CheckIsDevAsync() // (must after GetRemoteConfigWithCheckFetchAsync)
 
-    // // init aptabase tracking
+    // init aptabase tracking
 
-    // InitAptabase() // (must after GetRemoteConfigWithCheckFetchAsync & CheckIsDevAsync)
+    // InitAptabaseAsync() // (must after GetRemoteConfigWithCheckFetchAsync & CheckIsDevAsync)
 
     // // handl startup alert (must after GetRemoteConfigWithCheckFetchAsync)
 
