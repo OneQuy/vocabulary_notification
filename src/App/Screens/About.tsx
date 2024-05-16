@@ -76,7 +76,10 @@ const About = () => {
             if (firstProduct)
                 onPurchasedSuccess(firstProduct.productId)
             else
-                Alert.alert(texts.popup_error, texts.restore_purchase_no_products + '\n\n' + ToCanPrintError(products))
+                Alert.alert(
+                    texts.popup_error,
+                    texts.restore_purchase_no_products +
+                    (products.length > 0 ? '\n\n' + ToCanPrintError(products) : ''))
         }
         else if (products !== null) {
             Alert.alert(texts.popup_error, texts.restore_purchase_no_products + '\n\n' + ToCanPrintError(products))
@@ -116,7 +119,7 @@ const About = () => {
     useEffect(() => {
         (async () => {
             // fetch premium product id
-            
+
             const config = await GetRemoteConfigWithCheckFetchAsync(false)
 
             if (!config)
