@@ -15,10 +15,10 @@ const App = () => {
     })
   }, [])
 
-  useEffect(() => {
-    // (async () => {
-    // })()
-  }, [])
+  // useEffect(() => {
+  //   (async () => {
+  //   })()
+  // }, [])
 
   if (!handled)
     return <SplashScreen />
