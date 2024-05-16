@@ -1,4 +1,6 @@
 PODS:
+  - aptabase-react-native (0.3.9):
+    - React
   - boost (1.83.0)
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
@@ -1115,6 +1117,8 @@ PODS:
     - React-perflogger (= 0.73.7)
   - RNCAsyncStorage (1.23.1):
     - React-Core
+  - RNDeviceInfo (11.1.0):
+    - React-Core
   - RNFS (2.20.0):
     - React-Core
   - RNIap (12.13.1):
@@ -1130,6 +1134,7 @@ PODS:
   - Yoga (1.14.0)
 
 DEPENDENCIES:
+  - "aptabase-react-native (from `../node_modules/@aptabase/react-native`)"
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -1204,6 +1209,7 @@ DEPENDENCIES:
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNFS (from `../node_modules/react-native-fs`)
   - RNIap (from `../node_modules/react-native-iap`)
   - "RNNotifee (from `../node_modules/@notifee/react-native`)"
@@ -1227,6 +1233,8 @@ SPEC REPOS:
     - SocketRocket
 
 EXTERNAL SOURCES:
+  aptabase-react-native:
+    :path: "../node_modules/@aptabase/react-native"
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   DoubleConversion:
@@ -1326,6 +1334,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
+  RNDeviceInfo:
+    :path: "../node_modules/react-native-device-info"
   RNFS:
     :path: "../node_modules/react-native-fs"
   RNIap:
@@ -1338,6 +1348,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  aptabase-react-native: c47bcbba34f4aa69de24b415150d22d5b52c927a
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
@@ -1399,6 +1410,7 @@ SPEC CHECKSUMS:
   React-utils: d07d009101c7dabff68b710da5c4a47b7a850d98
   ReactCommon: 8cae78d3c3eceff20ee4bbca8bb73b675a45fd5d
   RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
+  RNDeviceInfo: b899ce37a403a4dea52b7cb85e16e49c04a5b88e
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNIap: c76f9a941a212d5f5ef2c04f608287b9f73ee1ad
   RNNotifee: 8e2d3df3f0e9ce8f5d1fe4c967431138190b6175
