@@ -7,7 +7,7 @@ import { SplashScreenLoader } from './src/Common/SplashScreenLoader'
 import SplashScreen from './src/Common/Components/SplashScreen'
 
 const App = () => {
-  const { handled, result } = useAsyncHandle(async () => SplashScreenLoader());
+  const { handled } = useAsyncHandle(async () => SplashScreenLoader());
 
   const style = useMemo(() => {
     return StyleSheet.create({
