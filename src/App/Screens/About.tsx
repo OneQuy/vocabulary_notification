@@ -11,7 +11,7 @@ import usePremium, { AllIAPProducts } from '../Hooks/usePremium'
 import { useMyIAP } from '../../Common/IAP/useMyIAP'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { StorageKey_CachedIAP } from '../Constants/StorageKey'
-import { PurchaseAsync, RestorePurchaseAsync } from '../../Common/IAP/IAP'
+import { IAPProduct, PurchaseAsync, RestorePurchaseAsync } from '../../Common/IAP/IAP'
 import { LogStringify, SafeGetArrayElement, ToCanPrintError } from '../../Common/UtilsTS'
 import { HandleError } from '../../Common/Tracking'
 import { Purchase } from 'react-native-iap'
@@ -22,11 +22,7 @@ const About = () => {
     const { isLifetime, set_lifetimeID } = usePremium()
     const [isHandling, set_isHandling] = useState(false)
 
-    const [currentLifetimeProduct, set_currentLifetimeProduct] = useState(
-        (AllIAPProducts && AllIAPProducts.length > 1) ?
-            AllIAPProducts[1] :
-            AllIAPProducts[0]
-    )
+    const [currentLifetimeProduct, set_currentLifetimeProduct] = useState<undefined | IAPProduct>(undefined)
 
     const { isReadyPurchase, localPrice, initErrorObj } = useMyIAP(
         AllIAPProducts,
@@ -89,7 +85,7 @@ const About = () => {
     }, [texts, onPurchasedSuccess])
 
     const onPressUpgradeAsync = useCallback(async () => {
-        if (isHandling || !isReadyPurchase)
+        if (isHandling || !isReadyPurchase || !currentLifetimeProduct)
             return
 
         set_isHandling(true)
@@ -118,19 +114,25 @@ const About = () => {
 
     useEffect(() => {
         (async () => {
+            set_isHandling(true)
+
             // fetch premium product id
 
             const config = await GetRemoteConfigWithCheckFetchAsync(false)
 
-            if (!config)
-                return
+            let premiumProduct: IAPProduct | undefined = (AllIAPProducts && AllIAPProducts.length > 1) ?
+                AllIAPProducts[1] :
+                AllIAPProducts[0]
 
-            const premiumProduct = AllIAPProducts.find(i => i.sku === config.currentLifetimeId)
+            if (config) {
+                const found = AllIAPProducts.find(i => i.sku === config.currentLifetimeId)
 
-            if (!premiumProduct)
-                return
+                if (found)
+                    premiumProduct = found
+            }
 
             set_currentLifetimeProduct(premiumProduct)
+            set_isHandling(false)
         })()
     }, [])
 
@@ -146,6 +148,8 @@ const About = () => {
 
                         {/* explain */}
                         <Text style={SettingItemPanelStyle.explainTxt}>{texts.vocaby_lifetime_explain}</Text>
+
+                        {/* price */}
                         <Text style={SettingItemPanelStyle.explainTxt}>{`${texts.current_price}: ${localPrice ?? '...'}`}</Text>
 
                         {/* isHandling */}
