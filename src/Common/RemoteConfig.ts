@@ -7,6 +7,8 @@ import { FirebaseDatabaseTimeOutMs, FirebaseDatabase_GetValueAsync } from "./Fir
 type RemoteConfig = { // CHANGE HERE 1
     // common
 
+    force_dev: number,
+    
     remote_files?: object,
 
     // specific
