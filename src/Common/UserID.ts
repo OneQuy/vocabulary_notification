@@ -14,6 +14,9 @@ export const UserID = () => {
     return userID
 }
 
+/**
+ * ND
+ */
 export const InitUserIDAsync = async (): Promise<void> => {
     if (inited)
         return
