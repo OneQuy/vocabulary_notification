@@ -5,11 +5,7 @@
 // npm i -s @aptabase/react-native posthog-react-native @react-native-async-storage/async-storage react-native-device-info
 //
 // Usage:
-// InitAptabase()
-//
-// Note:
-// Must after: IsDev, GetRemoteConfigWithCheckFetchAsync
-
+// InitAptabase() (Must after: IsDev, GetRemoteConfigWithCheckFetchAsync)
 
 import { Alert } from "react-native"
 import Aptabase, { trackEvent } from "@aptabase/react-native";
@@ -19,6 +15,9 @@ import { ApatabaseKey_Dev, ApatabaseKey_Production } from "../../Keys"; // CHANG
 import { IsValuableArrayOrString, SafeValue, ToCanPrint } from "./UtilsTS";
 
 const IsLog = true
+
+const AptabaseIgnoredEventNamesDefault: string[] = [
+] as const
 
 /**
  * HandleError(resOrError, 'DataToNotification', false)
@@ -46,8 +45,11 @@ export const HandleError = (error: any, root: string, alert = true) => {
     }
 }
 
-const AptabaseIgnoredEventNamesDefault: string[] = [
-] as const
+// export const TrackErrorOnFirebase = (error: string, subpath?: string) => {
+//     const path = prefixFbTrackPath() + 'errors/' + (subpath ? (subpath + '/') : '') + Date.now()
+//     FirebaseDatabase_SetValueAsync(path, error)
+//     console.log('track error firebase: ', path, ', ' + error);
+// }
 
 var initedAptabase = false
 var cachedFinalAptabaseIgnoredEventNames: string[] | undefined = undefined
@@ -106,69 +108,68 @@ const GetFinalAptabaseIgnoredEventNamesAsync = async (): Promise<string[]> => {
     return cachedFinalAptabaseIgnoredEventNames
 }
 
-// export const TrackErrorOnFirebase = (error: string, subpath?: string) => {
-//     const path = prefixFbTrackPath() + 'errors/' + (subpath ? (subpath + '/') : '') + Date.now()
-//     FirebaseDatabase_SetValueAsync(path, error)
-//     console.log('track error firebase: ', path, ', ' + error);
-// }
+export const TrackingAsync = async (
+    eventName: string,
+    firebasePaths: string[],
 
-// export const MainTrack = (
-//     eventName: string,
-//     fbPaths: (string | undefined)[],
-//     trackingValuesObject?: Record<string, string | number | boolean>) => {
-//     const appConfig = GetAppConfig()
+    /**
+     * aptabase, posthog,... (not firebase)
+     */
+    trackingValuesObject?: Record<string, string | number | boolean>
+): Promise<void> => {
+    const appConfig = await GetRemoteConfigWithCheckFetchAsync()
 
-//     const shouldTrackAptabase = initedAptabase &&
-//         (!__DEV__ || NetLord.IsAvailableLatestCheck()) &&
-//         (!appConfig || appConfig.tracking.enableAptabase) &&
-//         (!GetFinalAptabaseIgnoredEventNames().includes(eventName))
+    if (IsDev())
+        eventName = 'dev__' + eventName
 
-//     const shouldTrackFirebase = !appConfig || appConfig.tracking.enableFirebase
-//     const shouldTrackTelemetry = !appConfig || appConfig.tracking.enableTelemetry
+    if (IsLog)
+        console.log('------------------------')
 
-//     // console.log(shouldTrackAptabase, shouldTrackFirebase, shouldTrackTelemetry);
+    // track aptabase
 
-//     if (IsDev())
-//         eventName = 'dev__' + eventName
+    const finalAptabaseIgnoredEventNames = await GetFinalAptabaseIgnoredEventNamesAsync()
 
-//     if (IsLog)
-//         console.log('------------------------')
+    const shouldTrackAptabase = initedAptabase &&
+        // (!__DEV__ || NetLord.IsAvailableLatestCheck()) &&
+        (!appConfig || !appConfig.tracking || appConfig.tracking.enableAptabase !== false) &&
+        (!finalAptabaseIgnoredEventNames.includes(eventName))
 
-//     // track aptabase
+    if (shouldTrackAptabase) {
+        trackEvent(eventName, trackingValuesObject)
 
-//     if (shouldTrackAptabase) {
-//         trackEvent(eventName, trackingValuesObject)
+        if (IsLog) {
+            console.log('tracking [APTABASE]: ', eventName, JSON.stringify(trackingValuesObject));
+        }
+    }
 
-//         if (IsLog) {
-//             console.log('tracking aptabase: ', eventName, JSON.stringify(trackingValuesObject));
-//         }
-//     }
+    // track firebase
 
-//     // track firebase
+    // const shouldTrackFirebase = !appConfig || appConfig.tracking.enableFirebase
 
-//     if (shouldTrackFirebase) {
-//         for (let i = 0; i < fbPaths.length; i++) {
-//             let path = prefixFbTrackPath() + fbPaths[i]
-//             path = path.replaceAll('#d', todayString)
+    // if (shouldTrackFirebase) {
+    //     for (let i = 0; i < firebasePaths.length; i++) {
+    //         let path = prefixFbTrackPath() + firebasePaths[i]
+    //         path = path.replaceAll('#d', todayString)
 
-//             if (IsLog) {
-//                 console.log('tracking on firebase: ', path);
-//             }
+    //         if (IsLog) {
+    //             console.log('tracking on firebase: ', path);
+    //         }
 
-//             FirebaseDatabase_IncreaseNumberAsync(path, 0)
-//         }
-//     }
+    //         FirebaseDatabase_IncreaseNumberAsync(path, 0)
+    //     }
+    // }
 
-//     // track telemetry
+    // track telemetry
 
-//     if (signal && shouldTrackTelemetry) {
-//         signal(eventName, trackingValuesObject)
+    // const shouldTrackTelemetry = !appConfig || appConfig.tracking.enableTelemetry
+    // if (signal && shouldTrackTelemetry) {
+    //     signal(eventName, trackingValuesObject)
 
-//         if (IsLog) {
-//             console.log('tracking telemetry: ', eventName, JSON.stringify(trackingValuesObject))
-//         }
-//     }
+    //     if (IsLog) {
+    //         console.log('tracking telemetry: ', eventName, JSON.stringify(trackingValuesObject))
+    //     }
+    // }
 
-//     if (IsLog)
-//         console.log('****************')
-// }
+    if (IsLog)
+        console.log('****************')
+}
