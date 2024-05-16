@@ -903,6 +903,11 @@ export const DayName = (date?: Date, is3Char?: boolean): string => {
         return name
 }
 
+export const GetTodayStringUnderscore = () => {
+    const today = new Date()
+    return 'd' + today.getDate() + '_m' + (today.getMonth() + 1) + '_' + today.getFullYear()
+}
+
 export const GetDayHourMinSecFromMs_ToString = (
     ms: number,
     separator = '_',

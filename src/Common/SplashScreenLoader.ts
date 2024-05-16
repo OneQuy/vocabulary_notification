@@ -4,6 +4,7 @@ import { FirebaseInit } from "./Firebase/Firebase";
 import { CheckIsDevAsync } from "./IsDev";
 import { initNotificationAsync } from "./Nofitication";
 import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig";
+import { InitAptabaseAsync } from "./Tracking";
 import { InitUserIDAsync } from "./UserID";
 
 export type SplashScreenLoaderResult = { // CHANGE HERE 1
@@ -38,7 +39,7 @@ export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
 
     // init aptabase tracking
 
-    // InitAptabaseAsync() // (must after GetRemoteConfigWithCheckFetchAsync & CheckIsDevAsync)
+    await InitAptabaseAsync() // (must after GetRemoteConfigWithCheckFetchAsync & CheckIsDevAsync)
 
     // // handl startup alert (must after GetRemoteConfigWithCheckFetchAsync)
 

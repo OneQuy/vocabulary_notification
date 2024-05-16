@@ -19,7 +19,7 @@ import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync, IsCachedWordsD
 import { GetBooleanAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
 import { StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from '../Constants/StorageKey'
 import HistoryScreen from './HistoryScreen'
-import { HandleError, SetPostHog } from '../../Common/Tracking'
+import { HandleError, SetPostHog, TrackingAsync } from '../../Common/Tracking'
 import { GetLanguageFromCode, Language } from '../../Common/TranslationApis/TranslationLanguages'
 import { BridgeTranslateMultiWordAsync, GetCurrentTranslationServiceSuitAsync } from '../Handles/TranslateBridge'
 import ExampleWordView, { ValueAndDisplayText } from './ExampleWordView'
@@ -163,8 +163,18 @@ const SetupScreen = () => {
   }, [])
 
   const onPressMoreSetting = useCallback(() => {
+    TrackingAsync(
+      'press_more_settings',
+      [
+        'press/more_settings'
+      ],
+      {
+        lang: displayTargetLang?.name ?? 'viiii'
+      }
+    )
+
     set_showMoreSetting(v => !v)
-  }, [])
+  }, [displayTargetLang])
 
   /**
    * during handle if download failed, an alert showed up

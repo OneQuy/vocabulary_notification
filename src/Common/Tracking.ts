@@ -21,8 +21,7 @@ import Aptabase, { trackEvent } from "@aptabase/react-native";
 import { IsDev } from "./IsDev";
 import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig";
 import { ApatabaseKey_Dev, ApatabaseKey_Production } from "../../Keys"; // CHANGE HERE 1
-import { IsValuableArrayOrString, SafeValue, ToCanPrint } from "./UtilsTS";
-import { TodayStringUnderscore } from "./CommonConstants";
+import { GetTodayStringUnderscore, IsValuableArrayOrString, SafeValue, ToCanPrint } from "./UtilsTS";
 import { FirebaseDatabase_IncreaseNumberAsync } from "./Firebase/FirebaseDatabase";
 import PostHog from "posthog-react-native";
 
@@ -160,6 +159,8 @@ export const TrackingAsync = async (
         (!appConfig || !appConfig.tracking || appConfig.tracking.enableAptabase !== false) &&
         (!finalAptabaseIgnoredEventNames.includes(eventName))
 
+        console.log(shouldTrackAptabase, initedAptabase, finalAptabaseIgnoredEventNames);
+        
     if (shouldTrackAptabase) {
         trackEvent(eventName, trackingValuesObject)
 
@@ -176,7 +177,7 @@ export const TrackingAsync = async (
     if (shouldTrackFirebase) {
         for (let i = 0; i < firebasePaths.length; i++) {
             let path = GetPrefixFbTrackPath() + firebasePaths[i]
-            path = path.replaceAll('#d', TodayStringUnderscore)
+            path = path.replaceAll('#d', GetTodayStringUnderscore())
 
             if (IsLog) {
                 console.log('tracking [FIREBASE]: ', path);
