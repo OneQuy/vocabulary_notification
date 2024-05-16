@@ -1,5 +1,11 @@
+// NUMBER [CHANGE HERE]: 1
+// Note:
+// If use react-native-device-info, not change anything.
+// If not use react-native-device-info, only need to rem at [CHANGE HERE 1]
+
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { StorageKey_UserID } from "../App/Constants/StorageKey"
+import DeviceInfo from "react-native-device-info"
 
 var userID: string
 var inited = false
@@ -35,16 +41,24 @@ export const InitUserIDAsync = async (): Promise<void> => {
     userID = s
 }
 
-const GenID = () => {
-    let s1 = Math.random().toString(36).substring(2)
+const GenID = (): string => { // CHANGE HERE 1
+    // DeviceInfo WAY ----------------------------
 
-    if (s1.length > 4)
-        s1 = s1.substring(0, 4)
+    return DeviceInfo.getUniqueIdSync();
 
-    let s2 = Math.random().toString(36).substring(2)
+    // NOT DeviceInfo WAY ----------------------------
 
-    if (s2.length > 4)
-        s2 = s2.substring(0, 4)
+    // let s1 = Math.random().toString(36).substring(2)
 
-    return Date.now() + '_' + s1 + '_' + s2
+    // if (s1.length > 4)
+    //     s1 = s1.substring(0, 4)
+
+    // let s2 = Math.random().toString(36).substring(2)
+
+    // if (s2.length > 4)
+    //     s2 = s2.substring(0, 4)
+
+    // return Date.now() + '_' + s1 + '_' + s2
+
+    // NOT DeviceInfo WAY ----------------------------
 }
