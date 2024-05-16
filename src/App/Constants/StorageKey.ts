@@ -4,6 +4,7 @@ export const StorageKey_LifetimeID = 'StorageKey_LifetimeID'
 export const StorageKey_CachedIAP = 'StorageKey_CachedIAP'
 
 export const StorageKey_ForceDev = 'StorageKey_ForceDev'
+export const StorageKey_UserID = 'StorageKey_UserID'
 export const StorageKey_CurrentAllNotifications = 'StorageKey_CurrentAllNotifications'
 
 export const StorageKey_ShowPhonetic = 'StorageKey_ShowPhonetic'
