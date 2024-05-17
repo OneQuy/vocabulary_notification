@@ -53,10 +53,14 @@ const ConvertNotificationOptionToNotification = (option: NotificationOption): No
  * ND
  */
 const CheckAndInitAsync = async () => {
+  // console.log('[CheckAndInitAsync Notification] calling init');
+
   if (inited)
     return
 
   inited = true
+
+  // console.log('[CheckAndInitAsync Notification] inited');
 
   // Create a channel (required for Android)
 
