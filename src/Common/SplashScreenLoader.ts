@@ -4,7 +4,6 @@ import { FirebaseInit } from "./Firebase/Firebase";
 import { CheckIsDevAsync } from "./IsDev";
 import { initNotificationAsync } from "./Nofitication";
 import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig";
-import { InitAptabaseAsync } from "./Tracking";
 import { InitUserIDAsync } from "./UserID";
 
 export type SplashScreenLoaderResult = { // CHANGE HERE 1
@@ -12,9 +11,9 @@ export type SplashScreenLoaderResult = { // CHANGE HERE 1
 }
 
 export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
-    // firebase init
+    // firebase init (for retrieving remote config, firebase db,...)
 
-    FirebaseInit();
+    FirebaseInit()
 
     // init notifee
 
@@ -33,13 +32,9 @@ export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
         // CheckAndClearAllLocalFileBeforeLoadApp(), // no depended
     ])
 
-    // check is dev 
+    // check is dev (for initting posthog, trackings)
 
     await CheckIsDevAsync() // (must after GetRemoteConfigWithCheckFetchAsync)
-
-    // init aptabase tracking
-
-    await InitAptabaseAsync() // (must after GetRemoteConfigWithCheckFetchAsync & CheckIsDevAsync)
 
     // // handl startup alert (must after GetRemoteConfigWithCheckFetchAsync)
 
@@ -48,10 +43,6 @@ export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
     // // handle alert update
 
     // await HandldAlertUpdateAppAsync() // alert_priority 2 (doc) // (must after GetRemoteConfigWithCheckFetchAsync)
-
-    // // init admob
-
-    // await CheckAndInitAdmobAsync() // alert_priority 4 (doc) // no depended
 
     // return
 

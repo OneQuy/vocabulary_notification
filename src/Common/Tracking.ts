@@ -1,11 +1,11 @@
 
-// NUMBER [CHANGE HERE]: 1
+// NUMBER [CHANGE HERE]: 0
 //
 // Install:
 // npm i -s @aptabase/react-native posthog-react-native @react-native-async-storage/async-storage react-native-device-info
 //
 // Usage:
-// InitAptabase() (Must after: IsDev, GetRemoteConfigWithCheckFetchAsync)
+// InitTrackingAsync() (Must after: IsDev, GetRemoteConfigWithCheckFetchAsync)
 //
 // Doc for Posthog: https://posthog.com/docs/libraries/react-native#without-the-posthogprovider
 // 
@@ -20,7 +20,7 @@ import { Alert } from "react-native"
 import Aptabase, { trackEvent } from "@aptabase/react-native";
 import { IsDev } from "./IsDev";
 import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig";
-import { ApatabaseKey_Dev, ApatabaseKey_Production } from "../../Keys"; // CHANGE HERE 1
+import { ApatabaseKey_Dev, ApatabaseKey_Production } from "../../Keys"
 import { GetTodayStringUnderscore, IsValuableArrayOrString, SafeValue, ToCanPrint } from "./UtilsTS";
 import { FirebaseDatabase_IncreaseNumberAsync } from "./Firebase/FirebaseDatabase";
 import PostHog from "posthog-react-native";
@@ -31,13 +31,6 @@ const AptabaseIgnoredEventNamesDefault: string[] = [
 ] as const
 
 var posthog: PostHog | undefined = undefined
-
-export const SetPostHog = (instance: PostHog) => {
-    if (IsLog)
-        console.log('[SetPostHog] set');
-
-    posthog = instance
-}
 
 /**
  * HandleError(resOrError, 'DataToNotification', false)
@@ -71,30 +64,10 @@ export const HandleError = (error: any, root: string, alert = true) => {
 //     console.log('track error firebase: ', path, ', ' + error);
 // }
 
-var initedAptabase = false
+var inited = false
 var cachedFinalAptabaseIgnoredEventNames: string[] | undefined = undefined
 
 const GetPrefixFbTrackPath = () => IsDev() ? 'tracking/dev/' : 'tracking/production/'
-
-/**
- * please call after GetRemoteConfigWithCheckFetchAsync(), IsDev()
- */
-export const InitAptabaseAsync = async () => {
-    if (initedAptabase)
-        return
-
-    initedAptabase = true
-
-    const appConfig = await GetRemoteConfigWithCheckFetchAsync()
-
-    const productionKey = SafeValue(appConfig?.tracking?.aptabaseProductionKey, ApatabaseKey_Production)
-
-    Aptabase.init(
-        (IsDev() && !__DEV__) ? // mobile (release) dev
-            ApatabaseKey_Dev : // dev
-            productionKey // prodution
-    )
-}
 
 const GetFinalAptabaseIgnoredEventNamesAsync = async (): Promise<string[]> => {
     if (cachedFinalAptabaseIgnoredEventNames)
@@ -132,6 +105,35 @@ const GetFinalAptabaseIgnoredEventNamesAsync = async (): Promise<string[]> => {
     return cachedFinalAptabaseIgnoredEventNames
 }
 
+/**
+ * must be called after GetRemoteConfigWithCheckFetchAsync(), IsDev()
+ */
+export const InitTrackingAsync = async (instancePosthog: PostHog) => {
+    if (inited)
+        return
+
+    inited = true
+
+    if (IsLog)
+        console.log('[InitTrackingAsync] initting...');
+
+    // post hog
+
+    posthog = instancePosthog
+
+    // aptabase
+
+    const appConfig = await GetRemoteConfigWithCheckFetchAsync()
+
+    const productionKey = SafeValue(appConfig?.tracking?.aptabaseProductionKey, ApatabaseKey_Production)
+
+    Aptabase.init(
+        (IsDev() && !__DEV__) ? // mobile (release) dev
+            ApatabaseKey_Dev : // dev
+            productionKey // prodution
+    )
+}
+
 export const TrackingAsync = async (
     eventName: string,
     firebasePaths: string[],
@@ -154,13 +156,13 @@ export const TrackingAsync = async (
 
     const finalAptabaseIgnoredEventNames = await GetFinalAptabaseIgnoredEventNamesAsync()
 
-    const shouldTrackAptabase = initedAptabase &&
+    const shouldTrackAptabase = inited &&
         // (!__DEV__ || NetLord.IsAvailableLatestCheck()) &&
         (!appConfig || !appConfig.tracking || appConfig.tracking.enableAptabase !== false) &&
         (!finalAptabaseIgnoredEventNames.includes(eventName))
 
-        console.log(shouldTrackAptabase, initedAptabase, finalAptabaseIgnoredEventNames);
-        
+    console.log(shouldTrackAptabase, inited, finalAptabaseIgnoredEventNames);
+
     if (shouldTrackAptabase) {
         trackEvent(eventName, trackingValuesObject)
 
