@@ -33,32 +33,6 @@ const AptabaseIgnoredEventNamesDefault: string[] = [
 
 var posthog: PostHog | undefined = undefined
 
-/**
- * HandleError(resOrError, 'DataToNotification', false)
- */
-export const HandleError = (error: any, root: string, alert = true) => {
-    // todo
-    // tracking
-
-    if (true) { // filter content check if need to check
-
-    }
-
-    // alert
-
-    if (alert) {
-        const msg = SafeValue(error?.message, '' + ToCanPrint(error))
-
-        Alert.alert(
-            'Oooooops',
-            msg)
-    }
-    else if (__DEV__) {
-        const content = `[${root}] ${ToCanPrint(error)}`
-        console.error(content);
-    }
-}
-
 // export const TrackErrorOnFirebase = (error: string, subpath?: string) => {
 //     const path = prefixFbTrackPath() + 'errors/' + (subpath ? (subpath + '/') : '') + Date.now()
 //     FirebaseDatabase_SetValueAsync(path, error)
@@ -147,6 +121,11 @@ export const TrackingAsync = async (
      */
     trackingValuesObject?: Record<string, string | number | boolean>
 ): Promise<void> => {
+    if (!inited) {
+        console.error('[TrackingAsync] not initted yet.');
+        return
+    }
+
     const appConfig = await GetRemoteConfigWithCheckFetchAsync()
 
     if (IsDev())
@@ -160,8 +139,7 @@ export const TrackingAsync = async (
 
     const finalAptabaseIgnoredEventNames = await GetFinalAptabaseIgnoredEventNamesAsync()
 
-    const shouldTrackAptabase = inited &&
-        // (!__DEV__ || NetLord.IsAvailableLatestCheck()) &&
+    const shouldTrackAptabase =
         (!appConfig || !appConfig.tracking || appConfig.tracking.enableAptabase !== false) &&
         (!finalAptabaseIgnoredEventNames.includes(eventName))
 
@@ -211,4 +189,30 @@ export const TrackingAsync = async (
 
     if (IsLog)
         console.log('****************')
+}
+
+/**
+ * HandleError(resOrError, 'DataToNotification', false)
+ */
+export const HandleError = (error: any, root: string, alert = true) => {
+    // todo
+    // tracking
+
+    if (true) { // filter content check if need to check
+
+    }
+
+    // alert
+
+    if (alert) {
+        const msg = SafeValue(error?.message, '' + ToCanPrint(error))
+
+        Alert.alert(
+            'Oooooops',
+            msg)
+    }
+    else if (__DEV__) {
+        const content = `[${root}] ${ToCanPrint(error)}`
+        console.error(content);
+    }
 }
