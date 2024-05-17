@@ -1,6 +1,8 @@
 import { Dimensions, StyleSheet } from "react-native";
 import { VersionToNumber } from "./UtilsTS";
 
+export const LogoScr = require('../../assets/images/logo.png')
+
 // window size
 
 const StartupWindowSize = Dimensions.get('window')

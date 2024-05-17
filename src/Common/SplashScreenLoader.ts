@@ -1,14 +1,11 @@
-// NUMBER OF [CHANGE HERE]: 2
+// NUMBER OF [CHANGE HERE]: 1
 
+import { SplashScreenLoaderResult } from "./CommonType";
 import { FirebaseInit } from "./Firebase/Firebase";
 import { CheckIsDevAsync } from "./IsDev";
 import { initNotificationAsync } from "./Nofitication";
 import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig";
 import { InitUserIDAsync } from "./UserID";
-
-export type SplashScreenLoaderResult = { // CHANGE HERE 1
-    someVariable?: number,
-}
 
 export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
     // firebase init (for retrieving remote config, firebase db,...)
@@ -19,7 +16,7 @@ export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
 
     initNotificationAsync()  // ND
 
-    // awaits // CHANGE HERE 2 (ALL BELOW)
+    // awaits // CHANGE HERE 1 (ALL BELOW)
 
     const [] = await Promise.all([
         // remote config

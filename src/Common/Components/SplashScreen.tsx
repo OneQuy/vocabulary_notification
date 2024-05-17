@@ -1,19 +1,16 @@
-// NUMBER OF [CHANGE HERE]: 2
+// NUMBER OF [CHANGE HERE]: 1
 
 import { View, Text, Image, StatusBar, StatusBarStyle, ColorValue } from 'react-native'
 import React from 'react'
-import { WindowSize_Max } from '../CommonConstants';
+import { LogoScr, WindowSize_Max } from '../CommonConstants';
 import { Color_Logo, Color_Text } from '../../App/Hooks/useTheme';
-
-// CHANGE HERE 1 (just need add logo.png to folder)
-export const logoScr = require('../../../assets/images/logo.png')
 
 const logoSize = WindowSize_Max * 0.13
 
 const SplashScreen = (
     // { theme }: { theme: ThemeColor }
 ) => {
-    // CHANGE HERE 2
+    // CHANGE HERE 1
 
     const bgColor: ColorValue = Color_Logo
     const textColor: ColorValue = Color_Text
@@ -27,7 +24,7 @@ const SplashScreen = (
         <View style={{ backgroundColor: bgColor, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <StatusBar backgroundColor={bgColor} barStyle={barStyle} />
 
-            <Image source={logoScr} resizeMode='contain' style={{ height: logoSize, aspectRatio: 1 }} />
+            <Image source={LogoScr} resizeMode='contain' style={{ height: logoSize, aspectRatio: 1 }} />
 
             {
                 appName &&

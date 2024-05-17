@@ -23,26 +23,24 @@ import { IsDev } from "./IsDev";
 import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig";
 import { ApatabaseKey_Dev, ApatabaseKey_Production } from "../../Keys"
 import { GetTodayStringUnderscore, IsValuableArrayOrString, SafeValue, ToCanPrint } from "./UtilsTS";
-import { FirebaseDatabase_IncreaseNumberAsync } from "./Firebase/FirebaseDatabase";
+import { FirebaseDatabase_IncreaseNumberAsync, FirebaseDatabase_SetValueAsync } from "./Firebase/FirebaseDatabase";
 import PostHog from "posthog-react-native";
 
 const IsLog = true
 
+const FirebaseTrackingProductionPath = 'tracking/production/'
+
 const AptabaseIgnoredEventNamesDefault: string[] = [
 ] as const
 
-var posthog: PostHog | undefined = undefined
-
-// export const TrackErrorOnFirebase = (error: string, subpath?: string) => {
-//     const path = prefixFbTrackPath() + 'errors/' + (subpath ? (subpath + '/') : '') + Date.now()
-//     FirebaseDatabase_SetValueAsync(path, error)
-//     console.log('track error firebase: ', path, ', ' + error);
-// }
-
 var inited = false
+var posthog: PostHog | undefined = undefined
 var cachedFinalAptabaseIgnoredEventNames: string[] | undefined = undefined
 
-const GetPrefixFbTrackPath = () => IsDev() ? 'tracking/dev/' : 'tracking/production/'
+/**
+ * must be called after IsDev()
+ */
+const GetPrefixFbTrackPath = () => IsDev() ? 'tracking/dev/' : FirebaseTrackingProductionPath
 
 const GetFinalAptabaseIgnoredEventNamesAsync = async (): Promise<string[]> => {
     if (cachedFinalAptabaseIgnoredEventNames)
@@ -192,27 +190,33 @@ export const TrackingAsync = async (
 }
 
 /**
- * HandleError(resOrError, 'DataToNotification', false)
+ * CAN USE ANYWHERE
+ * 
+ * Usage: HandleError(resOrError, 'DataToNotification', false)
  */
 export const HandleError = (error: any, root: string, alert = true) => {
-    // todo
-    // tracking
+    const sError = '' + ToCanPrint(error)
 
-    if (true) { // filter content check if need to check
+    // tracking firebase
 
-    }
+    CheckAndTrackErrorOnFirebase(sError, root)
 
     // alert
 
     if (alert) {
-        const msg = SafeValue(error?.message, '' + ToCanPrint(error))
+        const msg = SafeValue(error?.message, sError)
 
         Alert.alert(
             'Oooooops',
             msg)
     }
     else if (__DEV__) {
-        const content = `[${root}] ${ToCanPrint(error)}`
+        const content = `[${root}] ${sError}`
         console.error(content);
     }
+}
+
+const CheckAndTrackErrorOnFirebase = (error: string, root: string, subpath?: string) => {
+    const path = `${FirebaseTrackingProductionPath}errors/${root}/${subpath ? (subpath + '/') : ''}${Date.now()}`
+    FirebaseDatabase_SetValueAsync(path, error)
 }

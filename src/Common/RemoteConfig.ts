@@ -1,30 +1,8 @@
-// NUMBER OF [CHANGE HERE]: 1
+// NUMBER OF [CHANGE HERE]: 0
 
 import { ExecuteWithTimeoutAsync, ToCanPrint, ToCanPrintError } from './UtilsTS'
 import { FirebaseDatabaseTimeOutMs, FirebaseDatabase_GetValueAsync } from "./Firebase/FirebaseDatabase"
-
-
-type RemoteConfig = { // CHANGE HERE 1
-    // common
-
-    forceDev: number,
-    
-    remoteFiles?: object,
-
-    tracking?: {
-        aptabaseProductionKey?: string,
-        aptabaseIgnores?: string,
-        aptabaseRemoveIgnores?: string,
-
-        enableAptabase?: boolean,
-        enableFirebase?: boolean,
-        enablePosthog?: boolean,
-    },
-
-    // specific
-
-    currentLifetimeId: string,
-}
+import { RemoteConfig } from './CommonType';
 
 const IsLog = true
 
