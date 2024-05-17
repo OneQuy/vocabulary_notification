@@ -3,7 +3,6 @@
 import { SplashScreenLoaderResult } from "./SpecificType";
 import { FirebaseInit } from "./Firebase/Firebase";
 import { CheckIsDevAsync } from "./IsDev";
-import { initNotificationAsync } from "./Nofitication";
 import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig";
 // import { InitUserIDAsync } from "./UserID";
 
@@ -11,10 +10,6 @@ export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
     // firebase init (for retrieving remote config, firebase db,...)
 
     FirebaseInit()
-
-    // init notifee
-
-    initNotificationAsync()  // ND
 
     // awaits // CHANGE HERE 1 (ALL BELOW)
 

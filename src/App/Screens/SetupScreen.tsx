@@ -13,7 +13,7 @@ import TimePicker, { TimePickerResult } from '../Components/TimePicker'
 import { LucideIcon } from '../../Common/Components/LucideIcon'
 import { PairTime, TranslationService } from '../Types'
 import { ClearDbAndNotificationsAsync } from '../Handles/AppUtils'
-import { SetNotificationAsync, TestNotificationAsync } from '../Handles/SetupNotification'
+import { SetupNotificationAsync, TestNotificationAsync } from '../Handles/SetupNotification'
 import { GetDefaultTranslationService, GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, GetTranslationServiceAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetNumDaysToPushAsync, SetPopularityLevelIndexAsync, SetTranslationServiceAsync, SetTargetLangAsyncAsync, GetSourceLangAsync } from '../Handles/Settings'
 import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync, IsCachedWordsDataCurrentLevelAsync } from '../Handles/WordsData'
 import { GetBooleanAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
@@ -294,7 +294,7 @@ const SetupScreen = () => {
   const onPressSetNotification = useCallback(async () => {
     set_handlingType('setting_notification')
 
-    const res = await SetNotificationAsync()
+    const res = await SetupNotificationAsync()
 
     if (res === undefined) { // success
       set_handlingType('done')

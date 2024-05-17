@@ -49,9 +49,10 @@ const ConvertNotificationOptionToNotification = (option: NotificationOption): No
 }
 
 /**
- * create channel (android)
+ * create channel (android) and register onBackgroundEvent
+ * ND
  */
-export const initNotificationAsync = async () => {
+const CheckAndInitAsync = async () => {
   if (inited)
     return
 
@@ -109,19 +110,13 @@ export const cancelAllLocalNotificationsAsync = async () => {
 }
 
 export const DisplayNotificationAsync = async (option: NotificationOption): Promise<string> => {
-  if (!inited) {
-    console.error('[DisplayNotificationAsync] not inited yet.')
-    return '[DisplayNotificationAsync] not inited yet.'
-  }
+  await CheckAndInitAsync()
 
   return await notifee.displayNotification(ConvertNotificationOptionToNotification(option))
 }
 
-export const setNotification = (option: NotificationOption) => { // main
-  if (!inited) {
-    console.error('[DisplayNotificationAsync] not inited yet.')
-    return '[DisplayNotificationAsync] not inited yet.'
-  }
+export const SetNotificationAsync = async (option: NotificationOption) => { // main
+  await CheckAndInitAsync()
 
   if (typeof option.timestamp !== 'number' ||
     !option.message ||
@@ -149,7 +144,7 @@ export const setNotification = (option: NotificationOption) => { // main
 /**
  * @param dayIdxFromToday 0 is today, 1 is tomorrow,...
  */
-export const setNotification_ForNextDay = (  // sub
+export const SetNotificationAsync_ForNextDay = (  // sub
   dayIdxFromToday: number,
   hourIn24h: number,
   option: NotificationOption,
@@ -164,16 +159,16 @@ export const setNotification_ForNextDay = (  // sub
   d.setMinutes(minute === undefined ? 0 : minute)
   d.setSeconds(seconds === undefined ? 0 : seconds)
 
-  setNotification({
+  SetNotificationAsync({
     ...option,
     timestamp: d.getTime(),
   } as NotificationOption)
 }
 
-export const setNotification_RemainSeconds = (  // sub
+export const SetNotificationAsync_RemainSeconds = async (  // sub
   seconds: number,
   option: NotificationOption) => {
-  setNotification({
+  await SetNotificationAsync({
     ...option,
     timestamp: Date.now() + seconds * 1000
   } as NotificationOption)

@@ -8,8 +8,7 @@ import { CalcNotiTimeListPerDay, CheckDeserializeLocalizedData, ExtractWordFromW
 import { CapitalizeFirstLetter, PickRandomElement, SafeArrayLength, SafeGetArrayElement } from "../../Common/UtilsTS";
 import { GetExcludeTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetSourceLangAsync, GetTargetLangAsync } from "./Settings";
 import { GetNextWordsDataCurrentLevelForNotiAsync, GetWordsDataCurrentLevelAsync, SetUsedWordIndexCurrentLevelAsync } from "./WordsData";
-import { DisplayNotificationAsync, NotificationOption, cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync, setNotification } from "../../Common/Nofitication";
-import { AuthorizationStatus } from "@notifee/react-native";
+import { DisplayNotificationAsync, NotificationOption, SetNotificationAsync, cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync } from "../../Common/Nofitication";
 import { HandlingType } from "../Screens/SetupScreen";
 import { HandleError } from "../../Common/Tracking";
 import { TranslatedResult } from "../../Common/TranslationApis/TranslationLanguages";
@@ -501,7 +500,7 @@ const DataToNotification = (
     return noti
 }
 
-export const SetNotificationAsync = async (): Promise<undefined | SetupNotificationError> => {
+export const SetupNotificationAsync = async (): Promise<undefined | SetupNotificationError> => {
     const resPermission = await requestPermissionNotificationAsync(true)
 
     if (!resPermission) {
@@ -615,7 +614,7 @@ export const SetNotificationAsync = async (): Promise<undefined | SetupNotificat
                 settingExample,
                 settingShowPhonetic)
 
-            setNotification(noti)
+            SetNotificationAsync(noti)
 
             if (IsLog)
                 console.log(`(${new Date(timestamp).toLocaleString()}) ${noti.title}: ${noti.message}`)
