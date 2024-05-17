@@ -32,7 +32,7 @@ export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
         // CheckAndClearAllLocalFileBeforeLoadApp(), // no depended
     ])
 
-    // check is dev (for initting posthog, trackings)
+    // check is dev (for initting PostHogProvider, trackings)
 
     await CheckIsDevAsync() // (must after GetRemoteConfigWithCheckFetchAsync)
 

@@ -5,8 +5,9 @@
 // npm i -s @aptabase/react-native posthog-react-native @react-native-async-storage/async-storage react-native-device-info
 //
 // Usage:
-// InitTrackingAsync() (Must after: IsDev, GetRemoteConfigWithCheckFetchAsync)
-//
+// 1. InitTrackingAsync() (Must after: IsDev, GetRemoteConfigWithCheckFetchAsync)
+// 2. Only should start tracking everything after init.
+// 
 // Doc for Posthog: https://posthog.com/docs/libraries/react-native#without-the-posthogprovider
 // 
 // How it works:
@@ -106,7 +107,10 @@ const GetFinalAptabaseIgnoredEventNamesAsync = async (): Promise<string[]> => {
 }
 
 /**
- * must be called after GetRemoteConfigWithCheckFetchAsync(), IsDev()
+ * must be called after
+ * 
+ *      + GetRemoteConfigWithCheckFetchAsync()
+ *      + IsDev()
  */
 export const InitTrackingAsync = async (instancePosthog: PostHog) => {
     if (inited)
