@@ -1167,8 +1167,6 @@ const SetupScreen = () => {
             title={texts.test_notification}
             titleProps={{ style: style.normalBtnTxt }}
 
-            iconProps={{ name: 'Bell', size: FontSize.Normal, }}
-
             onPress={onPressTestNotificationAsync}
           />
 
@@ -1186,8 +1184,6 @@ const SetupScreen = () => {
 
             title={texts.set_notification}
             titleProps={{ style: style.normalBtnTxt }}
-
-            iconProps={{ name: 'Rocket', size: FontSize.Normal, }}
 
             onPress={onPressSetNotification}
           />
