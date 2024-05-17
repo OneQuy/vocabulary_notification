@@ -12,7 +12,7 @@
 // --------------------------------
 
 import notifee, { AndroidChannel, AndroidImportance, AndroidStyle, AuthorizationStatus, Notification, NotificationAndroid, NotificationSettings, TimestampTrigger, TriggerType } from '@notifee/react-native';
-import { Alert, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import { AlertAsync } from './UtilsTS';
 
 export type NotificationOption = {
