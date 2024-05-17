@@ -1,6 +1,6 @@
 import { PairTime, TranslationService } from "../Types"
 
-export const PopuplarityLevelNumber = 10 // todo
+export const PopuplarityLevelNumber = 10
 
 
 export const DefaultIntervalInMin = 60
