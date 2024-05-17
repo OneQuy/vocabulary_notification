@@ -36,6 +36,7 @@ const AptabaseIgnoredEventNamesDefault: string[] = [
 var inited = false
 var posthog: PostHog | undefined = undefined
 var cachedFinalAptabaseIgnoredEventNames: string[] | undefined = undefined
+var cachedFinalFirebaseIgnores: string[] | undefined = undefined
 
 /**
  * must be called after IsDev()
@@ -195,20 +196,19 @@ export const TrackingAsync = async (
  * Usage: HandleError(resOrError, 'DataToNotification', false)
  */
 export const HandleError = (error: any, root: string, alert = true) => {
-    const sError = '' + ToCanPrint(error)
+    const sError = SafeValue(error?.message, '' + ToCanPrint(error))
 
     // tracking firebase
 
-    CheckAndTrackErrorOnFirebase(sError, root)
+    CheckAndTrackErrorOnFirebaseAsync(sError, root)
 
     // alert
 
     if (alert) {
-        const msg = SafeValue(error?.message, sError)
-
         Alert.alert(
-            'Oooooops',
-            msg)
+            'Error',
+            sError
+        )
     }
     else if (__DEV__) {
         const content = `[${root}] ${sError}`
@@ -216,7 +216,53 @@ export const HandleError = (error: any, root: string, alert = true) => {
     }
 }
 
-const CheckAndTrackErrorOnFirebase = (error: string, root: string, subpath?: string) => {
+/**
+ * 
+ * @returns undefined will not track
+ */
+const GetFinalFirebaseIgnoresAsync = async (): Promise<string[] | undefined> => {
+    if (cachedFinalFirebaseIgnores)
+        return cachedFinalFirebaseIgnores
+
+    const appConfig = await GetRemoteConfigWithCheckFetchAsync()
+
+    if (!appConfig)
+        return undefined
+
+    let finalArr: string[]
+
+    const additions = appConfig.tracking?.firebaseRootOrErrorIgnores
+
+    if (!IsValuableArrayOrString(additions))
+        finalArr = []
+    else {
+        const arr = additions?.split(',')
+
+        if (!IsValuableArrayOrString(arr) || !arr)
+            finalArr = []
+        else
+            finalArr = arr
+    }
+
+    cachedFinalFirebaseIgnores = finalArr
+
+    return cachedFinalFirebaseIgnores
+}
+
+const CheckAndTrackErrorOnFirebaseAsync = async (error: string, root: string, subpath?: string): Promise<void> => {
+    if (!error || !root)
+        return
+
+    const ignores = await GetFinalFirebaseIgnoresAsync()
+
+    if (ignores === undefined)
+        return
+
+    const found = ignores.find(ignoreText => root.includes(ignoreText) || error.includes(ignoreText))
+
+    if (found)
+        return
+
     const path = `${FirebaseTrackingProductionPath}errors/${root}/${subpath ? (subpath + '/') : ''}${Date.now()}`
     FirebaseDatabase_SetValueAsync(path, error)
 }
