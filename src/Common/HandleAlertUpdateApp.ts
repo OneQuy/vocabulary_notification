@@ -1,3 +1,5 @@
+// Created 2023 (Coding Gooday)
+
 import { StorageKey_LastAskForUpdateApp, StorageKey_PressUpdateObject } from '../App/Constants/StorageKey'
 import { Alert, AlertButton, Platform } from "react-native"
 import { GetDateAsync_IsValueNotExistedOrEqualOverDayFromNow, SetDateAsync_Now } from "./AsyncStorageUtils"

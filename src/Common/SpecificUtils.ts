@@ -1,3 +1,5 @@
+// Created on 17 may 2024 (Coding Vocaby)
+
 import { Linking, Platform, Share } from "react-native"
 import { AndroidLink, AppName, ShareAppContent, iOSLink } from "./SpecificConstants"
 

@@ -1,3 +1,5 @@
+// Created on 17 may 2024 (Coding Vocaby)
+
 export type RemoteConfig = {
     // common
 
