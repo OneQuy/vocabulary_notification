@@ -1,4 +1,4 @@
-import { View, SafeAreaView, StyleSheet, StatusBar } from 'react-native'
+import { SafeAreaView, StyleSheet, StatusBar } from 'react-native'
 import React, { useMemo } from 'react'
 import SetupScreen from './src/App/Screens/SetupScreen'
 import { Color_BG } from './src/App/Hooks/useTheme'
