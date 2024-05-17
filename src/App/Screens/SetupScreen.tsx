@@ -870,6 +870,9 @@ const SetupScreen = () => {
 
   useEffect(() => {
     (async () => {
+      if (!posthog)
+        return
+
       await InitTrackingAsync(posthog)
     })()
   }, [posthog])
