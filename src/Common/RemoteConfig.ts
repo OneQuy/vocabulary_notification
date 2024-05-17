@@ -2,7 +2,7 @@
 
 import { ExecuteWithTimeoutAsync, ToCanPrint, ToCanPrintError } from './UtilsTS'
 import { FirebaseDatabaseTimeOutMs, FirebaseDatabase_GetValueAsync } from "./Firebase/FirebaseDatabase"
-import { RemoteConfig } from './CommonType';
+import { RemoteConfig } from './SpecificType';
 
 const IsLog = true
 

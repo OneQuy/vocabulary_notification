@@ -5,7 +5,8 @@
 
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { StorageKey_UserID } from "../App/Constants/StorageKey"
-import DeviceInfo from "react-native-device-info"
+
+import DeviceInfo from "react-native-device-info" // can rem this if not use
 
 var userID: string
 var inited = false

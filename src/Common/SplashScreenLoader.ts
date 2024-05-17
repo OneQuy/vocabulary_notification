@@ -1,6 +1,6 @@
 // NUMBER OF [CHANGE HERE]: 1
 
-import { SplashScreenLoaderResult } from "./CommonType";
+import { SplashScreenLoaderResult } from "./SpecificType";
 import { FirebaseInit } from "./Firebase/Firebase";
 import { CheckIsDevAsync } from "./IsDev";
 import { initNotificationAsync } from "./Nofitication";
