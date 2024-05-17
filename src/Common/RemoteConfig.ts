@@ -11,39 +11,6 @@ const FirebaseDBPath = 'app/config';
 var remoteConfig: RemoteConfig | undefined
 var fetchedCount = 0
 
-// export const GetRemoteConfig = () => remoteConfig
-
-/**
- * ### notice:
- * it can take a while (5s) if the config currently not available.
- */
-export async function GetRemoteConfigWithCheckFetchAsync(notFetchFrom2ndTime = true): Promise<RemoteConfig | undefined> {
-    if (remoteConfig || (notFetchFrom2ndTime === true && fetchedCount >= 1)) {
-        return remoteConfig
-    }
-
-    await FetchRemoteConfigAsync()
-
-    return remoteConfig
-}
-
-/**
- * 
- * @returns version or NaN if fail to get config
- */
-export function GetRemoteFileConfigVersion(file: string) {
-    if (!remoteConfig || !remoteConfig.remoteFiles)
-        return Number.NaN
-
-    // @ts-ignore
-    const version = remoteConfig.remoteFiles[file]
-
-    if (typeof version === 'number')
-        return version as number
-    else
-        return Number.NaN
-}
-
 /**
  * 
  * force fetch
@@ -97,4 +64,35 @@ async function FetchRemoteConfigAsync(): Promise<boolean> {
         console.log('[FetchRemoteConfigAsync] fetched success', ToCanPrint(remoteConfig))
 
     return true
+}
+
+/**
+ * ### notice:
+ * it can take a while (5s) if the config currently not available.
+ */
+export async function GetRemoteConfigWithCheckFetchAsync(notFetchFrom2ndTime = true): Promise<RemoteConfig | undefined> {
+    if (remoteConfig || (notFetchFrom2ndTime === true && fetchedCount >= 1)) {
+        return remoteConfig
+    }
+
+    await FetchRemoteConfigAsync()
+
+    return remoteConfig
+}
+
+/**
+ * 
+ * @returns version or NaN if fail to get config
+ */
+export function GetRemoteFileConfigVersion(file: string) {
+    if (!remoteConfig || !remoteConfig.remoteFiles)
+        return Number.NaN
+
+    // @ts-ignore
+    const version = remoteConfig.remoteFiles[file]
+
+    if (typeof version === 'number')
+        return version as number
+    else
+        return Number.NaN
 }
