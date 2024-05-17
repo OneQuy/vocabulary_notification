@@ -30,9 +30,7 @@ const App = () => {
     <PostHogProvider apiKey={PostHogKey_Production} debug={IsDev()}>
       <SafeAreaView style={style.master}>
         <StatusBar backgroundColor={Color_BG} barStyle={'light-content'} />
-        <View style={style.master}>
-          <SetupScreen />
-        </View>
+        <SetupScreen />
       </SafeAreaView>
     </PostHogProvider>
   )
