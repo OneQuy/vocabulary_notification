@@ -163,16 +163,6 @@ const SetupScreen = () => {
   }, [])
 
   const onPressMoreSetting = useCallback(() => {
-    TrackingAsync(
-      'press_more_settings',
-      [
-        'press/more_settings'
-      ],
-      {
-        lang: displayTargetLang?.name ?? 'viiii'
-      }
-    )
-
     set_showMoreSetting(v => !v)
   }, [displayTargetLang])
 
