@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { DateDiff, DateDiff_InHour, DateDiff_InMinute, IsNumType, IsToday, IsTodayAndSameHour } from "./UtilsTS"
+import { DateDiff, DateDiff_InHour, DateDiff_InMinute, IsToday, IsTodayAndSameHour } from "./UtilsTS"
 
 // boolean =================
 
@@ -300,7 +300,7 @@ export const SetArrayAsync = async <T>(key: string, arr: T[]): Promise<void> => 
 }
 
 export const AppendArrayAsync = async <T>(key: string, itemOrArr: T[] | T): Promise<void> => {
-    let savedArr = await LoadArrayAsync<T>(key)
+    let savedArr = await GetArrayAsync<T>(key)
 
     if (savedArr === undefined)
         savedArr = []
