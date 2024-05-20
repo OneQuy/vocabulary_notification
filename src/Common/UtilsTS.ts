@@ -11,11 +11,12 @@ array utils
 time
 number
 view, component utils
+animated
 object
 other utils
 */
 
-import { Alert, Platform, AlertButton, PermissionsAndroid, Linking, Image, Dimensions } from "react-native";
+import { Alert, Platform, AlertButton, PermissionsAndroid, Linking, Image, Dimensions, Animated } from "react-native";
 import { Buffer as TheBuffer } from 'buffer'
 
 // const -------------------------
@@ -1087,6 +1088,33 @@ export const ViewSizeOfImageInContainMode = (
     }
 
     return { width, height }
+}
+
+// animated ---------------------------
+
+export function AnimatedSimpleSpring(animatedValue: Animated.Value, delay?: number) {
+    animatedValue.setValue(0)
+
+    Animated.spring(animatedValue,
+        {
+            useNativeDriver: false,
+            toValue: 1,
+            delay,
+        }
+    ).start()
+}
+
+export function AnimatedSimpleTiming(animatedValue: Animated.Value, duration?: number, delay?: number) {
+    animatedValue.setValue(0)
+
+    Animated.timing(animatedValue,
+        {
+            useNativeDriver: false,
+            toValue: 1,
+            duration,
+            delay,
+        }
+    ).start()
 }
 
 // object ---------------------------

@@ -321,3 +321,30 @@ export const GetArrayAsync = async <T>(key: string): Promise<T[] | undefined> =>
 
     return JSON.parse(s) as T[]
 }
+
+// other utils =================
+
+export const GetNextApiKeyAsync = async (
+    key: string,
+    apiKeys: string[],
+    increase?: boolean,
+): Promise<string> => {
+    if (!apiKeys || apiKeys.length <= 0) {
+        console.error('[GetNextApiKeyAsync] keys is empty');
+        return ''
+    }
+
+    const savedIdx = await GetNumberIntAsync(key, 0)
+
+    let nowIdx = savedIdx
+
+    if (increase === true)
+        nowIdx = savedIdx + 1
+
+    if (nowIdx >= apiKeys.length)
+        nowIdx = 0
+
+    await SetNumberAsync(key, nowIdx)
+
+    return apiKeys[nowIdx]
+}
