@@ -74,7 +74,7 @@ const CheckAndInitAsync = async () => {
   notifee.onBackgroundEvent(async (_) => { })
 }
 
-export const requestPermissionNotificationAsync = async (
+export const RequestPermissionNotificationAsync = async (
   androidAlertOpenSettingIfDenied?: boolean,
   androidLocalTextAlertIfDenied?: {
     title?: string,
@@ -109,7 +109,7 @@ export const requestPermissionNotificationAsync = async (
   return false
 }
 
-export const cancelAllLocalNotificationsAsync = async () => {
+export const CancelAllLocalNotificationsAsync = async () => {
   await notifee.cancelAllNotifications()
 }
 

@@ -8,7 +8,7 @@ import { CalcNotiTimeListPerDay, CheckDeserializeLocalizedData, ExtractWordFromW
 import { CapitalizeFirstLetter, PickRandomElement, SafeArrayLength, SafeGetArrayElement } from "../../Common/UtilsTS";
 import { GetExcludeTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetSourceLangAsync, GetTargetLangAsync } from "./Settings";
 import { GetNextWordsDataCurrentLevelForNotiAsync, GetWordsDataCurrentLevelAsync, SetUsedWordIndexCurrentLevelAsync } from "./WordsData";
-import { DisplayNotificationAsync, NotificationOption, SetNotificationAsync, cancelAllLocalNotificationsAsync, requestPermissionNotificationAsync } from "../../Common/Nofitication";
+import { DisplayNotificationAsync, NotificationOption, SetNotificationAsync, CancelAllLocalNotificationsAsync, RequestPermissionNotificationAsync } from "../../Common/Nofitication";
 import { HandlingType } from "../Screens/SetupScreen";
 import { HandleError } from "../../Common/Tracking";
 import { TranslatedResult } from "../../Common/TranslationApis/TranslationLanguages";
@@ -280,7 +280,7 @@ export const SetCurrentAllNotificationsAsync = async (currentAllNotifications: S
 export const TestNotificationAsync = async (setHandling: (type: HandlingType) => void): Promise<Error | undefined> => {
     // check permission
 
-    const resPermission = await requestPermissionNotificationAsync(true)
+    const resPermission = await RequestPermissionNotificationAsync(true)
 
     if (!resPermission) {
         return new Error(NoPermissionText)
@@ -501,7 +501,7 @@ const DataToNotification = (
 }
 
 export const SetupNotificationAsync = async (): Promise<undefined | SetupNotificationError> => {
-    const resPermission = await requestPermissionNotificationAsync(true)
+    const resPermission = await RequestPermissionNotificationAsync(true)
 
     if (!resPermission) {
         return {
@@ -578,7 +578,7 @@ export const SetupNotificationAsync = async (): Promise<undefined | SetupNotific
 
     // set noti !
 
-    await cancelAllLocalNotificationsAsync()
+    await CancelAllLocalNotificationsAsync()
 
     const didSetNotiList: SavedWordData[] = []
 

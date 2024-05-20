@@ -3,7 +3,7 @@ import { LocalizedData, PairTime, SavedWordData } from "../Types"
 import { TimePickerResult } from "../Components/TimePicker"
 import { DeleteAllRowsTableAsync } from "./LocalizedWordsTable"
 import { SetCurrentAllNotificationsAsync } from "./SetupNotification"
-import { cancelAllLocalNotificationsAsync } from "../../Common/Nofitication"
+import { CancelAllLocalNotificationsAsync } from "../../Common/Nofitication"
 import { HandleError } from "../../Common/Tracking"
 import { Language, TranslatedResult } from "../../Common/TranslationApis/TranslationLanguages"
 
@@ -43,7 +43,7 @@ export const ClearDbAndNotificationsAsync = async () => {
     // clear noti
 
     await SetCurrentAllNotificationsAsync([])
-    cancelAllLocalNotificationsAsync()
+    CancelAllLocalNotificationsAsync()
 }
 
 export const TimePickerResultToTimestamp = (idayFromToday: number, time: TimePickerResult): number => {
