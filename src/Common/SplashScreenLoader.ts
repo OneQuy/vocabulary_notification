@@ -12,9 +12,11 @@ export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
 
     FirebaseInit()
 
-    // awaits // CHANGE HERE 1 (ALL BELOW)
+    ///////////////////////////
+    // CHANGE HERE 1 (ALL BELOW)
+    ///////////////////////////
 
-    const [] = await Promise.all([
+    await Promise.all([
         // remote config
         GetRemoteConfigWithCheckFetchAsync(false),
 
