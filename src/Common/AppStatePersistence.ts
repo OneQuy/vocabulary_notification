@@ -1,15 +1,61 @@
 // Created May 2024 (coding Vocaby)
+//
+// USAGE:
+// 1. Simply just need to call this in the first appear screen: SetupAppStateAndStartTrackingAsync()
+//
+//
 
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { GetNumberIntAsync } from "./AsyncStorageUtils"
+import { GetDateAsync, GetNumberIntAsync, SetDateAsync_Now, SetNumberAsync } from "./AsyncStorageUtils"
 import { VersionAsNumber } from "./CommonConstants"
-import { StorageKey_PressUpdateObject } from "../App/Constants/StorageKey"
+import { StorageKey_FirstTimeInstallTick, StorageKey_LastFreshlyOpenApp, StorageKey_LastInstalledVersion, StorageKey_PressUpdateObject } from "../App/Constants/StorageKey"
+import PostHog from "posthog-react-native"
+import { InitTrackingAsync } from "./Tracking"
+import { DateDiff_WithNow, GetDayHourMinSecFromMs_ToString, IsValuableArrayOrString } from "./UtilsTS"
 
+var inited = false
 
-export const GetPressUpdateObjectAsync = async () : Promise<string | null> => {
+export const SetupAppStateAndStartTrackingAsync = async (posthog: PostHog): Promise<void> => {
+    if (inited)
+        return
+
+    if (!posthog)
+        return
+
+    inited = true
+
+    await InitTrackingAsync(posthog)
+}
+
+// var isNewlyInstall: boolean = false
+
+// export const IsNewlyInstall = () => isNewlyInstall
+
+// /**
+//  * on first useEffect of the app (freshly open) or first active state of the day
+//  * . ONLY track ONCE a day
+//  */
+// export const track_NewlyInstallOrFirstOpenOfTheDayOldUserAsync = async () => {
+//     // newly_install
+
+//     const firstTimeInstallTick = await GetDateAsync(StorageKey_FirstTimeInstallTick)
+
+//     if (firstTimeInstallTick === undefined) {
+//         isNewlyInstall = true
+//         TrackOnNewlyInstallAsync()
+//     }
+
+//     // old user
+
+//     else {
+//         TrackFirstOpenOfDayOldUserAsync
+//     }
+// }
+
+export const GetAndClearPressUpdateObjectAsync = async (): Promise<string | null> => {
     const objLastAlertText = await AsyncStorage.getItem(StorageKey_PressUpdateObject)
-    
-    if (objLastAlertText) 
+
+    if (objLastAlertText)
         AsyncStorage.removeItem(StorageKey_PressUpdateObject)
 
     return objLastAlertText
@@ -19,48 +65,49 @@ export const GetPressUpdateObjectAsync = async () : Promise<string | null> => {
  * 
  * @return number or NaN
  */
-export const GetLastInstalledVersionAsync = async () : Promise<number> => {
-    // const lastInstalledVersion = await GetNumberIntAsync(StorageKey_LastInstalledVersion)
-    // SetNumberAsync(StorageKey_LastInstalledVersion, versionAsNumber)    
-    return VersionAsNumber
+export const GetAndSetLastInstalledVersionAsync = async (): Promise<number> => {
+    const lastInstalledVersion = await GetNumberIntAsync(StorageKey_LastInstalledVersion)
+    SetNumberAsync(StorageKey_LastInstalledVersion, VersionAsNumber)
+
+    return lastInstalledVersion
 }
 
-export const GetLastFreshlyOpenAppToNowAsync = async () : Promise<string> => {
-    // const lastFreshlyOpenAppTick = await GetDateAsync(StorageKey_LastFreshlyOpenApp)
-    // SetDateAsync_Now(StorageKey_LastFreshlyOpenApp)
+export const GetAndSetLastFreshlyOpenAppToNowAsync = async (): Promise<string> => {
+    const lastFreshlyOpenAppTick = await GetDateAsync(StorageKey_LastFreshlyOpenApp)
+    SetDateAsync_Now(StorageKey_LastFreshlyOpenApp)
 
-    // let lastFreshlyOpenAppToNowMs = 0
+    let lastFreshlyOpenAppToNowMs = 0
 
-    // if (lastFreshlyOpenAppTick !== undefined) {
-    //     lastFreshlyOpenAppToNowMs = Date.now() - lastFreshlyOpenAppTick.getTime()
-    // }
+    if (lastFreshlyOpenAppTick !== undefined) {
+        lastFreshlyOpenAppToNowMs = Date.now() - lastFreshlyOpenAppTick.getTime()
+    }
 
-    // let lastFreshlyOpenAppToNow = GetDayHourMinSecFromMs_ToString(lastFreshlyOpenAppToNowMs)
+    let lastFreshlyOpenAppToNowText = GetDayHourMinSecFromMs_ToString(lastFreshlyOpenAppToNowMs)
 
-    // if (!IsValuableArrayOrString(lastFreshlyOpenAppToNow))
-    //     lastFreshlyOpenAppToNow = 'no_data'
+    if (!IsValuableArrayOrString(lastFreshlyOpenAppToNowText))
+        lastFreshlyOpenAppToNowText = 'no_data'
 
-    return ''
+    return lastFreshlyOpenAppToNowText
 }
 
-export const GetInstalledDaysCountAsync = () => {
-    // const installedDate = await GetDateAsync(StorageKey_FirstTimeInstallTick)
-    // const installedDateCount = installedDate ? Math.floor(DateDiff_WithNow(installedDate)) : 0
-    return 0
+export const GetAndSetInstalledDaysCountAsync = async () => {
+    const installedDate = await GetDateAsync(StorageKey_FirstTimeInstallTick)
+
+    if (installedDate !== undefined)
+        return Math.floor(DateDiff_WithNow(installedDate))
+    else {
+        SetDateAsync_Now(StorageKey_FirstTimeInstallTick)
+        return 0
+    }
 }
 
-export const GetOpenTime = () => {
-    // const openTime = Date.now() - startFreshlyOpenAppTick
-    return 0
-}
-
-export const GetTotalOpenAppCountAsync_TodaySoFar = () => {
+export const GetOpenAppCountTodaySoFarCountAsync = () => {
     // const openTodaySoFar = await GetNumberIntAsync(StorageKey_OpenAppOfDayCount, 0)
     return 0
 }
 
 export const GetTotalOpenAppCountAsync = () => {
-    // const totalOpenAppCount = await GetNumberIntAsync(StorageKey_OpenAppOfDayCount, 0)
+    // const totalOpenAppCount = await GetNumberIntAsync(StorageKey_OpenAppTotalCount, 0)
     return 0
 }
 
@@ -72,35 +119,13 @@ export const GetTotalOpenAppCountAsync = () => {
 
 // const HowLongToReloadInMinute = 30
 
-// type NavigationType = NavigationProp<ReactNavigation.RootParamList>
-
 // var lastFireOnActiveOrOnceUseEffectWithCheckDuplicate = 0
 
 // var lastActiveTick = Date.now()
 
 // var isHandling_CheckAndTriggerFirstOpenAppOfTheDayAsync = false
 
-// var navigation: NavigationType | undefined = undefined
-
 // var calledOnUseEffectOnceEnterApp = false
-
-// export const setNavigation = (navi: NavigationType) => {
-//     if (navi === navigation) {
-//         return
-//     }
-
-//     navigation = navi
-// }
-
-// var appDispatch: AppDispatch | undefined = undefined
-
-// export const setAppDispatch = (dispatch: AppDispatch) => {
-//     if (dispatch === appDispatch) {
-//         return
-//     }
-
-//     appDispatch = dispatch
-// }
 
 // /** reload (app config + file version) if app re-active after a period 1 HOUR */
 // const checkAndReloadAppAsync = async () => {
@@ -203,43 +228,6 @@ export const GetTotalOpenAppCountAsync = () => {
 //         track_SimpleWithParam('gooday_at', currentHour + 'h')
 //         SetPairNumberIntAndDateAsync_Now(StorageKey_GoodayAt, currentHour)
 //     }
-// }
-
-// export const GoToScreen = (screen: ScreenName | string, param?: object) => {
-//     if (!navigation)
-//         return
-
-//     track_SimpleWithParam('goto_screen', screen)
-
-//     try {
-//         // @ts-ignore
-//         navigation.navigate(screen as never, param)
-//     }
-//     catch { }
-// }
-
-// export const ResetNavigation = async (lastTime?: Date) => {
-//     if (!navigation)
-//         return
-
-//     try {
-//         const curScreen = await AsyncStorage.getItem(StorageKey_ScreenToInit);
-
-//         if (!curScreen)
-//             return
-
-//         track_ResetNavigation(lastTime)
-
-//         navigation.dispatch(
-//             CommonActions.reset({
-//                 index: 0,
-//                 routes: [
-//                     { name: curScreen },
-//                 ],
-//             })
-//         )
-//     }
-//     catch { }
 // }
 
 // const onActiveAsync = async () => {
@@ -459,28 +447,4 @@ export const GetTotalOpenAppCountAsync = () => {
 
 //     await ClearUserForcePremiumDataAsync()
 
-// }
-
-// const SetupOneSignal = () => {
-//     OneSignal.User.addTag('version', versionAsNumber.toString())
-//     OneSignal.User.addTag('platform', Platform.OS)
-
-//     // Method for listening for notification clicks
-
-//     OneSignal.Notifications.addEventListener('click', (event) => {
-//         const title = SafeValue(event?.notification?.title, 'v' + versionAsNumber)
-//         const value = FilterOnlyLetterAndNumberFromString(title)
-
-//         StorageAppendToArrayAsync(StorageKey_ClickNotificationOneSignal, value)
-//     })
-
-//     // track old click notification
-
-//     StorageGetArrayAsync(StorageKey_ClickNotificationOneSignal).then((s) => {
-//         s.forEach(element => {
-//             track_SimpleWithParam('click_onesignal', element)
-//         });
-
-//         AsyncStorage.removeItem(StorageKey_ClickNotificationOneSignal)
-//     })
 // }

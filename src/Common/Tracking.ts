@@ -31,9 +31,10 @@ import { ApatabaseKey_Dev, ApatabaseKey_Production } from "../../Keys"
 import { FilterOnlyLetterAndNumberFromString, GetDayHourMinSecFromMs_ToString, GetTodayStringUnderscore, IsValuableArrayOrString, RemoveEmptyAndFalsyFromObject, SafeValue, ToCanPrint } from "./UtilsTS";
 import { FirebaseDatabase_IncreaseNumberAsync, FirebaseDatabase_SetValueAsync } from "./Firebase/FirebaseDatabase";
 import PostHog from "posthog-react-native";
-import { GetAndSetInstalledDaysCountAsync, GetAndSetLastFreshlyOpenAppToNowAsync, GetAndSetLastInstalledVersionAsync, GetOpenTime, GetAndClearPressUpdateObjectAsync, GetTotalOpenAppCountAsync, GetOpenAppCountTodaySoFarCountAsync } from "./AppStatePersistence";
+import { GetAndSetInstalledDaysCountAsync, GetAndSetLastFreshlyOpenAppToNowAsync, GetAndSetLastInstalledVersionAsync, GetAndClearPressUpdateObjectAsync, GetTotalOpenAppCountAsync, GetOpenAppCountTodaySoFarCountAsync } from "./AppStatePersistence";
 import { UserID } from "./UserID";
 import { VersionAsNumber } from "./CommonConstants";
+import { GetSplashTime } from "./Components/SplashScreen";
 
 const IsLog = true
 
@@ -320,7 +321,7 @@ export const TrackOnUseEffectOnceEnterAppAsync = async (): Promise<number> => {
             // `events/${event}/#d`,
         ],
         { // should not put string values here.
-            openTime: GetOpenTime(),
+            splashTime: GetSplashTime(),
             totalOpenCount,
             openTodaySoFar,
             installedDaysCount
