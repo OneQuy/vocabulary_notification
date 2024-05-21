@@ -1,0 +1,3 @@
+alert_priority:
+
+1. HandleAlertUpdateAppAsync(await GetRemoteConfigWithCheckFetchAsync()) // alert_priority 1 (doc) // (must after GetRemoteConfigWithCheckFetchAsync)

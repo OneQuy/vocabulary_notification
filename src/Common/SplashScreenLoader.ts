@@ -25,19 +25,16 @@ export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
         // CheckAndClearAllLocalFileBeforeLoadApp(), // no depended
     ])
 
-    // check is dev (for initting PostHogProvider, trackings)
+    await Promise.all([
+        // check is dev (for initting PostHogProvider, trackings)
+        CheckIsDevAsync(), // (must after GetRemoteConfigWithCheckFetchAsync)
 
-    await CheckIsDevAsync() // (must after GetRemoteConfigWithCheckFetchAsync)
+        // handle alert update
+        HandleAlertUpdateAppAsync(await GetRemoteConfigWithCheckFetchAsync()) // alert_priority 1 (doc) // (must after GetRemoteConfigWithCheckFetchAsync)
+    ])
 
     // // handl startup alert (must after GetRemoteConfigWithCheckFetchAsync)
-
     // await HandleStartupAlertAsync() // alert_priority 1 (doc) // (must after GetRemoteConfigWithCheckFetchAsync)
-
-    // handle alert update
-
-    await HandleAlertUpdateAppAsync(await GetRemoteConfigWithCheckFetchAsync()) // alert_priority 2 (doc) // (must after GetRemoteConfigWithCheckFetchAsync)
-
-    // return
 
     return {
         // someVariable: 7,
