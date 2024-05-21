@@ -835,6 +835,10 @@ export const DateDiff_InHour = (d1: Date | number, d2: Date | number): number =>
     return distanceMs / 1000 / 60 / 60
 }
 
+/**
+ * 
+ * @returns diff in days
+ */
 export const DateDiff = (d1: Date | number, d2: Date | number): number => {
     const tick1 = typeof d1 === 'number' ? d1 : d1.getTime()
     const tick2 = typeof d2 === 'number' ? d2 : d2.getTime()
@@ -844,6 +848,10 @@ export const DateDiff = (d1: Date | number, d2: Date | number): number => {
     return distanceMs / 1000 / 60 / 60 / 24
 }
 
+/**
+ * 
+ * @returns diff in days
+ */
 export const DateDiff_WithNow = (d: Date | number): number => {
     return DateDiff(Date.now(), d)
 }

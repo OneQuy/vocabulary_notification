@@ -1,16 +1,20 @@
-
 // NUMBER [CHANGE HERE]: 0
+//
+// Created May 2024 (coding Vocaby)
 //
 // Install:
 // npm i -s @aptabase/react-native posthog-react-native @react-native-async-storage/async-storage react-native-device-info
 //
-// Usage:
+// Usage & Note:
 // 1. InitTrackingAsync() (Must after: IsDev, GetRemoteConfigWithCheckFetchAsync)
-// 2. Only should start tracking everything after init.
-// 
+// 2. Only should start tracking everything after initing
+// 3. Remember track these events:
+//      + TrackOnUseEffectOnceEnterAppAsync
+//
+//
 // Doc for Posthog: https://posthog.com/docs/libraries/react-native#without-the-posthogprovider
 // 
-// How it works:
+// How it works?
 // [Aptabase]
 //      + IsDev === false => prodution mode
 //      + IsDev === true:
@@ -22,9 +26,12 @@ import Aptabase, { trackEvent as AptabaseTrack } from "@aptabase/react-native";
 import { IsDev } from "./IsDev";
 import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig";
 import { ApatabaseKey_Dev, ApatabaseKey_Production } from "../../Keys"
-import { FilterOnlyLetterAndNumberFromString, GetTodayStringUnderscore, IsValuableArrayOrString, RemoveEmptyAndFalsyFromObject, SafeValue, ToCanPrint } from "./UtilsTS";
+import { FilterOnlyLetterAndNumberFromString, GetDayHourMinSecFromMs_ToString, GetTodayStringUnderscore, IsValuableArrayOrString, RemoveEmptyAndFalsyFromObject, SafeValue, ToCanPrint } from "./UtilsTS";
 import { FirebaseDatabase_IncreaseNumberAsync, FirebaseDatabase_SetValueAsync } from "./Firebase/FirebaseDatabase";
 import PostHog from "posthog-react-native";
+import { GetInstalledDaysCountAsync, GetLastFreshlyOpenAppToNowAsync, GetLastInstalledVersionAsync, GetOpenTime, GetPressUpdateObjectAsync, GetTotalOpenAppCountAsync, GetTotalOpenAppCountAsync_TodaySoFar } from "./AppStatePersistence";
+import { UserID } from "./UserID";
+import { VersionAsNumber } from "./CommonConstants";
 
 const IsLog = true
 
@@ -279,6 +286,99 @@ export const TrackOneQuyApps = (eventOneQuyApp: string, currentAppName: string) 
             }
         )
     )
+}
+
+/**
+ * only called once 
+ * this track: freshly_open_app, last_freshly_open, updated_app
+ * after call this, should call next: CheckAndShowAlertWhatsNewAsync
+ * @returns lastInstalledVersion (number or NaN) to show What's new
+ */
+export const TrackOnUseEffectOnceEnterAppAsync = async () : Promise<number> => {
+    ///////////////////
+    // freshly_open_app
+    ///////////////////
+
+    const [
+        totalOpenCount,
+        openTodaySoFar,
+        installedDaysCount,
+    ] = await Promise.all([
+        GetTotalOpenAppCountAsync(),
+        GetTotalOpenAppCountAsync_TodaySoFar(),
+        GetInstalledDaysCountAsync(),
+    ])
+
+    let event = 'freshly_open_app'
+
+    await TrackingAsync(event,
+        [
+            `total/${event}`,
+            // `events/${event}/#d`,
+        ],
+        { // should not put string values here.
+            openTime: GetOpenTime(),
+            totalOpenCount,
+            openTodaySoFar,
+            installedDaysCount
+        }
+    )
+
+    ///////////////////
+    // last_freshly_open
+    ///////////////////
+
+    const [
+        lastFreshlyOpenAppToNow,
+    ] = await Promise.all([
+        GetLastFreshlyOpenAppToNowAsync(),
+    ])
+
+    await TrackingAsync('last_freshly_open',
+        [],
+        { // put string values here
+            lastFreshlyOpenAppToNow,
+            userId: UserID(),
+        })
+
+    ///////////////////
+    // updated_app
+    ///////////////////
+
+    const lastInstalledVersion = await GetLastInstalledVersionAsync()
+
+    let didUpdated = false
+
+    if (!Number.isNaN(lastInstalledVersion) && lastInstalledVersion !== VersionAsNumber) { // just updated
+        didUpdated = true
+        event = 'updated_app'
+
+        const objLastAlertText = await GetPressUpdateObjectAsync()
+        let lastAlert = 'no_data'
+        let obj
+
+        if (objLastAlertText) {
+            obj = JSON.parse(objLastAlertText)
+
+            if (obj && typeof obj.last_alert_tick === 'number')
+                lastAlert = GetDayHourMinSecFromMs_ToString(Date.now() - obj.last_alert_tick)
+        }
+
+        await TrackingAsync(event,
+            [
+                `total/${event}`,
+            ],
+            {
+                from: 'v' + lastInstalledVersion,
+                lastAlert,
+                ...obj,
+            }
+        )
+
+        TrackSimpleWithParam('version', 'v' + VersionAsNumber)
+    }
+
+    return didUpdated ? lastInstalledVersion : NaN
 }
 
 /**

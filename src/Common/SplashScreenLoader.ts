@@ -5,7 +5,7 @@ import { FirebaseInit } from "./Firebase/Firebase";
 import { CheckIsDevAsync } from "./IsDev";
 import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig";
 import { HandleAlertUpdateAppAsync } from "./HandleAlertUpdateApp";
-// import { InitUserIDAsync } from "./UserID";
+import { InitUserIDAsync } from "./UserID";
 
 export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
     // firebase init (for retrieving remote config, firebase db,...)
@@ -20,8 +20,8 @@ export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
         // remote config
         GetRemoteConfigWithCheckFetchAsync(false),
 
-        // // user id
-        // InitUserIDAsync(), // ND
+        // user id
+        InitUserIDAsync(), // ND
 
         // // cheat clear all local file
         // CheckAndClearAllLocalFileBeforeLoadApp(), // no depended
