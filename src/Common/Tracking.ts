@@ -140,6 +140,7 @@ const CheckAndTrackErrorOnFirebaseAsync = async (error: string, root: string, su
 }
 
 /**
+ * set instance for Posthog & init Aptabase
  * must be called after
  * 
  *      + GetRemoteConfigWithCheckFetchAsync()
