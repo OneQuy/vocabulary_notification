@@ -12,7 +12,7 @@
 // --------------------------------
 
 import notifee, { AndroidChannel, AndroidImportance, AndroidStyle, AuthorizationStatus, Notification, NotificationAndroid, NotificationSettings, TimestampTrigger, TriggerType } from '@notifee/react-native';
-import { Platform } from 'react-native';
+import { Linking, Platform } from 'react-native';
 import { AlertAsync } from './UtilsTS';
 
 export type NotificationOption = {
@@ -25,11 +25,14 @@ var androidChannelId: string
 
 var inited: boolean = false
 
+// const InstructionEnableNotificatoniOSLink = 'https://docs.google.com/document/d/1QDORjz9ICbH3Eh9wDYxJCL3zJM-0Q-n8AAMh32SGqVM/edit?usp=sharing'
+
 const DefaultAndroidLocalTextAlertIfDenied = {
   title: 'Enable Notifications',
-  content: 'Please enable notifications in your settings.',
+  content: 'Please enable notifications in your phone Settings.',
   cancel: 'Cancel',
-  setting: 'Setting',
+  settingBtn: 'Open Settings',
+  // instructionBtn: 'Setting',
 }
 
 const ConvertNotificationOptionToNotification = (option: NotificationOption): Notification => {
@@ -75,12 +78,13 @@ const CheckAndInitAsync = async () => {
 }
 
 export const RequestPermissionNotificationAsync = async (
-  androidAlertOpenSettingIfDenied?: boolean,
-  androidLocalTextAlertIfDenied?: {
+  alertOpenSettingIfDenied?: boolean,
+  localTextAlertIfDenied?: {
     title?: string,
     content?: string,
     cancel?: string,
-    setting?: string,
+    settingBtn?: string,
+    instructionBtn?: string,
   }
 ): Promise<boolean> => {
   const res = await notifee.requestPermission()
@@ -93,16 +97,24 @@ export const RequestPermissionNotificationAsync = async (
 
   // need alert to open setting (android)
 
-  if (Platform.OS === 'android' && androidAlertOpenSettingIfDenied === true) {
+  if (alertOpenSettingIfDenied === true) {
     const pressedSetting = await AlertAsync(
-      androidLocalTextAlertIfDenied?.title ?? DefaultAndroidLocalTextAlertIfDenied.title,
-      androidLocalTextAlertIfDenied?.content ?? DefaultAndroidLocalTextAlertIfDenied.content,
-      androidLocalTextAlertIfDenied?.setting ?? DefaultAndroidLocalTextAlertIfDenied.setting,
-      androidLocalTextAlertIfDenied?.cancel ?? DefaultAndroidLocalTextAlertIfDenied.cancel,
+      localTextAlertIfDenied?.title ?? DefaultAndroidLocalTextAlertIfDenied.title,
+      localTextAlertIfDenied?.content ?? DefaultAndroidLocalTextAlertIfDenied.content,
+
+      // Platform.OS === 'android' ?
+      //   (localTextAlertIfDenied?.settingBtn ?? DefaultAndroidLocalTextAlertIfDenied.settingBtn) : // right btn
+      //   (localTextAlertIfDenied?.instructionBtn ?? DefaultAndroidLocalTextAlertIfDenied.instructionBtn), // right btn
+
+      localTextAlertIfDenied?.settingBtn ?? DefaultAndroidLocalTextAlertIfDenied.settingBtn, // right btn
+      localTextAlertIfDenied?.cancel ?? DefaultAndroidLocalTextAlertIfDenied.cancel, // left btn
     )
 
     if (pressedSetting) {
-      await notifee.openNotificationSettings()
+      // if (Platform.OS === 'android')
+      //   await notifee.openNotificationSettings()
+      // else
+      await Linking.openSettings()
     }
   }
 
