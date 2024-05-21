@@ -4,6 +4,7 @@ import { SplashScreenLoaderResult } from "./SpecificType";
 import { FirebaseInit } from "./Firebase/Firebase";
 import { CheckIsDevAsync } from "./IsDev";
 import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig";
+import { HandleAlertUpdateAppAsync } from "./HandleAlertUpdateApp";
 // import { InitUserIDAsync } from "./UserID";
 
 export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
@@ -32,9 +33,9 @@ export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
 
     // await HandleStartupAlertAsync() // alert_priority 1 (doc) // (must after GetRemoteConfigWithCheckFetchAsync)
 
-    // // handle alert update
+    // handle alert update
 
-    // await HandldAlertUpdateAppAsync() // alert_priority 2 (doc) // (must after GetRemoteConfigWithCheckFetchAsync)
+    await HandleAlertUpdateAppAsync(await GetRemoteConfigWithCheckFetchAsync()) // alert_priority 2 (doc) // (must after GetRemoteConfigWithCheckFetchAsync)
 
     // return
 

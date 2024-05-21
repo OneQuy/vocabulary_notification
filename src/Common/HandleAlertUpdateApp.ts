@@ -10,10 +10,10 @@ import { OpenStoreAsync } from './SpecificUtils'
 
 const IsLog = true
 
-export const HandledAlertUpdateAppAsync = async (config: RemoteConfig) => {
+export const HandleAlertUpdateAppAsync = async (config?: RemoteConfig) => {
     if (!config || !config.latestVersion) {
         if (IsLog)
-            console.log('[HandledAlertUpdateAppAsync] NOT show cuz app config null')
+            console.log('[AlertUpdate] NOT show cuz app config null')
 
         return
     }
@@ -22,7 +22,7 @@ export const HandledAlertUpdateAppAsync = async (config: RemoteConfig) => {
 
     if (data.version <= VersionAsNumber) {
         if (IsLog)
-            console.log('[HandledAlertUpdateAppAsync] NOT show cuz now is latest version', VersionAsNumber, 'config ver', data.version)
+            console.log('[AlertUpdate] NOT show cuz now is latest version', VersionAsNumber, 'config ver', data.version)
 
         return
     }
@@ -36,7 +36,7 @@ export const HandledAlertUpdateAppAsync = async (config: RemoteConfig) => {
 
         if (!isValueNotExistedOrEqualOverDayFromNow) {
             if (IsLog)
-                console.log('[HandledAlertUpdateAppAsync] NOT show cuz aksed recently')
+                console.log('[AlertUpdate] NOT show cuz aksed recently')
 
             return
         }
