@@ -22,7 +22,7 @@ import Aptabase, { trackEvent as AptabaseTrack } from "@aptabase/react-native";
 import { IsDev } from "./IsDev";
 import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig";
 import { ApatabaseKey_Dev, ApatabaseKey_Production } from "../../Keys"
-import { GetTodayStringUnderscore, IsValuableArrayOrString, SafeValue, ToCanPrint } from "./UtilsTS";
+import { FilterOnlyLetterAndNumberFromString, GetTodayStringUnderscore, IsValuableArrayOrString, RemoveEmptyAndFalsyFromObject, SafeValue, ToCanPrint } from "./UtilsTS";
 import { FirebaseDatabase_IncreaseNumberAsync, FirebaseDatabase_SetValueAsync } from "./Firebase/FirebaseDatabase";
 import PostHog from "posthog-react-native";
 
@@ -246,6 +246,38 @@ export const TrackSimple = (event: string) => { // sub
         [
             `total/${event}`,
         ]
+    )
+}
+
+export const TrackSimpleWithParam = (event: string, value: string) => { // sub 
+    TrackingAsync(event,
+        [
+            `total/${event}/` + value,
+        ],
+        {
+            value,
+        }
+    )
+}
+
+export const TrackOneQuyApps = (eventOneQuyApp: string, currentAppName: string) => {
+    const event = 'onequy_apps'
+
+    const firebaseArr = [
+        `total/${event}/` + eventOneQuyApp,
+    ]
+
+    if (IsValuableArrayOrString(currentAppName))
+        firebaseArr.push(`total/${event}/${eventOneQuyApp}/${FilterOnlyLetterAndNumberFromString(currentAppName)}`)
+
+    TrackingAsync(event,
+        firebaseArr,
+        RemoveEmptyAndFalsyFromObject(
+            {
+                eventOneQuyApp,
+                currentAppName,
+            }
+        )
     )
 }
 
