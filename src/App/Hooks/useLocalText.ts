@@ -1,4 +1,5 @@
-export const NoPermissionText = 'No permission. Please grant the permission to receive vocabulary notifications!'
+// export const NoPermissionText = 'No permission. Please grant the permission to receive vocabulary notifications!'
+export const NoPermissionText = "Make sure you have enabled notifications for the app in your phone Settings. If you have, try again!"
 export const PleaseSelectTargetLangText = 'Please set [Translation language] you wish to translate to firstly.'
 
 const eng = {

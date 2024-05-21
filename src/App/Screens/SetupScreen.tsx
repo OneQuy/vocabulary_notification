@@ -6,7 +6,7 @@ import useLocalText, { PleaseSelectTargetLangText } from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PickRandomElementWithCount, PrependZero, ToCanPrint } from '../../Common/UtilsTS'
+import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PickRandomElementWithCount, PrependZero, ToCanPrint, ToCanPrintError } from '../../Common/UtilsTS'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { DefaultExcludedTimePairs, DefaultIntervalInMin, DefaultNumDaysToPush, IntervalInMinPresets, LimitWordsPerDayPresets, NumDaysToPushPresets, PopuplarityLevelNumber, TranslationServicePresets } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
@@ -306,7 +306,7 @@ const SetupScreen = () => {
         if (s !== '')
           s += '\n\n'
 
-        s += ToCanPrint(res.error)
+        s += ToCanPrintError(res.error)
       }
 
       HandleError(s, 'onPressSetNotification')
