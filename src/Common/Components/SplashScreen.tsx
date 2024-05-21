@@ -1,11 +1,15 @@
 // NUMBER OF [CHANGE HERE]: 1
 
 import { View, Text, Image, StatusBar, StatusBarStyle, ColorValue } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { LogoScr, WindowSize_Max } from '../CommonConstants';
 import { Color_Logo, Color_Text } from '../../App/Hooks/useTheme';
 
 const logoSize = WindowSize_Max * 0.13
+
+var splashTime = 0
+
+export const GetSplashTime = () => splashTime
 
 const SplashScreen = (
     // { theme }: { theme: ThemeColor }
@@ -17,6 +21,14 @@ const SplashScreen = (
     const barStyle: StatusBarStyle = 'light-content'
     const appName: string | undefined = undefined
     const slogan: string | undefined = undefined
+
+    useEffect(() => {
+        const now = Date.now()
+
+        return () => {
+            splashTime = Date.now() - now
+        }
+    }, [])
 
     // render
 

@@ -31,7 +31,7 @@ import { ApatabaseKey_Dev, ApatabaseKey_Production } from "../../Keys"
 import { FilterOnlyLetterAndNumberFromString, GetDayHourMinSecFromMs_ToString, GetTodayStringUnderscore, IsValuableArrayOrString, RemoveEmptyAndFalsyFromObject, SafeValue, ToCanPrint } from "./UtilsTS";
 import { FirebaseDatabase_IncreaseNumberAsync, FirebaseDatabase_SetValueAsync } from "./Firebase/FirebaseDatabase";
 import PostHog from "posthog-react-native";
-import { GetInstalledDaysCountAsync, GetLastFreshlyOpenAppToNowAsync, GetLastInstalledVersionAsync, GetOpenTime, GetPressUpdateObjectAsync, GetTotalOpenAppCountAsync, GetOpenAppCountTodaySoFarCountAsync } from "./AppStatePersistence";
+import { GetAndSetInstalledDaysCountAsync, GetAndSetLastFreshlyOpenAppToNowAsync, GetAndSetLastInstalledVersionAsync, GetOpenTime, GetAndClearPressUpdateObjectAsync, GetTotalOpenAppCountAsync, GetOpenAppCountTodaySoFarCountAsync } from "./AppStatePersistence";
 import { UserID } from "./UserID";
 import { VersionAsNumber } from "./CommonConstants";
 
@@ -309,7 +309,7 @@ export const TrackOnUseEffectOnceEnterAppAsync = async (): Promise<number> => {
     ] = await Promise.all([
         GetTotalOpenAppCountAsync(),
         GetOpenAppCountTodaySoFarCountAsync(),
-        GetInstalledDaysCountAsync(),
+        GetAndSetInstalledDaysCountAsync(),
     ])
 
     let event = 'freshly_open_app'
@@ -334,7 +334,7 @@ export const TrackOnUseEffectOnceEnterAppAsync = async (): Promise<number> => {
     const [
         lastFreshlyOpenAppToNow,
     ] = await Promise.all([
-        GetLastFreshlyOpenAppToNowAsync(),
+        GetAndSetLastFreshlyOpenAppToNowAsync(),
     ])
 
     await TrackingAsync('last_freshly_open',
@@ -348,7 +348,7 @@ export const TrackOnUseEffectOnceEnterAppAsync = async (): Promise<number> => {
     // updated_app
     ///////////////////
 
-    const lastInstalledVersion = await GetLastInstalledVersionAsync()
+    const lastInstalledVersion = await GetAndSetLastInstalledVersionAsync()
 
     let didUpdated = false
 
@@ -356,7 +356,7 @@ export const TrackOnUseEffectOnceEnterAppAsync = async (): Promise<number> => {
         didUpdated = true
         event = 'updated_app'
 
-        const objLastAlertText = await GetPressUpdateObjectAsync()
+        const objLastAlertText = await GetAndClearPressUpdateObjectAsync()
         let lastAlert = 'no_data'
         let obj
 
@@ -429,7 +429,7 @@ export const TrackFirstOpenOfDayOldUserAsync = async () => {
         installedDaysCount,
     ] = await Promise.all([
         GetTotalOpenAppCountAsync(),
-        GetInstalledDaysCountAsync(),
+        GetAndSetInstalledDaysCountAsync(),
     ])
 
     TrackingAsync(event,
