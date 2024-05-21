@@ -857,7 +857,7 @@ const SetupScreen = () => {
     }
   }
 
-  // tracking
+  // SetupAppStateAndStartTrackingAsync
 
   useEffect(() => {
       SetupAppStateAndStartTrackingAsync(posthog)
