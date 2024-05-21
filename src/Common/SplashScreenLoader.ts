@@ -20,7 +20,7 @@ export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
         // remote config
         GetRemoteConfigWithCheckFetchAsync(false),
 
-        // user id
+        // user id (for trackings)
         InitUserIDAsync(), // ND
 
         // // cheat clear all local file

@@ -10,6 +10,8 @@
 // 2. Only should start tracking everything after initing
 // 3. Remember track these events:
 //      + TrackOnUseEffectOnceEnterAppAsync
+//      + TrackOnNewlyInstallAsync
+//      + TrackFirstOpenOfDayOldUserAsync
 //
 //
 // Doc for Posthog: https://posthog.com/docs/libraries/react-native#without-the-posthogprovider
@@ -21,7 +23,7 @@
 //          * __DEV__ === true => production mode            
 //          * __DEV__ === false => dev mode            
 
-import { Alert } from "react-native"
+import { Alert, Platform } from "react-native"
 import Aptabase, { trackEvent as AptabaseTrack } from "@aptabase/react-native";
 import { IsDev } from "./IsDev";
 import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig";
@@ -29,7 +31,7 @@ import { ApatabaseKey_Dev, ApatabaseKey_Production } from "../../Keys"
 import { FilterOnlyLetterAndNumberFromString, GetDayHourMinSecFromMs_ToString, GetTodayStringUnderscore, IsValuableArrayOrString, RemoveEmptyAndFalsyFromObject, SafeValue, ToCanPrint } from "./UtilsTS";
 import { FirebaseDatabase_IncreaseNumberAsync, FirebaseDatabase_SetValueAsync } from "./Firebase/FirebaseDatabase";
 import PostHog from "posthog-react-native";
-import { GetInstalledDaysCountAsync, GetLastFreshlyOpenAppToNowAsync, GetLastInstalledVersionAsync, GetOpenTime, GetPressUpdateObjectAsync, GetTotalOpenAppCountAsync, GetTotalOpenAppCountAsync_TodaySoFar } from "./AppStatePersistence";
+import { GetInstalledDaysCountAsync, GetLastFreshlyOpenAppToNowAsync, GetLastInstalledVersionAsync, GetOpenTime, GetPressUpdateObjectAsync, GetTotalOpenAppCountAsync, GetOpenAppCountTodaySoFarCountAsync } from "./AppStatePersistence";
 import { UserID } from "./UserID";
 import { VersionAsNumber } from "./CommonConstants";
 
@@ -289,12 +291,12 @@ export const TrackOneQuyApps = (eventOneQuyApp: string, currentAppName: string) 
 }
 
 /**
- * only called once 
+ * only called once (when freshly open app)
  * this track: freshly_open_app, last_freshly_open, updated_app
  * after call this, should call next: CheckAndShowAlertWhatsNewAsync
  * @returns lastInstalledVersion (number or NaN) to show What's new
  */
-export const TrackOnUseEffectOnceEnterAppAsync = async () : Promise<number> => {
+export const TrackOnUseEffectOnceEnterAppAsync = async (): Promise<number> => {
     ///////////////////
     // freshly_open_app
     ///////////////////
@@ -305,7 +307,7 @@ export const TrackOnUseEffectOnceEnterAppAsync = async () : Promise<number> => {
         installedDaysCount,
     ] = await Promise.all([
         GetTotalOpenAppCountAsync(),
-        GetTotalOpenAppCountAsync_TodaySoFar(),
+        GetOpenAppCountTodaySoFarCountAsync(),
         GetInstalledDaysCountAsync(),
     ])
 
@@ -379,6 +381,65 @@ export const TrackOnUseEffectOnceEnterAppAsync = async () : Promise<number> => {
     }
 
     return didUpdated ? lastInstalledVersion : NaN
+}
+
+/**
+ * only called once (when install app)
+ * this track: newly_install, version, platform
+ */
+export const TrackOnNewlyInstallAsync = async () => {
+    //////////////////////
+    // newly_install
+    //////////////////////
+
+    const event = 'newly_install'
+
+    await TrackingAsync(event,
+        [
+            `total/${event}`,
+            // `events/${event}/#d`,
+        ],
+        {
+            userID: UserID(),
+        })
+
+    //////////////////////
+    // version
+    //////////////////////
+
+    TrackSimpleWithParam('version', 'v' + VersionAsNumber)
+
+    //////////////////////
+    // platform
+    //////////////////////
+
+    TrackSimpleWithParam('platform', Platform.OS.toString())
+}
+
+export const TrackFirstOpenOfDayOldUserAsync = async () => {
+    //////////////////////
+    // first_open_of_day_old_user
+    //////////////////////
+
+    let event = 'first_open_of_day_old_user'
+    
+    const [
+        totalOpenCount,
+        installedDaysCount,
+    ] = await Promise.all([
+        GetTotalOpenAppCountAsync(),
+        GetInstalledDaysCountAsync(),
+    ])
+
+    TrackingAsync(event,
+        [
+            // `events/${event}/#d`,
+        ],
+        {
+            installedDaysCount,
+            totalOpenCount,
+            userId: UserID(),
+        })
 }
 
 /**
