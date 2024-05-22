@@ -860,7 +860,10 @@ const SetupScreen = () => {
   // SetupAppStateAndStartTrackingAsync
 
   useEffect(() => {
-      SetupAppStateAndStartTrackingAsync(posthog)
+    SetupAppStateAndStartTrackingAsync({
+      posthog,
+      forceSetPremiumAsync: async () => { },
+    })
   }, [])
 
   // load setting

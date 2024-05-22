@@ -12,10 +12,15 @@ import { StorageKey_FirstTimeInstallTick, StorageKey_LastCheckFirstOpenOfTheDay,
 import PostHog from "posthog-react-native"
 import { InitTrackingAsync, TrackFirstOpenOfDayOldUserAsync, TrackOnNewlyInstallAsync, TrackOnUseEffectOnceEnterAppAsync, TrackSimpleWithParam } from "./Tracking"
 import { DateDiff_WithNow, GetDayHourMinSecFromMs_ToString, IsValuableArrayOrString } from "./UtilsTS"
-import { GetStreakAsync, SetStreakAsync } from "./Streak"
 import { ClearUserForcePremiumDataAsync, GetUserForcePremiumDataAsync } from "./UserMan"
 import { SubscribedData } from "./SpecificType"
 import { UserID } from "./UserID"
+import { setup } from "react-native-iap"
+
+type SetupAppStateAndStartTrackingParams = {
+    posthog: PostHog,
+    forceSetPremiumAsync: (setOrReset: SubscribedData | undefined) => Promise<void>,
+}
 
 var inited = false
 var isHandling_CheckAndTriggerFirstOpenAppOfTheDayAsync = false
@@ -23,25 +28,25 @@ var isNewlyInstallFirstOpenOrAcitveState = false
 
 export const IsNewlyInstallFirstOpenOrAcitveState = () => isNewlyInstallFirstOpenOrAcitveState
 
-export const SetupAppStateAndStartTrackingAsync = async (posthog: PostHog): Promise<void> => {
+export const SetupAppStateAndStartTrackingAsync = async (setupParams: SetupAppStateAndStartTrackingParams): Promise<void> => {
     if (inited)
         return
 
     inited = true
 
-    await InitTrackingAsync(posthog)
+    await InitTrackingAsync(setupParams.posthog)
 
-    await OnUseEffectOnceEnterAppAsync()
+    await OnUseEffectOnceEnterAppAsync(setupParams)
 }
 
 
 /**
  * freshly open app (can multiple times per day)
  */
-export const OnUseEffectOnceEnterAppAsync = async () => {
+export const OnUseEffectOnceEnterAppAsync = async (setupParams: SetupAppStateAndStartTrackingParams) => {
     await TrackOnUseEffectOnceEnterAppAsync()
 
-    await CheckFirstOpenAppOfTheDayAsync()
+    await CheckFirstOpenAppOfTheDayAsync(setupParams)
 
     onActiveOrOnceUseEffectAsync()
 }
@@ -51,7 +56,7 @@ export const OnUseEffectOnceEnterAppAsync = async () => {
  * first open of the day
  * (on first freshly open app or first active of the day)
  */
-export const CheckFirstOpenAppOfTheDayAsync = async () => {
+export const CheckFirstOpenAppOfTheDayAsync = async (setupParams: SetupAppStateAndStartTrackingParams) => {
     if (isHandling_CheckAndTriggerFirstOpenAppOfTheDayAsync) {
         return
     }
@@ -87,7 +92,7 @@ export const CheckFirstOpenAppOfTheDayAsync = async () => {
 
         // CheckForcePremiumDataAsync
 
-        CheckForcePremiumDataAsync()
+        CheckForcePremiumDataAsync(setupParams)
     }
 
 }
@@ -149,9 +154,7 @@ export const GetTotalOpenAppCountAsync = async () => {
     return await GetNumberIntAsync(StorageKey_OpenAppTotalCount, 0)
 }
 
-
-
-const CheckForcePremiumDataAsync = async (forceSetPremiumAsync: (setOrReset: SubscribedData | undefined) => Promise<void>) => {
+const CheckForcePremiumDataAsync = async (setupParams: SetupAppStateAndStartTrackingParams) => {
     const data = await GetUserForcePremiumDataAsync()
 
     console.log('[CheckForcePremiumDataAsync] data', data);
@@ -164,14 +167,14 @@ const CheckForcePremiumDataAsync = async (forceSetPremiumAsync: (setOrReset: Sub
     // reset
 
     if (data.id === 'reset') {
-        await forceSetPremiumAsync(undefined)
+        await setupParams.forceSetPremiumAsync(undefined)
         TrackSimpleWithParam('forced_premium_reset', UserID())
     }
 
     // force set
 
     else {
-        await forceSetPremiumAsync(data)
+        await setupParams.forceSetPremiumAsync(data)
         TrackSimpleWithParam('forced_premium_set', UserID() + '__' + data.id + '__' + data.purchasedTick)
 
         // Alert.alert('Wohoo!', 'You granted: ' + data.id + '. Really thanks for your support!')
