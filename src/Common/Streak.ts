@@ -2,6 +2,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { IsToday, IsYesterday } from "./UtilsTS";
 import { StorageKey_Streak } from "../App/Constants/StorageKey";
 
+export const AppStreakId = 'app_streak'
+
 export type Streak = {
     id: string,
     bestStreak: number,
