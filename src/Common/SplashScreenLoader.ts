@@ -17,26 +17,20 @@ export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
     ///////////////////////////
 
     await Promise.all([
-        // remote config
-        GetRemoteConfigWithCheckFetchAsync(false),
+        // remote config & alert
+        GetRemoteConfigWithCheckFetchAsync(false, true), // alert_priority_1 (doc)
 
         // user id (for trackings)
         InitUserIDAsync(), // ND
 
         // // cheat clear all local file
-        // CheckAndClearAllLocalFileBeforeLoadApp(), // no depended
+        // CheckAndClearAllLocalFileBeforeLoadApp(), // ND
     ])
 
     await Promise.all([
         // check is dev (for initting PostHogProvider, trackings)
         CheckIsDevAsync(), // (must after GetRemoteConfigWithCheckFetchAsync)
-
-        // handle alert update
-        HandleAlertUpdateAppAsync(await GetRemoteConfigWithCheckFetchAsync()) // alert_priority 1 (doc) // (must after GetRemoteConfigWithCheckFetchAsync)
     ])
-
-    // // handl startup alert (must after GetRemoteConfigWithCheckFetchAsync)
-    // await HandleStartupAlertAsync() // alert_priority 1 (doc) // (must after GetRemoteConfigWithCheckFetchAsync)
 
     return {
         // someVariable: 7,

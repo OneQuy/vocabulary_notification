@@ -3,6 +3,7 @@
 import { ExecuteWithTimeoutAsync, ToCanPrint, ToCanPrintError } from './UtilsTS'
 import { FirebaseDatabaseTimeOutMs, FirebaseDatabase_GetValueAsync } from "./Firebase/FirebaseDatabase"
 import { RemoteConfig } from './SpecificType';
+import { HandleAlertUpdateAppAsync } from './HandleAlertUpdateApp';
 
 const IsLog = false
 
@@ -70,12 +71,30 @@ async function FetchRemoteConfigAsync(): Promise<boolean> {
  * ### notice:
  * it can take a while (5s) if the config currently not available.
  */
-export async function GetRemoteConfigWithCheckFetchAsync(notFetchFrom2ndTime = true): Promise<RemoteConfig | undefined> {
-    if (remoteConfig || (notFetchFrom2ndTime === true && fetchedCount >= 1)) {
-        return remoteConfig
+export async function GetRemoteConfigWithCheckFetchAsync(
+    notFetchFrom2ndTime = true,
+    forceFetchAndHandleAlerts = false
+): Promise<RemoteConfig | undefined> {
+    // check
+
+    if (!forceFetchAndHandleAlerts) { // no force
+        if (remoteConfig || // already fetched
+            (notFetchFrom2ndTime === true && fetchedCount >= 1) // not fetch from 2nd times
+        ) {
+            return remoteConfig
+        }
     }
 
-    await FetchRemoteConfigAsync()
+    // fetch
+
+    const success = await FetchRemoteConfigAsync()
+
+    // handle alerts
+
+    if (success && forceFetchAndHandleAlerts) {
+        // alert update
+        await HandleAlertUpdateAppAsync(remoteConfig) // alert_priority_1 (doc)
+    }
 
     return remoteConfig
 }
