@@ -35,6 +35,7 @@ import { GetAndSetInstalledDaysCountAsync, GetAndSetLastFreshlyOpenAppToNowAsync
 import { UserID } from "./UserID";
 import { VersionAsNumber } from "./CommonConstants";
 import { GetSplashTime } from "./Components/SplashScreen";
+import { SetStreakAsync } from "./Streak";
 
 const IsLog = true
 
@@ -307,10 +308,12 @@ export const TrackOnUseEffectOnceEnterAppAsync = async (): Promise<number> => {
         totalOpenCount,
         openTodaySoFar,
         installedDaysCount,
+        streakHandle
     ] = await Promise.all([
         GetTotalOpenAppCountAsync(),
         GetOpenAppCountTodaySoFarCountAsync(),
         GetAndSetInstalledDaysCountAsync(),
+        SetStreakAsync('app_streak')
     ])
 
     let event = 'freshly_open_app'
@@ -320,12 +323,14 @@ export const TrackOnUseEffectOnceEnterAppAsync = async (): Promise<number> => {
             `total/${event}`,
             // `events/${event}/#d`,
         ],
-        { // should not put string values here.
+        { // only track numbers, should NOT put string values here.
             splashTime: GetSplashTime(),
+            currentStreak: streakHandle.todayStreak.currentStreak,
+            bestStreak: streakHandle.todayStreak.bestStreak,
             totalOpenCount,
             openTodaySoFar,
-            installedDaysCount
-        }
+            installedDaysCount,
+        } as Record<string, number>
     )
 
     ///////////////////
