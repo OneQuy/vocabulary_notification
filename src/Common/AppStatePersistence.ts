@@ -1,54 +1,67 @@
 // Created May 2024 (coding Vocaby)
 //
 // USAGE:
-// 1. Simply just need to call this in the first appear screen: SetupAppStateAndStartTrackingAsync()
+// 1. Simply just need to call this in the first appear screen: SetupAppStateAndStartTrackingAsync(...)
 //
 //
 
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { GetBooleanAsync, GetDateAsync, GetDateAsync_IsValueExistedAndIsToday, GetNumberIntAsync, SetBooleanAsync, SetDateAsync_Now, SetNumberAsync } from "./AsyncStorageUtils"
+import { GetBooleanAsync, GetDateAsync, GetDateAsync_IsValueExistedAndIsToday, GetNumberIntAsync, GetPairNumberIntAndDateAsync, IncreaseNumberAsync, SetBooleanAsync, SetDateAsync_Now, SetNumberAsync, SetPairNumberIntAndDateAsync_Now } from "./AsyncStorageUtils"
 import { VersionAsNumber } from "./CommonConstants"
-import { StorageKey_FirstTimeInstallTick, StorageKey_LastCheckFirstOpenOfTheDay, StorageKey_LastFreshlyOpenApp, StorageKey_LastInstalledVersion, StorageKey_OpenAppOfDayCount, StorageKey_OpenAppTotalCount, StorageKey_PressUpdateObject, StorageKey_TrackedNewlyInstall } from "../App/Constants/StorageKey"
+import { StorageKey_FirstTimeInstallTick, StorageKey_LastCheckFirstOpenOfTheDay, StorageKey_LastFreshlyOpenApp, StorageKey_LastInstalledVersion, StorageKey_OpenAppOfDayCount, StorageKey_OpenAppOfDayCountForDate, StorageKey_OpenAppTotalCount, StorageKey_OpenAt, StorageKey_PressUpdateObject, StorageKey_TrackedNewlyInstall } from "../App/Constants/StorageKey"
 import PostHog from "posthog-react-native"
-import { InitTrackingAsync, TrackFirstOpenOfDayOldUserAsync, TrackOnNewlyInstallAsync, TrackOnUseEffectOnceEnterAppAsync, TrackSimpleWithParam } from "./Tracking"
-import { DateDiff_WithNow, GetDayHourMinSecFromMs_ToString, IsValuableArrayOrString } from "./UtilsTS"
+import { InitTrackingAsync, TrackFirstOpenOfDayOldUserAsync, TrackOnNewlyInstallAsync, TrackOnUseEffectOnceEnterAppAsync, TrackOpenOfDayCount, TrackSimpleWithParam } from "./Tracking"
+import { DateDiff_WithNow, GetDayHourMinSecFromMs_ToString, IsToday, IsValuableArrayOrString } from "./UtilsTS"
 import { ClearUserForcePremiumDataAsync, GetUserForcePremiumDataAsync } from "./UserMan"
 import { SubscribedData } from "./SpecificType"
 import { UserID } from "./UserID"
-import { setup } from "react-native-iap"
+import { AppStateStatus } from "react-native"
+import { RegisterOnChangedState } from "./AppStateMan"
 
 type SetupAppStateAndStartTrackingParams = {
     posthog: PostHog,
     forceSetPremiumAsync: (setOrReset: SubscribedData | undefined) => Promise<void>,
 }
 
+const HowLongInMinutesToCount2TimesUseAppSeparately = 60
+// const HowLongToReloadInMinute = 30
+
 var inited = false
 var isHandling_CheckAndTriggerFirstOpenAppOfTheDayAsync = false
+var lastFireOnActiveOrOnceUseEffectWithCheckDuplicate = 0
 var isNewlyInstallFirstOpenOrAcitveState = false
+var setupParamsInternal: SetupAppStateAndStartTrackingParams | undefined = undefined
 
 export const IsNewlyInstallFirstOpenOrAcitveState = () => isNewlyInstallFirstOpenOrAcitveState
 
+
+/**
+ * MAIN
+ * freshly open app (can multiple times per day, but once per app open)
+ */
 export const SetupAppStateAndStartTrackingAsync = async (setupParams: SetupAppStateAndStartTrackingParams): Promise<void> => {
     if (inited)
         return
 
     inited = true
+    setupParamsInternal = setupParams
+
+    RegisterOnChangedState(OnStateChanged)
 
     await InitTrackingAsync(setupParams.posthog)
 
     await OnUseEffectOnceEnterAppAsync(setupParams)
 }
 
-
 /**
- * freshly open app (can multiple times per day)
+ * freshly open app (can multiple times per day, but once per app open)
  */
 export const OnUseEffectOnceEnterAppAsync = async (setupParams: SetupAppStateAndStartTrackingParams) => {
     await TrackOnUseEffectOnceEnterAppAsync()
 
     await CheckFirstOpenAppOfTheDayAsync(setupParams)
 
-    onActiveOrOnceUseEffectAsync()
+    OnActiveOrOnceUseEffectAsync()
 }
 
 
@@ -181,16 +194,16 @@ const CheckForcePremiumDataAsync = async (setupParams: SetupAppStateAndStartTrac
     }
 }
 
-
-
-// const HowLongInMinutesToCount2TimesUseAppSeparately = 20
-
-// const HowLongToReloadInMinute = 30
-
-// var lastFireOnActiveOrOnceUseEffectWithCheckDuplicate = 0
-
-// var lastActiveTick = Date.now()
-
+const OnStateChanged = (state: AppStateStatus) => {
+    if (state === 'active') {
+        if (setupParamsInternal) {
+            OnActiveAsync(setupParamsInternal)
+        }
+    }
+    else if (state === 'background') {
+        OnBackgroundAsync()
+    }
+}
 
 // /** reload (app config + file version) if app re-active after a period 1 HOUR */
 // const checkAndReloadAppAsync = async () => {
@@ -242,98 +255,86 @@ const CheckForcePremiumDataAsync = async (setupParams: SetupAppStateAndStartTrac
 //     await HandldAlertUpdateAppAsync() // alert_priority 2 (doc)
 // }
 
-// /**
-//  * will be called at 2 cases:
-//  * 1. whenever freshly open app
-//  * 2. whenever onAppActive
-//  */
-// const onActiveOrOnceUseEffectAsync = async () => {
-//     checkAndFireOnActiveOrOnceUseEffectWithCheckDuplicateAsync()
-// }
+/**
+ * will be called at 2 cases:
+ * 1. whenever freshly open app
+ * 2. whenever onAppActive
+ */
+const OnActiveOrOnceUseEffectAsync = async () => {
+    CheckFireOnActiveOrOnceUseEffectWithCheckDuplicateAsync()
+}
 
-// /**
-//  * use to count open app times
-//  * will be called at 2 cases:
-//  * 1. whenever freshly open app
-//  * 2. onAppActive (but at least 20p after the last call this method)
-//  */
-// const checkAndFireOnActiveOrOnceUseEffectWithCheckDuplicateAsync = async () => {
-//     const distanceMs = Date.now() - lastFireOnActiveOrOnceUseEffectWithCheckDuplicate
+/**
+ * use to count open app times
+ * will be called at 2 cases:
+ * 1. whenever freshly open app
+ * 2. onAppActive (but at least `HowLongInMinutesToCount2TimesUseAppSeparately` after the last call this method)
+ */
+const CheckFireOnActiveOrOnceUseEffectWithCheckDuplicateAsync = async () => {
+    ///////////////////////////////
+    // CHECK
+    ///////////////////////////////
 
-//     const minFromLastCall = distanceMs / 1000 / 60
+    const distanceMs = Date.now() - lastFireOnActiveOrOnceUseEffectWithCheckDuplicate
 
-//     if (minFromLastCall < HowLongInMinutesToCount2TimesUseAppSeparately)
-//         return
+    const minFromLastCall = distanceMs / 1000 / 60
 
-//     lastFireOnActiveOrOnceUseEffectWithCheckDuplicate = Date.now()
+    if (minFromLastCall < HowLongInMinutesToCount2TimesUseAppSeparately)
+        return
 
-//     // handle here ------------------------------------
+    lastFireOnActiveOrOnceUseEffectWithCheckDuplicate = Date.now()
 
-//     const count = await GetNumberIntAsync(StorageKey_OpenAppOfDayCount, 0)
+    ///////////////////////////////
+    // HANDLE HERE
+    ///////////////////////////////
 
-//     if (await GetDateAsync_IsValueExistedAndIsToday(StorageKey_OpenAppOfDayCountForDate)) { // already tracked yesterday, just inc today
-//         SetNumberAsync(StorageKey_OpenAppOfDayCount, count + 1)
-//     }
-//     else { // need to track for yesterday
-//         if (count > 0)
-//             track_OpenAppOfDayCount(count)
+    // open of day count
 
-//         SetDateAsync_Now(StorageKey_OpenAppOfDayCountForDate)
-//         SetNumberAsync(StorageKey_OpenAppOfDayCount, 1)
-//     }
+    const count = await GetNumberIntAsync(StorageKey_OpenAppOfDayCount, 0)
 
-//     await IncreaseNumberAsync(StorageKey_OpenAppTotalCount)
+    if (await GetDateAsync_IsValueExistedAndIsToday(StorageKey_OpenAppOfDayCountForDate)) { // already tracked yesterday, just inc today
+        SetNumberAsync(StorageKey_OpenAppOfDayCount, count + 1)
+    }
+    else { // need to track for yesterday
+        if (count > 0) {
+            TrackOpenOfDayCount(count)
+        }
 
-//     // track current time (hour) of using Gooday
+        SetDateAsync_Now(StorageKey_OpenAppOfDayCountForDate)
+        SetNumberAsync(StorageKey_OpenAppOfDayCount, 1)
+    }
 
-//     const { date, number } = await GetPairNumberIntAndDateAsync(StorageKey_GoodayAt, -1)
-//     const currentHour = new Date().getHours()
+    // total open count
 
-//     if (number !== currentHour || !date || !IsToday(date)) {
-//         track_SimpleWithParam('gooday_at', currentHour + 'h')
-//         SetPairNumberIntAndDateAsync_Now(StorageKey_GoodayAt, currentHour)
-//     }
-// }
+    await IncreaseNumberAsync(StorageKey_OpenAppTotalCount)
 
-// const onActiveAsync = async () => {
-//     lastActiveTick = Date.now()
+    // track current time (hour)
 
-//     // check to show warning alert
+    const { date, number } = await GetPairNumberIntAndDateAsync(StorageKey_OpenAt, -1)
+    const currentHour = new Date().getHours()
 
-//     checkAndReloadAppAsync()
+    if (number !== currentHour || !date || !IsToday(date)) {
+        TrackSimpleWithParam('open_at', currentHour + 'h')
+        SetPairNumberIntAndDateAsync_Now(StorageKey_OpenAt, currentHour)
+    }
+}
 
-//     // first Open App Of The Day
+const OnActiveAsync = async (setupParams: SetupAppStateAndStartTrackingParams) => {
+    // check to show warning alert
 
-//     CheckAndTriggerFirstOpenAppOfTheDayAsync()
+    checkAndReloadAppAsync()
 
-//     // onActiveOrOnceUseEffectAsync
+    // first Open App Of The Day
 
-//     onActiveOrOnceUseEffectAsync()
-// }
+    CheckFirstOpenAppOfTheDayAsync(setupParams)
 
-// const onBackgroundAsync = async () => {
-//     setNotificationAsync()
+    // onActiveOrOnceUseEffectAsync
 
-//     // SaveCachedPressNextPost
+    OnActiveOrOnceUseEffectAsync()
+}
 
-//     SaveCachedPressNextPostAsync()
-// }
-
-// const onStateChanged = (state: AppStateStatus) => {
-//     if (state === 'active') {
-//         onActiveAsync()
-//     }
-//     else if (state === 'background') {
-//         onBackgroundAsync()
-//     }
-// }
-
-// export const RegisterGoodayAppState = (isRegister: boolean) => {
-//     if (isRegister)
-//         RegisterOnChangedState(onStateChanged)
-//     else
-//         UnregisterOnChangedState(onStateChanged)
-// }
+const OnBackgroundAsync = async () => {
+}
 
 // export const CheckAndShowAlertWhatsNewAsync = async (fromVer: number) => {
 //     if (!Number.isNaN(fromVer))

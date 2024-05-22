@@ -8,10 +8,6 @@
 // Usage & Note:
 // 1. InitTrackingAsync() (Must after: IsDev, GetRemoteConfigWithCheckFetchAsync)
 // 2. Only should start tracking everything after initing
-// 3. Remember track these events:
-//      + TrackOnUseEffectOnceEnterAppAsync
-//      + TrackOnNewlyInstallAsync
-//      + TrackFirstOpenOfDayOldUserAsync
 //
 //
 // Doc for Posthog: https://posthog.com/docs/libraries/react-native#without-the-posthogprovider
@@ -290,6 +286,19 @@ export const TrackOneQuyApps = (eventOneQuyApp: string, currentAppName: string) 
                 currentAppName,
             }
         )
+    )
+}
+
+export const TrackOpenOfDayCount = (count: number) => {
+    const event = 'open_of_day_count'
+
+    TrackingAsync(event,
+        [
+            `total/${event}/${count}_times`,
+        ],
+        {
+            count
+        }
     )
 }
 
