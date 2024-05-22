@@ -28,14 +28,14 @@ import Aptabase, { trackEvent as AptabaseTrack } from "@aptabase/react-native";
 import { IsDev } from "./IsDev";
 import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig";
 import { ApatabaseKey_Dev, ApatabaseKey_Production } from "../../Keys"
-import { FilterOnlyLetterAndNumberFromString, GetDayHourMinSecFromMs_ToString, GetTodayStringUnderscore, IsValuableArrayOrString, RemoveEmptyAndFalsyFromObject, SafeValue, ToCanPrint } from "./UtilsTS";
+import { DayName, FilterOnlyLetterAndNumberFromString, GetDayHourMinSecFromMs_ToString, GetTodayStringUnderscore, IsValuableArrayOrString, RemoveEmptyAndFalsyFromObject, SafeValue, ToCanPrint } from "./UtilsTS";
 import { FirebaseDatabase_IncreaseNumberAsync, FirebaseDatabase_SetValueAsync } from "./Firebase/FirebaseDatabase";
 import PostHog from "posthog-react-native";
 import { GetAndSetInstalledDaysCountAsync, GetAndSetLastFreshlyOpenAppToNowAsync, GetAndSetLastInstalledVersionAsync, GetAndClearPressUpdateObjectAsync, GetTotalOpenAppCountAsync, GetOpenAppCountTodaySoFarCountAsync } from "./AppStatePersistence";
 import { UserID } from "./UserID";
 import { VersionAsNumber } from "./CommonConstants";
 import { GetSplashTime } from "./Components/SplashScreen";
-import { SetStreakAsync } from "./Streak";
+import { AppStreakId, SetStreakAsync } from "./Streak";
 
 const IsLog = true
 
@@ -313,7 +313,7 @@ export const TrackOnUseEffectOnceEnterAppAsync = async (): Promise<number> => {
         GetTotalOpenAppCountAsync(),
         GetOpenAppCountTodaySoFarCountAsync(),
         GetAndSetInstalledDaysCountAsync(),
-        SetStreakAsync('app_streak')
+        SetStreakAsync(AppStreakId)
     ])
 
     let event = 'freshly_open_app'
@@ -424,28 +424,52 @@ export const TrackOnNewlyInstallAsync = async () => {
 }
 
 /**
- * first_open_of_day_old_user
+ * tracks: food_old_user, food_old_user_num
  */
 export const TrackFirstOpenOfDayOldUserAsync = async () => {
-    const event = 'first_open_of_day_old_user'
+    /////////////////////
+    // food_old_user (only strings)
+    /////////////////////
 
-    const [
-        totalOpenCount,
-        installedDaysCount,
-    ] = await Promise.all([
-        GetTotalOpenAppCountAsync(),
-        GetAndSetInstalledDaysCountAsync(),
-    ])
+    const event = 'food_old_user'
 
-    TrackingAsync(event,
+    await TrackingAsync(event,
         [
             // `events/${event}/#d`,
         ],
         {
+            userId: UserID(),
+            dayName: DayName(undefined, true)
+        } as Record<string, string>
+    )
+
+    /////////////////////
+    // food_old_user_num
+    /////////////////////
+
+    const event2 = 'food_old_user_num'
+
+    const [
+        totalOpenCount,
+        installedDaysCount,
+        streakHandle,
+    ] = await Promise.all([
+        GetTotalOpenAppCountAsync(),
+        GetAndSetInstalledDaysCountAsync(),
+        SetStreakAsync(AppStreakId)
+    ])
+
+    await TrackingAsync(event2,
+        [
+            // `events/${event2}/#d`,
+        ],
+        {
             installedDaysCount,
             totalOpenCount,
-            userId: UserID(),
-        })
+            currentStreak: streakHandle.todayStreak.currentStreak,
+            bestStreak: streakHandle.todayStreak.bestStreak,
+        } as Record<string, number>
+    )
 }
 
 /**
