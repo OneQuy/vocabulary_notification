@@ -8,7 +8,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { GetDateAsync, GetNumberIntAsync, SetDateAsync_Now, SetNumberAsync } from "./AsyncStorageUtils"
 import { VersionAsNumber } from "./CommonConstants"
-import { StorageKey_FirstTimeInstallTick, StorageKey_LastFreshlyOpenApp, StorageKey_LastInstalledVersion, StorageKey_PressUpdateObject } from "../App/Constants/StorageKey"
+import { StorageKey_FirstTimeInstallTick, StorageKey_LastFreshlyOpenApp, StorageKey_LastInstalledVersion, StorageKey_OpenAppOfDayCount, StorageKey_OpenAppTotalCount, StorageKey_PressUpdateObject } from "../App/Constants/StorageKey"
 import PostHog from "posthog-react-native"
 import { InitTrackingAsync } from "./Tracking"
 import { DateDiff_WithNow, GetDayHourMinSecFromMs_ToString, IsValuableArrayOrString } from "./UtilsTS"
@@ -101,14 +101,12 @@ export const GetAndSetInstalledDaysCountAsync = async () => {
     }
 }
 
-export const GetOpenAppCountTodaySoFarCountAsync = () => {
-    // const openTodaySoFar = await GetNumberIntAsync(StorageKey_OpenAppOfDayCount, 0)
-    return 0
+export const GetOpenAppCountTodaySoFarCountAsync = async () => {
+    return await GetNumberIntAsync(StorageKey_OpenAppOfDayCount, 0)
 }
 
-export const GetTotalOpenAppCountAsync = () => {
-    // const totalOpenAppCount = await GetNumberIntAsync(StorageKey_OpenAppTotalCount, 0)
-    return 0
+export const GetTotalOpenAppCountAsync = async () => {
+    return await GetNumberIntAsync(StorageKey_OpenAppTotalCount, 0)
 }
 
 
