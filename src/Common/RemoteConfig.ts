@@ -68,8 +68,9 @@ async function FetchRemoteConfigAsync(): Promise<boolean> {
 }
 
 /**
- * ### notice:
  * it can take a while (5s) if the config currently not available.
+ * 
+ * param priority: `forceFetchAndHandleAlerts` > `notFetchFrom2ndTime`
  */
 export async function GetRemoteConfigWithCheckFetchAsync(
     notFetchFrom2ndTime = true,
