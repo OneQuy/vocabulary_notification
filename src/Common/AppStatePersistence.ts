@@ -6,51 +6,91 @@
 //
 
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { GetDateAsync, GetNumberIntAsync, SetDateAsync_Now, SetNumberAsync } from "./AsyncStorageUtils"
+import { GetBooleanAsync, GetDateAsync, GetDateAsync_IsValueExistedAndIsToday, GetNumberIntAsync, SetBooleanAsync, SetDateAsync_Now, SetNumberAsync } from "./AsyncStorageUtils"
 import { VersionAsNumber } from "./CommonConstants"
-import { StorageKey_FirstTimeInstallTick, StorageKey_LastFreshlyOpenApp, StorageKey_LastInstalledVersion, StorageKey_OpenAppOfDayCount, StorageKey_OpenAppTotalCount, StorageKey_PressUpdateObject } from "../App/Constants/StorageKey"
+import { StorageKey_FirstTimeInstallTick, StorageKey_LastCheckFirstOpenOfTheDay, StorageKey_LastFreshlyOpenApp, StorageKey_LastInstalledVersion, StorageKey_OpenAppOfDayCount, StorageKey_OpenAppTotalCount, StorageKey_PressUpdateObject, StorageKey_TrackedNewlyInstall } from "../App/Constants/StorageKey"
 import PostHog from "posthog-react-native"
-import { InitTrackingAsync } from "./Tracking"
+import { InitTrackingAsync, TrackFirstOpenOfDayOldUserAsync, TrackOnNewlyInstallAsync, TrackOnUseEffectOnceEnterAppAsync, TrackSimpleWithParam } from "./Tracking"
 import { DateDiff_WithNow, GetDayHourMinSecFromMs_ToString, IsValuableArrayOrString } from "./UtilsTS"
+import { GetStreakAsync, SetStreakAsync } from "./Streak"
+import { ClearUserForcePremiumDataAsync, GetUserForcePremiumDataAsync } from "./UserMan"
+import { SubscribedData } from "./SpecificType"
+import { UserID } from "./UserID"
 
 var inited = false
+var isHandling_CheckAndTriggerFirstOpenAppOfTheDayAsync = false
+var isNewlyInstallFirstOpenOrAcitveState = false
+
+export const IsNewlyInstallFirstOpenOrAcitveState = () => isNewlyInstallFirstOpenOrAcitveState
 
 export const SetupAppStateAndStartTrackingAsync = async (posthog: PostHog): Promise<void> => {
     if (inited)
         return
 
-    if (!posthog)
-        return
-
     inited = true
 
     await InitTrackingAsync(posthog)
+
+    await OnUseEffectOnceEnterAppAsync()
 }
 
-// var isNewlyInstall: boolean = false
 
-// export const IsNewlyInstall = () => isNewlyInstall
+/**
+ * freshly open app (can multiple times per day)
+ */
+export const OnUseEffectOnceEnterAppAsync = async () => {
+    await TrackOnUseEffectOnceEnterAppAsync()
 
-// /**
-//  * on first useEffect of the app (freshly open) or first active state of the day
-//  * . ONLY track ONCE a day
-//  */
-// export const track_NewlyInstallOrFirstOpenOfTheDayOldUserAsync = async () => {
-//     // newly_install
+    await CheckFirstOpenAppOfTheDayAsync()
 
-//     const firstTimeInstallTick = await GetDateAsync(StorageKey_FirstTimeInstallTick)
+    onActiveOrOnceUseEffectAsync()
+}
 
-//     if (firstTimeInstallTick === undefined) {
-//         isNewlyInstall = true
-//         TrackOnNewlyInstallAsync()
-//     }
 
-//     // old user
+/**
+ * first open of the day
+ * (on first freshly open app or first active of the day)
+ */
+export const CheckFirstOpenAppOfTheDayAsync = async () => {
+    if (isHandling_CheckAndTriggerFirstOpenAppOfTheDayAsync) {
+        return
+    }
 
-//     else {
-//         TrackFirstOpenOfDayOldUserAsync
-//     }
-// }
+    isHandling_CheckAndTriggerFirstOpenAppOfTheDayAsync = true
+
+    const checkedToday = await GetDateAsync_IsValueExistedAndIsToday(StorageKey_LastCheckFirstOpenOfTheDay)
+
+    if (checkedToday) {
+        isHandling_CheckAndTriggerFirstOpenAppOfTheDayAsync = false
+        return
+    }
+
+    await SetDateAsync_Now(StorageKey_LastCheckFirstOpenOfTheDay)
+    isHandling_CheckAndTriggerFirstOpenAppOfTheDayAsync = false
+
+    //////////////////////////////////////
+    // HANDLES HERE: FIRST OPEN OF THE DAY 
+    //////////////////////////////////////
+
+    // newly_install
+
+    if (await GetBooleanAsync(StorageKey_TrackedNewlyInstall, false)) {
+        SetBooleanAsync(StorageKey_TrackedNewlyInstall, true)
+        isNewlyInstallFirstOpenOrAcitveState = true
+        await TrackOnNewlyInstallAsync()
+    }
+
+    // old_user
+
+    else {
+        await TrackFirstOpenOfDayOldUserAsync()
+
+        // CheckForcePremiumDataAsync
+
+        CheckForcePremiumDataAsync()
+    }
+
+}
 
 export const GetAndClearPressUpdateObjectAsync = async (): Promise<string | null> => {
     const objLastAlertText = await AsyncStorage.getItem(StorageKey_PressUpdateObject)
@@ -111,6 +151,33 @@ export const GetTotalOpenAppCountAsync = async () => {
 
 
 
+const CheckForcePremiumDataAsync = async (forceSetPremiumAsync: (setOrReset: SubscribedData | undefined) => Promise<void>) => {
+    const data = await GetUserForcePremiumDataAsync()
+
+    console.log('[CheckForcePremiumDataAsync] data', data);
+
+    if (!data)
+        return
+
+    await ClearUserForcePremiumDataAsync()
+
+    // reset
+
+    if (data.id === 'reset') {
+        await forceSetPremiumAsync(undefined)
+        TrackSimpleWithParam('forced_premium_reset', UserID())
+    }
+
+    // force set
+
+    else {
+        await forceSetPremiumAsync(data)
+        TrackSimpleWithParam('forced_premium_set', UserID() + '__' + data.id + '__' + data.purchasedTick)
+
+        // Alert.alert('Wohoo!', 'You granted: ' + data.id + '. Really thanks for your support!')
+    }
+}
+
 
 
 // const HowLongInMinutesToCount2TimesUseAppSeparately = 20
@@ -121,9 +188,6 @@ export const GetTotalOpenAppCountAsync = async () => {
 
 // var lastActiveTick = Date.now()
 
-// var isHandling_CheckAndTriggerFirstOpenAppOfTheDayAsync = false
-
-// var calledOnUseEffectOnceEnterApp = false
 
 // /** reload (app config + file version) if app re-active after a period 1 HOUR */
 // const checkAndReloadAppAsync = async () => {
@@ -261,67 +325,6 @@ export const GetTotalOpenAppCountAsync = async () => {
 //     }
 // }
 
-// /**
-//  * on freshly open app or first active of the day
-//  */
-// export const CheckAndTriggerFirstOpenAppOfTheDayAsync = async () => {
-//     if (isHandling_CheckAndTriggerFirstOpenAppOfTheDayAsync) {
-//         return
-//     }
-
-//     isHandling_CheckAndTriggerFirstOpenAppOfTheDayAsync = true
-
-//     const lastDateTrack = await GetDateAsync(StorageKey_LastTimeCheckFirstOpenAppOfTheDay)
-
-//     if (lastDateTrack !== undefined && IsToday(lastDateTrack)) {
-//         isHandling_CheckAndTriggerFirstOpenAppOfTheDayAsync = false
-//         return
-//     }
-
-//     await SetDateAsync_Now(StorageKey_LastTimeCheckFirstOpenAppOfTheDay)
-//     isHandling_CheckAndTriggerFirstOpenAppOfTheDayAsync = false
-
-//     // handles
-
-//     // console.log('---- handle first open app of the day ------');
-
-//     track_NewlyInstallOrFirstOpenOfTheDayOldUserAsync()
-
-//     // track location
-
-//     checkAndTrackLocation()
-
-//     // gooday streak
-
-//     HandleGoodayStreakAsync()
-
-//     // track day of week
-
-//     track_SimpleWithParam('gooday_week', DayName(undefined, true))
-
-//     // CheckForcePremiumDataAsync
-
-//     CheckForcePremiumDataAsync()
-// }
-
-// /**
-//  * freshly open app
-//  */
-// export const OnUseEffectOnceEnterApp = () => {
-//     if (calledOnUseEffectOnceEnterApp) {
-//         return
-//     }
-
-//     calledOnUseEffectOnceEnterApp = true
-
-//     track_OnUseEffectOnceEnterAppAsync(startFreshlyOpenAppTick)
-
-//     CheckAndTriggerFirstOpenAppOfTheDayAsync()
-//     CheckAndPrepareDataForNotificationAsync()
-//     onActiveOrOnceUseEffectAsync()
-//     SetupOneSignal()
-// }
-
 // export const RegisterGoodayAppState = (isRegister: boolean) => {
 //     if (isRegister)
 //         RegisterOnChangedState(onStateChanged)
@@ -382,67 +385,4 @@ export const GetTotalOpenAppCountAsync = async () => {
 //         `${LocalText.whats_new} v${versionAsNumber}:\n\n ${s}`)
 
 //     track_SimpleWithParam('show_whats_new', versionsToTrack)
-// }
-
-// export const HandleGoodayStreakAsync = async (forceShow = false) => {
-//     const id = 'gooday'
-
-//     const handled = await SetStreakAsync(id)
-
-//     if (!handled && !forceShow) // already showed
-//         return
-
-//     const data = await GetStreakAsync(id)
-
-//     if (!data)
-//         return
-
-//     const streakLastTime = await GetNumberIntAsync(StorageKey_StreakLastTime)
-
-//     if (data.currentStreak === streakLastTime && !forceShow)
-//         return
-
-//     SetNumberAsync(StorageKey_StreakLastTime, data.currentStreak)
-
-//     if (data.currentStreak > 1)
-//         GoodayToast(LocalText.gooday_streak_2.replaceAll('##', data.currentStreak.toString()))
-//     else if (data.bestStreak > 1)
-//         GoodayToast(Math.random() > 0.5 ? LocalText.gooday_streak_1_welcome : LocalText.gooday_streak_1)
-//     else
-//         GoodayToast(LocalText.gooday_streak_1)
-
-//     // track
-
-//     if (!forceShow)
-//         track_Streak(data.currentStreak, data.bestStreak)
-// }
-
-// const CheckForcePremiumDataAsync = async () => {
-//     if (!appDispatch)
-//         return
-
-//     const data = await GetUserForcePremiumDataAsync()
-
-//     console.log('[CheckForcePremiumDataAsync] data', data);
-
-//     if (!data)
-//         return
-
-//     if (data.id === 'reset') {
-//         appDispatch(resetSubscribe())
-//         track_SimpleWithParam('forced_subscribe', UserID() + '__reset')
-//     }
-//     else {
-//         appDispatch(setForceSubscribe([
-//             data.id,
-//             data.tick
-//         ]))
-
-//         track_SimpleWithParam('forced_subscribe', UserID() + '__' + data.id + '__' + data.tick)
-
-//         Alert.alert('Wohoo!', 'You granted: ' + data.id + '. Really thanks for your support!')
-//     }
-
-//     await ClearUserForcePremiumDataAsync()
-
 // }
