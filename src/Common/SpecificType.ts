@@ -66,3 +66,18 @@ type LatestVersionConfig = {
 export type SplashScreenLoaderResult = {
     someVariable?: number,
 }
+
+
+export type SubscribedData = {
+    id: string,
+    purchasedTick: number
+}
+
+
+export const UserForcePremiumDataProperty = 'forcePremiumData'
+
+export type User = {
+    // common
+
+    [UserForcePremiumDataProperty]: SubscribedData,
+}
