@@ -423,13 +423,12 @@ export const TrackOnNewlyInstallAsync = async () => {
     TrackSimpleWithParam('platform', Platform.OS.toString())
 }
 
+/**
+ * first_open_of_day_old_user
+ */
 export const TrackFirstOpenOfDayOldUserAsync = async () => {
-    //////////////////////
-    // first_open_of_day_old_user
-    //////////////////////
+    const event = 'first_open_of_day_old_user'
 
-    let event = 'first_open_of_day_old_user'
-    
     const [
         totalOpenCount,
         installedDaysCount,
