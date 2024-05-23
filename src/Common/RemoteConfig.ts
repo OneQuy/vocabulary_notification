@@ -73,7 +73,7 @@ async function FetchRemoteConfigAsync(): Promise<boolean> {
  * 
  * param priority: `forceFetchAndHandleAlerts` > `notFetchFrom2ndTime`
  * 
- * ### NOTE: if `forceFetchAndHandleAlerts` = true and fetch failed always return `undefined` (even remoteConfig available before)
+ * ##### NOTE: if fetch failed it can even return NOT `undefined` when remoteConfig fetched success before
  */
 export async function GetRemoteConfigWithCheckFetchAsync(
     notFetchFrom2ndTime = true,
@@ -104,11 +104,7 @@ export async function GetRemoteConfigWithCheckFetchAsync(
 
     // return
 
-    if (forceFetchAndHandleAlerts) {
-        return success ? remoteConfig : undefined
-    }
-    else
-        return remoteConfig
+    return remoteConfig
 }
 
 /**
