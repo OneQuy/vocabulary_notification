@@ -38,7 +38,6 @@ var setupParamsInternal: SetupAppStateAndStartTrackingParams | undefined = undef
 
 export const IsNewlyInstallThisOpen = () => isNewlyInstallThisOpen
 
-
 /**
  * MAIN
  * freshly open app (can multiple times per day, but once per app open)
@@ -59,6 +58,7 @@ export const SetupAppStateAndStartTrackingAsync = async (setupParams: SetupAppSt
     await InitTrackingAsync(setupParams.posthog)
 
     // track use effect once
+    // tracks: freshly_open_app, last_freshly_open, updated_app
 
     const lastInstalledVersion = await TrackOnUseEffectOnceEnterAppAsync()
 
@@ -67,16 +67,32 @@ export const SetupAppStateAndStartTrackingAsync = async (setupParams: SetupAppSt
     await CheckShowAlertWhatsNewAsync(lastInstalledVersion)
 
     // active or use effect once
-    
+    // tracks: 
+    //      + newly_install, first open of the day
+    //      + open of day count, total open count, track current time (hour)
+    // force premium
+
     await OnActiveOrUseEffectOnceAsync(setupParams)
 }
 
+const OnActiveAsync = async (setupParams: SetupAppStateAndStartTrackingParams) => {
+    // check to show warning alert
+
+    CheckReloadRemoteConfigAsync()
+
+    // onActive or OnceUseEffect
+
+    OnActiveOrUseEffectOnceAsync(setupParams)
+}
+
+const OnBackgroundAsync = async () => {
+}
 
 /**
  * first open of the day
  * (on first freshly open app OR first active of the day)
  */
-export const CheckFirstOpenAppOfTheDayAsync = async (setupParams: SetupAppStateAndStartTrackingParams) => {
+const CheckFirstOpenAppOfTheDayAsync = async (setupParams: SetupAppStateAndStartTrackingParams) => {
     if (isHandling_CheckAndTriggerFirstOpenAppOfTheDayAsync) {
         return
     }
@@ -304,20 +320,7 @@ const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async () => {
     }
 }
 
-const OnActiveAsync = async (setupParams: SetupAppStateAndStartTrackingParams) => {
-    // check to show warning alert
-
-    CheckReloadRemoteConfigAsync()
-
-    // onActive or OnceUseEffect
-
-    OnActiveOrUseEffectOnceAsync(setupParams)
-}
-
-const OnBackgroundAsync = async () => {
-}
-
-export const CheckShowAlertWhatsNewAsync = async (fromVer: number) => {
+const CheckShowAlertWhatsNewAsync = async (fromVer: number) => {
     if (!Number.isNaN(fromVer))
         await SetNumberAsync(StorageKey_NeedToShowWhatsNewFromVer, fromVer)
     else
