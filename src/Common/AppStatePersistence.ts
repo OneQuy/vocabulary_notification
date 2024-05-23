@@ -50,15 +50,25 @@ export const SetupAppStateAndStartTrackingAsync = async (setupParams: SetupAppSt
     inited = true
     setupParamsInternal = setupParams
 
+    // init app state
+
     RegisterOnChangedState(OnStateChanged)
+
+    // init tracking
 
     await InitTrackingAsync(setupParams.posthog)
 
+    // track use effect once
+
     const lastInstalledVersion = await TrackOnUseEffectOnceEnterAppAsync()
+
+    // what's new
 
     await CheckShowAlertWhatsNewAsync(lastInstalledVersion)
 
-    await OnActiveOrOnceUseEffectAsync(setupParams)
+    // active or use effect once
+    
+    await OnActiveOrUseEffectOnceAsync(setupParams)
 }
 
 
@@ -229,7 +239,7 @@ const CheckReloadRemoteConfigAsync = async () => {
  * 1. whenever freshly open app
  * 2. whenever onAppActive
  */
-const OnActiveOrOnceUseEffectAsync = async (setupParams: SetupAppStateAndStartTrackingParams) => {
+const OnActiveOrUseEffectOnceAsync = async (setupParams: SetupAppStateAndStartTrackingParams) => {
     // first Open App Of The Day
 
     await CheckFirstOpenAppOfTheDayAsync(setupParams)
@@ -301,7 +311,7 @@ const OnActiveAsync = async (setupParams: SetupAppStateAndStartTrackingParams) =
 
     // onActive or OnceUseEffect
 
-    OnActiveOrOnceUseEffectAsync(setupParams)
+    OnActiveOrUseEffectOnceAsync(setupParams)
 }
 
 const OnBackgroundAsync = async () => {
