@@ -9,16 +9,17 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { GetBooleanAsync, GetDateAsync, GetDateAsync_IsValueExistedAndIsToday, GetNumberIntAsync, GetPairNumberIntAndDateAsync, IncreaseNumberAsync, SetBooleanAsync, SetDateAsync_Now, SetNumberAsync, SetPairNumberIntAndDateAsync_Now } from "./AsyncStorageUtils"
 import { VersionAsNumber } from "./CommonConstants"
-import { StorageKey_FirstTimeInstallTick, StorageKey_LastCheckFirstOpenOfTheDay, StorageKey_LastFreshlyOpenApp, StorageKey_LastInstalledVersion, StorageKey_OpenAppOfDayCount, StorageKey_OpenAppOfDayCountForDate, StorageKey_OpenAppTotalCount, StorageKey_OpenAt, StorageKey_PressUpdateObject, StorageKey_TrackedNewlyInstall } from "../App/Constants/StorageKey"
+import { StorageKey_FirstTimeInstallTick, StorageKey_LastCheckFirstOpenOfTheDay, StorageKey_LastFreshlyOpenApp, StorageKey_LastInstalledVersion, StorageKey_NeedToShowWhatsNewFromVer, StorageKey_OpenAppOfDayCount, StorageKey_OpenAppOfDayCountForDate, StorageKey_OpenAppTotalCount, StorageKey_OpenAt, StorageKey_PressUpdateObject, StorageKey_TrackedNewlyInstall } from "../App/Constants/StorageKey"
 import PostHog from "posthog-react-native"
 import { InitTrackingAsync, TrackFirstOpenOfDayOldUserAsync, TrackOnNewlyInstallAsync, TrackOnUseEffectOnceEnterAppAsync, TrackOpenOfDayCount, TrackSimpleWithParam } from "./Tracking"
-import { DateDiff_InHour_WithNow, DateDiff_WithNow, GetDayHourMinSecFromMs_ToString, IsToday, IsValuableArrayOrString } from "./UtilsTS"
+import { AlertAsync, DateDiff_InHour_WithNow, DateDiff_WithNow, GetDayHourMinSecFromMs_ToString, IsToday, IsValuableArrayOrString } from "./UtilsTS"
 import { ClearUserForcePremiumDataAsync, GetUserForcePremiumDataAsync } from "./UserMan"
 import { SubscribedData } from "./SpecificType"
 import { UserID } from "./UserID"
-import { AppStateStatus } from "react-native"
+import { Alert, AppStateStatus } from "react-native"
 import { RegisterOnChangedState } from "./AppStateMan"
 import { GetLastTimeFetchedSuccessAndHandledAlerts, GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig"
+import { FirebaseDatabaseTimeOutMs, FirebaseDatabase_GetValueAsyncWithTimeOut } from "./Firebase/FirebaseDatabase"
 
 type SetupAppStateAndStartTrackingParams = {
     posthog: PostHog,
@@ -53,7 +54,9 @@ export const SetupAppStateAndStartTrackingAsync = async (setupParams: SetupAppSt
 
     await InitTrackingAsync(setupParams.posthog)
 
-    await TrackOnUseEffectOnceEnterAppAsync()
+    const lastInstalledVersion = await TrackOnUseEffectOnceEnterAppAsync()
+
+    await CheckShowAlertWhatsNewAsync(lastInstalledVersion)
 
     await OnActiveOrOnceUseEffectAsync(setupParams)
 }
@@ -61,7 +64,7 @@ export const SetupAppStateAndStartTrackingAsync = async (setupParams: SetupAppSt
 
 /**
  * first open of the day
- * (on first freshly open app or first active of the day)
+ * (on first freshly open app OR first active of the day)
  */
 export const CheckFirstOpenAppOfTheDayAsync = async (setupParams: SetupAppStateAndStartTrackingParams) => {
     if (isHandling_CheckAndTriggerFirstOpenAppOfTheDayAsync) {
@@ -304,57 +307,58 @@ const OnActiveAsync = async (setupParams: SetupAppStateAndStartTrackingParams) =
 const OnBackgroundAsync = async () => {
 }
 
-// export const CheckAndShowAlertWhatsNewAsync = async (fromVer: number) => {
-//     if (!Number.isNaN(fromVer))
-//         await SetNumberAsync(StorageKey_NeedToShowWhatsNewFromVer, fromVer)
-//     else
-//         fromVer = await GetNumberIntAsync(StorageKey_NeedToShowWhatsNewFromVer)
+export const CheckShowAlertWhatsNewAsync = async (fromVer: number) => {
+    if (!Number.isNaN(fromVer))
+        await SetNumberAsync(StorageKey_NeedToShowWhatsNewFromVer, fromVer)
+    else
+        fromVer = await GetNumberIntAsync(StorageKey_NeedToShowWhatsNewFromVer)
 
-//     if (Number.isNaN(fromVer))
-//         return
+    if (Number.isNaN(fromVer))
+        return
 
-//     const configFromFb = await FirebaseDatabase_GetValueAsyncWithTimeOut('app/whats_new', FirebaseDatabaseTimeOutMs)
+    const configFromFb = await FirebaseDatabase_GetValueAsyncWithTimeOut('app/whats_new', FirebaseDatabaseTimeOutMs)
 
-//     if (!configFromFb.value)
-//         return
+    if (!configFromFb.value)
+        return
 
-//     const entries = Object.entries(configFromFb.value)
-//     let s = ''
-//     let versionsToTrack = ''
+    const entries = Object.entries(configFromFb.value)
+    let s = ''
+    let versionsToTrack = ''
 
-//     for (let i = 0; i < entries.length; i++) {
-//         var key = entries[i][0]
+    for (let i = 0; i < entries.length; i++) {
+        var key = entries[i][0]
 
-//         if (!key.startsWith('v') || key.length < 4)
-//             continue
+        if (!key.startsWith('v') || key.length < 4)
+            continue
 
-//         const configVerNum = Number.parseInt(key.substring(1))
+        const configVerNum = Number.parseInt(key.substring(1))
 
-//         if (Number.isNaN(configVerNum))
-//             continue
+        if (Number.isNaN(configVerNum))
+            continue
 
-//         if (configVerNum <= fromVer || configVerNum > versionAsNumber)
-//             continue
+        if (configVerNum <= fromVer || configVerNum > VersionAsNumber)
+            continue
 
-//         versionsToTrack += ('v' + configVerNum)
+        versionsToTrack += ('v' + configVerNum)
 
-//         if (s === '')
-//             s = entries[i][1] as string
-//         else
-//             s += '\n' + entries[i][1]
-//     }
+        if (s === '')
+            s = entries[i][1] as string
+        else
+            s += '\n' + entries[i][1]
+    }
 
-//     AsyncStorage.removeItem(StorageKey_NeedToShowWhatsNewFromVer)
+    AsyncStorage.removeItem(StorageKey_NeedToShowWhatsNewFromVer)
 
-//     if (s === '') {
-//         return
-//     }
+    if (s === '') {
+        return
+    }
 
-//     s = s.replaceAll('@', '\n')
+    s = s.replaceAll('@', '\n')
 
-//     Alert.alert(
-//         LocalText.update_updated,
-//         `${LocalText.whats_new} v${versionAsNumber}:\n\n ${s}`)
+    TrackSimpleWithParam('show_whats_new', versionsToTrack)
 
-//     track_SimpleWithParam('show_whats_new', versionsToTrack)
-// }
+    await AlertAsync(
+        "Thank you for updating!",
+        `What's new in version v${VersionAsNumber}:\n\n${s}`
+    ) // alert_priority_whats_new (doc)
+}

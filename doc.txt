@@ -1,6 +1,7 @@
 alert_priority:
 
 1. await HandleAlertUpdateAppAsync(remoteConfig) // alert_priority_1 (doc)
+2. // alert_priority_whats_new (doc)
 
-alert not priority:
+alert not priority (after alerts above):
 + Alert.alert('Wohoo!', texts.purchase_success) // alert whenever purchase success or FORCE SET PREMIUM AFTER SPLASH-SCREEN
