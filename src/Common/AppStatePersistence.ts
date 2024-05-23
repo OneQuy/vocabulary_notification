@@ -20,6 +20,7 @@ import { GetLastTimeFetchedSuccessAndHandledAlerts, GetRemoteConfigWithCheckFetc
 
 type SetupAppStateAndStartTrackingParams = {
     posthog: PostHog,
+    subscribedData: SubscribedData | undefined,
     forceSetPremiumAsync: (setOrReset: SubscribedData | undefined) => Promise<void>,
 }
 

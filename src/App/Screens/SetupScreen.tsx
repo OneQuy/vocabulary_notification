@@ -16,8 +16,8 @@ import { ClearDbAndNotificationsAsync } from '../Handles/AppUtils'
 import { SetupNotificationAsync, TestNotificationAsync } from '../Handles/SetupNotification'
 import { GetDefaultTranslationService, GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, GetTranslationServiceAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetNumDaysToPushAsync, SetPopularityLevelIndexAsync, SetTranslationServiceAsync, SetTargetLangAsyncAsync, GetSourceLangAsync } from '../Handles/Settings'
 import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync, IsCachedWordsDataCurrentLevelAsync } from '../Handles/WordsData'
-import { GetBooleanAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
-import { StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from '../Constants/StorageKey'
+import { GetBooleanAsync, GetObjectAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
+import { StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord, StorageKey_SubscribeData } from '../Constants/StorageKey'
 import HistoryScreen from './HistoryScreen'
 import { HandleError } from '../../Common/Tracking'
 import { GetLanguageFromCode, Language } from '../../Common/TranslationApis/TranslationLanguages'
@@ -29,6 +29,8 @@ import SettingItemPanel, { SettingItemPanelStyle } from '../Components/SettingIt
 import About from './About'
 import { usePostHog } from 'posthog-react-native'
 import { SetupAppStateAndStartTrackingAsync } from '../../Common/AppStatePersistence'
+import { AppContextType, SubscribedData } from '../../Common/SpecificType'
+import { AppContext } from '../../Common/SpecificConstants'
 
 const IsLog = true
 
@@ -55,7 +57,7 @@ export type HandlingType =
 
 const SetupScreen = () => {
   const posthog = usePostHog()
-
+  const [appContextValue, set_appContextValue] = useState<AppContextType>({})
   const texts = useLocalText()
 
   const [handlingType, set_handlingType] = useState<HandlingType>(undefined)
@@ -153,6 +155,10 @@ const SetupScreen = () => {
         padding: Outline.Normal,
       },
     })
+  }, [])
+
+  const onSetSubcribeDataAsync = useCallback(async (subscribedData: SubscribedData | undefined): Promise<void> => {
+
   }, [])
 
   const onPressSubview = useCallback((type: SubView) => {
@@ -857,13 +863,27 @@ const SetupScreen = () => {
     }
   }
 
-  // SetupAppStateAndStartTrackingAsync
+  // SetupAppStateAndStartTrackingAsync (make sure this called once per open)
 
   useEffect(() => {
-    SetupAppStateAndStartTrackingAsync({
-      posthog,
-      forceSetPremiumAsync: async () => { },
-    })
+    (async () => {
+      // load subcribe data
+
+      const subscribedDataOrUndefined = await GetObjectAsync<SubscribedData>(StorageKey_SubscribeData)
+
+      set_appContextValue({
+        ...appContextValue,
+        subscribedData: subscribedDataOrUndefined,
+      })
+
+      // setup & tracking
+
+      await SetupAppStateAndStartTrackingAsync({
+        posthog,
+        subscribedData: subscribedDataOrUndefined,
+        forceSetPremiumAsync: onSetSubcribeDataAsync,
+      })
+    })()
   }, [])
 
   // load setting
@@ -911,370 +931,372 @@ const SetupScreen = () => {
   // render
 
   return (
-    <View style={style.master}>
-      {/* topbar */}
-      <View style={style.topbarView}>
-        <LucideIconTextEffectButton
-          unselectedColorOfTextAndIcon={Color_Text2}
-          selectedColorOfTextAndIcon={Color_Text}
-          selectedBackgroundColor={Color_BG}
-
-          style={style.topbarBtn}
-
-          title={texts.history}
-          titleProps={{ style: style.normalBtnTxt }}
-
-          manuallySelected={subView === 'history'}
-          onPress={() => onPressSubview('history')}
-        />
-        <LucideIconTextEffectButton
-          unselectedColorOfTextAndIcon={Color_Text2}
-          selectedColorOfTextAndIcon={Color_Text}
-          selectedBackgroundColor={Color_BG}
-
-          style={style.topbarBtn}
-
-          title={texts.setup}
-          titleProps={{ style: style.normalBtnTxt }}
-
-          manuallySelected={subView === 'setup'}
-          onPress={() => onPressSubview('setup')}
-        />
-        <LucideIconTextEffectButton
-          unselectedColorOfTextAndIcon={Color_Text2}
-          selectedColorOfTextAndIcon={Color_Text}
-          selectedBackgroundColor={Color_BG}
-
-          style={style.topbarBtn}
-
-          title={texts.about}
-          titleProps={{ style: style.normalBtnTxt }}
-
-          manuallySelected={subView === 'about'}
-          onPress={() => onPressSubview('about')}
-        />
-      </View>
-
-      {
-        subView === 'setup' &&
-        <ScrollView contentContainerStyle={style.scrollView} showsVerticalScrollIndicator={false}>
-          {/* popularity_level */}
-
-          <SettingItemPanel
-            onPress={() => onPressShowPopup('popularity')}
-            title={texts.popularity_level}
-            explain={texts.popularity_level_explain}
-            value={displayPopularityLevelIdx + 1}
-            unit={texts.level}
-          />
-
-          {/* repeat */}
-
-          <SettingItemPanel
-            onPress={() => onPressShowPopup('interval')}
-            title={texts.repeat}
-            explain={texts.repeat_explain}
-            value={repeatValueAndDisplayText.value}
-            unit={repeatValueAndDisplayText.text}
-          />
-
-          {/* exclude time */}
-
-          <View style={SettingItemPanelStyle.master_Column}>
-            {/* title */}
-            <View style={style.excludeTimeTitleView}>
-              <Text style={SettingItemPanelStyle.titleTxt}>{texts.not_show}</Text>
-
-              {/* add exclude time btn */}
-              <LucideIconTextEffectButton
-                unselectedColorOfTextAndIcon={Color_Text}
-                notChangeToSelected
-
-                iconProps={{ name: 'Plus', size: FontSize.Normal }}
-
-                onPress={onPressAddExcludeTime}
-              />
-            </View>
-
-            {/* explain */}
-            <Text style={SettingItemPanelStyle.explainTxt}>{texts.not_show_explain}</Text>
-
-            {/* list */}
-            {
-              renderExcludeTimes()
-            }
-          </View>
-
-          {/* target lang */}
-
-          <SettingItemPanel
-            onPress={() => onPressShowPopup('target-lang')}
-            title={texts.translate_to}
-            explain={texts.translate_language_explain}
-            value={displayTargetLang?.name ?? '?'}
-            isLong
-          />
-
-          {/* more setting */}
-
+    <AppContext.Provider value={appContextValue} >
+      <View style={style.master}>
+        {/* topbar */}
+        <View style={style.topbarView}>
           <LucideIconTextEffectButton
-            unselectedColorOfTextAndIcon={Color_Text}
-            notChangeToSelected
-            style={style.moreSettingBtn}
+            unselectedColorOfTextAndIcon={Color_Text2}
+            selectedColorOfTextAndIcon={Color_Text}
+            selectedBackgroundColor={Color_BG}
 
-            title={texts.more_setting}
+            style={style.topbarBtn}
 
+            title={texts.history}
             titleProps={{ style: style.normalBtnTxt }}
 
-            iconProps={{ name: showMoreSetting ? 'ChevronUp' : 'ChevronDown', size: FontSize.Normal, }}
-
-            onPress={onPressMoreSetting}
+            manuallySelected={subView === 'history'}
+            onPress={() => onPressSubview('history')}
           />
-
-          {/* limit words */}
-
-          {
-            showMoreSetting &&
-            <SettingItemPanel
-              onPress={() => onPressShowPopup('limit-word')}
-              title={texts.limit_words_per_day}
-              explain={texts.limit_words_per_day_explain}
-              value={displayWordLimitNumber === 0 ? texts.no_limit : displayWordLimitNumber}
-              unit={AddS(texts.word, displayWordLimitNumber)}
-            />
-          }
-
-          {/* translate service */}
-
-          {
-            showMoreSetting &&
-            <SettingItemPanel
-              onPress={onPressOpenPopupChangeTranslationService}
-              title={texts.translation_service}
-              explain={texts.services_explain}
-              value={displayTranslationService.split(' ')[0]}
-              isLong
-            />
-          }
-
-          {/* num days to push */}
-
-          {
-            showMoreSetting &&
-            <SettingItemPanel
-              onPress={() => onPressShowPopup('num_days_push')}
-              title={texts.num_days_to_push}
-              explain={texts.num_days_to_push_explain}
-              value={displayNumDaysToPush}
-              unit={AddS(texts.day, displayNumDaysToPush)}
-            />
-          }
-
-          {/* display of noti */}
-
-          {
-            showMoreSetting &&
-            <View style={SettingItemPanelStyle.master_Column}>
-              {/* title */}
-              <Text style={SettingItemPanelStyle.titleTxt}>{texts.noti_display}</Text>
-
-              {/* explain */}
-              <Text style={SettingItemPanelStyle.explainTxt}>
-                {texts.noti_display_explain.replace('##', texts.test_notification)}
-              </Text>
-
-              {/* display of noti - phonetic */}
-
-              {
-                renderDisplaySettingItem(
-                  texts.show_phonetic,
-                  displaySettting_ShowPhonetic,
-                  set_displaySettting_ShowPhonetic,
-                  StorageKey_ShowPhonetic
-                )
-              }
-
-              {/* display of noti - part of speech */}
-
-              {
-                renderDisplaySettingItem(
-                  texts.show_part_of_speech,
-                  displaySettting_ShowPartOfSpeech,
-                  set_displaySettting_ShowPartOfSpeech,
-                  StorageKey_ShowPartOfSpeech
-                )
-              }
-
-              {/* display of noti - example */}
-
-              {
-                renderDisplaySettingItem(
-                  texts.show_examble,
-                  displaySettting_Example,
-                  set_displaySettting_Example,
-                  StorageKey_ShowExample
-                )
-              }
-
-              {/* display of noti - definitions */}
-
-              {
-                renderDisplaySettingItem(
-                  texts.show_definitions,
-                  displaySettting_Definitions,
-                  set_displaySettting_Definitions,
-                  StorageKey_ShowDefinitions
-                )
-              }
-
-              {/* display of noti - rank */}
-
-              {
-                renderDisplaySettingItem(
-                  texts.show_rank_of_word,
-                  displaySettting_RankOfWord,
-                  set_displaySettting_RankOfWord,
-                  StorageKey_ShowRankOfWord
-                )
-              }
-            </View>
-          }
-        </ScrollView>
-      }
-
-      {/* set notification & test btn */}
-
-      {
-        subView === 'setup' &&
-        <View style={style.bottomButtonsView}>
           <LucideIconTextEffectButton
-            unselectedColorOfTextAndIcon={Color_Text}
+            unselectedColorOfTextAndIcon={Color_Text2}
+            selectedColorOfTextAndIcon={Color_Text}
+            selectedBackgroundColor={Color_BG}
 
-            notChangeToSelected
-            style={style.normalBtn}
+            style={style.topbarBtn}
 
-            title={texts.test_notification}
+            title={texts.setup}
             titleProps={{ style: style.normalBtnTxt }}
 
-            onPress={onPressTestNotificationAsync}
+            manuallySelected={subView === 'setup'}
+            onPress={() => onPressSubview('setup')}
           />
-
           <LucideIconTextEffectButton
-            selectedBackgroundColor={Color_Text}
+            unselectedColorOfTextAndIcon={Color_Text2}
+            selectedColorOfTextAndIcon={Color_Text}
+            selectedBackgroundColor={Color_BG}
 
-            selectedColorOfTextAndIcon={Color_BG}
-            unselectedColorOfTextAndIcon={Color_Text}
+            style={style.topbarBtn}
 
-            notChangeToSelected
-            manuallySelected={true}
-            canHandlePressWhenSelected
-
-            style={style.normalBtn}
-
-            title={texts.set_notification}
+            title={texts.about}
             titleProps={{ style: style.normalBtnTxt }}
 
-            onPress={onPressSetNotification}
+            manuallySelected={subView === 'about'}
+            onPress={() => onPressSubview('about')}
           />
         </View>
-      }
 
-      {
-        subView === 'history' &&
-        <HistoryScreen
-          setHandling={set_handlingType}
-        />
-      }
+        {
+          subView === 'setup' &&
+          <ScrollView contentContainerStyle={style.scrollView} showsVerticalScrollIndicator={false}>
+            {/* popularity_level */}
 
-      {
-        subView === 'about' &&
-        <About
-        />
-      }
+            <SettingItemPanel
+              onPress={() => onPressShowPopup('popularity')}
+              title={texts.popularity_level}
+              explain={texts.popularity_level_explain}
+              value={displayPopularityLevelIdx + 1}
+              unit={texts.level}
+            />
 
-      {/* popup */}
-      {
-        contentToRenderInPopup &&
-        <SlidingPopup
-          backgroundColor={Color_Text}
-          blurBackgroundColorInHex={Color_BG}
-          handleColor={Color_BG}
-          child={contentToRenderInPopup()}
-          onFinishedHide={() => set_showPopup(undefined)}
-          childMaxHeight={'70%'}
-          setCloseCallbackRef={popupCloseCallbackRef}
-        />
-      }
+            {/* repeat */}
 
-      {/* time picker */}
-      {
-        showTimePicker &&
-        <TimePicker
-          setIsVisible={set_showTimePicker}
-          onConfirm={onConfirmTimePicker}
-          initialHour={timePickerInitial[1]}
-          initialMinute={timePickerInitial[2]}
-        />
-      }
+            <SettingItemPanel
+              onPress={() => onPressShowPopup('interval')}
+              title={texts.repeat}
+              explain={texts.repeat_explain}
+              value={repeatValueAndDisplayText.value}
+              unit={repeatValueAndDisplayText.text}
+            />
 
-      {/* handling */}
-      {
-        handlingType &&
-        <View style={style.downloadingView}>
-          {/* indicator */}
-          {
-            handlingType !== 'done' &&
-            <ActivityIndicator color={Color_Text} />
-          }
+            {/* exclude time */}
 
-          {/* handling text */}
-          {
-            handlingType !== 'done' && handlingType !== 'setting_notification' &&
-            <Text style={style.downloadingTxt}>{handlingType === 'downloading' ?
-              texts.downloading_data :
-              texts.loading_data
-            }...</Text>
-          }
+            <View style={SettingItemPanelStyle.master_Column}>
+              {/* title */}
+              <View style={style.excludeTimeTitleView}>
+                <Text style={SettingItemPanelStyle.titleTxt}>{texts.not_show}</Text>
 
-          {/* set noti text */}
-          {
-            handlingType === 'setting_notification' &&
-            <Text style={style.downloadingTxt}>{texts.setting_notification}...</Text>
-          }
+                {/* add exclude time btn */}
+                <LucideIconTextEffectButton
+                  unselectedColorOfTextAndIcon={Color_Text}
+                  notChangeToSelected
 
-          {/* icon done */}
-          {
-            handlingType === 'done' &&
-            <LucideIcon name='Check' size={FontSize.Normal} color={Color_Text} />
-          }
+                  iconProps={{ name: 'Plus', size: FontSize.Normal }}
 
-          {/* done text */}
-          {
-            handlingType === 'done' &&
-            <Text style={style.downloadingTxt}>{texts.done}!</Text>
-          }
+                  onPress={onPressAddExcludeTime}
+                />
+              </View>
 
-          {/* back btn */}
-          {
-            handlingType === 'done' &&
+              {/* explain */}
+              <Text style={SettingItemPanelStyle.explainTxt}>{texts.not_show_explain}</Text>
+
+              {/* list */}
+              {
+                renderExcludeTimes()
+              }
+            </View>
+
+            {/* target lang */}
+
+            <SettingItemPanel
+              onPress={() => onPressShowPopup('target-lang')}
+              title={texts.translate_to}
+              explain={texts.translate_language_explain}
+              value={displayTargetLang?.name ?? '?'}
+              isLong
+            />
+
+            {/* more setting */}
+
+            <LucideIconTextEffectButton
+              unselectedColorOfTextAndIcon={Color_Text}
+              notChangeToSelected
+              style={style.moreSettingBtn}
+
+              title={texts.more_setting}
+
+              titleProps={{ style: style.normalBtnTxt }}
+
+              iconProps={{ name: showMoreSetting ? 'ChevronUp' : 'ChevronDown', size: FontSize.Normal, }}
+
+              onPress={onPressMoreSetting}
+            />
+
+            {/* limit words */}
+
+            {
+              showMoreSetting &&
+              <SettingItemPanel
+                onPress={() => onPressShowPopup('limit-word')}
+                title={texts.limit_words_per_day}
+                explain={texts.limit_words_per_day_explain}
+                value={displayWordLimitNumber === 0 ? texts.no_limit : displayWordLimitNumber}
+                unit={AddS(texts.word, displayWordLimitNumber)}
+              />
+            }
+
+            {/* translate service */}
+
+            {
+              showMoreSetting &&
+              <SettingItemPanel
+                onPress={onPressOpenPopupChangeTranslationService}
+                title={texts.translation_service}
+                explain={texts.services_explain}
+                value={displayTranslationService.split(' ')[0]}
+                isLong
+              />
+            }
+
+            {/* num days to push */}
+
+            {
+              showMoreSetting &&
+              <SettingItemPanel
+                onPress={() => onPressShowPopup('num_days_push')}
+                title={texts.num_days_to_push}
+                explain={texts.num_days_to_push_explain}
+                value={displayNumDaysToPush}
+                unit={AddS(texts.day, displayNumDaysToPush)}
+              />
+            }
+
+            {/* display of noti */}
+
+            {
+              showMoreSetting &&
+              <View style={SettingItemPanelStyle.master_Column}>
+                {/* title */}
+                <Text style={SettingItemPanelStyle.titleTxt}>{texts.noti_display}</Text>
+
+                {/* explain */}
+                <Text style={SettingItemPanelStyle.explainTxt}>
+                  {texts.noti_display_explain.replace('##', texts.test_notification)}
+                </Text>
+
+                {/* display of noti - phonetic */}
+
+                {
+                  renderDisplaySettingItem(
+                    texts.show_phonetic,
+                    displaySettting_ShowPhonetic,
+                    set_displaySettting_ShowPhonetic,
+                    StorageKey_ShowPhonetic
+                  )
+                }
+
+                {/* display of noti - part of speech */}
+
+                {
+                  renderDisplaySettingItem(
+                    texts.show_part_of_speech,
+                    displaySettting_ShowPartOfSpeech,
+                    set_displaySettting_ShowPartOfSpeech,
+                    StorageKey_ShowPartOfSpeech
+                  )
+                }
+
+                {/* display of noti - example */}
+
+                {
+                  renderDisplaySettingItem(
+                    texts.show_examble,
+                    displaySettting_Example,
+                    set_displaySettting_Example,
+                    StorageKey_ShowExample
+                  )
+                }
+
+                {/* display of noti - definitions */}
+
+                {
+                  renderDisplaySettingItem(
+                    texts.show_definitions,
+                    displaySettting_Definitions,
+                    set_displaySettting_Definitions,
+                    StorageKey_ShowDefinitions
+                  )
+                }
+
+                {/* display of noti - rank */}
+
+                {
+                  renderDisplaySettingItem(
+                    texts.show_rank_of_word,
+                    displaySettting_RankOfWord,
+                    set_displaySettting_RankOfWord,
+                    StorageKey_ShowRankOfWord
+                  )
+                }
+              </View>
+            }
+          </ScrollView>
+        }
+
+        {/* set notification & test btn */}
+
+        {
+          subView === 'setup' &&
+          <View style={style.bottomButtonsView}>
             <LucideIconTextEffectButton
               unselectedColorOfTextAndIcon={Color_Text}
 
               notChangeToSelected
-              manuallySelected={false}
-              canHandlePressWhenSelected
+              style={style.normalBtn}
 
-              style={style.handlingBackBtn}
-
-              title={texts.back}
+              title={texts.test_notification}
               titleProps={{ style: style.normalBtnTxt }}
 
-              onPress={() => set_handlingType(undefined)}
+              onPress={onPressTestNotificationAsync}
             />
-          }
-        </View>
-      }
-    </View>
+
+            <LucideIconTextEffectButton
+              selectedBackgroundColor={Color_Text}
+
+              selectedColorOfTextAndIcon={Color_BG}
+              unselectedColorOfTextAndIcon={Color_Text}
+
+              notChangeToSelected
+              manuallySelected={true}
+              canHandlePressWhenSelected
+
+              style={style.normalBtn}
+
+              title={texts.set_notification}
+              titleProps={{ style: style.normalBtnTxt }}
+
+              onPress={onPressSetNotification}
+            />
+          </View>
+        }
+
+        {
+          subView === 'history' &&
+          <HistoryScreen
+            setHandling={set_handlingType}
+          />
+        }
+
+        {
+          subView === 'about' &&
+          <About
+          />
+        }
+
+        {/* popup */}
+        {
+          contentToRenderInPopup &&
+          <SlidingPopup
+            backgroundColor={Color_Text}
+            blurBackgroundColorInHex={Color_BG}
+            handleColor={Color_BG}
+            child={contentToRenderInPopup()}
+            onFinishedHide={() => set_showPopup(undefined)}
+            childMaxHeight={'70%'}
+            setCloseCallbackRef={popupCloseCallbackRef}
+          />
+        }
+
+        {/* time picker */}
+        {
+          showTimePicker &&
+          <TimePicker
+            setIsVisible={set_showTimePicker}
+            onConfirm={onConfirmTimePicker}
+            initialHour={timePickerInitial[1]}
+            initialMinute={timePickerInitial[2]}
+          />
+        }
+
+        {/* handling */}
+        {
+          handlingType &&
+          <View style={style.downloadingView}>
+            {/* indicator */}
+            {
+              handlingType !== 'done' &&
+              <ActivityIndicator color={Color_Text} />
+            }
+
+            {/* handling text */}
+            {
+              handlingType !== 'done' && handlingType !== 'setting_notification' &&
+              <Text style={style.downloadingTxt}>{handlingType === 'downloading' ?
+                texts.downloading_data :
+                texts.loading_data
+              }...</Text>
+            }
+
+            {/* set noti text */}
+            {
+              handlingType === 'setting_notification' &&
+              <Text style={style.downloadingTxt}>{texts.setting_notification}...</Text>
+            }
+
+            {/* icon done */}
+            {
+              handlingType === 'done' &&
+              <LucideIcon name='Check' size={FontSize.Normal} color={Color_Text} />
+            }
+
+            {/* done text */}
+            {
+              handlingType === 'done' &&
+              <Text style={style.downloadingTxt}>{texts.done}!</Text>
+            }
+
+            {/* back btn */}
+            {
+              handlingType === 'done' &&
+              <LucideIconTextEffectButton
+                unselectedColorOfTextAndIcon={Color_Text}
+
+                notChangeToSelected
+                manuallySelected={false}
+                canHandlePressWhenSelected
+
+                style={style.handlingBackBtn}
+
+                title={texts.back}
+                titleProps={{ style: style.normalBtnTxt }}
+
+                onPress={() => set_handlingType(undefined)}
+              />
+            }
+          </View>
+        }
+      </View>
+    </AppContext.Provider>
   )
 }
 
