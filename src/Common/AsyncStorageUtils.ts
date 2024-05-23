@@ -9,7 +9,12 @@ export const GetObjectAsync = async <T extends object>(key: string, defaultValue
     if (!s)
         return defaultValue
 
-    return JSON.parse(s) as T
+    try {
+        return JSON.parse(s) as T
+    }
+    catch {
+        return defaultValue
+    }
 }
 
 export const SetObjectAsync = async  <T extends object>(key: string, value: T): Promise<void> => {
