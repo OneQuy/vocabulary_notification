@@ -32,10 +32,10 @@ const HowLongToReloadRemoteConfigInHour = 6 // hour
 var inited = false
 var isHandling_CheckAndTriggerFirstOpenAppOfTheDayAsync = false
 var lastFireOnActiveOrOnceUseEffectWithCheckDuplicate = 0
-var isNewlyInstallFirstOpenOrAcitveState = false
+var isNewlyInstallThisOpen = false
 var setupParamsInternal: SetupAppStateAndStartTrackingParams | undefined = undefined
 
-export const IsNewlyInstallFirstOpenOrAcitveState = () => isNewlyInstallFirstOpenOrAcitveState
+export const IsNewlyInstallThisOpen = () => isNewlyInstallThisOpen
 
 
 /**
@@ -53,18 +53,9 @@ export const SetupAppStateAndStartTrackingAsync = async (setupParams: SetupAppSt
 
     await InitTrackingAsync(setupParams.posthog)
 
-    await OnUseEffectOnceEnterAppAsync(setupParams)
-}
-
-/**
- * freshly open app (can multiple times per day, but once per app open)
- */
-export const OnUseEffectOnceEnterAppAsync = async (setupParams: SetupAppStateAndStartTrackingParams) => {
     await TrackOnUseEffectOnceEnterAppAsync()
 
-    await CheckFirstOpenAppOfTheDayAsync(setupParams)
-
-    await OnActiveOrOnceUseEffectAsync()
+    await OnActiveOrOnceUseEffectAsync(setupParams)
 }
 
 
@@ -97,7 +88,7 @@ export const CheckFirstOpenAppOfTheDayAsync = async (setupParams: SetupAppStateA
 
     if (await GetBooleanAsync(StorageKey_TrackedNewlyInstall, false)) {
         SetBooleanAsync(StorageKey_TrackedNewlyInstall, true)
-        isNewlyInstallFirstOpenOrAcitveState = true
+        isNewlyInstallThisOpen = true
         await TrackOnNewlyInstallAsync()
     }
 
@@ -235,8 +226,14 @@ const CheckReloadRemoteConfigAsync = async () => {
  * 1. whenever freshly open app
  * 2. whenever onAppActive
  */
-const OnActiveOrOnceUseEffectAsync = async () => {
-    CheckFireOnActiveOrOnceUseEffectWithCheckDuplicateAsync()
+const OnActiveOrOnceUseEffectAsync = async (setupParams: SetupAppStateAndStartTrackingParams) => {
+    // first Open App Of The Day
+
+    await CheckFirstOpenAppOfTheDayAsync(setupParams)
+
+    // callbacks
+
+    await CheckFireOnActiveOrUseEffectOnceWithGapAsync()
 }
 
 /**
@@ -245,7 +242,7 @@ const OnActiveOrOnceUseEffectAsync = async () => {
  * 1. whenever freshly open app
  * 2. onAppActive (but at least `HowLongInMinutesToCount2TimesUseAppSeparately` after the last call this method)
  */
-const CheckFireOnActiveOrOnceUseEffectWithCheckDuplicateAsync = async () => {
+const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async () => {
     ///////////////////////////////
     // CHECK
     ///////////////////////////////
@@ -299,13 +296,9 @@ const OnActiveAsync = async (setupParams: SetupAppStateAndStartTrackingParams) =
 
     CheckReloadRemoteConfigAsync()
 
-    // first Open App Of The Day
+    // onActive or OnceUseEffect
 
-    CheckFirstOpenAppOfTheDayAsync(setupParams)
-
-    // onActiveOrOnceUseEffectAsync
-
-    OnActiveOrOnceUseEffectAsync()
+    OnActiveOrOnceUseEffectAsync(setupParams)
 }
 
 const OnBackgroundAsync = async () => {
