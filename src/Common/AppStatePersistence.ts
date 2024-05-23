@@ -61,7 +61,7 @@ export const OnUseEffectOnceEnterAppAsync = async (setupParams: SetupAppStateAnd
 
     await CheckFirstOpenAppOfTheDayAsync(setupParams)
 
-    OnActiveOrOnceUseEffectAsync()
+    await OnActiveOrOnceUseEffectAsync()
 }
 
 
