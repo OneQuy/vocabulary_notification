@@ -40,7 +40,10 @@ export const IsNewlyInstallThisOpen = () => isNewlyInstallThisOpen
 
 /**
  * MAIN
- * freshly open app (can multiple times per day, but once per app open)
+ * 
+ * use effect once
+ * 
+ * 'freshly open app' (can multiple times per day, but once per app open)
  */
 export const SetupAppStateAndStartTrackingAsync = async (setupParams: SetupAppStateAndStartTrackingParams): Promise<void> => {
     if (inited)
