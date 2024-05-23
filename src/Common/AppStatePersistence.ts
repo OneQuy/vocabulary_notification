@@ -16,7 +16,7 @@ import { AlertAsync, DateDiff_InHour_WithNow, DateDiff_WithNow, GetDayHourMinSec
 import { ClearUserForcePremiumDataAsync, GetUserForcePremiumDataAsync } from "./UserMan"
 import { SubscribedData } from "./SpecificType"
 import { UserID } from "./UserID"
-import { Alert, AppStateStatus } from "react-native"
+import { AppStateStatus } from "react-native"
 import { RegisterOnChangedState } from "./AppStateMan"
 import { GetLastTimeFetchedSuccessAndHandledAlerts, GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig"
 import { FirebaseDatabaseTimeOutMs, FirebaseDatabase_GetValueAsyncWithTimeOut } from "./Firebase/FirebaseDatabase"
