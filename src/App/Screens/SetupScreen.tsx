@@ -6,7 +6,7 @@ import useLocalText, { PleaseSelectTargetLangText } from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PickRandomElementWithCount, PrependZero, ToCanPrint, ToCanPrintError } from '../../Common/UtilsTS'
+import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PickRandomElementWithCount, PrependZero, ToCanPrintError } from '../../Common/UtilsTS'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { DefaultExcludedTimePairs, DefaultIntervalInMin, DefaultNumDaysToPush, IntervalInMinPresets, LimitWordsPerDayPresets, NumDaysToPushPresets, PopuplarityLevelNumber, TranslationServicePresets } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
@@ -16,8 +16,8 @@ import { ClearDbAndNotificationsAsync } from '../Handles/AppUtils'
 import { SetupNotificationAsync, TestNotificationAsync } from '../Handles/SetupNotification'
 import { GetDefaultTranslationService, GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, GetTranslationServiceAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetNumDaysToPushAsync, SetPopularityLevelIndexAsync, SetTranslationServiceAsync, SetTargetLangAsyncAsync, GetSourceLangAsync } from '../Handles/Settings'
 import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync, IsCachedWordsDataCurrentLevelAsync } from '../Handles/WordsData'
-import { GetBooleanAsync, GetObjectAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
-import { StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord, StorageKey_SubscribeData } from '../Constants/StorageKey'
+import { GetBooleanAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
+import { StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from '../Constants/StorageKey'
 import HistoryScreen from './HistoryScreen'
 import { HandleError } from '../../Common/Tracking'
 import { GetLanguageFromCode, Language } from '../../Common/TranslationApis/TranslationLanguages'
@@ -28,9 +28,8 @@ import TargetLangPicker from '../Components/TargetLangPicker'
 import SettingItemPanel, { SettingItemPanelStyle } from '../Components/SettingItemPanel'
 import About from './About'
 import { usePostHog } from 'posthog-react-native'
-import { SetupAppStateAndStartTrackingAsync } from '../../Common/AppStatePersistence'
-import { AppContextType, SubscribedData } from '../../Common/SpecificType'
 import { AppContext } from '../../Common/SpecificConstants'
+import useAppContext from '../Hooks/useAppContext'
 
 const IsLog = true
 
@@ -57,7 +56,7 @@ export type HandlingType =
 
 const SetupScreen = () => {
   const posthog = usePostHog()
-  const [appContextValue, set_appContextValue] = useState<AppContextType>({})
+  const { appContextValue } = useAppContext(posthog)
   const texts = useLocalText()
 
   const [handlingType, set_handlingType] = useState<HandlingType>(undefined)
@@ -155,10 +154,6 @@ const SetupScreen = () => {
         padding: Outline.Normal,
       },
     })
-  }, [])
-
-  const onSetSubcribeDataAsync = useCallback(async (subscribedData: SubscribedData | undefined): Promise<void> => {
-
   }, [])
 
   const onPressSubview = useCallback((type: SubView) => {
@@ -862,29 +857,6 @@ const SetupScreen = () => {
       timePickerInitial = GetDayHourMinSecFromMs((time.hours * 60 + time.minutes) * 60 * 1000)
     }
   }
-
-  // SetupAppStateAndStartTrackingAsync (make sure this called once per open)
-
-  useEffect(() => {
-    (async () => {
-      // load subcribe data
-
-      const subscribedDataOrUndefined = await GetObjectAsync<SubscribedData>(StorageKey_SubscribeData)
-
-      set_appContextValue({
-        ...appContextValue,
-        subscribedData: subscribedDataOrUndefined,
-      })
-
-      // setup & tracking
-
-      await SetupAppStateAndStartTrackingAsync({
-        posthog,
-        subscribedData: subscribedDataOrUndefined,
-        forceSetPremiumAsync: onSetSubcribeDataAsync,
-      })
-    })()
-  }, [])
 
   // load setting
 

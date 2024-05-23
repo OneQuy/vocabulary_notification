@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Alert } from 'react-native'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { SettingItemPanelStyle } from '../Components/SettingItemPanel'
 import useLocalText from '../Hooks/useLocalText'
 import { Gap, Outline } from '../Constants/Constants_Outline'
@@ -7,20 +7,20 @@ import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEf
 import { Color_BG, Color_Text } from '../Hooks/useTheme'
 import { FontSize } from '../Constants/Constants_FontSize'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
-import usePremium, { AllIAPProducts } from '../Hooks/usePremium'
 import { useMyIAP } from '../../Common/IAP/useMyIAP'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { StorageKey_CachedIAP } from '../Constants/StorageKey'
 import { IAPProduct, PurchaseAsync, RestorePurchaseAsync } from '../../Common/IAP/IAP'
-import { LogStringify, SafeGetArrayElement, ToCanPrintError } from '../../Common/UtilsTS'
+import { SafeGetArrayElement, ToCanPrintError } from '../../Common/UtilsTS'
 import { HandleError } from '../../Common/Tracking'
 import { Purchase } from 'react-native-iap'
 import { GetRemoteConfigWithCheckFetchAsync } from '../../Common/RemoteConfig'
+import { AllIAPProducts, AppContext } from '../../Common/SpecificConstants'
 
 const About = () => {
     const texts = useLocalText()
-    const { isLifetime, set_lifetimeID } = usePremium()
     const [isHandling, set_isHandling] = useState(false)
+    const { subscribedData, onSetSubcribeDataAsync } = useContext(AppContext)
 
     const [currentLifetimeProduct, set_currentLifetimeProduct] = useState<undefined | IAPProduct>(undefined)
 
@@ -55,9 +55,11 @@ const About = () => {
     }, [])
 
     const onPurchasedSuccess = useCallback(async (sku: string) => {
-        set_lifetimeID(sku)
-        Alert.alert('Woohooo!', texts.purchase_success)
-    }, [texts, set_lifetimeID])
+        onSetSubcribeDataAsync({
+            id: sku,
+            purchasedTick: Date.now()
+        })
+    }, [texts, onSetSubcribeDataAsync])
 
     const onPressRestorePurchaseAsync = useCallback(async () => {
         set_isHandling(true)
@@ -141,7 +143,7 @@ const About = () => {
             <ScrollView contentContainerStyle={style.scrollView}>
                 {/* lifetime upgrade */}
                 {
-                    !isLifetime &&
+                    !subscribedData &&
                     <View style={SettingItemPanelStyle.master_Column}>
                         {/* title */}
                         <Text style={SettingItemPanelStyle.titleTxt}>{texts.vocaby_lifetime}</Text>
@@ -193,7 +195,7 @@ const About = () => {
 
                 {/* restore purchase */}
                 {
-                    !isLifetime &&
+                    !subscribedData &&
                     <View style={SettingItemPanelStyle.master}>
                         {/* title */}
                         <Text style={SettingItemPanelStyle.titleTxt}>{texts.restore_purchase}</Text>

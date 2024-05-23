@@ -86,5 +86,6 @@ export type User = {
 export type AppContextType = {
     // common
 
-    subscribedData?: SubscribedData,
+    subscribedData: SubscribedData | undefined,
+    onSetSubcribeDataAsync: (subscribedData: SubscribedData | undefined) => Promise<void>,
 }

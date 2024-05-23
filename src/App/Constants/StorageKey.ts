@@ -1,14 +1,9 @@
 export const StorageKey_UsedWordIndex = (popularityIdx: number) => 'StorageKey_UsedWordIndex_' + popularityIdx
 
-
-export const StorageKey_LifetimeID = 'StorageKey_LifetimeID'
-export const StorageKey_CachedIAP = 'StorageKey_CachedIAP'
-
-
 export const StorageKey_OpenAppOfDayCount = 'StorageKey_OpenAppOfDayCount'
 export const StorageKey_OpenAppOfDayCountForDate = 'StorageKey_OpenAppOfDayCountForDate'
 
-
+export const StorageKey_CachedIAP = 'StorageKey_CachedIAP'
 export const StorageKey_LastCheckFirstOpenOfTheDay = 'StorageKey_LastCheckFirstOpenOfTheDay'
 export const StorageKey_FirstTimeInstallTick = 'StorageKey_FirstTimeInstallTick'
 export const StorageKey_TrackedNewlyInstall = 'StorageKey_TrackedNewlyInstall'
