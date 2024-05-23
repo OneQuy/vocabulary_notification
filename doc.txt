@@ -1,3 +1,6 @@
 alert_priority:
 
 1. await HandleAlertUpdateAppAsync(remoteConfig) // alert_priority_1 (doc)
+
+alert not priority:
++ Alert.alert('Wohoo!', texts.purchase_success) // alert purchase success
