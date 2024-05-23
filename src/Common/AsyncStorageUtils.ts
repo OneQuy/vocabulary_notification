@@ -1,6 +1,21 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { DateDiff, DateDiff_InHour, DateDiff_InMinute, IsToday, IsTodayAndSameHour } from "./UtilsTS"
 
+// object =================
+
+export const GetObjectAsync = async <T extends object>(key: string, defaultValue?: T): Promise<undefined | T> => {
+    const s = await AsyncStorage.getItem(key)
+
+    if (!s)
+        return defaultValue
+
+    return JSON.parse(s) as T
+}
+
+export const SetObjectAsync = async  <T extends object>(key: string, value: T): Promise<void> => {
+    await AsyncStorage.setItem(key, JSON.stringify(value))
+}
+
 // boolean =================
 
 export const GetBooleanAsync = async (key: string, defaultValue?: boolean): Promise<boolean> => {
