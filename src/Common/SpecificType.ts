@@ -81,3 +81,10 @@ export type User = {
 
     [UserForcePremiumDataProperty]: SubscribedData,
 }
+
+
+export type AppContextType = {
+    // common
+
+    subscribedData?: SubscribedData,
+}

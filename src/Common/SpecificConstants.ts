@@ -1,5 +1,8 @@
 // Created on 17 may 2024 (Coding Vocaby)
 
+import { createContext } from "react"
+import { AppContextType } from "./SpecificType"
+
 // CHANGE ALL :)
 
 export const AndroidLink = "market://details?id=com.vocabulary_notification"
@@ -13,3 +16,5 @@ export const ShareAppContent =
 '\n\n' +
 '👉 Download now: ' + 
 `${ShortLink}`
+
+export const AppContext = createContext<AppContextType>({})
