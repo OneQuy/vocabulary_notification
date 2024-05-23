@@ -29,7 +29,7 @@ import SettingItemPanel, { SettingItemPanelStyle } from '../Components/SettingIt
 import About from './About'
 import { usePostHog } from 'posthog-react-native'
 import { AppContext } from '../../Common/SpecificConstants'
-import useAppContext from '../Hooks/useAppContext'
+import useSpecificAppContext from '../../Common/Hooks/useSpecificAppContext'
 
 const IsLog = true
 
@@ -56,7 +56,7 @@ export type HandlingType =
 
 const SetupScreen = () => {
   const posthog = usePostHog()
-  const { appContextValue } = useAppContext(posthog)
+  const { appContextValue } = useSpecificAppContext(posthog)
   const texts = useLocalText()
 
   const [handlingType, set_handlingType] = useState<HandlingType>(undefined)

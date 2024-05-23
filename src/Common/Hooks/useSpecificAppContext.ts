@@ -3,16 +3,16 @@
 // Created on 23 may 2024 (Coding Vocaby)
 
 import { useCallback, useEffect, useState } from 'react'
-import { GetObjectAsync } from '../../Common/AsyncStorageUtils'
-import { AppContextType, SubscribedData } from '../../Common/SpecificType'
-import { StorageKey_SubscribeData } from '../Constants/StorageKey'
+import { GetObjectAsync } from '../AsyncStorageUtils'
+import { AppContextType, SubscribedData } from '../SpecificType'
+import { StorageKey_SubscribeData } from '../../App/Constants/StorageKey'
 import PostHog from 'posthog-react-native'
-import { SetupAppStateAndStartTrackingAsync } from '../../Common/AppStatePersistence'
-import { DefaultAppContext } from '../../Common/SpecificConstants'
+import { SetupAppStateAndStartTrackingAsync } from '../AppStatePersistence'
+import { DefaultAppContext } from '../SpecificConstants'
 import { Alert } from 'react-native'
-import useLocalText from './useLocalText'
+import useLocalText from '../../App/Hooks/useLocalText'
 
-const useAppContext = (posthog: PostHog) => {
+const useSpecificAppContext = (posthog: PostHog) => {
     const [appContextValue, set_appContextValue] = useState<AppContextType>(DefaultAppContext)
     const texts = useLocalText()
 
@@ -66,4 +66,4 @@ const useAppContext = (posthog: PostHog) => {
     }
 }
 
-export default useAppContext
+export default useSpecificAppContext

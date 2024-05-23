@@ -1,3 +1,5 @@
+// NUMBER OF [CHANGE HERE]: 0
+//
 // Created 2023 (Coding Gooday)
 
 import { StorageKey_LastAskForUpdateApp, StorageKey_PressUpdateObject } from '../App/Constants/StorageKey'
