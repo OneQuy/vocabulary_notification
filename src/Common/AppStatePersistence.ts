@@ -2,29 +2,29 @@
 //
 // USAGE:
 // 1. Simply just need to call this in the first appear screen: SetupAppStateAndStartTrackingAsync(...)
-//
-//
+
 
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { GetBooleanAsync, GetDateAsync, GetDateAsync_IsValueExistedAndIsToday, GetNumberIntAsync, GetPairNumberIntAndDateAsync, IncreaseNumberAsync, SetBooleanAsync, SetDateAsync_Now, SetNumberAsync, SetPairNumberIntAndDateAsync_Now } from "./AsyncStorageUtils"
+import { GetBooleanAsync, GetDateAsync, GetDateAsync_IsValueExistedAndIsToday, GetDateAsync_IsValueNotExistedOrEqualOverHourFromNow, GetNumberIntAsync, GetPairNumberIntAndDateAsync, IncreaseNumberAsync, SetBooleanAsync, SetDateAsync_Now, SetNumberAsync, SetPairNumberIntAndDateAsync_Now } from "./AsyncStorageUtils"
 import { VersionAsNumber } from "./CommonConstants"
-import { StorageKey_FirstTimeInstallTick, StorageKey_LastCheckFirstOpenOfTheDay, StorageKey_LastFreshlyOpenApp, StorageKey_LastInstalledVersion, StorageKey_OpenAppOfDayCount, StorageKey_OpenAppOfDayCountForDate, StorageKey_OpenAppTotalCount, StorageKey_OpenAt, StorageKey_PressUpdateObject, StorageKey_TrackedNewlyInstall } from "../App/Constants/StorageKey"
+import { StorageKey_FirstTimeInstallTick, StorageKey_LastCheckFirstOpenOfTheDay, StorageKey_LastFreshlyOpenApp, StorageKey_LastInstalledVersion, StorageKey_LastTimeCheckAndReloadAppConfig, StorageKey_OpenAppOfDayCount, StorageKey_OpenAppOfDayCountForDate, StorageKey_OpenAppTotalCount, StorageKey_OpenAt, StorageKey_PressUpdateObject, StorageKey_TrackedNewlyInstall } from "../App/Constants/StorageKey"
 import PostHog from "posthog-react-native"
 import { InitTrackingAsync, TrackFirstOpenOfDayOldUserAsync, TrackOnNewlyInstallAsync, TrackOnUseEffectOnceEnterAppAsync, TrackOpenOfDayCount, TrackSimpleWithParam } from "./Tracking"
-import { DateDiff_WithNow, GetDayHourMinSecFromMs_ToString, IsToday, IsValuableArrayOrString } from "./UtilsTS"
+import { DateDiff_InHour_WithNow, DateDiff_WithNow, GetDayHourMinSecFromMs_ToString, IsToday, IsValuableArrayOrString } from "./UtilsTS"
 import { ClearUserForcePremiumDataAsync, GetUserForcePremiumDataAsync } from "./UserMan"
 import { SubscribedData } from "./SpecificType"
 import { UserID } from "./UserID"
 import { AppStateStatus } from "react-native"
 import { RegisterOnChangedState } from "./AppStateMan"
+import { GetLastTimeFetchedSuccessAndHandledAlerts, GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig"
 
 type SetupAppStateAndStartTrackingParams = {
     posthog: PostHog,
     forceSetPremiumAsync: (setOrReset: SubscribedData | undefined) => Promise<void>,
 }
 
-const HowLongInMinutesToCount2TimesUseAppSeparately = 60
-// const HowLongToReloadInMinute = 30
+const HowLongInMinutesToCount2TimesUseAppSeparately = 60 // minute
+const HowLongToReloadRemoteConfigInHour = 6 // hour
 
 var inited = false
 var isHandling_CheckAndTriggerFirstOpenAppOfTheDayAsync = false
@@ -205,55 +205,27 @@ const OnStateChanged = (state: AppStateStatus) => {
     }
 }
 
-// /** reload (app config + file version) if app re-active after a period 1 HOUR */
-// const checkAndReloadAppAsync = async () => {
-//     const lastUpdate = await GetDateAsync(StorageKey_LastTimeCheckAndReloadAppConfig)
+/** reload (app remote config + alerts) if app re-active after a period `HowLongToReloadRemoteConfigInHour` */
+const CheckReloadRemoteConfigAsync = async () => {
+    ////////////////////////
+    // CHECK
+    ////////////////////////
 
-//     if (!await GetDateAsync_IsValueNotExistedOrEqualOverMinFromNow(
-//         StorageKey_LastTimeCheckAndReloadAppConfig,
-//         HowLongToReloadInMinute)) {
-//         console.log('[checkAndReloadAppAsync] no check reload cuz checked recently');
-//         return
-//     }
+    const loadedConfigLastTimeInHour = DateDiff_InHour_WithNow(GetLastTimeFetchedSuccessAndHandledAlerts())
 
-//     // need to reload!
+    if (loadedConfigLastTimeInHour < HowLongToReloadRemoteConfigInHour) {
+        console.log('[CheckReloadRemoteConfigAsync] no check reload cuz checked recently');
+        return // no need to reload
+    }
 
-//     const [successDownloadAppConfig, successDownloadFileVersion] = await Promise.all([
-//         HandleAppConfigAsync(),
-//         HandleVersionsFileAsync()
-//     ])
+    ////////////////////////
+    // RELOAD HERE!
+    ////////////////////////
 
-//     console.log('successDownloadAppConfig', successDownloadAppConfig);
-//     console.log('successDownloadFileVersion', successDownloadFileVersion);
+    TrackSimpleWithParam('reloaded_remote_config', loadedConfigLastTimeInHour.toFixed(1))
 
-//     // handle app config
-
-//     if (successDownloadAppConfig)
-//         await onAppConfigReloadedAsync()
-
-//     // handle file version
-
-//     if (successDownloadFileVersion) { // reset screen
-//         ResetNavigation(lastUpdate)
-//     }
-
-//     // set tick
-
-//     if (successDownloadAppConfig && successDownloadFileVersion)
-//         SetDateAsync_Now(StorageKey_LastTimeCheckAndReloadAppConfig)
-// }
-
-// const onAppConfigReloadedAsync = async () => {
-//     console.log('[onAppConfigReloadedAsync]')
-
-//     // startup alert
-
-//     await HandleStartupAlertAsync() // alert_priority 1 (doc)
-
-//     // handle alert update
-
-//     await HandldAlertUpdateAppAsync() // alert_priority 2 (doc)
-// }
+    await GetRemoteConfigWithCheckFetchAsync(false, true)
+}
 
 /**
  * will be called at 2 cases:
@@ -322,7 +294,7 @@ const CheckFireOnActiveOrOnceUseEffectWithCheckDuplicateAsync = async () => {
 const OnActiveAsync = async (setupParams: SetupAppStateAndStartTrackingParams) => {
     // check to show warning alert
 
-    checkAndReloadAppAsync()
+    CheckReloadRemoteConfigAsync()
 
     // first Open App Of The Day
 
