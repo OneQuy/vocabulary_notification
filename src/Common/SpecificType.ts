@@ -1,6 +1,8 @@
+// CHANGE OPTIONAL TO EACH TYPE
+//
 // Created on 17 may 2024 (Coding Vocaby)
 
-export type RemoteConfig = {
+export type RemoteConfig = { // CHANGE OPTIONAL
     // common
 
     forceDev: number,
@@ -54,7 +56,7 @@ export type RemoteConfig = {
 }
 
 
-type LatestVersionConfig = {
+type LatestVersionConfig = { // MAYBE NO CHANGE
     version: number,
     forceUpdate: boolean,
     releaseNote: string,
@@ -63,27 +65,27 @@ type LatestVersionConfig = {
 }
 
 
-export type SplashScreenLoaderResult = {
+export type SplashScreenLoaderResult = { // CHANGE OPTIONAL
     someVariable?: number,
 }
 
 
-export type SubscribedData = {
+export type SubscribedData = { // MAYBE NO CHANGE
     id: string,
     purchasedTick: number
 }
 
 
-export const UserForcePremiumDataProperty = 'forcePremiumData'
+export const UserForcePremiumDataProperty = 'forcePremiumData' // NO CHANGE
 
-export type User = {
+export type User = { // CHANGE OPTIONAL
     // common
 
     [UserForcePremiumDataProperty]: SubscribedData,
 }
 
 
-export type AppContextType = {
+export type AppContextType = { // CHANGE OPTIONAL
     // common
 
     subscribedData: SubscribedData | undefined,

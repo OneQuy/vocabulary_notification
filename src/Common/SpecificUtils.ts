@@ -1,3 +1,5 @@
+// NUMBER OF [CHANGE HERE] 0 (JUST CHANGE DEPENDENCES)
+//
 // Created on 17 may 2024 (Coding Vocaby)
 
 import { Linking, Platform, Share } from "react-native"

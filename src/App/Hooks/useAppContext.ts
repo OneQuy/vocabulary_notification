@@ -1,4 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react'
+// NUMBER OF [CHANGE HERE] 1
+
+import { useCallback, useEffect, useState } from 'react'
 import { GetObjectAsync } from '../../Common/AsyncStorageUtils'
 import { AppContextType, SubscribedData } from '../../Common/SpecificType'
 import { StorageKey_SubscribeData } from '../Constants/StorageKey'
@@ -36,7 +38,7 @@ const useAppContext = (posthog: PostHog) => {
 
             // init app context
 
-            set_appContextValue({
+            set_appContextValue({ // CHANGE HERE 1
                 ...appContextValue,
                 subscribedData: subscribedDataOrUndefined,
                 onSetSubcribeDataAsync,

@@ -1,10 +1,11 @@
+// CHANGE ALL :) 
+//
 // Created on 17 may 2024 (Coding Vocaby)
 
 import { createContext } from "react"
 import { AppContextType, SubscribedData } from "./SpecificType"
 import { IAPProduct } from "./IAP/IAP"
 
-// CHANGE ALL :)
 
 export const AndroidLink = "market://details?id=com.vocabulary_notification"
 export const iOSLink = "https://apps.apple.com/us/app/vocabulary-notification-vocaby/id6502538703"
@@ -35,7 +36,7 @@ export const AllIAPProducts: IAPProduct[] = [
 
 export const DefaultAppContext: AppContextType = {
     subscribedData: undefined,
-    onSetSubcribeDataAsync: async (value: SubscribedData | undefined) => { }
+    onSetSubcribeDataAsync: async (_: SubscribedData | undefined) => { }
 }
 
-export const AppContext = createContext<AppContextType>(DefaultAppContext)
+export const AppContext = createContext<AppContextType>(DefaultAppContext) // NO CHANGE
