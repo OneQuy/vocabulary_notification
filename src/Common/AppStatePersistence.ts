@@ -185,7 +185,7 @@ export const GetAndSetInstalledDaysCountAsync = async () => {
     }
 }
 
-export const GetOpenAppCountTodaySoFarCountAsync = async () => {
+const GetOpenAppCountTodaySoFarCountAsync = async () => {
     return await GetNumberIntAsync(StorageKey_OpenAppOfDayCount, 0)
 }
 

@@ -27,7 +27,7 @@ import { ApatabaseKey_Dev, ApatabaseKey_Production } from "../../Keys"
 import { DayName, FilterOnlyLetterAndNumberFromString, GetDayHourMinSecFromMs_ToString, GetTodayStringUnderscore, IsValuableArrayOrString, RemoveEmptyAndFalsyFromObject, SafeValue, ToCanPrint } from "./UtilsTS";
 import { FirebaseDatabase_IncreaseNumberAsync, FirebaseDatabase_SetValueAsync } from "./Firebase/FirebaseDatabase";
 import PostHog from "posthog-react-native";
-import { GetAndSetInstalledDaysCountAsync, GetAndSetLastFreshlyOpenAppToNowAsync, GetAndSetLastInstalledVersionAsync, GetAndClearPressUpdateObjectAsync, GetTotalOpenAppCountAsync, GetOpenAppCountTodaySoFarCountAsync } from "./AppStatePersistence";
+import { GetAndSetInstalledDaysCountAsync, GetAndSetLastFreshlyOpenAppToNowAsync, GetAndSetLastInstalledVersionAsync, GetAndClearPressUpdateObjectAsync, GetTotalOpenAppCountAsync } from "./AppStatePersistence";
 import { UserID } from "./UserID";
 import { VersionAsNumber } from "./CommonConstants";
 import { GetSplashTime } from "./Components/SplashScreen";
@@ -318,12 +318,10 @@ export const TrackOnUseEffectOnceEnterAppAsync = async (): Promise<number> => {
 
     const [
         totalOpenCount,
-        openTodaySoFar,
         installedDaysCount,
         streakHandle
     ] = await Promise.all([
         GetTotalOpenAppCountAsync(),
-        GetOpenAppCountTodaySoFarCountAsync(),
         GetAndSetInstalledDaysCountAsync(),
         SetStreakAsync(AppStreakId)
     ])
@@ -340,7 +338,6 @@ export const TrackOnUseEffectOnceEnterAppAsync = async (): Promise<number> => {
             currentStreak: streakHandle.todayStreak.currentStreak,
             bestStreak: streakHandle.todayStreak.bestStreak,
             totalOpenCount,
-            openTodaySoFar,
             installedDaysCount,
         } as Record<string, number>
     )
