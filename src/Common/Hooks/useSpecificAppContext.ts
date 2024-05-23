@@ -31,7 +31,7 @@ const useSpecificAppContext = (posthog: PostHog) => {
         // alert success
 
         if (subscribedData) {
-            Alert.alert('Wohoo!', texts.purchase_success) // alert purchase success
+            Alert.alert('Wohoo!', texts.purchase_success) // alert whenever purchase success or FORCE SET PREMIUM AFTER SPLASH-SCREEN
         }
     }, [texts])
 
