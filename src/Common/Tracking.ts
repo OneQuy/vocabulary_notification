@@ -466,7 +466,9 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
     const event2 = 'open_app_num'
 
     await TrackingAsync(event2,
-        [],
+        [
+            `total/open_today/${openTodaySoFar}x`,
+        ],
         {
             totalOpenApp,
             openTodaySoFar,
@@ -483,14 +485,15 @@ export const TrackFirstOpenOfDayOldUserAsync = async () => {
     /////////////////////
 
     const event = 'food_old_user'
+    const dayName = DayName(undefined, true)
 
     await TrackingAsync(event,
         [
-            // `events/${event}/#d`,
+            `total/open_week/${dayName}`,
         ],
         {
             userId: UserID(),
-            dayName: DayName(undefined, true)
+            dayName,
         } as Record<string, string>
     )
 
