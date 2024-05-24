@@ -76,7 +76,7 @@ export const SetupAppStateAndStartTrackingAsync = async (setupParams: SetupAppSt
     //      + open_app (open of day count, total open count, last open app, isPremium)
     // force premium
 
-    await OnActiveOrUseEffectOnceAsync(setupParams)
+    await OnActiveOrUseEffectOnceAsync(setupParams, true)
 }
 
 const OnActiveAsync = async (setupParams: SetupAppStateAndStartTrackingParams) => {
@@ -86,7 +86,7 @@ const OnActiveAsync = async (setupParams: SetupAppStateAndStartTrackingParams) =
 
     // onActive or OnceUseEffect
 
-    OnActiveOrUseEffectOnceAsync(setupParams)
+    OnActiveOrUseEffectOnceAsync(setupParams, false)
 }
 
 const OnBackgroundAsync = async () => {
@@ -251,14 +251,17 @@ const CheckReloadRemoteConfigAsync = async () => {
  * 1. whenever freshly open app
  * 2. whenever onAppActive
  */
-const OnActiveOrUseEffectOnceAsync = async (setupParams: SetupAppStateAndStartTrackingParams) => {
+const OnActiveOrUseEffectOnceAsync = async (
+    setupParams: SetupAppStateAndStartTrackingParams,
+    isUseEffectOnce: boolean,
+) => {
     // first Open App Of The Day
 
     await CheckFirstOpenAppOfTheDayAsync(setupParams)
 
     // callbacks
 
-    await CheckFireOnActiveOrUseEffectOnceWithGapAsync(setupParams)
+    await CheckFireOnActiveOrUseEffectOnceWithGapAsync(setupParams, isUseEffectOnce)
 }
 
 /**
@@ -268,7 +271,10 @@ const OnActiveOrUseEffectOnceAsync = async (setupParams: SetupAppStateAndStartTr
  * 1. whenever freshly open app
  * 2. onAppActive (but at least `HowLongInMinutesToCount2TimesUseAppSeparately` after the last call this method)
  */
-const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async (setupParams: SetupAppStateAndStartTrackingParams) => {
+const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async (
+    setupParams: SetupAppStateAndStartTrackingParams,
+    isUseEffectOnce: boolean,
+) => {
     ///////////////////////////////
     // CHECK
     ///////////////////////////////
@@ -325,7 +331,8 @@ const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async (setupParams: SetupAp
         totalOpenApp,
         openTodaySoFar,
         distanceMs === now ? 0 : distanceMs,
-        setupParams
+        setupParams,
+        isUseEffectOnce
     )
 }
 

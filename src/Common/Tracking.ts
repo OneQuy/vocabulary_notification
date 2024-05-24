@@ -313,50 +313,6 @@ export const TrackOpenOfDayCount = (count: number) => {
  */
 export const TrackOnUseEffectOnceEnterAppAsync = async (): Promise<number> => {
     ///////////////////
-    // freshly_open_app
-    ///////////////////
-
-    const [
-        installedDaysCount,
-        streakHandle
-    ] = await Promise.all([
-        GetAndSetInstalledDaysCountAsync(),
-        SetStreakAsync(AppStreakId)
-    ])
-
-    let event = 'freshly_open_app'
-
-    await TrackingAsync(event,
-        [
-            `total/${event}`,
-        ],
-        { // only track numbers, should NOT put string values here.
-            splashTime: GetSplashTime(),
-            currentStreak: streakHandle.todayStreak.currentStreak,
-            bestStreak: streakHandle.todayStreak.bestStreak,
-            installedDaysCount,
-        } as Record<string, number>
-    )
-
-    ///////////////////
-    // last_freshly_open
-    ///////////////////
-
-    const [
-        lastFreshlyOpenAppToNow,
-    ] = await Promise.all([
-        GetAndSetLastFreshlyOpenAppToNowAsync(),
-    ])
-
-    await TrackingAsync('last_freshly_open',
-        [],
-        { // put string values here
-            lastFreshlyOpen: lastFreshlyOpenAppToNow,
-            userId: UserID(),
-        } as Record<string, string>
-    )
-
-    ///////////////////
     // updated_app
     ///////////////////
 
@@ -366,7 +322,7 @@ export const TrackOnUseEffectOnceEnterAppAsync = async (): Promise<number> => {
 
     if (!Number.isNaN(lastInstalledVersion) && lastInstalledVersion !== VersionAsNumber) { // just updated
         didUpdated = true
-        event = 'updated_app'
+        const event = 'updated_app'
 
         const objLastAlertText = await GetAndClearPressUpdateObjectAsync()
         let lastAlert = 'no_data'
@@ -442,37 +398,42 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
     totalOpenApp: number,
     openTodaySoFar: number,
     distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs: number,
-    setupParams: SetupAppStateAndStartTrackingParams
+    setupParams: SetupAppStateAndStartTrackingParams,
+    isUseEffectOnce: boolean,
 ) => {
-    /////////////////////
+    //////////////////////////
     // open_app (only strings)
-    /////////////////////
+    //////////////////////////
 
-    const event = 'open_app'
+    const openAppEvent = 'open_app'
 
-    await TrackingAsync(event,
+    const openAppEvent_Object: Record<string, string> = {
+        userId: UserID(),
+        lastOpenCached: distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs <= 0 ? '0s' : GetDayHourMinSecFromMs_ToString(distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs),
+        purchased: setupParams.subscribedData?.id ?? 'lol',
+        purchasedDays: setupParams.subscribedData ? DateDiff_WithNow(setupParams.subscribedData.purchasedTick).toFixed(1) : 'hmmm',
+    }
+
+    await TrackingAsync(openAppEvent,
         [],
-        {
-            userId: UserID(),
-            lastOpenCached: distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs <= 0 ? '0s' : GetDayHourMinSecFromMs_ToString(distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs),
-            purchased: setupParams.subscribedData?.id ?? 'lol',
-            purchasedDays: setupParams.subscribedData ? DateDiff_WithNow(setupParams.subscribedData.purchasedTick).toFixed(1) : 'hmmm',
-        } as Record<string, string>
+        openAppEvent_Object
     )
 
     // /////////////////////
     // open_app_num
     // /////////////////////
 
-    const event2 = 'open_app_num'
+    const openAppNumEvent = 'open_app_num'
 
-    await TrackingAsync(event2,
+    const openAppNumEvent_Object: Record<string, number> = {
+        totalOpenApp,
+        openTodaySoFar,
+        lastOpenCached: FromMsTo_TodayDays(distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs),
+    }
+
+    await TrackingAsync(openAppNumEvent,
         [],
-        {
-            totalOpenApp,
-            openTodaySoFar,
-            lastOpenCached: FromMsTo_TodayDays(distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs),
-        } as Record<string, number>
+        openAppNumEvent_Object
     )
 }
 
