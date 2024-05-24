@@ -352,9 +352,10 @@ export const TrackOnUseEffectOnceEnterAppAsync = async (): Promise<number> => {
     await TrackingAsync('last_freshly_open',
         [],
         { // put string values here
-            lastFreshlyOpenAppToNow,
+            lastFreshlyOpen: lastFreshlyOpenAppToNow,
             userId: UserID(),
-        })
+        } as Record<string, string>
+    )
 
     ///////////////////
     // updated_app
