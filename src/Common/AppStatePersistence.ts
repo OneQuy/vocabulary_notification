@@ -60,7 +60,7 @@ export const SetupAppStateAndStartTrackingAsync = async (setupParams: SetupAppSt
 
     await InitTrackingAsync(setupParams.posthog)
 
-    // track use effect once
+    // on use effect once
     // tracks: freshly_open_app, last_freshly_open, updated_app
 
     const lastInstalledVersion = await TrackOnUseEffectOnceEnterAppAsync()
@@ -69,10 +69,11 @@ export const SetupAppStateAndStartTrackingAsync = async (setupParams: SetupAppSt
 
     await CheckShowAlertWhatsNewAsync(lastInstalledVersion)
 
-    // active or use effect once
+    // on active or use effect once
     // tracks: 
     //      + newly_install, first open of the day
-    //      + open of day count, total open count, track current time (hour)
+    //      + current time (hour)
+    //      + open_app (open of day count, total open count, last open app, isPremium)
     // force premium
 
     await OnActiveOrUseEffectOnceAsync(setupParams)
@@ -261,7 +262,8 @@ const OnActiveOrUseEffectOnceAsync = async (setupParams: SetupAppStateAndStartTr
 }
 
 /**
- * use to count open app times
+ * used to count open app times, track open_app
+ * 
  * will be called at 2 cases:
  * 1. whenever freshly open app
  * 2. onAppActive (but at least `HowLongInMinutesToCount2TimesUseAppSeparately` after the last call this method)
