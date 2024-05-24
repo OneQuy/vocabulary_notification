@@ -273,14 +273,15 @@ const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async (setupParams: SetupAp
     // CHECK
     ///////////////////////////////
 
-    const distanceMs = Date.now() - lastFireOnActiveOrOnceUseEffectWithGap
+    const now = Date.now()
+    const distanceMs = now - lastFireOnActiveOrOnceUseEffectWithGap
 
     const minFromLastCall = distanceMs / 1000 / 60
 
     if (minFromLastCall < HowLongInMinutesToCount2TimesUseAppSeparately)
         return
 
-    lastFireOnActiveOrOnceUseEffectWithGap = Date.now()
+    lastFireOnActiveOrOnceUseEffectWithGap = now
 
     ///////////////////////////////
     // HANDLE HERE
@@ -323,7 +324,7 @@ const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async (setupParams: SetupAp
     await TrackOnActiveOrUseEffectOnceWithGapAsync(
         totalOpenApp,
         openTodaySoFar,
-        distanceMs,
+        distanceMs === now ? 0 : distanceMs,
         setupParams
     )
 }

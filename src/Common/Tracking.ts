@@ -455,7 +455,7 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
         [],
         {
             userId: UserID(),
-            lastOpen: GetDayHourMinSecFromMs_ToString(distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs),
+            lastOpenCached: distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs <= 0 ? '0s' : GetDayHourMinSecFromMs_ToString(distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs),
             purchased: setupParams.subscribedData?.id ?? 'lol',
             purchasedDays: setupParams.subscribedData ? DateDiff_WithNow(setupParams.subscribedData.purchasedTick).toFixed(1) : 'hmmm',
         } as Record<string, string>
@@ -472,7 +472,7 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
         {
             totalOpenApp,
             openTodaySoFar,
-            lastOpen: FromMsTo_TodayDays(distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs),
+            lastOpenCached: FromMsTo_TodayDays(distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs),
         } as Record<string, number>
     )
 }
