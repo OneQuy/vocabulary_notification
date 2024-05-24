@@ -10,17 +10,19 @@ const onChangedState = (state: AppStateStatus) => {
         arrCallbacks[i](state)
 }
 
-export const InitAppStateMan = () => {
+const CheckInitAppStateMan = () => {
     if (inited)
         return
 
+    console.log('[CheckInitAppStateMan] initing...');
+    
     inited = true
     AppState.addEventListener('change', onChangedState)
 }
 
 export const RegisterOnChangedState = (callback: AppStateCallback) => {
-    // if (!inited)
-    //     throw new Error('Not InitAppStateMan yet')
+    // throw new Error('Not InitAppStateMan yet')
+    CheckInitAppStateMan()
 
     const idx = arrCallbacks.indexOf(callback)
 
