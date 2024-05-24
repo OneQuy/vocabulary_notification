@@ -24,7 +24,7 @@ import Aptabase, { trackEvent as AptabaseTrack } from "@aptabase/react-native";
 import { IsDev } from "./IsDev";
 import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig";
 import { ApatabaseKey_Dev, ApatabaseKey_Production } from "../../Keys"
-import { DayName, FilterOnlyLetterAndNumberFromString, GetDayHourMinSecFromMs_ToString, GetTodayStringUnderscore, IsValuableArrayOrString, RemoveEmptyAndFalsyFromObject, SafeValue, ToCanPrint } from "./UtilsTS";
+import { DateDiff_WithNow, DayName, FilterOnlyLetterAndNumberFromString, GetDayHourMinSecFromMs_ToString, GetTodayStringUnderscore, IsValuableArrayOrString, RemoveEmptyAndFalsyFromObject, SafeValue, ToCanPrint } from "./UtilsTS";
 import { FirebaseDatabase_IncreaseNumberAsync, FirebaseDatabase_SetValueAsync } from "./Firebase/FirebaseDatabase";
 import PostHog from "posthog-react-native";
 import { GetAndSetInstalledDaysCountAsync, GetAndSetLastFreshlyOpenAppToNowAsync, GetAndSetLastInstalledVersionAsync, GetAndClearPressUpdateObjectAsync, SetupAppStateAndStartTrackingParams } from "./AppStatePersistence";
@@ -430,16 +430,52 @@ export const TrackOnNewlyInstallAsync = async () => {
 }
 
 /**
- * tracks: food_old_user, food_old_user_num
+ * tracks: open_app, open_app_num
+ * 
+ * used to count open app times
+ * 
+ * will be called at 2 cases:
+ * 1. whenever freshly open app
+ * 2. onAppActive (but at least `HowLongInMinutesToCount2TimesUseAppSeparately` after the last call this method)
  */
 export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
     totalOpenApp: number,
     openTodaySoFar: number,
     setupParams: SetupAppStateAndStartTrackingParams
 ) => {
+    /////////////////////
+    // open_app (only strings)
+    /////////////////////
 
+    const event = 'open_app'
+
+    await TrackingAsync(event,
+        [],
+        {
+            userId: UserID(),
+            purchased: setupParams.subscribedData?.id ?? 'lol',
+            purchasedDays: setupParams.subscribedData ? DateDiff_WithNow(setupParams.subscribedData.purchasedTick).toFixed(1) : 'hmmm',
+        } as Record<string, string>
+    )
+
+    // /////////////////////
+    // open_app_num
+    // /////////////////////
+
+    const event2 = 'open_app_num'
+
+    await TrackingAsync(event2,
+        [],
+        {
+            totalOpenApp,
+            openTodaySoFar,
+        } as Record<string, number>
+    )
 }
 
+/**
+ * tracks: food_old_user, food_old_user_num
+ */
 export const TrackFirstOpenOfDayOldUserAsync = async () => {
     /////////////////////
     // food_old_user (only strings)
