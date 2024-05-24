@@ -1,4 +1,4 @@
-import { FirebaseDatabase_GetValueAsyncWithTimeOut, FirebaseDatabase_SetValueAsync, FirebaseDatabaseTimeOutMs } from "./firebase/FirebaseDatabase"
+import { FirebaseDatabase_GetValueAsyncWithTimeOut, FirebaseDatabase_SetValueAsync, FirebaseDatabaseTimeOutMs } from "./Firebase/FirebaseDatabase"
 import { SubscribedData, User, UserForcePremiumDataProperty } from "./SpecificType"
 import { UserID } from "./UserID"
 import { IsValuableArrayOrString } from "./UtilsTS"
