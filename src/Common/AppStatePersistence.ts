@@ -11,7 +11,7 @@ import { GetBooleanAsync, GetDateAsync, GetDateAsync_IsValueExistedAndIsToday, G
 import { VersionAsNumber } from "./CommonConstants"
 import { StorageKey_FirstTimeInstallTick, StorageKey_LastCheckFirstOpenOfTheDay, StorageKey_LastFreshlyOpenApp, StorageKey_LastInstalledVersion, StorageKey_NeedToShowWhatsNewFromVer, StorageKey_OpenAppOfDayCount, StorageKey_OpenAppOfDayCountForDate, StorageKey_OpenAppTotalCount, StorageKey_OpenAt, StorageKey_PressUpdateObject, StorageKey_TrackedNewlyInstall } from "../App/Constants/StorageKey"
 import PostHog from "posthog-react-native"
-import { InitTrackingAsync, TrackFirstOpenOfDayOldUserAsync, TrackOnNewlyInstallAsync, TrackOnUseEffectOnceEnterAppAsync, TrackOpenOfDayCount, TrackSimpleWithParam } from "./Tracking"
+import { InitTrackingAsync, TrackFirstOpenOfDayOldUserAsync, TrackOnActiveOrUseEffectOnceWithGapAsync, TrackOnNewlyInstallAsync, TrackOnUseEffectOnceEnterAppAsync, TrackOpenOfDayCount, TrackSimpleWithParam } from "./Tracking"
 import { AlertAsync, DateDiff_InHour_WithNow, DateDiff_WithNow, GetDayHourMinSecFromMs_ToString, IsToday, IsValuableArrayOrString } from "./UtilsTS"
 import { ClearUserForcePremiumDataAsync, GetUserForcePremiumDataAsync } from "./UserMan"
 import { SubscribedData } from "./SpecificType"
@@ -21,7 +21,7 @@ import { RegisterOnChangedState } from "./AppStateMan"
 import { GetLastTimeFetchedSuccessAndHandledAlerts, GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig"
 import { FirebaseDatabaseTimeOutMs, FirebaseDatabase_GetValueAsyncWithTimeOut } from "./Firebase/FirebaseDatabase"
 
-type SetupAppStateAndStartTrackingParams = {
+export type SetupAppStateAndStartTrackingParams = {
     posthog: PostHog,
     subscribedData: SubscribedData | undefined,
     forceSetPremiumAsync: (setOrReset: SubscribedData | undefined) => Promise<void>,
@@ -185,14 +185,6 @@ export const GetAndSetInstalledDaysCountAsync = async () => {
     }
 }
 
-const GetOpenAppCountTodaySoFarCountAsync = async () => {
-    return await GetNumberIntAsync(StorageKey_OpenAppOfDayCount, 0)
-}
-
-export const GetTotalOpenAppCountAsync = async () => {
-    return await GetNumberIntAsync(StorageKey_OpenAppTotalCount, 0)
-}
-
 const CheckForcePremiumDataAsync = async (setupParams: SetupAppStateAndStartTrackingParams) => {
     const data = await GetUserForcePremiumDataAsync()
 
@@ -265,7 +257,7 @@ const OnActiveOrUseEffectOnceAsync = async (setupParams: SetupAppStateAndStartTr
 
     // callbacks
 
-    await CheckFireOnActiveOrUseEffectOnceWithGapAsync()
+    await CheckFireOnActiveOrUseEffectOnceWithGapAsync(setupParams)
 }
 
 /**
@@ -274,7 +266,7 @@ const OnActiveOrUseEffectOnceAsync = async (setupParams: SetupAppStateAndStartTr
  * 1. whenever freshly open app
  * 2. onAppActive (but at least `HowLongInMinutesToCount2TimesUseAppSeparately` after the last call this method)
  */
-const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async () => {
+const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async (setupParams: SetupAppStateAndStartTrackingParams) => {
     ///////////////////////////////
     // CHECK
     ///////////////////////////////
@@ -294,23 +286,27 @@ const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async () => {
 
     // open of day count
 
-    const count = await GetNumberIntAsync(StorageKey_OpenAppOfDayCount, 0)
+    const savedCount = await GetNumberIntAsync(StorageKey_OpenAppOfDayCount, 0)
+    let openTodaySoFar = 0
 
     if (await GetDateAsync_IsValueExistedAndIsToday(StorageKey_OpenAppOfDayCountForDate)) { // already tracked yesterday, just inc today
-        SetNumberAsync(StorageKey_OpenAppOfDayCount, count + 1)
+        openTodaySoFar = savedCount + 1
     }
     else { // need to track for yesterday
-        if (count > 0) {
-            TrackOpenOfDayCount(count)
+        if (savedCount > 0) {
+            TrackOpenOfDayCount(savedCount)
         }
 
         SetDateAsync_Now(StorageKey_OpenAppOfDayCountForDate)
-        SetNumberAsync(StorageKey_OpenAppOfDayCount, 1)
+
+        openTodaySoFar = 1
     }
+
+    await SetNumberAsync(StorageKey_OpenAppOfDayCount, openTodaySoFar)
 
     // total open count
 
-    await IncreaseNumberAsync(StorageKey_OpenAppTotalCount)
+    const totalOpenApp = await IncreaseNumberAsync(StorageKey_OpenAppTotalCount)
 
     // track current time (hour)
 
@@ -321,6 +317,12 @@ const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async () => {
         TrackSimpleWithParam('open_at', currentHour + 'h')
         SetPairNumberIntAndDateAsync_Now(StorageKey_OpenAt, currentHour)
     }
+
+    await TrackOnActiveOrUseEffectOnceWithGapAsync(
+        totalOpenApp,
+        openTodaySoFar,
+        setupParams
+    )
 }
 
 const CheckShowAlertWhatsNewAsync = async (fromVer: number) => {

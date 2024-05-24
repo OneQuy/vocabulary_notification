@@ -27,7 +27,7 @@ import { ApatabaseKey_Dev, ApatabaseKey_Production } from "../../Keys"
 import { DayName, FilterOnlyLetterAndNumberFromString, GetDayHourMinSecFromMs_ToString, GetTodayStringUnderscore, IsValuableArrayOrString, RemoveEmptyAndFalsyFromObject, SafeValue, ToCanPrint } from "./UtilsTS";
 import { FirebaseDatabase_IncreaseNumberAsync, FirebaseDatabase_SetValueAsync } from "./Firebase/FirebaseDatabase";
 import PostHog from "posthog-react-native";
-import { GetAndSetInstalledDaysCountAsync, GetAndSetLastFreshlyOpenAppToNowAsync, GetAndSetLastInstalledVersionAsync, GetAndClearPressUpdateObjectAsync, GetTotalOpenAppCountAsync } from "./AppStatePersistence";
+import { GetAndSetInstalledDaysCountAsync, GetAndSetLastFreshlyOpenAppToNowAsync, GetAndSetLastInstalledVersionAsync, GetAndClearPressUpdateObjectAsync, SetupAppStateAndStartTrackingParams } from "./AppStatePersistence";
 import { UserID } from "./UserID";
 import { VersionAsNumber } from "./CommonConstants";
 import { GetSplashTime } from "./Components/SplashScreen";
@@ -317,11 +317,9 @@ export const TrackOnUseEffectOnceEnterAppAsync = async (): Promise<number> => {
     ///////////////////
 
     const [
-        totalOpenCount,
         installedDaysCount,
         streakHandle
     ] = await Promise.all([
-        GetTotalOpenAppCountAsync(),
         GetAndSetInstalledDaysCountAsync(),
         SetStreakAsync(AppStreakId)
     ])
@@ -337,7 +335,6 @@ export const TrackOnUseEffectOnceEnterAppAsync = async (): Promise<number> => {
             splashTime: GetSplashTime(),
             currentStreak: streakHandle.todayStreak.currentStreak,
             bestStreak: streakHandle.todayStreak.bestStreak,
-            totalOpenCount,
             installedDaysCount,
         } as Record<string, number>
     )
@@ -435,6 +432,14 @@ export const TrackOnNewlyInstallAsync = async () => {
 /**
  * tracks: food_old_user, food_old_user_num
  */
+export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
+    totalOpenApp: number,
+    openTodaySoFar: number,
+    setupParams: SetupAppStateAndStartTrackingParams
+) => {
+
+}
+
 export const TrackFirstOpenOfDayOldUserAsync = async () => {
     /////////////////////
     // food_old_user (only strings)
@@ -459,11 +464,9 @@ export const TrackFirstOpenOfDayOldUserAsync = async () => {
     const event2 = 'food_old_user_num'
 
     const [
-        totalOpenCount,
         installedDaysCount,
         streakHandle,
     ] = await Promise.all([
-        GetTotalOpenAppCountAsync(),
         GetAndSetInstalledDaysCountAsync(),
         SetStreakAsync(AppStreakId)
     ])
@@ -474,7 +477,6 @@ export const TrackFirstOpenOfDayOldUserAsync = async () => {
         ],
         {
             installedDaysCount,
-            totalOpenCount,
             currentStreak: streakHandle.todayStreak.currentStreak,
             bestStreak: streakHandle.todayStreak.bestStreak,
         } as Record<string, number>
