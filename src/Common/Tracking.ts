@@ -201,7 +201,7 @@ export const TrackingAsync = async ( // main
         (!appConfig || !appConfig.tracking || appConfig.tracking.enableAptabase !== false) &&
         (!finalAptabaseIgnoredEventNames.includes(eventName))
 
-    console.log(shouldTrackAptabase, inited, finalAptabaseIgnoredEventNames);
+    // console.log(shouldTrackAptabase, inited, finalAptabaseIgnoredEventNames);
 
     if (shouldTrackAptabase) {
         AptabaseTrack(eventName, trackingValuesObject)
