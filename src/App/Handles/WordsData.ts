@@ -5,7 +5,7 @@ import { StorageKey_UsedWordIndex } from "../Constants/StorageKey"
 import { Word } from "../Types"
 import { GetPopularityLevelIndexAsync } from "./Settings"
 
-const IsLog = true
+const IsLog = __DEV__
 
 export const WordDataFirebaseFileUrls = [
     'https://firebasestorage.googleapis.com/v0/b/vocanoti.appspot.com/o/words%2Findex-1.json?alt=media&token=bf8256ea-7e43-4f7b-84fe-8cfb111444c8',

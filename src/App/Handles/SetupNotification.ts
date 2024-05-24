@@ -13,7 +13,7 @@ import { HandlingType } from "../Screens/SetupScreen";
 import { HandleError } from "../../Common/Tracking";
 import { TranslatedResult } from "../../Common/TranslationApis/TranslationLanguages";
 
-const IsLog = true
+const IsLog = __DEV__
 
 type SavedAndWordData = {
     savedData: SavedWordData,

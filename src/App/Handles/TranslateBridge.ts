@@ -11,7 +11,7 @@ import { ToWordLangString } from "./AppUtils"
 import { AddOrUpdateLocalizedWordsToDbAsync } from "./LocalizedWordsTable"
 import { GetSourceLangAsync, GetTranslationServiceAsync } from "./Settings"
 
-const IsLog = true
+const IsLog = __DEV__
 
 type GetTranslationServiceSuitResult = {
     key: string,
