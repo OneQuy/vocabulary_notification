@@ -11,7 +11,7 @@ import { GetBooleanAsync, GetDateAsync, GetDateAsync_IsValueExistedAndIsToday, G
 import { VersionAsNumber } from "./CommonConstants"
 import { StorageKey_FirstTimeInstallTick, StorageKey_LastCheckFirstOpenOfTheDay, StorageKey_LastFreshlyOpenApp, StorageKey_LastInstalledVersion, StorageKey_NeedToShowWhatsNewFromVer, StorageKey_OpenAppOfDayCount, StorageKey_OpenAppOfDayCountForDate, StorageKey_OpenAppTotalCount, StorageKey_OpenAt, StorageKey_PressUpdateObject, StorageKey_TrackedNewlyInstall } from "../App/Constants/StorageKey"
 import PostHog from "posthog-react-native"
-import { InitTrackingAsync, TrackFirstOpenOfDayOldUserAsync, TrackOnActiveOrUseEffectOnceWithGapAsync, TrackOnNewlyInstallAsync, TrackOnUseEffectOnceEnterAppAsync, TrackOpenOfDayCount, TrackSimpleWithParam } from "./Tracking"
+import { InitTrackingAsync, TrackFirstOpenOfDayOldUserAsync, TrackOnActiveOrUseEffectOnceWithGapAsync, TrackOnNewlyInstallAsync, CheckTrackUpdatedAppAsync, TrackOpenOfDayCount, TrackSimpleWithParam } from "./Tracking"
 import { AlertAsync, DateDiff_InHour_WithNow, DateDiff_WithNow, GetDayHourMinSecFromMs_ToString, IsToday, IsValuableArrayOrString } from "./UtilsTS"
 import { ClearUserForcePremiumDataAsync, GetUserForcePremiumDataAsync } from "./UserMan"
 import { SubscribedData } from "./SpecificType"
@@ -60,10 +60,9 @@ export const SetupAppStateAndStartTrackingAsync = async (setupParams: SetupAppSt
 
     await InitTrackingAsync(setupParams.posthog)
 
-    // on use effect once
-    // tracks: freshly_open_app, last_freshly_open, updated_app
+    // tracks: updated_app
 
-    const lastInstalledVersion = await TrackOnUseEffectOnceEnterAppAsync()
+    const lastInstalledVersion = await CheckTrackUpdatedAppAsync()
 
     // what's new
 

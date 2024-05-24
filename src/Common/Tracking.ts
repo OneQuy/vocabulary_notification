@@ -305,13 +305,11 @@ export const TrackOpenOfDayCount = (count: number) => {
 /**
  * only called once (when freshly open app)
  * 
- * this track: freshly_open_app, last_freshly_open, updated_app
- * 
  * after call this, should call next: CheckAndShowAlertWhatsNewAsync
  * 
  * @returns lastInstalledVersion (number or NaN) to show What's new
  */
-export const TrackOnUseEffectOnceEnterAppAsync = async (): Promise<number> => {
+export const CheckTrackUpdatedAppAsync = async (): Promise<number> => {
     ///////////////////
     // updated_app
     ///////////////////
