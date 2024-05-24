@@ -407,9 +407,21 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
 
     const openAppEvent_Object: Record<string, string> = {
         userId: UserID(),
-        lastOpenCached: distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs <= 0 ? '0s' : GetDayHourMinSecFromMs_ToString(distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs),
         purchased: setupParams.subscribedData?.id ?? 'lol',
         purchasedDays: setupParams.subscribedData ? DateDiff_WithNow(setupParams.subscribedData.purchasedTick).toFixed(1) : 'hmmm',
+    }
+
+    if (distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs > 0)
+        openAppEvent_Object.lastActiveOpen = GetDayHourMinSecFromMs_ToString(distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs)
+
+    if (isUseEffectOnce) { // last_freshly_open
+        const [
+            lastFreshlyOpenAppToNow,
+        ] = await Promise.all([
+            GetAndSetLastFreshlyOpenAppToNowAsync(),
+        ])
+
+        openAppEvent_Object.lastFreshlyOpen = lastFreshlyOpenAppToNow
     }
 
     await TrackingAsync(openAppEvent,
@@ -417,16 +429,33 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
         openAppEvent_Object
     )
 
-    // /////////////////////
-    // open_app_num
-    // /////////////////////
+    ///////////////////////////////
+    // open_app_num (only numbers)
+    ///////////////////////////////
 
     const openAppNumEvent = 'open_app_num'
 
     const openAppNumEvent_Object: Record<string, number> = {
         totalOpenApp,
         openTodaySoFar,
-        lastOpenCached: FromMsTo_TodayDays(distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs),
+    }
+
+    if (distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs > 0)
+        openAppNumEvent_Object.lastActiveOpen = FromMsTo_TodayDays(distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs)
+
+    if (isUseEffectOnce) { // freshly_open_app
+        const [
+            installedDaysCount,
+            streakHandle
+        ] = await Promise.all([
+            GetAndSetInstalledDaysCountAsync(),
+            SetStreakAsync(AppStreakId)
+        ])
+
+        openAppNumEvent_Object.splashTime = GetSplashTime()
+        openAppNumEvent_Object.currentStreak = streakHandle.todayStreak.currentStreak
+        openAppNumEvent_Object.bestStreak = streakHandle.todayStreak.bestStreak
+        openAppNumEvent_Object.installedDaysCount = installedDaysCount
     }
 
     await TrackingAsync(openAppNumEvent,
