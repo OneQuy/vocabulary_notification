@@ -941,6 +941,10 @@ export const GetDayHourMinSecFromMs_ToString = (
     return s
 }
 
+export const FromMsTo_TodayDays = (ms: number): number => {
+    return ms / 1000 / 60 / 60 / 24
+}
+
 export const GetDayHourMinSecFromMs = (ms: number): [number, number, number, number] => {
     let sec = ms / 1000
 
