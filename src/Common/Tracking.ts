@@ -329,7 +329,6 @@ export const TrackOnUseEffectOnceEnterAppAsync = async (): Promise<number> => {
     await TrackingAsync(event,
         [
             `total/${event}`,
-            // `events/${event}/#d`,
         ],
         { // only track numbers, should NOT put string values here.
             splashTime: GetSplashTime(),
@@ -411,7 +410,7 @@ export const TrackOnNewlyInstallAsync = async () => {
     await TrackingAsync(event,
         [
             `total/${event}`,
-            // `events/${event}/#d`,
+            `date/${event}/#d`,
         ],
         {
             userID: UserID(),
