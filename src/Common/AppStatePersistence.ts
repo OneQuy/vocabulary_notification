@@ -32,7 +32,7 @@ const HowLongToReloadRemoteConfigInHour = 6 // hour
 
 var inited = false
 var isHandling_CheckAndTriggerFirstOpenAppOfTheDayAsync = false
-var lastFireOnActiveOrOnceUseEffectWithCheckDuplicate = 0
+var lastFireOnActiveOrOnceUseEffectWithGap = 0
 var isNewlyInstallThisOpen = false
 var setupParamsInternal: SetupAppStateAndStartTrackingParams | undefined = undefined
 
@@ -273,14 +273,14 @@ const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async (setupParams: SetupAp
     // CHECK
     ///////////////////////////////
 
-    const distanceMs = Date.now() - lastFireOnActiveOrOnceUseEffectWithCheckDuplicate
+    const distanceMs = Date.now() - lastFireOnActiveOrOnceUseEffectWithGap
 
     const minFromLastCall = distanceMs / 1000 / 60
 
     if (minFromLastCall < HowLongInMinutesToCount2TimesUseAppSeparately)
         return
 
-    lastFireOnActiveOrOnceUseEffectWithCheckDuplicate = Date.now()
+    lastFireOnActiveOrOnceUseEffectWithGap = Date.now()
 
     ///////////////////////////////
     // HANDLE HERE
@@ -323,6 +323,7 @@ const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async (setupParams: SetupAp
     await TrackOnActiveOrUseEffectOnceWithGapAsync(
         totalOpenApp,
         openTodaySoFar,
+        distanceMs,
         setupParams
     )
 }

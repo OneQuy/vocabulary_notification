@@ -24,7 +24,7 @@ import Aptabase, { trackEvent as AptabaseTrack } from "@aptabase/react-native";
 import { IsDev } from "./IsDev";
 import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig";
 import { ApatabaseKey_Dev, ApatabaseKey_Production } from "../../Keys"
-import { DateDiff_WithNow, DayName, FilterOnlyLetterAndNumberFromString, GetDayHourMinSecFromMs_ToString, GetTodayStringUnderscore, IsValuableArrayOrString, RemoveEmptyAndFalsyFromObject, SafeValue, ToCanPrint } from "./UtilsTS";
+import { DateDiff_WithNow, DayName, FilterOnlyLetterAndNumberFromString, FromMsTo_TodayDays, GetDayHourMinSecFromMs_ToString, GetTodayStringUnderscore, IsValuableArrayOrString, RemoveEmptyAndFalsyFromObject, SafeValue, ToCanPrint } from "./UtilsTS";
 import { FirebaseDatabase_IncreaseNumberAsync, FirebaseDatabase_SetValueAsync } from "./Firebase/FirebaseDatabase";
 import PostHog from "posthog-react-native";
 import { GetAndSetInstalledDaysCountAsync, GetAndSetLastFreshlyOpenAppToNowAsync, GetAndSetLastInstalledVersionAsync, GetAndClearPressUpdateObjectAsync, SetupAppStateAndStartTrackingParams } from "./AppStatePersistence";
@@ -442,6 +442,7 @@ export const TrackOnNewlyInstallAsync = async () => {
 export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
     totalOpenApp: number,
     openTodaySoFar: number,
+    distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs: number,
     setupParams: SetupAppStateAndStartTrackingParams
 ) => {
     /////////////////////
@@ -454,6 +455,7 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
         [],
         {
             userId: UserID(),
+            lastOpen: GetDayHourMinSecFromMs_ToString(distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs),
             purchased: setupParams.subscribedData?.id ?? 'lol',
             purchasedDays: setupParams.subscribedData ? DateDiff_WithNow(setupParams.subscribedData.purchasedTick).toFixed(1) : 'hmmm',
         } as Record<string, string>
@@ -470,6 +472,7 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
         {
             totalOpenApp,
             openTodaySoFar,
+            lastOpen: FromMsTo_TodayDays(distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs),
         } as Record<string, number>
     )
 }
