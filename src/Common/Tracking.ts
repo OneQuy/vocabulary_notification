@@ -415,7 +415,7 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
     if (distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs > 0)
         objectString.lastActiveOpen = GetDayHourMinSecFromMs_ToString(distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs)
 
-    if (isUseEffectOnce) { // last_freshly_open
+    if (isUseEffectOnce) { // freshly_open
         const [
             lastFreshlyOpenAppToNow,
         ] = await Promise.all([
@@ -423,7 +423,11 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
         ])
 
         objectString.lastFreshlyOpen = lastFreshlyOpenAppToNow
+
+        firebasePathsForStringTracking.push(`total/open_freshly`)
     }
+    else // active open
+        firebasePathsForStringTracking.push(`total/open_active`)
 
     await TrackingAsync(
         openAppEvent,
