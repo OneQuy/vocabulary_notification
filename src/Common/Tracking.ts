@@ -413,8 +413,12 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
         purchasedDays: setupParams.subscribedData ? DateDiff_WithNow(setupParams.subscribedData.purchasedTick).toFixed(1) : 'hmmm',
     }
 
-    if (openAtHour)
+    const firebasePathsForStringTracking: string[] = []
+
+    if (openAtHour) {
         objectString.openAtHour = openAtHour
+        firebasePathsForStringTracking.push(`total/open_hour/${openAtHour}`)
+    }
 
     if (distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs > 0)
         objectString.lastActiveOpen = GetDayHourMinSecFromMs_ToString(distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs)
@@ -429,8 +433,9 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
         objectString.lastFreshlyOpen = lastFreshlyOpenAppToNow
     }
 
-    await TrackingAsync(openAppEvent,
-        [],
+    await TrackingAsync(
+        openAppEvent,
+        firebasePathsForStringTracking,
         objectString
     )
 
@@ -447,7 +452,7 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
 
     if (distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs > 0)
         objectNumber.lastActiveOpen = FromMsTo_TodayDays(distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs)
-    
+
     if (IsNumType(loadedConfigLastTimeInHour))
         objectNumber.lastLoadedConfigInHour = RoundWithDecimal(loadedConfigLastTimeInHour)
 
@@ -466,7 +471,8 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
         objectNumber.installedDaysCount = installedDaysCount
     }
 
-    await TrackingAsync(openAppNumEvent,
+    await TrackingAsync(
+        openAppNumEvent,
         [],
         objectNumber
     )
