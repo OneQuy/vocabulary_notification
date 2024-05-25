@@ -5,7 +5,7 @@ import { AnimatedSimpleSpring, AnimatedSimpleTiming, DateDiff_InHour_WithNow, Sh
 import { GetStaticFileUrl } from '../RemoteConfig'
 import ImageBackgroundOrView from './ImageBackgroundOrView'
 
-const IsLog = true
+const IsLog = false
 
 const JsonUrl = 'https://firebasestorage.googleapis.com/v0/b/onequyappgeneral.appspot.com/o/onequy_apps.json?alt=media&token=f674f251-106d-45b3-97d9-365f7cd6e6a7'
 
