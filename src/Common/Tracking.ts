@@ -238,6 +238,11 @@ export const TrackingAsync = async ( // main
         appConfig.tracking.enablePosthog !== false
 
     if (shouldTrackPosthog && posthog) {
+        if (!trackingValuesObject)
+            trackingValuesObject = {}
+
+        trackingValuesObject.isDev = IsDev()
+        
         posthog.capture(eventName, trackingValuesObject)
 
         if (IsLog) {
@@ -445,7 +450,7 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
 
     if (IsNumType(loadedConfigLastTimeInHour))
         objectNumber.lastLoadedConfigInHour = RoundWithDecimal(loadedConfigLastTimeInHour)
-    
+
     if (IsNumType(openOfLastDayCount))
         objectNumber.openOfLastDayCount = openOfLastDayCount
 
