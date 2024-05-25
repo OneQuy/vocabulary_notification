@@ -393,9 +393,7 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
     loadedConfigLastTimeInHour: number | undefined,
     openOfLastDayCount: number | undefined,
 ) => {
-    //////////////////////////
-    // open_app (only strings)
-    //////////////////////////
+    // open_app (only strings) ////////////////////////
 
     const openAppEvent = 'open_app'
 
@@ -433,9 +431,7 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
         objectString
     )
 
-    ///////////////////////////////
-    // open_app_num (only numbers)
-    ///////////////////////////////
+    // open_app_num (only numbers) /////////////////////////////
 
     const openAppNumEvent = 'open_app_num'
 
@@ -453,7 +449,7 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
     if (IsNumType(openOfLastDayCount))
         objectNumber.openOfLastDayCount = openOfLastDayCount
 
-    if (isUseEffectOnce) { // freshly_open_app
+    if (isUseEffectOnce) { // freshly_open
         const [
             installedDaysCount,
             streakHandle
