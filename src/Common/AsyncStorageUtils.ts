@@ -17,8 +17,11 @@ export const GetObjectAsync = async <T extends object>(key: string, defaultValue
     }
 }
 
-export const SetObjectAsync = async  <T extends object>(key: string, value: T): Promise<void> => {
-    await AsyncStorage.setItem(key, JSON.stringify(value))
+export const SetObjectAsync = async  <T extends object>(key: string, value: T | undefined): Promise<void> => {
+    if (value)
+        await AsyncStorage.setItem(key, JSON.stringify(value))
+    else
+        await AsyncStorage.removeItem(key)
 }
 
 // boolean =================

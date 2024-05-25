@@ -3,7 +3,7 @@
 // Created on 23 may 2024 (Coding Vocaby)
 
 import { useCallback, useEffect, useState } from 'react'
-import { GetObjectAsync } from '../AsyncStorageUtils'
+import { GetObjectAsync, SetObjectAsync } from '../AsyncStorageUtils'
 import { AppContextType, SubscribedData } from '../SpecificType'
 import { StorageKey_SubscribeData } from '../../App/Constants/StorageKey'
 import PostHog from 'posthog-react-native'
@@ -11,6 +11,7 @@ import { SetupAppStateAndStartTrackingAsync } from '../AppStatePersistence'
 import { DefaultAppContext } from '../SpecificConstants'
 import { Alert } from 'react-native'
 import useLocalText from '../../App/Hooks/useLocalText'
+import { AlertAsync } from '../UtilsTS'
 
 const useSpecificAppContext = (posthog: PostHog) => {
     const [appContextValue, set_appContextValue] = useState<AppContextType>(DefaultAppContext)
@@ -28,10 +29,12 @@ const useSpecificAppContext = (posthog: PostHog) => {
         }
         )
 
+        await SetObjectAsync(StorageKey_SubscribeData, subscribedData)
+
         // alert success
 
         if (subscribedData) {
-            Alert.alert('Wohoo!', texts.purchase_success) // alert whenever purchase success or FORCE SET PREMIUM AFTER SPLASH-SCREEN
+            await AlertAsync('Wohoo!', texts.purchase_success) // alert whenever purchase success or FORCE SET PREMIUM AFTER SPLASH-SCREEN
         }
     }, [texts])
 
