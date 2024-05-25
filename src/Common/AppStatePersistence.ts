@@ -75,17 +75,17 @@ export const SetupAppStateAndStartTrackingAsync = async (setupParams: SetupAppSt
     //      + open_app (open of day count, total open count, last open app, isPremium)
     // force premium
 
-    await OnActiveOrUseEffectOnceAsync(setupParams, true)
+    await OnActiveOrUseEffectOnceAsync(setupParams, true, undefined)
 }
 
 const OnActiveAsync = async (setupParams: SetupAppStateAndStartTrackingParams) => {
     // check to show warning alert
 
-    CheckReloadRemoteConfigAsync()
+    const loadedConfigLastTimeInHour = CheckReloadRemoteConfig()
 
     // onActive or OnceUseEffect
 
-    OnActiveOrUseEffectOnceAsync(setupParams, false)
+    await OnActiveOrUseEffectOnceAsync(setupParams, false, loadedConfigLastTimeInHour)
 }
 
 const OnBackgroundAsync = async () => {
@@ -224,25 +224,21 @@ const OnStateChanged = (state: AppStateStatus) => {
 }
 
 /** reload (app remote config + alerts) if app re-active after a period `HowLongToReloadRemoteConfigInHour` */
-const CheckReloadRemoteConfigAsync = async () => {
-    ////////////////////////
-    // CHECK
-    ////////////////////////
+const CheckReloadRemoteConfig = (): undefined | number => {
+    // CHECK ////////////////
 
     const loadedConfigLastTimeInHour = DateDiff_InHour_WithNow(GetLastTimeFetchedSuccessAndHandledAlerts())
 
     if (loadedConfigLastTimeInHour < HowLongToReloadRemoteConfigInHour) {
         console.log('[CheckReloadRemoteConfigAsync] no check reload cuz checked recently');
-        return // no need to reload
+        return undefined // no need to reload
     }
 
-    ////////////////////////
-    // RELOAD HERE!
-    ////////////////////////
+    // RELOAD HERE /////////
 
-    TrackSimpleWithParam('reloaded_remote_config', loadedConfigLastTimeInHour.toFixed(1))
+    GetRemoteConfigWithCheckFetchAsync(false, true)
 
-    await GetRemoteConfigWithCheckFetchAsync(false, true)
+    return loadedConfigLastTimeInHour
 }
 
 /**
@@ -253,6 +249,7 @@ const CheckReloadRemoteConfigAsync = async () => {
 const OnActiveOrUseEffectOnceAsync = async (
     setupParams: SetupAppStateAndStartTrackingParams,
     isUseEffectOnce: boolean,
+    loadedConfigLastTimeInHour: number | undefined
 ) => {
     // first Open App Of The Day
 
@@ -260,7 +257,7 @@ const OnActiveOrUseEffectOnceAsync = async (
 
     // callbacks
 
-    await CheckFireOnActiveOrUseEffectOnceWithGapAsync(setupParams, isUseEffectOnce)
+    await CheckFireOnActiveOrUseEffectOnceWithGapAsync(setupParams, isUseEffectOnce, loadedConfigLastTimeInHour)
 }
 
 /**
@@ -273,6 +270,7 @@ const OnActiveOrUseEffectOnceAsync = async (
 const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async (
     setupParams: SetupAppStateAndStartTrackingParams,
     isUseEffectOnce: boolean,
+    loadedConfigLastTimeInHour: number | undefined
 ) => {
     // CHECK /////////////////////////////
 
@@ -312,7 +310,7 @@ const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async (
 
     const totalOpenApp = await IncreaseNumberAsync(StorageKey_OpenAppTotalCount)
 
-    // track current time (hour)
+    // get current time (hour)
 
     const { date, number } = await GetPairNumberIntAndDateAsync(StorageKey_OpenAt, -1)
     const currentHour = new Date().getHours()
@@ -332,7 +330,8 @@ const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async (
         distanceMs === now ? 0 : distanceMs,
         setupParams,
         isUseEffectOnce,
-        openAtHour
+        openAtHour,
+        loadedConfigLastTimeInHour
     )
 }
 

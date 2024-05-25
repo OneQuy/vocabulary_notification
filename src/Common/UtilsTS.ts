@@ -354,7 +354,7 @@ export const IsChar = (c: string) => {
         return false
 }
 
-export const IsNumType = (o: any) => {
+export const IsNumType = (o: any): o is number => {
     return typeof o === 'number' && !Number.isNaN(o)
 }
 
@@ -964,6 +964,14 @@ export const GetDayHourMinSecFromMs = (ms: number): [number, number, number, num
 }
 
 // number ---------------------------
+
+/**
+ * decimalCount = 1 default
+ */
+export function RoundWithDecimal(value: number, decimalCount = 1) : number {
+    var multiplier = Math.pow(10, decimalCount);
+    return Math.round(value * multiplier) / multiplier;
+}
 
 export function RandomBool() {
     return Math.random() > 0.5
