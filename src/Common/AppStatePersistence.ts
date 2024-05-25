@@ -274,9 +274,7 @@ const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async (
     setupParams: SetupAppStateAndStartTrackingParams,
     isUseEffectOnce: boolean,
 ) => {
-    ///////////////////////////////
-    // CHECK
-    ///////////////////////////////
+    // CHECK /////////////////////////////
 
     const now = Date.now()
     const distanceMs = now - lastFireOnActiveOrOnceUseEffectWithGap
@@ -288,9 +286,7 @@ const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async (
 
     lastFireOnActiveOrOnceUseEffectWithGap = now
 
-    ///////////////////////////////
-    // HANDLE HERE
-    ///////////////////////////////
+    // HANDLE HERE /////////////////////////////
 
     // open of day count
 
@@ -325,6 +321,8 @@ const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async (
         TrackSimpleWithParam('open_at', currentHour + 'h')
         SetPairNumberIntAndDateAsync_Now(StorageKey_OpenAt, currentHour)
     }
+
+    // open app
 
     await TrackOnActiveOrUseEffectOnceWithGapAsync(
         totalOpenApp,
