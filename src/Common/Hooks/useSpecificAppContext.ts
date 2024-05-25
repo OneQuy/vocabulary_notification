@@ -9,7 +9,6 @@ import { StorageKey_SubscribeData } from '../../App/Constants/StorageKey'
 import PostHog from 'posthog-react-native'
 import { SetupAppStateAndStartTrackingAsync } from '../AppStatePersistence'
 import { DefaultAppContext } from '../SpecificConstants'
-import { Alert } from 'react-native'
 import useLocalText from '../../App/Hooks/useLocalText'
 import { AlertAsync } from '../UtilsTS'
 

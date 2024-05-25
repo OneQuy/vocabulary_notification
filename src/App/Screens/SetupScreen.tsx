@@ -31,7 +31,7 @@ import { usePostHog } from 'posthog-react-native'
 import { AppContext } from '../../Common/SpecificConstants'
 import useSpecificAppContext from '../../Common/Hooks/useSpecificAppContext'
 
-const IsLog = __DEV__
+const IsLog = false
 
 type SubView =
   'setup' |
