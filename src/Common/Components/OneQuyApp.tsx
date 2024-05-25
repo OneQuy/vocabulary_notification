@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, ColorValue, TouchableOpacity, Dimensions, Linking, Platform, Animated, Share, ActivityIndicator } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DownloadFile_GetJsonAsync, ReadJsonFileAsync } from './../FileUtils'
-import { AnimatedSimpleSpring, AnimatedSimpleTiming, ShuffleArray, TempDirName, ToCanPrint } from './../UtilsTS'
+import { AnimatedSimpleSpring, AnimatedSimpleTiming, DateDiff_InHour_WithNow, ShuffleArray, TempDirName, ToCanPrint } from './../UtilsTS'
 import { GetStaticFileUrl } from '../RemoteConfig'
 import ImageBackgroundOrView from './ImageBackgroundOrView'
 
@@ -9,7 +9,10 @@ const IsLog = true
 
 const JsonUrl = 'https://firebasestorage.googleapis.com/v0/b/onequyappgeneral.appspot.com/o/onequy_apps.json?alt=media&token=f674f251-106d-45b3-97d9-365f7cd6e6a7'
 
+
 const LocalPath = TempDirName + '/onequy_apps.json'
+
+const HourToForceReload = 24 // hour
 
 const Window = Dimensions.get('window')
 
@@ -27,6 +30,7 @@ type OneQuyAppData = {
 
 var cachedJson: undefined | OneQuyAppData[] = undefined
 var cachedCurrentAppIdx = 0
+var lastLoadedTick = 0
 
 /**
  * ## Usage:
@@ -225,14 +229,20 @@ ${currentApp.description}
         // load cache
 
         if (cachedJson) {
-            if (IsLog)
-                console.log('[OneQuyApp-checkLoad] cached');
+            if (DateDiff_InHour_WithNow(lastLoadedTick) < HourToForceReload) {
+                if (IsLog)
+                    console.log('[OneQuyApp-checkLoad] loaded from cached', 'DateDiff_InHour_WithNow(lastLoadedTick)', DateDiff_InHour_WithNow(lastLoadedTick));
 
-            set_listApps(cachedJson)
+                set_listApps(cachedJson)
 
-            set_currentAppIdx(t => (cachedJson && t < cachedJson.length - 1) ? t + 1 : 0)
+                set_currentAppIdx(t => (cachedJson && t < cachedJson.length - 1) ? t + 1 : 0)
 
-            return
+                return
+            }
+            else {
+                if (IsLog)
+                    console.log('[OneQuyApp-checkLoad] reset cached. force reload');
+            }
         }
 
         // load local
@@ -246,9 +256,6 @@ ${currentApp.description}
         const fileDownloadUrl = GetStaticFileUrl('onequyApps', JsonUrl)
 
         if (isSuccessLoadedLocal) {
-            if (onEvent)
-                onEvent('loaded_local_success', '')
-
             // sub download
 
             if (IsLog)
@@ -261,7 +268,7 @@ ${currentApp.description}
                 false
             ).then((jsonRes) => {
                 if (onEvent)
-                    onEvent('sub_downloaded' + (Array.isArray(jsonRes.json) ? '_success' : '_fail'), '')
+                    onEvent('loaded_local_sub_downloaded' + (Array.isArray(jsonRes.json) ? '_success' : '_fail'), '')
             })
         }
 
@@ -297,13 +304,15 @@ ${currentApp.description}
 
         // result
 
-        if (Array.isArray(dataArr)) {
+        if (Array.isArray(dataArr)) { // loaded success
+            lastLoadedTick = Date.now()
+
             // cachedJson = dataArr
             cachedJson = dataArr.filter(i => i.appName !== excludeAppName)
 
             ShuffleArray(cachedJson)
             set_listApps(cachedJson)
-        }
+        } // loaded fail
         else {
             if (onEvent)
                 onEvent('fail_to_load', '')
@@ -329,9 +338,6 @@ ${currentApp.description}
     }, [currentApp])
 
     useEffect(() => {
-        if (onEvent)
-            onEvent('appear', '')
-
         checkLoad()
     }, [])
 
