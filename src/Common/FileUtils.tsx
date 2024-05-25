@@ -293,7 +293,7 @@ export function GetFileNameAndExtension(path: string) {
  }
 ```
  */
-export async function DownloadFile_GetJsonAsync(
+export async function DownloadFile_GetJsonAsync<T>(
   url: string,
   saveLocalPath: string,
   isRLP = true,
@@ -318,14 +318,14 @@ export async function DownloadFile_GetJsonAsync(
     if (writeFileResObj === null) // success
     {
       return {
-        json: res.json,
+        json: res.json as T,
         error: null
       };
     }
     else // failed
     {
       return {
-        json: res.json,
+        json: res.json as T,
         error: writeFileResObj
       };
     }
