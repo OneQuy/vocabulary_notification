@@ -11,7 +11,7 @@ import { GetBooleanAsync, GetDateAsync, GetDateAsync_IsValueExistedAndIsToday, G
 import { VersionAsNumber } from "./CommonConstants"
 import { StorageKey_FirstTimeInstallTick, StorageKey_LastCheckFirstOpenOfTheDay, StorageKey_LastFreshlyOpenApp, StorageKey_LastInstalledVersion, StorageKey_NeedToShowWhatsNewFromVer, StorageKey_OpenAppOfDayCount, StorageKey_OpenAppOfDayCountForDate, StorageKey_OpenAppTotalCount, StorageKey_OpenAt, StorageKey_PressUpdateObject, StorageKey_TrackedNewlyInstall } from "../App/Constants/StorageKey"
 import PostHog from "posthog-react-native"
-import { InitTrackingAsync, TrackFirstOpenOfDayOldUserAsync, TrackOnActiveOrUseEffectOnceWithGapAsync, TrackOnNewlyInstallAsync, CheckTrackUpdatedAppAsync, TrackOpenOfDayCount, TrackSimpleWithParam } from "./Tracking"
+import { InitTrackingAsync, TrackFirstOpenOfDayOldUserAsync, TrackOnActiveOrUseEffectOnceWithGapAsync, TrackOnNewlyInstallAsync, CheckTrackUpdatedAppAsync, TrackSimpleWithParam } from "./Tracking"
 import { AlertAsync, DateDiff_InHour_WithNow, DateDiff_WithNow, GetDayHourMinSecFromMs_ToString, IsToday, IsValuableArrayOrString } from "./UtilsTS"
 import { ClearUserForcePremiumDataAsync, GetUserForcePremiumDataAsync } from "./UserMan"
 import { SubscribedData } from "./SpecificType"
@@ -290,13 +290,14 @@ const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async (
 
     const savedCount = await GetNumberIntAsync(StorageKey_OpenAppOfDayCount, 0)
     let openTodaySoFar = 0
-
+    let openOfLastDayCount: number | undefined = undefined
+    
     if (await GetDateAsync_IsValueExistedAndIsToday(StorageKey_OpenAppOfDayCountForDate)) { // already tracked yesterday, just inc today
         openTodaySoFar = savedCount + 1
     }
     else { // need to track for yesterday
         if (savedCount > 0) {
-            TrackOpenOfDayCount(savedCount)
+            openOfLastDayCount = savedCount
         }
 
         SetDateAsync_Now(StorageKey_OpenAppOfDayCountForDate)
@@ -331,7 +332,8 @@ const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async (
         setupParams,
         isUseEffectOnce,
         openAtHour,
-        loadedConfigLastTimeInHour
+        loadedConfigLastTimeInHour,
+        openOfLastDayCount
     )
 }
 

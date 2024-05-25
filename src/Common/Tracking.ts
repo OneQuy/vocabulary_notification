@@ -289,19 +289,6 @@ export const TrackOneQuyApps = (eventOneQuyApp: string, currentAppName: string) 
     )
 }
 
-export const TrackOpenOfDayCount = (count: number) => {
-    const event = 'open_of_day_count'
-
-    TrackingAsync(event,
-        [
-            `total/${event}/${count}_times`,
-        ],
-        {
-            count
-        }
-    )
-}
-
 /**
  * only called once (when freshly open app)
  * 
@@ -399,7 +386,8 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
     setupParams: SetupAppStateAndStartTrackingParams,
     isUseEffectOnce: boolean,
     openAtHour: string | undefined,
-    loadedConfigLastTimeInHour: number | undefined
+    loadedConfigLastTimeInHour: number | undefined,
+    openOfLastDayCount: number | undefined,
 ) => {
     //////////////////////////
     // open_app (only strings)
@@ -457,6 +445,9 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
 
     if (IsNumType(loadedConfigLastTimeInHour))
         objectNumber.lastLoadedConfigInHour = RoundWithDecimal(loadedConfigLastTimeInHour)
+    
+    if (IsNumType(openOfLastDayCount))
+        objectNumber.openOfLastDayCount = openOfLastDayCount
 
     if (isUseEffectOnce) { // freshly_open_app
         const [
