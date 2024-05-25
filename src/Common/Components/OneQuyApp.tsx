@@ -311,7 +311,10 @@ ${currentApp.description}
             cachedJson = dataArr.filter(i => i.appName !== excludeAppName)
 
             ShuffleArray(cachedJson)
+
             set_listApps(cachedJson)
+
+            set_currentAppIdx(i => (cachedJson && i < cachedJson.length) ? i : 0)
         } // loaded fail
         else {
             if (onEvent)
