@@ -7,7 +7,6 @@ import { SplashScreenLoader } from './src/Common/SplashScreenLoader'
 import SplashScreen from './src/Common/Components/SplashScreen'
 import { PostHogProvider } from 'posthog-react-native'
 import { PostHogKey_Production } from './Keys'
-import { IsDev } from './src/Common/IsDev'
 
 const App = () => {
   const { handled } = useAsyncHandle(async () => SplashScreenLoader());
@@ -18,16 +17,11 @@ const App = () => {
     })
   }, [])
 
-  // useEffect(() => {
-  //   (async () => {
-  //   })()
-  // }, [])
-
   if (!handled)
     return <SplashScreen />
 
   return (
-    <PostHogProvider apiKey={PostHogKey_Production} debug={IsDev()}>
+    <PostHogProvider apiKey={PostHogKey_Production} debug={false}>
       <SafeAreaView style={style.master}>
         <StatusBar backgroundColor={Color_BG} barStyle={'light-content'} />
         <SetupScreen />
