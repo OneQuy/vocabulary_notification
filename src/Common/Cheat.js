@@ -5,8 +5,6 @@ var dataObject = __DEV__ ?
     undefined
 
 export function Cheat(key, defaultValue) {
-    console.log(defaultValue);
-
     if (!dataObject)
         return defaultValue;
 
