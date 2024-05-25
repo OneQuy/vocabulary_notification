@@ -275,12 +275,12 @@ export const TrackSimpleWithParam = (event: string, value: string) => { // sub
 export const TrackOneQuyApps = (eventOneQuyApp: string, currentAppName: string) => {
     const event = 'onequy_apps'
 
-    const firebaseArr = [
-        `total/${event}/` + eventOneQuyApp,
-    ]
+    const firebaseArr = []
 
     if (IsValuableArrayOrString(currentAppName))
         firebaseArr.push(`total/${event}/${eventOneQuyApp}/${FilterOnlyLetterAndNumberFromString(currentAppName)}`)
+    else
+        firebaseArr.push(`total/${event}/` + eventOneQuyApp)
 
     TrackingAsync(event,
         firebaseArr,
@@ -443,7 +443,7 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
         totalOpenApp,
         openTodaySoFar,
     }
-   
+
     const firebasePathsForNumberTracking: string[] = []
 
     if (distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs > 0)
