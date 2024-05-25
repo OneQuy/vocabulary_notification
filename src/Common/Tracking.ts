@@ -32,8 +32,9 @@ import { UserID } from "./UserID";
 import { VersionAsNumber } from "./CommonConstants";
 import { GetSplashTime } from "./Components/SplashScreen";
 import { AppStreakId, SetStreakAsync } from "./Streak";
+import { Cheat } from "./Cheat";
 
-const IsLog = __DEV__
+const IsLog = Cheat('log_tracking')
 
 const FirebaseTrackingProductionPath = 'tracking/production/'
 

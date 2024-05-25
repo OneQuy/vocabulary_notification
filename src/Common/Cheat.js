@@ -1,21 +1,8 @@
-// relocate cheat.json at line 15
+// NUMBER OF [CHANGE HERE] 1
 
-// sample cheat.json:
-// {
-//     "IsClearAllLocalFileBeforeLoadApp": 0
-// }
-
-// usage:
-// if (!Cheat('IsClearAllLocalFileBeforeLoadApp'))
-
-
-var dataObject = null;
+var dataObject = require('../../assets/cheat.json') // CHANGE HERE 1
 
 export function Cheat(key, defaultValue) {
-    if (!dataObject) {
-        dataObject = require('../../assets/jsons/cheat.json'); // relocate here.
-    }
-
     if (!dataObject)
         return defaultValue;
 
