@@ -207,12 +207,12 @@ ${currentApp.description}
             Linking.openURL(currentApp.ios)
     }, [currentApp, onEvent])
 
-    const checkDownloadJson = useCallback(async () => {
+    const checkLoad = useCallback(async () => {
         // load cache
 
         if (cachedJson) {
             if (IsLog)
-                console.log('[OneQuyApp-checkDownloadJson] cached');
+                console.log('[OneQuyApp-checkLoad] cached');
 
             set_listApps(cachedJson)
 
@@ -221,61 +221,78 @@ ${currentApp.description}
             return
         }
 
-        if (IsLog)
-            console.log('[OneQuyApp-checkDownloadJson] downloading...');
+        // load local
 
-        const file = GetStaticFileUrl('onequyApps', JsonUrl)
+        let dataArr: OneQuyAppData[] | null | Error = await ReadJsonFileAsync<OneQuyAppData[]>(LocalPath, true)
+        const isSuccessLoadedLocal = Array.isArray(dataArr)
+
+        if (IsLog)
+            console.log('[OneQuyApp-checkLoad] load local, is success:', isSuccessLoadedLocal);
+
+        const fileDownloadUrl = GetStaticFileUrl('onequyApps', JsonUrl)
+
+        if (isSuccessLoadedLocal) {
+            if (onEvent)
+                onEvent('loaded_local_success', '')
+
+            // sub download
+
+            if (IsLog)
+                console.log('[OneQuyApp-checkLoad] sub downloading...');
+
+            DownloadFile_GetJsonAsync<OneQuyAppData[]>(
+                fileDownloadUrl,
+                LocalPath,
+                true,
+                false
+            ).then((jsonRes) => {
+                if (onEvent)
+                    onEvent('sub_downloaded' + (Array.isArray(jsonRes.json) ? '_success' : '_fail'), '')
+            })
+        }
 
         // download
 
-        const jsonRes = await DownloadFile_GetJsonAsync(
-            file,
-            LocalPath,
-            true,
-            false
-        )
+        else { // load local fail
+            if (IsLog)
+                console.log('[OneQuyApp-checkLoad] DOWNLOADING...');
 
-        if (onEvent)
-            onEvent('downloaded' + (jsonRes.json !== null ? '_success' : '_fail'), '')
-
-        if (IsLog) {
-            console.log(
-                '[OneQuyApp-checkDownloadJson] downloaded success:',
-                jsonRes.json !== null,
-                'error',
-                ToCanPrint(jsonRes.error)
+            const jsonRes = await DownloadFile_GetJsonAsync<OneQuyAppData[]>(
+                fileDownloadUrl,
+                LocalPath,
+                true,
+                false
             )
-        }
 
-        // load local
+            const isSuccessDownloaded = Array.isArray(jsonRes.json)
 
-        if (!jsonRes.json) {
-            const arr = await ReadJsonFileAsync<OneQuyAppData[]>(LocalPath, true)
-            const isArray = Array.isArray(arr)
+            if (onEvent)
+                onEvent('downloaded' + (isSuccessDownloaded ? '_success' : '_fail'), '')
 
             if (IsLog) {
                 console.log(
-                    '[OneQuyApp-checkDownloadJson] loaded from local success:',
-                    isArray
+                    '[OneQuyApp-checkLoad] downloaded success:',
+                    jsonRes.json !== null,
+                    'error',
+                    ToCanPrint(jsonRes.error)
                 )
             }
 
-            if (onEvent)
-                onEvent('loaded_local' + (isArray ? '_success' : '_fail'), '')
-
-            if (isArray) {
-                jsonRes.json = arr
-            }
+            dataArr = jsonRes.json
         }
 
         // result
 
-        if (jsonRes.json) {
-            // cachedJson = jsonRes.json as OneQuyAppData[]
-            cachedJson = (jsonRes.json as OneQuyAppData[]).filter(i => i.appName !== excludeAppName)
+        if (Array.isArray(dataArr)) {
+            // cachedJson = dataArr
+            cachedJson = dataArr.filter(i => i.appName !== excludeAppName)
 
             ShuffleArray(cachedJson)
             set_listApps(cachedJson)
+        }
+        else {
+            if (onEvent)
+                onEvent('fail_to_load', '')
         }
     }, [onEvent])
 
@@ -301,7 +318,7 @@ ${currentApp.description}
         if (onEvent)
             onEvent('appear', '')
 
-        checkDownloadJson()
+        checkLoad()
     }, [])
 
     if (!currentApp) {
