@@ -4,7 +4,7 @@ import { SettingItemPanelStyle } from '../Components/SettingItemPanel'
 import useLocalText from '../Hooks/useLocalText'
 import { Gap, Outline } from '../Constants/Constants_Outline'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
-import { Color_BG, Color_Text } from '../Hooks/useTheme'
+import { Color_BG, Color_BG2, Color_Text } from '../Hooks/useTheme'
 import { FontSize } from '../Constants/Constants_FontSize'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { useMyIAP } from '../../Common/IAP/useMyIAP'
@@ -12,10 +12,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { StorageKey_CachedIAP } from '../Constants/StorageKey'
 import { IAPProduct, PurchaseAsync, RestorePurchaseAsync } from '../../Common/IAP/IAP'
 import { SafeGetArrayElement, ToCanPrintError } from '../../Common/UtilsTS'
-import { HandleError } from '../../Common/Tracking'
+import { HandleError, TrackOneQuyApps } from '../../Common/Tracking'
 import { Purchase } from 'react-native-iap'
 import { GetRemoteConfigWithCheckFetchAsync } from '../../Common/RemoteConfig'
 import { AllIAPProducts, AppContext } from '../../Common/SpecificConstants'
+import OneQuyApp from '../../Common/Components/OneQuyApp'
 
 const About = () => {
     const texts = useLocalText()
@@ -225,6 +226,22 @@ const About = () => {
                         }
                     </View>
                 }
+
+                {/* onequy apps */}
+                <View style={SettingItemPanelStyle.master_Column}>
+                    {/* title */}
+                    <Text style={SettingItemPanelStyle.titleTxt}>{texts.onequy_apps}</Text>
+
+                    <OneQuyApp
+                        onEvent={TrackOneQuyApps}
+                        excludeAppName='Vocaby'
+                        primaryColor={Color_Text}
+                        counterPrimaryColor={Color_BG}
+                        backgroundColor={Color_BG2}
+                        counterBackgroundColor={Color_Text}
+                        fontSize={FontSize.Small}
+                    />
+                </View>
             </ScrollView>
         </View>
     )

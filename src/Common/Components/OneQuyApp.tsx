@@ -28,6 +28,20 @@ type OneQuyAppData = {
 var cachedJson: undefined | OneQuyAppData[] = undefined
 var cachedCurrentAppIdx = 0
 
+/**
+ * ## Usage:
+```tsx
+<OneQuyApp
+    onEvent={TrackOneQuyApps}
+    excludeAppName='Vocaby'
+    primaryColor={Color_Text}
+    counterPrimaryColor={Color_BG}
+    backgroundColor={Color_BG2}
+    counterBackgroundColor={Color_Text}
+    fontSize={FontSize.Small}
+/>
+```
+ */
 const OneQuyApp = ({
     excludeAppName,
     primaryColor = '#1c1c1c',
