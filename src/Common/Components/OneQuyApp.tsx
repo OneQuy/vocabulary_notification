@@ -9,6 +9,8 @@ const IsLog = true
 
 const JsonUrl = 'https://firebasestorage.googleapis.com/v0/b/onequyappgeneral.appspot.com/o/onequy_apps.json?alt=media&token=f674f251-106d-45b3-97d9-365f7cd6e6a7'
 
+const LocalPath = TempDirName + '/onequy_apps.json'
+
 const Window = Dimensions.get('window')
 
 const BorderRadius = Window.height * 0.02
@@ -206,6 +208,8 @@ ${currentApp.description}
     }, [currentApp, onEvent])
 
     const checkDownloadJson = useCallback(async () => {
+        // load cache
+
         if (cachedJson) {
             if (IsLog)
                 console.log('[OneQuyApp-checkDownloadJson] cached');
@@ -221,11 +225,12 @@ ${currentApp.description}
             console.log('[OneQuyApp-checkDownloadJson] downloading...');
 
         const file = GetStaticFileUrl('onequyApps', JsonUrl)
-        // console.log(file);
+
+        // download
 
         const jsonRes = await DownloadFile_GetJsonAsync(
             file,
-            TempDirName + '/onequy_apps.json',
+            LocalPath,
             true,
             false
         )
@@ -242,8 +247,10 @@ ${currentApp.description}
             )
         }
 
+        // load local
+
         if (!jsonRes.json) {
-            const arr = await ReadJsonFileAsync<OneQuyAppData[]>(TempDirName + '/onequy_apps.json', true)
+            const arr = await ReadJsonFileAsync<OneQuyAppData[]>(LocalPath, true)
             const isArray = Array.isArray(arr)
 
             if (IsLog) {
@@ -260,6 +267,8 @@ ${currentApp.description}
                 jsonRes.json = arr
             }
         }
+
+        // result
 
         if (jsonRes.json) {
             // cachedJson = jsonRes.json as OneQuyAppData[]
