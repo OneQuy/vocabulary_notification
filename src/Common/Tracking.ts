@@ -398,6 +398,7 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
     distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs: number,
     setupParams: SetupAppStateAndStartTrackingParams,
     isUseEffectOnce: boolean,
+    openAtHour: string | undefined,
 ) => {
     //////////////////////////
     // open_app (only strings)
@@ -405,14 +406,17 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
 
     const openAppEvent = 'open_app'
 
-    const openAppEvent_Object: Record<string, string> = {
+    const objectString: Record<string, string> = {
         userId: UserID(),
         purchased: setupParams.subscribedData?.id ?? 'lol',
         purchasedDays: setupParams.subscribedData ? DateDiff_WithNow(setupParams.subscribedData.purchasedTick).toFixed(1) : 'hmmm',
     }
 
+    if (openAtHour)
+        objectString.openAtHour = openAtHour
+
     if (distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs > 0)
-        openAppEvent_Object.lastActiveOpen = GetDayHourMinSecFromMs_ToString(distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs)
+        objectString.lastActiveOpen = GetDayHourMinSecFromMs_ToString(distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs)
 
     if (isUseEffectOnce) { // last_freshly_open
         const [
@@ -421,12 +425,12 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
             GetAndSetLastFreshlyOpenAppToNowAsync(),
         ])
 
-        openAppEvent_Object.lastFreshlyOpen = lastFreshlyOpenAppToNow
+        objectString.lastFreshlyOpen = lastFreshlyOpenAppToNow
     }
 
     await TrackingAsync(openAppEvent,
         [],
-        openAppEvent_Object
+        objectString
     )
 
     ///////////////////////////////
@@ -435,13 +439,13 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
 
     const openAppNumEvent = 'open_app_num'
 
-    const openAppNumEvent_Object: Record<string, number> = {
+    const objectNumber: Record<string, number> = {
         totalOpenApp,
         openTodaySoFar,
     }
 
     if (distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs > 0)
-        openAppNumEvent_Object.lastActiveOpen = FromMsTo_TodayDays(distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs)
+        objectNumber.lastActiveOpen = FromMsTo_TodayDays(distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs)
 
     if (isUseEffectOnce) { // freshly_open_app
         const [
@@ -452,15 +456,15 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
             SetStreakAsync(AppStreakId)
         ])
 
-        openAppNumEvent_Object.splashTime = GetSplashTime()
-        openAppNumEvent_Object.currentStreak = streakHandle.todayStreak.currentStreak
-        openAppNumEvent_Object.bestStreak = streakHandle.todayStreak.bestStreak
-        openAppNumEvent_Object.installedDaysCount = installedDaysCount
+        objectNumber.splashTime = GetSplashTime()
+        objectNumber.currentStreak = streakHandle.todayStreak.currentStreak
+        objectNumber.bestStreak = streakHandle.todayStreak.bestStreak
+        objectNumber.installedDaysCount = installedDaysCount
     }
 
     await TrackingAsync(openAppNumEvent,
         [],
-        openAppNumEvent_Object
+        objectNumber
     )
 }
 

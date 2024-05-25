@@ -317,8 +317,10 @@ const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async (
     const { date, number } = await GetPairNumberIntAndDateAsync(StorageKey_OpenAt, -1)
     const currentHour = new Date().getHours()
 
+    let openAtHour: string | undefined = undefined
+
     if (number !== currentHour || !date || !IsToday(date)) {
-        TrackSimpleWithParam('open_at', currentHour + 'h')
+        openAtHour = currentHour + 'h'
         SetPairNumberIntAndDateAsync_Now(StorageKey_OpenAt, currentHour)
     }
 
@@ -329,7 +331,8 @@ const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async (
         openTodaySoFar,
         distanceMs === now ? 0 : distanceMs,
         setupParams,
-        isUseEffectOnce
+        isUseEffectOnce,
+        openAtHour
     )
 }
 
