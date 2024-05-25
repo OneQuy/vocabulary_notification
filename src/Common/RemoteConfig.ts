@@ -1,6 +1,6 @@
 // NUMBER OF [CHANGE HERE]: 0
 
-import { ExecuteWithTimeoutAsync, ToCanPrint, ToCanPrintError } from './UtilsTS'
+import { ExecuteWithTimeoutAsync, SafeValue, ToCanPrint, ToCanPrintError } from './UtilsTS'
 import { FirebaseDatabaseTimeOutMs, FirebaseDatabase_GetValueAsync } from "./Firebase/FirebaseDatabase"
 import { RemoteConfig } from './SpecificType';
 import { HandleAlertUpdateAppAsync } from './HandleAlertUpdateApp';
@@ -111,7 +111,7 @@ export async function GetRemoteConfigWithCheckFetchAsync(
  * 
  * @returns version or NaN if fail to get config
  */
-export function GetRemoteFileConfigVersion(file: string) {
+export function GetRemoteFileConfigVersion(file: string) : number {
     if (!remoteConfig || !remoteConfig.remoteFiles)
         return Number.NaN
 
@@ -122,6 +122,15 @@ export function GetRemoteFileConfigVersion(file: string) {
         return version as number
     else
         return Number.NaN
+}
+
+export const GetStaticFileUrl = (property: string, defaultUrl: string): string => {
+    const config = remoteConfig
+
+    if (!config || !config.staticFile)
+        return defaultUrl
+
+    return SafeValue(config.staticFile[property], defaultUrl)
 }
 
 export const GetLastTimeFetchedSuccessAndHandledAlerts = () => lastTimeFetchedSuccessAndHandledAlerts
