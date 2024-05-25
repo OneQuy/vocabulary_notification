@@ -443,6 +443,8 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
         totalOpenApp,
         openTodaySoFar,
     }
+   
+    const firebasePathsForNumberTracking: string[] = []
 
     if (distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs > 0)
         objectNumber.lastActiveOpen = FromMsTo_TodayDays(distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs)
@@ -450,8 +452,10 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
     if (IsNumType(loadedConfigLastTimeInHour))
         objectNumber.lastLoadedConfigInHour = RoundWithDecimal(loadedConfigLastTimeInHour)
 
-    if (IsNumType(openOfLastDayCount))
+    if (IsNumType(openOfLastDayCount)) {
         objectNumber.openOfLastDayCount = openOfLastDayCount
+        firebasePathsForNumberTracking.push(`total/open_per_day/${openOfLastDayCount}x`)
+    }
 
     if (isUseEffectOnce) { // freshly_open
         const [
@@ -470,7 +474,7 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
 
     await TrackingAsync(
         openAppNumEvent,
-        [],
+        firebasePathsForNumberTracking,
         objectNumber
     )
 }
