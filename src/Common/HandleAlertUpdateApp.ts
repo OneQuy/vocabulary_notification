@@ -10,7 +10,7 @@ import { RemoteConfig } from './SpecificType'
 import { VersionAsNumber } from './CommonConstants'
 import { OpenStoreAsync } from './SpecificUtils'
 
-const IsLog = true
+const IsLog = false
 
 export const HandleAlertUpdateAppAsync = async (config?: RemoteConfig) => {
     if (!config || !config.latestVersion) {

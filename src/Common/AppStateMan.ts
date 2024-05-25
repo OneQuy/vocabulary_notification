@@ -14,7 +14,7 @@ const CheckInitAppStateMan = () => {
     if (inited)
         return
 
-    console.log('[CheckInitAppStateMan] initing...');
+    // console.log('[CheckInitAppStateMan] initing...');
     
     inited = true
     AppState.addEventListener('change', onChangedState)
