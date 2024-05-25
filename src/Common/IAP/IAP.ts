@@ -30,6 +30,7 @@ import {
     Purchase,
 } from 'react-native-iap';
 import { CreateError, SafeGetArrayElement, ToCanPrint } from '../UtilsTS'
+import { Cheat } from '../Cheat';
 
 export type IAPProduct = {
     sku: string,
@@ -199,6 +200,9 @@ export const FetchListProductsAsync = async (skus: string[]) => {
  * @returns otherwise Error
  */
 export const PurchaseAsync = async (sku: string) => {
+    if (Cheat('force_iap_success'))
+        return undefined
+
     try {
         if (!isInited)
             return new Error('[PurchaseAsync] IAP not inited yet')
