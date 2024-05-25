@@ -413,7 +413,9 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
         purchasedDays: setupParams.subscribedData ? DateDiff_WithNow(setupParams.subscribedData.purchasedTick).toFixed(1) : 'hmmm',
     }
 
-    const firebasePathsForStringTracking: string[] = []
+    const firebasePathsForStringTracking: string[] = [
+        'total/open_app'
+    ]
 
     if (openAtHour) {
         objectString.openAtHour = openAtHour
