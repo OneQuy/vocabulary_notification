@@ -157,6 +157,10 @@ export const InitTrackingAsync = async (instancePosthog: PostHog) => {
 
     posthog = instancePosthog
 
+    posthog.register({
+        isDev: IsDev()
+    })
+
     // aptabase
 
     const appConfig = await GetRemoteConfigWithCheckFetchAsync()
@@ -238,11 +242,6 @@ export const TrackingAsync = async ( // main
         appConfig.tracking.enablePosthog !== false
 
     if (shouldTrackPosthog && posthog) {
-        if (!trackingValuesObject)
-            trackingValuesObject = {}
-
-        trackingValuesObject.isDev = IsDev()
-        
         posthog.capture(eventName, trackingValuesObject)
 
         if (IsLog) {
