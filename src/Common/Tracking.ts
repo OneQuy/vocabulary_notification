@@ -494,6 +494,7 @@ export const TrackFirstOpenOfDayOldUserAsync = async () => {
     await TrackingAsync(event,
         [
             `total/open_week/${dayName}`,
+            `total/food`,
         ],
         {
             userId: UserID(),
