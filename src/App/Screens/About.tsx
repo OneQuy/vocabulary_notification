@@ -230,7 +230,7 @@ const About = () => {
                 {/* onequy apps */}
                 <View style={SettingItemPanelStyle.master_Column}>
                     {/* title */}
-                    <Text style={SettingItemPanelStyle.titleTxt}>{texts.onequy_apps}</Text>
+                    <Text style={SettingItemPanelStyle.titleTxt}>{texts.onequy_apps}:</Text>
 
                     <OneQuyApp
                         onEvent={TrackOneQuyApps}
