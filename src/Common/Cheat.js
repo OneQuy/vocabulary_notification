@@ -1,8 +1,12 @@
 // NUMBER OF [CHANGE HERE] 1
 
-var dataObject = require('../../assets/cheat.json') // CHANGE HERE 1
+var dataObject = __DEV__ ?
+    require('../../assets/cheat.json') : // CHANGE HERE 1
+    undefined
 
 export function Cheat(key, defaultValue) {
+    console.log(defaultValue);
+
     if (!dataObject)
         return defaultValue;
 
