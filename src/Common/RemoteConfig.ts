@@ -1,6 +1,6 @@
 // NUMBER OF [CHANGE HERE]: 0
 
-import { ExecuteWithTimeoutAsync, SafeValue, ToCanPrint, ToCanPrintError } from './UtilsTS'
+import { DateDiff_InHour_WithNow, ExecuteWithTimeoutAsync, SafeValue, ToCanPrint, ToCanPrintError } from './UtilsTS'
 import { FirebaseDatabaseTimeOutMs, FirebaseDatabase_GetValueAsync } from "./Firebase/FirebaseDatabase"
 import { RemoteConfig } from './SpecificType';
 import { HandleAlertUpdateAppAsync } from './HandleAlertUpdateApp';
@@ -143,4 +143,11 @@ export const GetAlternativeConfig = (property: string, defaultValue: string): st
 
 export const GetLastTimeFetchedRemoteConfigSuccessAndHandledAlerts = () => lastTimeFetchedSuccessAndHandledAlerts
 
-export const GetLastTimeFetchedRemoteConfigSuccess = () => lastTimeFetchedSuccess
+export const IsRemoteConfigLoadedRecently = () => {
+    const hourDiff = DateDiff_InHour_WithNow(lastTimeFetchedSuccess)
+    
+    if (IsLog)
+        console.log('[IsRemoteConfigLoadedRecently] ?', hourDiff < HowLongToReloadRemoteConfigInHour)
+
+    return hourDiff < HowLongToReloadRemoteConfigInHour
+}
