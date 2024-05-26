@@ -100,7 +100,7 @@ export async function GetRemoteConfigWithCheckFetchAsync(
 
         // alert update
         await HandleAlertUpdateAppAsync(remoteConfig) // alert_priority_1 (doc)
-    }
+    } // REMEMER `SetShowedAlertStartupOnSplashScreen` TO EVERY SHOWING ALERT
 
     // return
 
