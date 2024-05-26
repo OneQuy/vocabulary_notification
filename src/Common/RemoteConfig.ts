@@ -12,6 +12,7 @@ const FirebaseDBPath = 'app/config';
 var remoteConfig: RemoteConfig | undefined
 var fetchedCount = 0
 var lastTimeFetchedSuccessAndHandledAlerts = 0
+var lastTimeFetchedSuccess = 0
 
 /**
  * 
@@ -95,12 +96,17 @@ export async function GetRemoteConfigWithCheckFetchAsync(
 
     // handle alerts
 
-    if (success && forceFetchAndHandleAlerts) {
-        lastTimeFetchedSuccessAndHandledAlerts = Date.now()
+    if (success) {
+        lastTimeFetchedSuccess = Date.now()
 
-        // alert update
-        await HandleAlertUpdateAppAsync(remoteConfig) // alert_priority_1 (doc)
-    } // REMEMER `SetShowedAlertStartupOnSplashScreen` TO EVERY SHOWING ALERT
+        if (forceFetchAndHandleAlerts) {
+            lastTimeFetchedSuccessAndHandledAlerts = Date.now()
+
+            // alert update
+            await HandleAlertUpdateAppAsync(remoteConfig) // alert_priority_1 (doc)
+
+        } // REMEMER `SetShowedAlertStartupOnSplashScreen` TO EVERY SHOWING ALERT
+    }
 
     // return
 
@@ -111,7 +117,7 @@ export async function GetRemoteConfigWithCheckFetchAsync(
  * 
  * @returns version or NaN if fail to get config
  */
-export function GetRemoteFileConfigVersion(file: string) : number {
+export function GetRemoteFileConfigVersion(file: string): number {
     if (!remoteConfig || !remoteConfig.remoteFiles)
         return Number.NaN
 
@@ -134,3 +140,5 @@ export const GetAlternativeConfig = (property: string, defaultValue: string): st
 }
 
 export const GetLastTimeFetchedSuccessAndHandledAlerts = () => lastTimeFetchedSuccessAndHandledAlerts
+
+export const GetLastTimeFetchedSuccess = () => lastTimeFetchedSuccess
