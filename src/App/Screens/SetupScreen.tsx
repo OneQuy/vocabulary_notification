@@ -12,7 +12,7 @@ import { DefaultExcludedTimePairs, DefaultIntervalInMin, DefaultNumDaysToPush, I
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
 import { LucideIcon } from '../../Common/Components/LucideIcon'
 import { PairTime, TranslationService } from '../Types'
-import { ClearDbAndNotificationsAsync } from '../Handles/AppUtils'
+import { CalcNotiTimeListPerDay, ClearDbAndNotificationsAsync } from '../Handles/AppUtils'
 import { SetupNotificationAsync, TestNotificationAsync } from '../Handles/SetupNotification'
 import { GetDefaultTranslationService, GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, GetTranslationServiceAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetNumDaysToPushAsync, SetPopularityLevelIndexAsync, SetTranslationServiceAsync, SetTargetLangAsyncAsync, GetSourceLangAsync } from '../Handles/Settings'
 import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync, IsCachedWordsDataCurrentLevelAsync } from '../Handles/WordsData'
@@ -60,8 +60,9 @@ const SetupScreen = () => {
   const { appContextValue } = useSpecificAppContext(posthog)
   const texts = useLocalText()
 
-  const [handlingType, set_handlingType] = useState<HandlingType>(undefined)
+  const [handlingType, set_handlingType] = useState<HandlingType>('done')
   const [subView, set_subView] = useState<SubView>('setup')
+  const [pushTimeListText, set_pushTimeListText] = useState('')
   const [showPopup, set_showPopup] = useState<PopupType>(undefined)
   const popupCloseCallbackRef = useRef<(onFinished?: () => void) => void>()
 
@@ -156,6 +157,18 @@ const SetupScreen = () => {
       },
     })
   }, [])
+
+  const generatePushTimeListText = useCallback(() => {
+    const pushTimesPerDay = CalcNotiTimeListPerDay(displayIntervalInMin, displayExcludedTimePairs)
+
+    const arr = []
+
+    for (let time of pushTimesPerDay) {
+      arr.push(`${PrependZero(time.hours)}:${PrependZero(time.minutes)}`)
+    }
+
+    set_pushTimeListText(arr.join(', '))
+  }, [displayIntervalInMin, displayExcludedTimePairs])
 
   const onPressSubview = useCallback((type: SubView) => {
     set_subView(type)
@@ -301,6 +314,7 @@ const SetupScreen = () => {
 
     if (res === undefined) { // success
       set_handlingType('done')
+      generatePushTimeListText()
     }
     else { // error
       let s = res.errorText ? texts[res.errorText] : ''
@@ -318,7 +332,7 @@ const SetupScreen = () => {
       set_handlingType(undefined)
     }
 
-  }, [texts])
+  }, [texts, generatePushTimeListText])
 
   const onConfirmTimePicker = useCallback((time: TimePickerResult) => {
     if (editingExcludeTimePairAndElementIndex.current[0] === undefined ||
@@ -1247,6 +1261,18 @@ const SetupScreen = () => {
             {
               handlingType === 'done' &&
               <Text style={style.downloadingTxt}>{texts.done}!</Text>
+            }
+
+            {/* list time text */}
+            {
+              handlingType === 'done' &&
+              <Text style={SettingItemPanelStyle.explainTxt}>{texts.push_will_showed_these_time}:</Text>
+            }
+
+            {/* list time text */}
+            {
+              handlingType === 'done' &&
+              <Text style={SettingItemPanelStyle.explainTxt}>{pushTimeListText}</Text>
             }
 
             {/* back btn */}
