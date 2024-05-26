@@ -161,7 +161,6 @@ export const InitTrackingAsync = async (instancePosthog: PostHog) => {
 
     posthog.register({
         isDev: IsDev(),
-        appName: AppName,
     })
 
     // aptabase
