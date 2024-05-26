@@ -257,7 +257,7 @@ export const TrackingAsync = async ( // main
 export const TrackSimple = (event: string) => { // sub 
     TrackingAsync(event,
         [
-            `total/${event}`,
+            `total/app/${event}`,
         ]
     )
 }
@@ -265,7 +265,7 @@ export const TrackSimple = (event: string) => { // sub
 export const TrackSimpleWithParam = (event: string, value: string) => { // sub 
     TrackingAsync(event,
         [
-            `total/${event}/` + value,
+            `total/app/${event}/` + value,
         ],
         {
             value,
@@ -279,9 +279,9 @@ export const TrackOneQuyApps = (eventOneQuyApp: string, currentAppName: string) 
     const firebaseArr = []
 
     if (IsValuableArrayOrString(currentAppName))
-        firebaseArr.push(`total/${event}/${eventOneQuyApp}/${FilterOnlyLetterAndNumberFromString(currentAppName)}`)
+        firebaseArr.push(`total/app/${event}/${eventOneQuyApp}/${FilterOnlyLetterAndNumberFromString(currentAppName)}`)
     else
-        firebaseArr.push(`total/${event}/` + eventOneQuyApp)
+        firebaseArr.push(`total/app/${event}/` + eventOneQuyApp)
 
     TrackingAsync(event,
         firebaseArr,
@@ -327,7 +327,7 @@ export const CheckTrackUpdatedAppAsync = async (): Promise<number> => {
 
         await TrackingAsync(event,
             [
-                `total/${event}`,
+                `total/app/${event}`,
             ],
             {
                 from: 'v' + lastInstalledVersion,
@@ -355,7 +355,7 @@ export const TrackOnNewlyInstallAsync = async () => {
 
     await TrackingAsync(event,
         [
-            `total/${event}`,
+            `total/app/${event}`,
             `date/${event}/#d`,
         ],
         {
@@ -410,7 +410,7 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
 
     if (openAtHour) {
         objectString.openAtHour = openAtHour
-        firebasePathsForStringTracking.push(`total/open_hour/${openAtHour}`)
+        firebasePathsForStringTracking.push(`total/app/open_hour/${openAtHour}`)
     }
 
     if (distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs > 0)
@@ -425,10 +425,10 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
 
         objectString.lastFreshlyOpen = lastFreshlyOpenAppToNow
 
-        firebasePathsForStringTracking.push(`total/open_freshly`)
+        firebasePathsForStringTracking.push(`total/app/open_freshly`)
     }
     else // active open
-        firebasePathsForStringTracking.push(`total/open_active`)
+        firebasePathsForStringTracking.push(`total/app/open_active`)
 
     await TrackingAsync(
         openAppEvent,
@@ -455,7 +455,7 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
 
     if (IsNumType(openOfLastDayCount)) {
         objectNumber.openOfLastDayCount = openOfLastDayCount
-        firebasePathsForNumberTracking.push(`total/open_per_day/${openOfLastDayCount}x`)
+        firebasePathsForNumberTracking.push(`total/app/open_per_day/${openOfLastDayCount}x`)
     }
 
     if (isUseEffectOnce) { // freshly_open
@@ -497,8 +497,8 @@ export const TrackFirstOpenOfDayOldUserAsync = async () => {
 
     await TrackingAsync(event,
         [
-            `total/open_week/${dayName}`,
-            `total/food`,
+            `total/app/open_week/${dayName}`,
+            `total/app/food`,
         ],
         {
             userId: UserID(),
@@ -522,7 +522,7 @@ export const TrackFirstOpenOfDayOldUserAsync = async () => {
 
     await TrackingAsync(event2,
         [
-            `total/best_streak/${streakHandle.todayStreak.bestStreak}_day`,
+            `total/app/best_streak/${streakHandle.todayStreak.bestStreak}_day`,
         ],
         {
             installedDaysCount,
