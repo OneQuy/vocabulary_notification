@@ -1,4 +1,5 @@
 import { DeepTranslateApiKey, DevistyTranslateApiKey, LingvanexTranslateApiKey, MicrosoftTranslateApiKey, SystranTranslateApiKey } from "../../../Keys"
+import { GetAlternativeConfig } from "../../Common/RemoteConfig"
 import { AllSupportedLanguages_Deep, DeepTranslateAsync } from "../../Common/TranslationApis/DeepTranslateApi"
 import { AllSupportedLanguages_Devisty, DevistyTranslateAsync } from "../../Common/TranslationApis/DevistyTranslateApi"
 import { AllSupportedLanguages_Lingvanex, LingvanexTranslateApiAsync } from "../../Common/TranslationApis/LingvanexTranslateApi"
@@ -24,8 +25,6 @@ type GetTranslationServiceSuitResult = {
         fromLang?: string,
     ) => Promise<TranslatedResult[] | Error>,
 }
-
-var cachedGetTranslationServiceSuitResult: Record<any, any> = {}
 
 /**
  * ### each element:
@@ -66,25 +65,11 @@ export const GetCurrentTranslationServiceSuitAsync = async (service?: Translatio
     if (service === undefined)
         service = await GetTranslationServiceAsync()
 
-    if (cachedGetTranslationServiceSuitResult) {
-        const cached = cachedGetTranslationServiceSuitResult[service]
-
-        if (cached) {
-            if (IsLog)
-                console.log('[GetTranslationServiceSuitAsync] cached', service);
-
-            return cached
-        }
-    }
-
-    if (IsLog)
-        console.log(('[GetTranslationServiceSuitAsync] initted... ' + service));
-
     let result: GetTranslationServiceSuitResult
 
-    if (service === 'Google Translation') {
+    if (service === 'Google Translation') { // deep
         result = {
-            key: DeepTranslateApiKey,
+            key: GetAlternativeConfig('deep', DeepTranslateApiKey),
             translateAsync: DeepTranslateAsync,
             supportedLanguages: AllSupportedLanguages_Deep,
         }
@@ -92,7 +77,7 @@ export const GetCurrentTranslationServiceSuitAsync = async (service?: Translatio
 
     else if (service === 'Devisty Translation') {
         result = {
-            key: DevistyTranslateApiKey,
+            key: GetAlternativeConfig('devisty', DevistyTranslateApiKey),
             translateAsync: DevistyTranslateAsync,
             supportedLanguages: AllSupportedLanguages_Devisty,
         }
@@ -100,7 +85,7 @@ export const GetCurrentTranslationServiceSuitAsync = async (service?: Translatio
 
     else if (service === 'Microsoft Translation') {
         result = {
-            key: MicrosoftTranslateApiKey,
+            key: GetAlternativeConfig('microsoft', MicrosoftTranslateApiKey),
             translateAsync: MicrosoftTranslateAsync,
             supportedLanguages: AllSupportedLanguages_Microsoft,
         }
@@ -108,7 +93,7 @@ export const GetCurrentTranslationServiceSuitAsync = async (service?: Translatio
 
     else if (service === 'Lingvanex Translation') {
         result = {
-            key: LingvanexTranslateApiKey,
+            key: GetAlternativeConfig('lingvanex', LingvanexTranslateApiKey),
             translateAsync: LingvanexTranslateApiAsync,
             supportedLanguages: AllSupportedLanguages_Lingvanex,
         }
@@ -116,7 +101,7 @@ export const GetCurrentTranslationServiceSuitAsync = async (service?: Translatio
 
     else if (service === 'Systran Translation') {
         result = {
-            key: SystranTranslateApiKey,
+            key: GetAlternativeConfig('systran', SystranTranslateApiKey),
             translateAsync: SystranTranslateAsync,
             supportedLanguages: GetAllSupportedLanguages_Systran(await GetSourceLangAsync()),
         }
@@ -126,7 +111,8 @@ export const GetCurrentTranslationServiceSuitAsync = async (service?: Translatio
         throw new Error('[GetTranslationServiceSuitAsync] no service specificed')
     }
 
-    cachedGetTranslationServiceSuitResult[service] = result
+    if (IsLog)
+        console.log('[GetTranslationServiceSuitAsync] ' + service, result);
 
     return result
 }
