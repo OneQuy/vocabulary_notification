@@ -18,7 +18,7 @@ import { SubscribedData } from "./SpecificType"
 import { UserID } from "./UserID"
 import { AppStateStatus } from "react-native"
 import { RegisterOnChangedState } from "./AppStateMan"
-import { GetLastTimeFetchedSuccessAndHandledAlerts, GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig"
+import { GetLastTimeFetchedRemoteConfigSuccessAndHandledAlerts, GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig"
 import { FirebaseDatabaseTimeOutMs, FirebaseDatabase_GetValueAsyncWithTimeOut } from "./Firebase/FirebaseDatabase"
 import { CheckIsDevAsync } from "./IsDev"
 
@@ -230,7 +230,7 @@ const OnStateChanged = (state: AppStateStatus) => {
 const CheckReloadRemoteConfig = (): undefined | number => {
     // CHECK ////////////////
 
-    const loadedConfigLastTimeInHour = DateDiff_InHour_WithNow(GetLastTimeFetchedSuccessAndHandledAlerts())
+    const loadedConfigLastTimeInHour = DateDiff_InHour_WithNow(GetLastTimeFetchedRemoteConfigSuccessAndHandledAlerts())
 
     if (loadedConfigLastTimeInHour < HowLongToReloadRemoteConfigInHour) {
         if (IsLog)

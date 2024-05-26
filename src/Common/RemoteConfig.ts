@@ -139,6 +139,6 @@ export const GetAlternativeConfig = (property: string, defaultValue: string): st
     return SafeValue(config.alternativeValue[property], defaultValue)
 }
 
-export const GetLastTimeFetchedSuccessAndHandledAlerts = () => lastTimeFetchedSuccessAndHandledAlerts
+export const GetLastTimeFetchedRemoteConfigSuccessAndHandledAlerts = () => lastTimeFetchedSuccessAndHandledAlerts
 
-export const GetLastTimeFetchedSuccess = () => lastTimeFetchedSuccess
+export const GetLastTimeFetchedRemoteConfigSuccess = () => lastTimeFetchedSuccess
