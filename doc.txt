@@ -8,6 +8,18 @@ alert not priority (after alerts above):
 
 =========================================
 
+alternativeValue:
+
+1. onequyApps
+2. microsoft
+3. systran
+4. lingvanex
+5. deep
+6. devisty
+
+=========================================
+
 cheat:
 
 1. About > title 'Check out my apps': tap 20 times for set dev persistence.
+
