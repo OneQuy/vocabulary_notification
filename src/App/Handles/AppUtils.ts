@@ -130,7 +130,10 @@ const IsInExcludeTime = (hour: number, minute: number, excludePairs: PairTime[])
         const startMin = pair[0].hours * 60 + pair[0].minutes
         const endMin = pair[1].hours * 60 + pair[1].minutes
 
-        if (totalMin >= startMin && totalMin <= endMin)
+        if (totalMin === endMin && pair[1].hours === 23 && pair[1].minutes === 59)
+            return true
+
+        if (totalMin >= startMin && totalMin < endMin)
             return true
     }
 
