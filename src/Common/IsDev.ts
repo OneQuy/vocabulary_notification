@@ -20,8 +20,8 @@ export const IsDev = () => {
     return isDev
 }
 
-export const CheckIsDevAsync = async (): Promise<void> => {
-    if (inited)
+export const CheckIsDevAsync = async (forceReload?: boolean): Promise<void> => {
+    if (inited && forceReload !== true)
         return
 
     inited = true

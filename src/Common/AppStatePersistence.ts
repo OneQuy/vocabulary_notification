@@ -20,12 +20,15 @@ import { AppStateStatus } from "react-native"
 import { RegisterOnChangedState } from "./AppStateMan"
 import { GetLastTimeFetchedSuccessAndHandledAlerts, GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig"
 import { FirebaseDatabaseTimeOutMs, FirebaseDatabase_GetValueAsyncWithTimeOut } from "./Firebase/FirebaseDatabase"
+import { CheckIsDevAsync } from "./IsDev"
 
 export type SetupAppStateAndStartTrackingParams = {
     posthog: PostHog,
     subscribedData: SubscribedData | undefined,
     forceSetPremiumAsync: (setOrReset: SubscribedData | undefined) => Promise<void>,
 }
+
+const IsLog = __DEV__
 
 const HowLongInMinutesToCount2TimesUseAppSeparately = 60 // minute
 const HowLongToReloadRemoteConfigInHour = 6 // hour
@@ -230,7 +233,9 @@ const CheckReloadRemoteConfig = (): undefined | number => {
     const loadedConfigLastTimeInHour = DateDiff_InHour_WithNow(GetLastTimeFetchedSuccessAndHandledAlerts())
 
     if (loadedConfigLastTimeInHour < HowLongToReloadRemoteConfigInHour) {
-        console.log('[CheckReloadRemoteConfigAsync] no check reload cuz checked recently');
+        if (IsLog)
+            console.log('[CheckReloadRemoteConfigAsync] no check reload cuz checked recently, hour =', loadedConfigLastTimeInHour);
+
         return undefined // no need to reload
     }
 
@@ -286,12 +291,14 @@ const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async (
 
     // HANDLE HERE /////////////////////////////
 
+    await CheckIsDevAsync(true) // force reload dev
+
     // open of day count
 
     const savedCount = await GetNumberIntAsync(StorageKey_OpenAppOfDayCount, 0)
     let openTodaySoFar = 0
     let openOfLastDayCount: number | undefined = undefined
-    
+
     if (await GetDateAsync_IsValueExistedAndIsToday(StorageKey_OpenAppOfDayCountForDate)) { // already tracked yesterday, just inc today
         openTodaySoFar = savedCount + 1
     }
