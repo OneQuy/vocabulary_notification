@@ -33,6 +33,7 @@ import { VersionAsNumber } from "./CommonConstants";
 import { GetSplashTime } from "./Components/SplashScreen";
 import { AppStreakId, SetStreakAsync } from "./Streak";
 import { Cheat } from "./Cheat";
+import { AppName } from "./SpecificConstants";
 
 const IsLog = Cheat('log_tracking')
 
@@ -159,7 +160,8 @@ export const InitTrackingAsync = async (instancePosthog: PostHog) => {
     posthog = instancePosthog
 
     posthog.register({
-        isDev: IsDev()
+        isDev: IsDev(),
+        appName: AppName,
     })
 
     // aptabase
