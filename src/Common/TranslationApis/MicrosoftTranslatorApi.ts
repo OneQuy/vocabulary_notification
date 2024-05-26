@@ -1,7 +1,10 @@
 // DOC: https://learn.microsoft.com/en-us/azure/ai-services/translator/quickstart-text-rest-api?tabs=nodejs
 // YOUR KEY: https://portal.azure.com/#@onequygmail.onmicrosoft.com/resource/subscriptions/3952d4d4-641f-4014-a32e-a1737e788663/resourceGroups/TranslateResourceGroup/providers/Microsoft.CognitiveServices/accounts/RegionSouthEastAsia/cskeys
 // TEST: https://www.bing.com/translator
-// FREE TIER: 2,000,000 chars / month (https://portal.azure.com/#@onequygmail.onmicrosoft.com/resource/subscriptions/3952d4d4-641f-4014-a32e-a1737e788663/resourceGroups/TranslateResourceGroup/providers/Microsoft.CognitiveServices/accounts/RegionSouthEastAsia/pricingtier)
+// FREE TIER: 
+//      + 2,000,000 chars / month (https://portal.azure.com/#@onequygmail.onmicrosoft.com/resource/subscriptions/3952d4d4-641f-4014-a32e-a1737e788663/resourceGroups/TranslateResourceGroup/providers/Microsoft.CognitiveServices/accounts/RegionSouthEastAsia/pricingtier)
+//      + 2 million characters per hour (https://learn.microsoft.com/en-us/azure/ai-services/translator/service-limits#text-translation)
+
 
 // INSTALL:
 //      + npm i axios
