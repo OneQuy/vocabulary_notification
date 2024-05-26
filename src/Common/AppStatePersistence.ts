@@ -18,7 +18,7 @@ import { SubscribedData } from "./SpecificType"
 import { UserID } from "./UserID"
 import { AppStateStatus } from "react-native"
 import { RegisterOnChangedState } from "./AppStateMan"
-import { GetLastTimeFetchedRemoteConfigSuccessAndHandledAlerts, GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig"
+import { GetLastTimeFetchedRemoteConfigSuccessAndHandledAlerts, GetRemoteConfigWithCheckFetchAsync, HowLongToReloadRemoteConfigInHour } from "./RemoteConfig"
 import { FirebaseDatabaseTimeOutMs, FirebaseDatabase_GetValueAsyncWithTimeOut } from "./Firebase/FirebaseDatabase"
 import { CheckIsDevAsync } from "./IsDev"
 
@@ -31,7 +31,6 @@ export type SetupAppStateAndStartTrackingParams = {
 const IsLog = __DEV__
 
 const HowLongInMinutesToCount2TimesUseAppSeparately = 60 // minute
-const HowLongToReloadRemoteConfigInHour = 6 // hour
 
 var inited = false
 var isHandling_CheckAndTriggerFirstOpenAppOfTheDayAsync = false

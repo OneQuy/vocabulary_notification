@@ -9,6 +9,8 @@ const IsLog = false
 
 const FirebaseDBPath = 'app/config';
 
+export const HowLongToReloadRemoteConfigInHour = 6 // hour
+
 var remoteConfig: RemoteConfig | undefined
 var fetchedCount = 0
 var lastTimeFetchedSuccessAndHandledAlerts = 0
