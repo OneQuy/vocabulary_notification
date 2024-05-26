@@ -15,7 +15,7 @@ import { SafeGetArrayElement, ToCanPrintError } from '../../Common/UtilsTS'
 import { HandleError, TrackOneQuyApps } from '../../Common/Tracking'
 import { Purchase } from 'react-native-iap'
 import { GetRemoteConfigWithCheckFetchAsync } from '../../Common/RemoteConfig'
-import { AllIAPProducts, AppContext } from '../../Common/SpecificConstants'
+import { AllIAPProducts, AppContext, AppName } from '../../Common/SpecificConstants'
 import OneQuyApp from '../../Common/Components/OneQuyApp'
 import { CheckTapSetDevPersistence, IsDev } from '../../Common/IsDev'
 
@@ -242,7 +242,7 @@ const About = () => {
 
                     <OneQuyApp
                         onEvent={TrackOneQuyApps}
-                        excludeAppName='Vocaby'
+                        excludeAppName={AppName}
                         primaryColor={Color_Text}
                         counterPrimaryColor={Color_BG}
                         backgroundColor={Color_BG2}

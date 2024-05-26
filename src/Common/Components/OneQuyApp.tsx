@@ -37,7 +37,7 @@ var lastLoadedTick = 0
 ```tsx
 <OneQuyApp
     onEvent={TrackOneQuyApps}
-    excludeAppName='Vocaby'
+    excludeAppName={AppName}
     primaryColor={Color_Text}
     counterPrimaryColor={Color_BG}
     backgroundColor={Color_BG2}
