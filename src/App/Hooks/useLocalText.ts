@@ -1,4 +1,3 @@
-// export const NoPermissionText = 'No permission. Please grant the permission to receive vocabulary notifications!'
 export const NoPermissionText = "Make sure you have enabled notifications for the app in your phone Settings. If you have, try again!"
 export const PleaseSelectTargetLangText = 'Please set [Translation language] you wish to translate to firstly.'
 
@@ -18,8 +17,6 @@ const eng = {
     hour: 'Hour',
     repeat_explain: "How long is the interval\nbetween notifications?",
     minute: 'Minute',
-    // invalid_end_time: "End time must be the time that comes after the Start time!",
-    // invalid_start_time: "Start time must be the time that comes before the End time!",
     invalid_input: 'Invalid input',
     set_notification: 'Set notification',
     setting_notification: 'Setting notifications',
