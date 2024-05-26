@@ -1,5 +1,5 @@
 import { DeepTranslateApiKey, DevistyTranslateApiKey, LingvanexTranslateApiKey, MicrosoftTranslateApiKey, SystranTranslateApiKey } from "../../../Keys"
-import { GetAlternativeConfig } from "../../Common/RemoteConfig"
+import { GetAlternativeConfig, GetRemoteConfigWithCheckFetchAsync, IsRemoteConfigLoadedRecently } from "../../Common/RemoteConfig"
 import { AllSupportedLanguages_Deep, DeepTranslateAsync } from "../../Common/TranslationApis/DeepTranslateApi"
 import { AllSupportedLanguages_Devisty, DevistyTranslateAsync } from "../../Common/TranslationApis/DevistyTranslateApi"
 import { AllSupportedLanguages_Lingvanex, LingvanexTranslateApiAsync } from "../../Common/TranslationApis/LingvanexTranslateApi"
@@ -7,6 +7,7 @@ import { AllSupportedLanguages_Microsoft, MicrosoftTranslateAsync } from "../../
 import { GetAllSupportedLanguages_Systran, SystranTranslateAsync } from "../../Common/TranslationApis/SystranTranslateApi"
 import { Language, TranslatedResult } from "../../Common/TranslationApis/TranslationLanguages"
 import { CapitalizeFirstLetter } from "../../Common/UtilsTS"
+import { NotLatestConfig } from "../Hooks/useLocalText"
 import { SavedWordData, TranslationService } from "../Types"
 import { ToWordLangString } from "./AppUtils"
 import { AddOrUpdateLocalizedWordsToDbAsync } from "./LocalizedWordsTable"
@@ -38,6 +39,24 @@ export const BridgeTranslateMultiWordAsync = async (
     service?: TranslationService,
     saveToDbNewWords = true
 ): Promise<TranslatedResult[] | Error> => {
+    // check last update config first 
+    
+    if (IsLog)
+        console.log('[BridgeTranslateMultiWordAsync] check latest config?', IsRemoteConfigLoadedRecently())
+    
+    if (!IsRemoteConfigLoadedRecently()) {
+        await GetRemoteConfigWithCheckFetchAsync(false, true)
+        
+        if (IsLog)
+            console.log('[BridgeTranslateMultiWordAsync] fetched latest config?', IsRemoteConfigLoadedRecently())
+
+        if (!IsRemoteConfigLoadedRecently()) {
+            return new Error(NotLatestConfig)
+        }
+    }
+
+    // start translate
+
     texts = texts.map(word => CapitalizeFirstLetter(word))
 
     const currentService = await GetCurrentTranslationServiceSuitAsync(service)
