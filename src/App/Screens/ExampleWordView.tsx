@@ -7,7 +7,7 @@ import { Gap, Outline } from '../Constants/Constants_Outline'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import { TranslationService } from '../Types'
-import { CapitalizeFirstLetter, DelayAsync, ToCanPrint } from '../../Common/UtilsTS'
+import { CapitalizeFirstLetter, DelayAsync, SafeValue, ToCanPrint } from '../../Common/UtilsTS'
 import TargetLangPicker from '../Components/TargetLangPicker'
 import { Language } from '../../Common/TranslationApis/TranslationLanguages'
 import { CheckCapabilityLanguage } from '../Handles/AppUtils'
@@ -309,7 +309,7 @@ const ExampleWordView = ({
                         {/* Error */}
                         {
                             // @ts-ignore
-                            (rightPanelState instanceof Error || rightPanelState?.message || rightPanelState === false) &&
+                            (rightPanelState?.message || rightPanelState?.error?.message || rightPanelState === false) &&
                             <>
                                 <Text style={style.normalTxt}>{texts.fail_translate}</Text>
                                 {
@@ -319,7 +319,10 @@ const ExampleWordView = ({
                                         adjustsFontSizeToFit
                                         style={style.errorTxt}
                                     >
-                                        {ToCanPrint(rightPanelState)}
+                                        {
+                                            // @ts-ignore
+                                            SafeValue(rightPanelState?.error ? rightPanelState?.error?.message : rightPanelState?.message, ToCanPrint(rightPanelState))
+                                        }
                                     </Text>
                                 }
                             </>
