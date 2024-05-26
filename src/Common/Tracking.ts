@@ -537,12 +537,13 @@ export const TrackFirstOpenOfDayOldUserAsync = async () => {
  * 
  * Usage: HandleError(resOrError, 'DataToNotification', false)
  */
-export const HandleError = (error: any, root: string, alert = true) => {
+export const HandleError = (error: any, root: string, alert = true, trackFirebase = true) => {
     const sError = SafeValue(error?.message, '' + ToCanPrint(error))
 
     // tracking firebase
 
-    CheckAndTrackErrorOnFirebaseAsync(sError, root)
+    if (trackFirebase === true)
+        CheckAndTrackErrorOnFirebaseAsync(sError, root)
 
     // alert
 

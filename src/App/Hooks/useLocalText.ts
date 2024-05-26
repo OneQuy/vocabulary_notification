@@ -1,6 +1,8 @@
 export const NoPermissionText = "Make sure you have enabled notifications for the app in your phone Settings. If you have, try again!"
 export const PleaseSelectTargetLangText = 'Please set [Translation language] you wish to translate to firstly.'
 
+export const NoNotificationPermissionLocalKey = 'no_permission'
+
 const eng = {
     popularity_level: 'Popularity level',
     popularity_level_explain: "Popularity level of vocabulary words. The higher level, the less common the words are. Choose according to your needs.",
@@ -68,7 +70,7 @@ const eng = {
     about: 'About',
     
     popup_error: 'Oops',
-    no_permission: NoPermissionText,
+    [NoNotificationPermissionLocalKey]: NoPermissionText,
     pls_set_target_lang: PleaseSelectTargetLangText,
     fail_translate: 'Can not get words transation.',
     fail_download: 'Fail to download.',

@@ -2,7 +2,7 @@ import { Definition, SavedWordData, Word } from "../Types";
 import { StorageKey_CurrentAllNotifications, StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from "../Constants/StorageKey";
 import { GetArrayAsync, GetBooleanAsync, SetArrayAsync } from "../../Common/AsyncStorageUtils";
 import { BridgeTranslateMultiWordAsync } from "./TranslateBridge";
-import { LocalText, NoPermissionText, PleaseSelectTargetLangText } from "../Hooks/useLocalText";
+import { LocalText, NoNotificationPermissionLocalKey, NoPermissionText, PleaseSelectTargetLangText } from "../Hooks/useLocalText";
 import { AddOrUpdateLocalizedWordsToDbAsync, GetLocalizedWordFromDbAsync, GetLocalizedWordsFromDbIfAvailableAsync } from "./LocalizedWordsTable";
 import { CalcNotiTimeListPerDay, CheckDeserializeLocalizedData, ExtractWordFromWordLang, SavedWordToTranslatedResult, TimePickerResultToTimestamp, ToWordLangString, TranslatedResultToSavedWord } from "./AppUtils";
 import { CapitalizeFirstLetter, PickRandomElement, SafeArrayLength, SafeGetArrayElement } from "../../Common/UtilsTS";
@@ -505,7 +505,7 @@ export const SetupNotificationAsync = async (): Promise<undefined | SetupNotific
 
     if (!resPermission) {
         return {
-            errorText: 'no_permission'
+            errorText: NoNotificationPermissionLocalKey
         }
     }
 

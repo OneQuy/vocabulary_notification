@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, ScrollView, Alert, ActivityIndicator } from 're
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import { Color_BG, Color_Text, Color_Text2 } from '../Hooks/useTheme'
-import useLocalText, { PleaseSelectTargetLangText } from '../Hooks/useLocalText'
+import useLocalText, { NoPermissionText, PleaseSelectTargetLangText } from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
@@ -290,7 +290,7 @@ const SetupScreen = () => {
     const res = await TestNotificationAsync(set_handlingType)
 
     if (res?.message) {
-      HandleError(res, 'onPressTestNotificationAsync', true)
+      HandleError(res, 'onPressTestNotificationAsync', true, res?.message !== NoPermissionText)
     }
   }, [setHandlingAndGetReadyDataAsync])
 
@@ -304,6 +304,7 @@ const SetupScreen = () => {
     }
     else { // error
       let s = res.errorText ? texts[res.errorText] : ''
+      const trackFirebase = s !== texts.no_permission
 
       if (res.error) {
         if (s !== '')
@@ -312,7 +313,7 @@ const SetupScreen = () => {
         s += ToCanPrintError(res.error)
       }
 
-      HandleError(s, 'onPressSetNotification')
+      HandleError(s, 'onPressSetNotification', true, trackFirebase)
 
       set_handlingType(undefined)
     }
