@@ -26,7 +26,7 @@ export type RemoteConfig = { // CHANGE OPTIONAL
         ios: LatestVersionConfig,
     },
 
-    staticFile?: Record<string, string>,
+    alternativeValue?: Record<string, string>,
 
     // ads: {
     //     newDayFree: number,

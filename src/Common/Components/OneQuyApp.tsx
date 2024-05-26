@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, ColorValue, TouchableOpacity, Dimensions, Linki
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { DownloadFile_GetJsonAsync, ReadJsonFileAsync } from './../FileUtils'
 import { AnimatedSimpleSpring, AnimatedSimpleTiming, DateDiff_InHour_WithNow, ShuffleArray, TempDirName, ToCanPrint } from './../UtilsTS'
-import { GetStaticFileUrl } from '../RemoteConfig'
+import { GetAlternativeConfig } from '../RemoteConfig'
 import ImageBackgroundOrView from './ImageBackgroundOrView'
 
 const IsLog = false
@@ -253,7 +253,7 @@ ${currentApp.description}
         if (IsLog)
             console.log('[OneQuyApp-checkLoad] load local, is success:', isSuccessLoadedLocal);
 
-        const fileDownloadUrl = GetStaticFileUrl('onequyApps', JsonUrl)
+        const fileDownloadUrl = GetAlternativeConfig('onequyApps', JsonUrl)
 
         if (isSuccessLoadedLocal) {
             // sub download

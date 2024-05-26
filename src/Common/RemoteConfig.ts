@@ -124,13 +124,13 @@ export function GetRemoteFileConfigVersion(file: string) : number {
         return Number.NaN
 }
 
-export const GetStaticFileUrl = (property: string, defaultUrl: string): string => {
+export const GetAlternativeConfig = (property: string, defaultValue: string): string => {
     const config = remoteConfig
 
-    if (!config || !config.staticFile)
-        return defaultUrl
+    if (!config || !config.alternativeValue)
+        return defaultValue
 
-    return SafeValue(config.staticFile[property], defaultUrl)
+    return SafeValue(config.alternativeValue[property], defaultValue)
 }
 
 export const GetLastTimeFetchedSuccessAndHandledAlerts = () => lastTimeFetchedSuccessAndHandledAlerts
