@@ -167,7 +167,7 @@ const SetupScreen = () => {
       arr.push(`${PrependZero(time.hours)}:${PrependZero(time.minutes)}`)
     }
 
-    set_pushTimeListText(arr.join(', '))
+    set_pushTimeListText(`${texts.push_will_showed_these_time}:\n${arr.join(', ')}`)
   }, [displayIntervalInMin, displayExcludedTimePairs])
 
   const onPressSubview = useCallback((type: SubView) => {
@@ -1266,13 +1266,7 @@ const SetupScreen = () => {
             {/* list time text */}
             {
               handlingType === 'done' &&
-              <Text style={SettingItemPanelStyle.explainTxt}>{texts.push_will_showed_these_time}:</Text>
-            }
-
-            {/* list time text */}
-            {
-              handlingType === 'done' &&
-              <Text style={SettingItemPanelStyle.explainTxt}>{pushTimeListText}</Text>
+              <Text style={[SettingItemPanelStyle.explainTxt, { textAlign: 'center' }]}>{pushTimeListText}</Text>
             }
 
             {/* back btn */}
