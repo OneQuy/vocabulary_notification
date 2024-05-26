@@ -21,7 +21,7 @@ const App = () => {
     return <SplashScreen />
 
   return (
-    <PostHogProvider apiKey={PostHogKey_Production} debug={false}>
+    <PostHogProvider apiKey={PostHogKey_Production}>
       <SafeAreaView style={style.master}>
         <StatusBar backgroundColor={Color_BG} barStyle={'light-content'} />
         <SetupScreen />
