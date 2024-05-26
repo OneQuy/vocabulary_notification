@@ -1,11 +1,12 @@
 // NUMBER [CHANGE HERE]: 0
 
 import { StorageKey_ForceDev } from "../App/Constants/StorageKey"
-import { GetBooleanAsync } from "./AsyncStorageUtils"
+import { GetBooleanAsync, SetBooleanAsync } from "./AsyncStorageUtils"
 import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig"
 
 var isDev = false
 var inited = false
+var tapSetDevPersistenceCount = 0
 
 /**
  * @usage: can call this after handle app config.
@@ -39,4 +40,24 @@ export const CheckIsDevAsync = async (): Promise<void> => {
             isDev = config.forceDev === 1
         }
     }
+}
+
+/**
+ * @return true if did set dev success
+ */
+export const CheckTapSetDevPersistence = (): boolean => {
+    if (!IsDev) {
+        return false
+    }
+
+    tapSetDevPersistenceCount++
+
+    if (tapSetDevPersistenceCount < 20)
+        return false
+
+    tapSetDevPersistenceCount = 0
+
+    SetBooleanAsync(StorageKey_ForceDev, true)
+
+    return true
 }

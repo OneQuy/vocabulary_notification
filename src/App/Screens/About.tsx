@@ -17,6 +17,7 @@ import { Purchase } from 'react-native-iap'
 import { GetRemoteConfigWithCheckFetchAsync } from '../../Common/RemoteConfig'
 import { AllIAPProducts, AppContext } from '../../Common/SpecificConstants'
 import OneQuyApp from '../../Common/Components/OneQuyApp'
+import { CheckTapSetDevPersistence, IsDev } from '../../Common/IsDev'
 
 const About = () => {
     const texts = useLocalText()
@@ -86,6 +87,13 @@ const About = () => {
 
         set_isHandling(false)
     }, [texts, onPurchasedSuccess])
+
+    const onPressCheatSetDev = useCallback(() => {
+        const didSet = CheckTapSetDevPersistence()
+
+        if (didSet)
+            Alert.alert('dev!')
+    }, [])
 
     const onPressUpgradeAsync = useCallback(async () => {
         if (isHandling || !isReadyPurchase || !currentLifetimeProduct)
@@ -230,7 +238,7 @@ const About = () => {
                 {/* onequy apps */}
                 <View style={SettingItemPanelStyle.master_Column}>
                     {/* title */}
-                    <Text style={SettingItemPanelStyle.titleTxt}>{texts.onequy_apps}:</Text>
+                    <Text onPress={IsDev() ? onPressCheatSetDev : undefined} style={SettingItemPanelStyle.titleTxt}>{texts.onequy_apps}:</Text>
 
                     <OneQuyApp
                         onEvent={TrackOneQuyApps}

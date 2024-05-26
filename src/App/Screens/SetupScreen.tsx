@@ -30,6 +30,7 @@ import About from './About'
 import { usePostHog } from 'posthog-react-native'
 import { AppContext } from '../../Common/SpecificConstants'
 import useSpecificAppContext from '../../Common/Hooks/useSpecificAppContext'
+import { IsDev } from '../../Common/IsDev'
 
 const IsLog = false
 
@@ -940,7 +941,7 @@ const SetupScreen = () => {
 
             style={style.topbarBtn}
 
-            title={texts.about}
+            title={`${texts.about}${IsDev() ? '.' : ''}`}
             titleProps={{ style: style.normalBtnTxt }}
 
             manuallySelected={subView === 'about'}

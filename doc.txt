@@ -5,3 +5,9 @@ alert_priority:
 
 alert not priority (after alerts above):
 + Alert.alert('Wohoo!', texts.purchase_success) // alert whenever purchase success or FORCE SET PREMIUM AFTER SPLASH-SCREEN
+
+=========================================
+
+cheat:
+
+1. About > title 'Check out my apps': tap 20 times for set dev persistence.
