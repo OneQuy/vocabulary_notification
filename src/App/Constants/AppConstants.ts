@@ -82,7 +82,7 @@ export const NumDaysToPushPresets: (number)[] = [
 
 
 export const TranslationServicePresets: TranslationService[] = [
-    'Deep Translation',
+    'Google Translation',
     'Devisty Translation',
     'Microsoft Translation',
     'Lingvanex Translation',

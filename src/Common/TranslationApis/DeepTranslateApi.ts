@@ -1,3 +1,4 @@
+// aka Google Translation
 // https://rapidapi.com/gatzuma/api/deep-translate1
 
 import { SafeValue } from "../UtilsTS";

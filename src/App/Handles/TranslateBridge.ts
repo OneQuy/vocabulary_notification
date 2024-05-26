@@ -82,7 +82,7 @@ export const GetCurrentTranslationServiceSuitAsync = async (service?: Translatio
 
     let result: GetTranslationServiceSuitResult
 
-    if (service === 'Deep Translation') {
+    if (service === 'Google Translation') {
         result = {
             key: DeepTranslateApiKey,
             translateAsync: DeepTranslateAsync,

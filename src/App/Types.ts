@@ -34,7 +34,7 @@ export type SavedWordData = {
 }
 
 export type TranslationService =
-    'Deep Translation' |
+    'Google Translation' |
     'Microsoft Translation' |
     'Lingvanex Translation' |
     'Systran Translation' |
