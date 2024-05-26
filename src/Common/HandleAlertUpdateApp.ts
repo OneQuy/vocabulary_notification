@@ -9,6 +9,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import { RemoteConfig } from './SpecificType'
 import { VersionAsNumber } from './CommonConstants'
 import { OpenStoreAsync } from './SpecificUtils'
+import { SetShowedAlertStartupOnSplashScreen } from './Components/SplashScreen'
 
 const IsLog = false
 
@@ -47,6 +48,8 @@ export const HandleAlertUpdateAppAsync = async (config?: RemoteConfig) => {
     }
 
     // show!
+
+    SetShowedAlertStartupOnSplashScreen()
 
     let releaseNote = data.releaseNote
 

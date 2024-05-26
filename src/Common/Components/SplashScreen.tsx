@@ -8,8 +8,13 @@ import { Color_Logo, Color_Text } from '../../App/Hooks/useTheme';
 const logoSize = WindowSize_Max * 0.13
 
 var splashTime = 0
+var showedAlertStartup = false
 
-export const GetSplashTime = () => splashTime
+export const SetShowedAlertStartupOnSplashScreen = () => {
+    showedAlertStartup = true
+}
+
+export const GetSplashTime = () => showedAlertStartup ? undefined : splashTime
 
 const SplashScreen = (
     // { theme }: { theme: ThemeColor }

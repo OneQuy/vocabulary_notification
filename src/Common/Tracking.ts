@@ -467,7 +467,11 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
             SetStreakAsync(AppStreakId)
         ])
 
-        objectNumber.splashTime = GetSplashTime()
+        const splashTime = GetSplashTime()
+
+        if (IsNumType(splashTime))
+            objectNumber.splashTime = splashTime
+
         objectNumber.currentStreak = streakHandle.todayStreak.currentStreak
         objectNumber.bestStreak = streakHandle.todayStreak.bestStreak
         objectNumber.installedDaysCount = installedDaysCount
