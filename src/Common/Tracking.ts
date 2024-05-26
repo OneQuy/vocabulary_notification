@@ -405,7 +405,7 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
     }
 
     const firebasePathsForStringTracking: string[] = [
-        'total/open_app'
+        'total/app/open_app'
     ]
 
     if (openAtHour) {
