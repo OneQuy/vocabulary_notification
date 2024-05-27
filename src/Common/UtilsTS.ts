@@ -968,7 +968,7 @@ export const GetDayHourMinSecFromMs = (ms: number): [number, number, number, num
 /**
  * decimalCount = 1 default
  */
-export function RoundWithDecimal(value: number, decimalCount = 1) : number {
+export function RoundWithDecimal(value: number, decimalCount = 1): number {
     var multiplier = Math.pow(10, decimalCount);
     return Math.round(value * multiplier) / multiplier;
 }
@@ -1139,6 +1139,14 @@ export function AnimatedSimpleTiming(animatedValue: Animated.Value, duration?: n
 
 // object ---------------------------
 
+export function SafeParse<T extends object>(anything: any, defaultValue?: T): T | undefined {
+    try {
+        return JSON.parse(anything) as T
+    } catch {
+        return defaultValue
+    }
+}
+
 export function CloneObject<T>(obj: T): T {
     return JSON.parse(JSON.stringify(obj)) as T
 }
@@ -1247,6 +1255,29 @@ export const AlertAsync = async (
         }
     );
 })
+
+export function PromiseAllWithTrackProgressAsync<T>(promises: (Promise<T>)[]): Promise<T[]> {
+    let completed = 0;
+    const total = promises.length;
+
+    // Callback function to update progress
+    const updateProgress = () => {
+        completed++;
+        const percent = (completed / total) * 100;
+        console.log(`Progress: ${percent.toFixed(2)}%`);
+    };
+
+    // Wrap each promise to update progress upon resolution
+    const wrappedPromises = promises.map(promise =>
+        promise.then((result: T) => {
+            updateProgress();
+            return result; // Ensure the promise resolves to its original value
+        })
+    );
+
+    // Return Promise.all of wrapped promises
+    return Promise.all(wrappedPromises);
+}
 
 /**
  * 
