@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Alert } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { Color_BG, Color_Text } from '../Hooks/useTheme'
+import { Color_BG, Color_Text, Color_Text2 } from '../Hooks/useTheme'
 import useLocalText from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { Gap, Outline } from '../Constants/Constants_Outline'
@@ -92,7 +92,7 @@ const ExampleWordView = ({
 
             panelChild: { flex: 1, gap: Outline.Normal, justifyContent: 'center', alignItems: 'center' },
 
-            titleChildTxt: { fontWeight: FontBold.Bold, fontSize: FontSize.Normal, textAlign: 'center' },
+            titleChildTxt: { color: Color_BG, fontWeight: FontBold.Bold, fontSize: FontSize.Normal, textAlign: 'center' },
 
             separatorLine: { height: '95%', width: StyleSheet.hairlineWidth, backgroundColor: Color_BG },
 
@@ -102,11 +102,11 @@ const ExampleWordView = ({
 
             serviceTxt: { fontSize: FontSize.Small, textAlign: 'center', },
 
-            normalTxt: { fontSize: FontSize.Normal, },
+            normalTxt: { color: Color_BG, fontSize: FontSize.Normal, },
 
-            errorTxt: { fontSize: FontSize.Small, marginHorizontal: Outline.Small },
+            errorTxt: { fontSize: FontSize.Small, color: Color_Text2, marginHorizontal: Outline.Small },
 
-            exampleTxt: { fontSize: FontSize.Normal, textAlign: 'center', },
+            exampleTxt: { color: Color_BG, fontSize: FontSize.Normal, textAlign: 'center', },
             exampleTxt_Bold: { fontSize: FontSize.Normal, fontWeight: FontBold.Bold, textAlign: 'center', },
 
             confirmBtn: {
