@@ -1256,16 +1256,20 @@ export const AlertAsync = async (
     );
 })
 
-export function PromiseAllWithTrackProgressAsync<T>(promises: (Promise<T>)[]): Promise<T[]> {
+export function PromiseAllWithTrackProgressAsync<T>(
+    promises: (Promise<T>)[],
+    progressCallback?: (percent: number) => void
+): Promise<T[]> {
     let completed = 0;
     const total = promises.length;
 
     // Callback function to update progress
     const updateProgress = () => {
-        completed++;
-        const percent = (completed / total) * 100;
-        console.log(`Progress: ${percent.toFixed(2)}%`);
-    };
+        completed++
+
+        if (progressCallback)
+            progressCallback(completed / total)
+    }
 
     // Wrap each promise to update progress upon resolution
     const wrappedPromises = promises.map(promise =>
