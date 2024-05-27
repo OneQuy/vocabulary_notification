@@ -1,0 +1,57 @@
+Microsoft (Super)
+
+2,000,000 chars / month
+
+Dashboard: https://portal.azure.com/#@onequygmail.onmicrosoft.com/dashboard/private/343276dd-8f54-48d7-8a4e-aa09561e57a7
+
+Key:
+	+ onequy: a21a54ac6b8c4280aef549f9874cba38
+
+===============
+
+DEVISTY (Weak)
+
+https://rapidapi.com/dickyagustin/api/text-translator2/pricing
+
+Characters: 100,000 / month. 
+
+Requests: 1,000 / month. 1000 requests per hour	
+
+Key: 
+	+ onequy: 693dd75456msh921c376e306158cp12c5dbjsn32ff82c9294a
+
+===============
+
+Deep Translate - Google (Avarage)
+
+https://rapidapi.com/gatzuma/api/deep-translate1/pricing
+
+Characters: 200,000 / month
+
+Requests: 500,000 / month. 1000 requests per hour
+
+Key: 
+	+ onequy: 693dd75456msh921c376e306158cp12c5dbjsn32ff82c9294a
+
+
+===============
+
+Lingvanex (FEE)
+
+https://lingvanex.com/account/#b2b
+
+200,000 chars once register. 5$ for 1,000,000 chars.
+
+Key:
+	+ onequy: a_9M0jCdDtDlBx7kQiyvlxO2TWPaEc9aK27FkM90PyzDkq3dbw7Ho2yMEYv37XaRdq45rMB9UxKrSmaR3l
+
+===============
+
+Systran (Super? Monthly or once?)
+
+https://trs.systran.net/dashboard/usage	
+
+Characters: 500,000 / month
+
+Key:
+	+ onequy: 12c94236-dbb3-4234-9639-7dd42c1c4964
