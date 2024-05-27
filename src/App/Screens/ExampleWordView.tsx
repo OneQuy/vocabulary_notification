@@ -7,7 +7,7 @@ import { Gap, Outline } from '../Constants/Constants_Outline'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import { TranslationService } from '../Types'
-import { CapitalizeFirstLetter, DelayAsync, SafeValue, ToCanPrint } from '../../Common/UtilsTS'
+import { CapitalizeFirstLetter, DelayAsync, SafeParse, SafeValue, ToCanPrint } from '../../Common/UtilsTS'
 import TargetLangPicker from '../Components/TargetLangPicker'
 import { Language } from '../../Common/TranslationApis/TranslationLanguages'
 import { CheckCapabilityLanguage } from '../Handles/AppUtils'
@@ -54,6 +54,35 @@ const ExampleWordView = ({
     const [selectingTargetLang, set_selectingTargetLang] = useState(initTargetLang)
     const [examples, set_examples] = useState<undefined | ValueAndDisplayText[]>(undefined)
     const [rightPanelState, set_rightPanelState] = useState<undefined | 'translating' | 'pick_target_lang' | boolean | Error>(undefined)
+
+    const errorText = useMemo(() => {
+        if (typeof rightPanelState !== 'object')
+            return undefined
+
+        // @ts-ignore
+        const messageObj = SafeParse(rightPanelState?.message)
+
+        // @ts-ignore
+        if (messageObj?.message)
+            // @ts-ignore
+            return messageObj.message
+
+        // @ts-ignore
+        if (rightPanelState?.error) {
+            return SafeValue(
+                // @ts-ignore
+                rightPanelState.error?.message,
+                ToCanPrint(rightPanelState)
+            )
+        }
+        else {
+            return SafeValue(
+                // @ts-ignore
+                rightPanelState?.message,
+                ToCanPrint(rightPanelState)
+            )
+        }
+    }, [rightPanelState])
 
     const style = useMemo(() => {
         return StyleSheet.create({
@@ -319,10 +348,7 @@ const ExampleWordView = ({
                                         adjustsFontSizeToFit
                                         style={style.errorTxt}
                                     >
-                                        {
-                                            // @ts-ignore
-                                            SafeValue(rightPanelState?.error ? rightPanelState?.error?.message : rightPanelState?.message, ToCanPrint(rightPanelState))
-                                        }
+                                        {errorText}
                                     </Text>
                                 }
                             </>
