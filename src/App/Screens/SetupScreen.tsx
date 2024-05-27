@@ -60,7 +60,7 @@ const SetupScreen = () => {
   const { appContextValue } = useSpecificAppContext(posthog)
   const texts = useLocalText()
 
-  const [handlingType, set_handlingType] = useState<HandlingType>('done')
+  const [handlingType, set_handlingType] = useState<HandlingType>(undefined)
   const [subView, set_subView] = useState<SubView>('setup')
   const [pushTimeListText, set_pushTimeListText] = useState('')
   const [showPopup, set_showPopup] = useState<PopupType>(undefined)

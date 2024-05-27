@@ -122,18 +122,21 @@ export const TotalMin = (time: TimePickerResult) => {
  * @returns 
  */
 const IsInExcludeTime = (hour: number, minute: number, excludePairs: PairTime[]): boolean => {
-    const totalMin = hour * 60 + minute
+    const totalMinutes = hour * 60 + minute
 
     for (let i = 0; i < excludePairs.length; i++) {
         const pair = excludePairs[i]
 
-        const startMin = pair[0].hours * 60 + pair[0].minutes
-        const endMin = pair[1].hours * 60 + pair[1].minutes
+        const startTotalMinutes = pair[0].hours * 60 + pair[0].minutes
+        const endTotalMinutes = pair[1].hours * 60 + pair[1].minutes
 
-        if (totalMin === endMin && pair[1].hours === 23 && pair[1].minutes === 59)
+        if (totalMinutes === endTotalMinutes && pair[1].hours === 23 && pair[1].minutes === 59)
+            return true
+        
+        if (totalMinutes === startTotalMinutes && pair[0].hours === 0 && pair[0].minutes === 0)
             return true
 
-        if (totalMin >= startMin && totalMin < endMin)
+        if (totalMinutes > startTotalMinutes && totalMinutes < endTotalMinutes)
             return true
     }
 
