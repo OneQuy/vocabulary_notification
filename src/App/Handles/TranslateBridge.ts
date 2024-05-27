@@ -24,6 +24,7 @@ type GetTranslationServiceSuitResult = {
         texts: string[],
         toLang: string,
         fromLang?: string,
+        process?: (process: number) => void,
     ) => Promise<TranslatedResult[] | Error>,
 }
 
@@ -37,7 +38,8 @@ export const BridgeTranslateMultiWordAsync = async (
     toLang: string,
     fromLang?: string,
     service?: TranslationService,
-    saveToDbNewWords = true
+    saveToDbNewWords = true,
+    process?: (process: number) => void
 ): Promise<TranslatedResult[] | Error> => {
     // check last update config first 
     
@@ -71,7 +73,8 @@ export const BridgeTranslateMultiWordAsync = async (
         currentService.key,
         texts,
         toLang,
-        fromLang
+        fromLang,
+        process
     )
 
     if (saveToDbNewWords && Array.isArray(translatedArrOrError))

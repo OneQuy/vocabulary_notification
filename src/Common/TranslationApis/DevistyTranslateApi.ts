@@ -1,6 +1,6 @@
 // https://rapidapi.com/dickyagustin/api/text-translator2
 
-import { SafeValue } from "../UtilsTS";
+import { PromiseAllWithTrackProgressAsync, SafeValue } from "../UtilsTS";
 import { Language, TranslatedResult } from "./TranslationLanguages";
 
 /**
@@ -64,10 +64,14 @@ export const DevistyTranslateAsync = async (
     texts: string[],
     toLang: string | Language,
     fromLang?: string | Language,
+    process?: (process: number) => void,
 ): Promise<TranslatedResult[] | Error> => {
-    const resArr = await Promise.all(texts.map(text => {
-        return DevistyTranslateSingleTextAsync(key, text, toLang, fromLang)
-    }))
+    const resArr = await PromiseAllWithTrackProgressAsync(
+        texts.map(text => {
+            return DevistyTranslateSingleTextAsync(key, text, toLang, fromLang)
+        }),
+        process
+    )
 
     for (let i of resArr) {
         if (i.error !== undefined)
