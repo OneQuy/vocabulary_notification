@@ -1,7 +1,7 @@
 // aka Google Translation
 // https://rapidapi.com/gatzuma/api/deep-translate1
 
-import { SafeValue } from "../UtilsTS";
+import { PromiseAllWithTrackProgressAsync, SafeValue } from "../UtilsTS";
 import { Language, TranslatedResult } from "./TranslationLanguages";
 
 /**
@@ -69,10 +69,16 @@ export const DeepTranslateAsync = async (
     texts: string[],
     toLang: string | Language,
     fromLang?: string | Language,
+    process?: (process: number) => void
 ): Promise<TranslatedResult[] | Error> => {
-    const resArr = await Promise.all(texts.map(text => {
-        return DeepTranslateSingleTextAsync(key, text, toLang, fromLang)
-    }))
+    const resArr = await PromiseAllWithTrackProgressAsync(
+        texts.map(
+            text => {
+                return DeepTranslateSingleTextAsync(key, text, toLang, fromLang)
+            }
+        ),
+        process
+    )
 
     for (let i of resArr) {
         if (i.error !== undefined)
