@@ -134,7 +134,7 @@ export const GetCurrentTranslationServiceSuitAsync = async (service?: Translatio
     }
 
     if (IsLog)
-        console.log('[GetTranslationServiceSuitAsync] ' + service, result.key);
+        console.log('[GetTranslationServiceSuitAsync] ' + service, 'key:', result.key);
 
     return result
 }
