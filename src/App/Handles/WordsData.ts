@@ -1,6 +1,6 @@
 import { GetNumberIntAsync, SetNumberAsync } from "../../Common/AsyncStorageUtils"
 import { DownloadFile_GetJsonAsync, ReadJsonFileAsync, ReadTextAsync } from "../../Common/FileUtils"
-import { CreateError } from "../../Common/UtilsTS"
+import { CreateError, IsValuableArrayOrString } from "../../Common/UtilsTS"
 import { StorageKey_UsedWordIndex } from "../Constants/StorageKey"
 import { Word } from "../Types"
 import { GetPopularityLevelIndexAsync } from "./Settings"
@@ -40,6 +40,14 @@ const GetLocalRlp = (popularityLevelIndex: number) => {
  * @returns propably not same length cuz diff level
  */
 export const GetWordsDataCurrentLevelAsync = async (wordStrings: string[]): Promise<Word[] | Error> => {
+    if (!IsValuableArrayOrString(wordStrings)) {
+        if (IsLog) {
+            console.log('[GetWordsDataCurrentLevelAsync] empty request => return 0 words')
+        }
+
+        return []
+    }
+
     wordStrings = wordStrings.map(w => w.toUpperCase())
 
     const allWordsOrUndefined = await GetAllWordsDataCurrentLevelAsync()
