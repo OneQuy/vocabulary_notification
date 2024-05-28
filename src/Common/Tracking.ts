@@ -6,8 +6,8 @@
 // npm i -s @aptabase/react-native posthog-react-native @react-native-async-storage/async-storage react-native-device-info
 //
 // Usage & Note:
-// 1. InitTrackingAsync() (Must after: IsDev, GetRemoteConfigWithCheckFetchAsync)
-// 2. Only should start tracking everything after initing
+// 0. Handled cache. CAN TRACK EVERYWHERE. EVEN NOT INITED YET.
+// 1. (If use useSpecificAppContext, not care this) InitTrackingAsync() (Must after: IsDev, GetRemoteConfigWithCheckFetchAsync)
 //
 //
 // Doc for Posthog: https://posthog.com/docs/libraries/react-native#without-the-posthogprovider
