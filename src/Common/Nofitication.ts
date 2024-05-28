@@ -11,7 +11,7 @@
 //  iOS: add Push Notifications on XCode
 // --------------------------------
 
-import notifee, { AndroidChannel, AndroidImportance, AndroidStyle, AuthorizationStatus, Notification, NotificationAndroid, NotificationSettings, TimestampTrigger, TriggerType } from '@notifee/react-native';
+import notifee, { AndroidChannel, AndroidImportance, AndroidStyle, AuthorizationStatus, Notification, NotificationAndroid, NotificationIOS, NotificationSettings, TimestampTrigger, TriggerType } from '@notifee/react-native';
 import { Linking, Platform } from 'react-native';
 import { AlertAsync } from './UtilsTS';
 
@@ -36,16 +36,23 @@ const DefaultAndroidLocalTextAlertIfDenied = {
 }
 
 const ConvertNotificationOptionToNotification = (option: NotificationOption): Notification => {
+  const ios: NotificationIOS = {
+    sound: 'default',
+  }
+
+  const android: NotificationAndroid = {
+    channelId: androidChannelId,
+    style: {
+      type: AndroidStyle.BIGTEXT,
+      text: option.message,
+    },
+  }
+
   const noti: Notification = {
     title: option.title,
     body: option.message,
-    android: {
-      channelId: androidChannelId,
-      style: {
-        type: AndroidStyle.BIGTEXT,
-        text: option.message,
-      },
-    } as NotificationAndroid,
+    android,
+    ios,
   }
 
   return noti
