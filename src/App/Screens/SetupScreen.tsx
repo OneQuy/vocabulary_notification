@@ -6,7 +6,7 @@ import useLocalText, { NoPermissionText, PleaseSelectTargetLangText } from '../H
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PickRandomElementWithCount, PrependZero, ToCanPrintError } from '../../Common/UtilsTS'
+import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PickRandomElementWithCount, PrependZero, RoundWithDecimal, ToCanPrintError } from '../../Common/UtilsTS'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { DefaultExcludedTimePairs, DefaultIntervalInMin, DefaultNumDaysToPush, IntervalInMinPresets, LimitWordsPerDayPresets, NumDaysToPushPresets, PopuplarityLevelNumber, TranslationServicePresets } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
@@ -61,6 +61,7 @@ const SetupScreen = () => {
   const texts = useLocalText()
 
   const [handlingType, set_handlingType] = useState<HandlingType>(undefined)
+  const [processPercent, set_processPercent] = useState<'' | `${number}%`>('')
   const [subView, set_subView] = useState<SubView>('setup')
   const [pushTimeListText, set_pushTimeListText] = useState('')
   const [showPopup, set_showPopup] = useState<PopupType>(undefined)
@@ -310,7 +311,9 @@ const SetupScreen = () => {
   const onPressSetNotification = useCallback(async () => {
     set_handlingType('setting_notification')
 
-    const res = await SetupNotificationAsync()
+    const res = await SetupNotificationAsync((process) => {
+      set_processPercent(`${RoundWithDecimal(process * 100)}%`)
+    })
 
     if (res === undefined) { // success
       set_handlingType('done')
@@ -332,6 +335,9 @@ const SetupScreen = () => {
       set_handlingType(undefined)
     }
 
+    // reset
+
+    set_processPercent('')
   }, [texts, generatePushTimeListText])
 
   const onConfirmTimePicker = useCallback((time: TimePickerResult) => {
@@ -1248,7 +1254,13 @@ const SetupScreen = () => {
             {/* set noti text */}
             {
               handlingType === 'setting_notification' &&
-              <Text style={style.downloadingTxt}>{texts.setting_notification}...</Text>
+              <>
+                <Text style={style.downloadingTxt}>{texts.setting_notification}...</Text>
+                {
+                  processPercent !== '' &&
+                  <Text style={style.downloadingTxt}>{processPercent}</Text>
+                }
+              </>
             }
 
             {/* icon done */}

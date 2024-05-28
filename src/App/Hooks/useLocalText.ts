@@ -59,7 +59,7 @@ const eng = {
     current_price: "Current sale price",
     upgrade: "Upgrade",
     purchase_success: 'You have just upgraded successfully!\n\nThank you for purchasing. You unlocked all vocabularies and features of Vocaby!',
-    push_will_showed_these_time: 'Every day, notifications will be shown at these times',
+    push_will_showed_these_time: 'Every day, vocabulary notifications will be shown at these times',
     
     show_rank_of_word: 'Show popularity #rank',
     show_part_of_speech: 'Show part of speech',

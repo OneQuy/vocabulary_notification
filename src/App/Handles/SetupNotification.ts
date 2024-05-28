@@ -36,6 +36,7 @@ const LoadFromLocalizedDbOrTranslateWordsAsync = async (
     words: string[],
     toLang: string,
     fromLang?: string,
+    process?: (process: number) => void
 ): Promise<TranslatedResult[] | Error> => {
     const alreadySavedWords = await GetLocalizedWordsFromDbIfAvailableAsync(toLang, words)
 
@@ -65,7 +66,11 @@ const LoadFromLocalizedDbOrTranslateWordsAsync = async (
     const translatedArrOrError = await BridgeTranslateMultiWordAsync(
         needFetchWords,
         toLang,
-        fromLang)
+        fromLang,
+        undefined,
+        undefined,
+        process
+    )
 
     // error overall
 
@@ -126,7 +131,10 @@ const GetAlreadyFetchedWordsDataCurrentLevelAsync = async (
  * ### note:
  * @returns length must === numUniqueWordsOfAllDay
  */
-const SetupWordsForSetNotiAsync = async (numRequired: number): Promise<SetupWordsForSetNotiResult> => {
+const SetupWordsForSetNotiAsync = async (
+    numRequired: number,
+    process?: (process: number) => void
+): Promise<SetupWordsForSetNotiResult> => {
     const targetLang = await GetTargetLangAsync()
 
     // error not set lang yet
@@ -180,7 +188,10 @@ const SetupWordsForSetNotiAsync = async (numRequired: number): Promise<SetupWord
 
     const translatedResultArrOrError = await LoadFromLocalizedDbOrTranslateWordsAsync(
         nextWordsToFetch.map(word => word.word),
-        targetLang)
+        targetLang,
+        undefined,
+        process
+    )
 
     // error overall
 
@@ -313,7 +324,7 @@ export const TestNotificationAsync = async (setHandling: (type: HandlingType) =>
     if (!word) {
         setHandling('downloading')
 
-        const wordsResultOrError = await GetNextWordsDataCurrentLevelForNotiAsync(50)
+        const wordsResultOrError = await GetNextWordsDataCurrentLevelForNotiAsync(10)
 
         if (wordsResultOrError instanceof Error || !Array.isArray(wordsResultOrError.words)) {
             setHandling(undefined)
@@ -500,7 +511,9 @@ const DataToNotification = (
     return noti
 }
 
-export const SetupNotificationAsync = async (): Promise<undefined | SetupNotificationError> => {
+export const SetupNotificationAsync = async (
+    process?: (process: number) => void
+): Promise<undefined | SetupNotificationError> => {
     const resPermission = await RequestPermissionNotificationAsync(true)
 
     if (!resPermission) {
@@ -548,7 +561,7 @@ export const SetupNotificationAsync = async (): Promise<undefined | SetupNotific
 
     // uniqueWordsOfAllDay
 
-    const setupWordsResult = await SetupWordsForSetNotiAsync(numUniqueWordsOfAllDay)
+    const setupWordsResult = await SetupWordsForSetNotiAsync(numUniqueWordsOfAllDay, process)
 
     if (setupWordsResult.error || setupWordsResult.errorText) {
         return {
