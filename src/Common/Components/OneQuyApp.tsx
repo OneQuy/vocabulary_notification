@@ -4,11 +4,14 @@ import { DownloadFile_GetJsonAsync, ReadJsonFileAsync } from './../FileUtils'
 import { AnimatedSimpleSpring, AnimatedSimpleTiming, DateDiff_InHour_WithNow, ShuffleArray, TempDirName, ToCanPrint } from './../UtilsTS'
 import { GetAlternativeConfig } from '../RemoteConfig'
 import ImageBackgroundOrView from './ImageBackgroundOrView'
+import { GetDateAsync_IsValueNotExistedOrEqualOverDayFromNow, SetDateAsync_Now } from '../AsyncStorageUtils'
+import { StorageKey_OneQuyAppLastSubDownload } from '../../App/Constants/StorageKey'
 
 const IsLog = false
 
 const JsonUrl = 'https://firebasestorage.googleapis.com/v0/b/onequyappgeneral.appspot.com/o/onequy_apps.json?alt=media&token=f674f251-106d-45b3-97d9-365f7cd6e6a7'
 
+const DaysToSubDownload = 10 // days
 
 const LocalPath = TempDirName + '/onequy_apps.json'
 
@@ -258,18 +261,22 @@ ${currentApp.description}
         if (isSuccessLoadedLocal) {
             // sub download
 
-            if (IsLog)
-                console.log('[OneQuyApp-checkLoad] sub downloading...');
+            if (await GetDateAsync_IsValueNotExistedOrEqualOverDayFromNow(StorageKey_OneQuyAppLastSubDownload, DaysToSubDownload)) {
+                SetDateAsync_Now(StorageKey_OneQuyAppLastSubDownload)
 
-            DownloadFile_GetJsonAsync<OneQuyAppData[]>(
-                fileDownloadUrl,
-                LocalPath,
-                true,
-                false
-            ).then((jsonRes) => {
-                if (onEvent)
-                    onEvent('loaded_local_sub_downloaded' + (Array.isArray(jsonRes.json) ? '_success' : '_fail'), '')
-            })
+                if (IsLog)
+                    console.log('[OneQuyApp-checkLoad] sub downloading...');
+
+                DownloadFile_GetJsonAsync<OneQuyAppData[]>(
+                    fileDownloadUrl,
+                    LocalPath,
+                    true,
+                    false
+                ).then((jsonRes) => {
+                    if (onEvent)
+                        onEvent('loaded_local_sub_downloaded' + (Array.isArray(jsonRes.json) ? '_success' : '_fail'), '')
+                })
+            }
         }
 
         // download

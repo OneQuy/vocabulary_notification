@@ -1293,7 +1293,7 @@ const SetupScreen = () => {
 
                 style={style.handlingBackBtn}
 
-                title={texts.back}
+                title={'Okay'}
                 titleProps={{ style: style.normalBtnTxt }}
 
                 onPress={() => set_handlingType(undefined)}
