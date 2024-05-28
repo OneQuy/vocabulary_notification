@@ -84,7 +84,7 @@ const UploadFileToTelegramBot = async (token, filepath, chatId, fileNameWithExt)
 
     bot.sendDocument(chatId, fileStream, {}, fileOptions)
         .then(() => {
-            console.log(`[UploadTelegramBot] File sent to bot '${botname}' successfully: ${fileNameWithExt ?? filepath}`)
+            console.log(`[UploadTelegramBot] File sent to bot '${botname}' SUCCESS: ${fileNameWithExt ?? filepath}`)
             process.exit()
         })
         .catch((error) => {
