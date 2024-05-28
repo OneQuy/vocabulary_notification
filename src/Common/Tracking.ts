@@ -33,7 +33,6 @@ import { VersionAsNumber } from "./CommonConstants";
 import { GetSplashTime } from "./Components/SplashScreen";
 import { AppStreakId, SetStreakAsync } from "./Streak";
 import { Cheat } from "./Cheat";
-import { AppName } from "./SpecificConstants";
 
 const IsLog = Cheat('log_tracking')
 
@@ -42,10 +41,21 @@ const FirebaseTrackingProductionPath = 'tracking/production/'
 const AptabaseIgnoredEventNamesDefault: string[] = [
 ] as const
 
+type CacheTrackData = {
+    eventName: string,
+    firebasePaths: string[],
+
+    /**
+     * aptabase, posthog,... (not firebase)
+     */
+    trackingValuesObject?: Record<string, string | number | boolean>
+}
+
 var inited = false
 var posthog: PostHog | undefined = undefined
 var cachedFinalAptabaseIgnoredEventNames: string[] | undefined = undefined
 var cachedFinalFirebaseIgnores: string[] | undefined = undefined
+var cachedTrackDataBeforeIniting: CacheTrackData[] = []
 
 /**
  * must be called after IsDev()
@@ -121,6 +131,26 @@ const GetFinalFirebaseIgnoresAsync = async (): Promise<string[] | undefined> => 
     return cachedFinalFirebaseIgnores
 }
 
+const CheckTrackCachedTrackDataBeforeInitingAsync = async (): Promise<void> => {
+    if (!inited) {
+        console.error('[CheckTrackCachedTrackDataBeforeInitingAsync] not inited yet!');
+        return
+    }
+    
+    for (let eventData of cachedTrackDataBeforeIniting) {
+        if (IsLog)
+            console.log('[CheckTrackCachedTrackDataBeforeInitingAsync] tracking cached event...', eventData.eventName);
+        
+        await TrackingAsync(
+            eventData.eventName,
+            eventData.firebasePaths,
+            eventData.trackingValuesObject
+        )
+    }
+
+    cachedTrackDataBeforeIniting = []
+}
+
 const CheckAndTrackErrorOnFirebaseAsync = async (error: string, root: string, subpath?: string): Promise<void> => {
     if (!error || !root)
         return
@@ -174,6 +204,10 @@ export const InitTrackingAsync = async (instancePosthog: PostHog) => {
             ApatabaseKey_Dev : // dev
             productionKey // prodution
     )
+
+    // track before init events
+
+    await CheckTrackCachedTrackDataBeforeInitingAsync()
 }
 
 export const TrackingAsync = async ( // main 
@@ -186,7 +220,14 @@ export const TrackingAsync = async ( // main
     trackingValuesObject?: Record<string, string | number | boolean>
 ): Promise<void> => {
     if (!inited) {
-        console.error('[TrackingAsync] not initted yet.');
+        console.log('[TrackingAsync] not inited yet. so caching...', eventName);
+
+        cachedTrackDataBeforeIniting.push({
+            eventName,
+            firebasePaths,
+            trackingValuesObject,
+        })
+
         return
     }
 
