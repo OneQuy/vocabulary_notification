@@ -4,7 +4,6 @@ import { SplashScreenLoaderResult } from "./SpecificType";
 import { FirebaseInit } from "./Firebase/Firebase";
 import { CheckIsDevAsync } from "./IsDev";
 import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig";
-import { HandleAlertUpdateAppAsync } from "./HandleAlertUpdateApp";
 import { InitUserIDAsync } from "./UserID";
 
 export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
