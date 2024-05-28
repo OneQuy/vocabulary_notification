@@ -168,7 +168,7 @@ const SetupScreen = () => {
       arr.push(`${PrependZero(time.hours)}:${PrependZero(time.minutes)}`)
     }
 
-    set_pushTimeListText(`${texts.push_will_showed_these_time}:\n${arr.join(', ')}`)
+    set_pushTimeListText(`${texts.push_will_showed_these_time}: ${arr.join(', ')}`)
   }, [displayIntervalInMin, displayExcludedTimePairs])
 
   const onPressSubview = useCallback((type: SubView) => {
