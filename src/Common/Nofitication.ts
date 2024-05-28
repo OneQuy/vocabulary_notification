@@ -12,7 +12,7 @@
 // --------------------------------
 
 import notifee, { AndroidChannel, AndroidImportance, AndroidStyle, AuthorizationStatus, Notification, NotificationAndroid, NotificationIOS, NotificationSettings, TimestampTrigger, TriggerType } from '@notifee/react-native';
-import { Linking, Platform } from 'react-native';
+import { Linking, } from 'react-native';
 import { AlertAsync } from './UtilsTS';
 
 export type NotificationOption = {
@@ -32,7 +32,6 @@ const DefaultAndroidLocalTextAlertIfDenied = {
   content: 'Please enable notifications in your phone Settings.',
   cancel: 'Cancel',
   settingBtn: 'Open Settings',
-  // instructionBtn: 'Setting',
 }
 
 const ConvertNotificationOptionToNotification = (option: NotificationOption): Notification => {
