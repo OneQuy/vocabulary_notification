@@ -19,6 +19,7 @@ Requests: 1,000 / month. 1000 requests per hour
 
 Key: 
 	+ onequy: 693dd75456msh921c376e306158cp12c5dbjsn32ff82c9294a
+	+ vocaby: 44d6647a3dmsh0432826a60f7777p152f60jsn82169dd026b5
 
 ===============
 
