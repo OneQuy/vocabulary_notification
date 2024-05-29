@@ -1,4 +1,8 @@
+// node editor/mergewords
+
 const fs = require('fs')
+
+const Full_Or_Simple = false
 
 const dir = './editor/Assets/vocabs/'
 
@@ -6,6 +10,16 @@ const outputPath = './editor/Assets/files/'
 
 const WordsPerFile = 4840
 
+function RemoveEmptyAndFalsyFromObject(obj) {
+    /**
+     * Creates a new object with empty strings, null, and undefined properties removed.
+     * @param {Object} obj The object to filter.
+     * @returns {Object} A new object with filtered properties.
+     */
+    return Object.fromEntries(
+        Object.entries(obj).filter(([key, value]) => value !== null && value !== undefined && value !== '')
+    );
+}
 
 /**
  * @returns number or NaN
@@ -64,6 +78,64 @@ const ShortAudio = (word) => {
     }
 }
 
+const SimplelizeData = (word) => {
+    // phonetic
+
+    if (word.phonetics && word.phonetics.length > 0) {
+        const phoneticsWithText = word.phonetics.filter(ph => ph.text && ph.text.length > 0)
+
+        if (phoneticsWithText.length >= 1) {
+            const firstPhonetic = {
+                text: phoneticsWithText[0].text
+            }
+
+            word.phonetics = [firstPhonetic]
+        }
+        else
+            word.phonetics = undefined
+    }
+    else
+        word.phonetics = undefined
+
+    // count
+
+    word.count = undefined
+
+    // showDefinitions, showExample, showPartOfSpeech
+
+    if (!word.meanings || word.meanings.length <= 0)
+        console.error('aaaaaaaa means empty', word.word)
+
+    for (let meaning of word.meanings) {
+        if (!meaning.partOfSpeech || meaning.partOfSpeech.length <= 0) {
+            console.error('bbbbbbbbbbb meaning.partOfSpeech empty', word.word)
+            continue
+        }
+
+        if (!meaning.definitions || meaning.definitions.length <= 0) {
+            console.error('cccccc meaning.definitions empty', word.word)
+            continue
+        }
+
+        let def
+
+        def = meaning.definitions.find(i => i.example && i.example.length > 0)
+
+        if (!def) { // no available examble
+            def = meaning.definitions[0]
+            def.example = undefined
+
+            def = RemoveEmptyAndFalsyFromObject(def)
+        }
+
+        meaning.definitions = [def]
+    }
+
+    // remove falsy
+
+    return RemoveEmptyAndFalsyFromObject(word)
+}
+
 const MergeAndSplitFilesAsync = async () => {
     let dirInfo = fs.readdirSync(dir)
 
@@ -90,7 +162,11 @@ const MergeAndSplitFilesAsync = async () => {
 
             preIdx = word.idx
 
-            ShortAudio(word)
+            if (Full_Or_Simple)
+                ShortAudio(word)
+            else
+                word = SimplelizeData(word)
+
             arr.push(word)
 
             if (arr.length >= WordsPerFile) {
