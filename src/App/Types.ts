@@ -18,7 +18,7 @@ export interface Meaning {
 export interface Word {
     word: string;
     idx: number,
-    count: number,
+    count?: number,
     phonetics?: Phonetic[],
     meanings: Meaning[],
 }
