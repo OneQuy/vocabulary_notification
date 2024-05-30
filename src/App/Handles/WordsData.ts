@@ -7,16 +7,18 @@ import { GetPopularityLevelIndexAsync } from "./Settings"
 
 const IsLog = __DEV__
 
-export const WordDataFirebaseFileUrls = [
-    'https://firebasestorage.googleapis.com/v0/b/vocanoti.appspot.com/o/words%2Findex-1.json?alt=media&token=bf8256ea-7e43-4f7b-84fe-8cfb111444c8',
-    'https://firebasestorage.googleapis.com/v0/b/vocanoti.appspot.com/o/words%2Findex-2.json?alt=media&token=1a6b3774-ff6d-4ea2-98a9-0f1bb83d1180',
-    'https://firebasestorage.googleapis.com/v0/b/vocanoti.appspot.com/o/words%2Findex-3.json?alt=media&token=6498e32e-385e-45e0-919c-65173d99a9cb',
-    'https://firebasestorage.googleapis.com/v0/b/vocanoti.appspot.com/o/words%2Findex-4.json?alt=media&token=da32bcfe-cece-47da-beac-b0d543ca4026',
-    'https://firebasestorage.googleapis.com/v0/b/vocanoti.appspot.com/o/words%2Findex-5.json?alt=media&token=3b591b50-63c6-4ce2-b67c-f47b557ff019',
-    'https://firebasestorage.googleapis.com/v0/b/vocanoti.appspot.com/o/words%2Findex-6.json?alt=media&token=a4e2f105-fa76-41a7-bd37-cff0dae905a7',
-    'https://firebasestorage.googleapis.com/v0/b/vocanoti.appspot.com/o/words%2Findex-7.json?alt=media&token=6cbdeb84-80a6-488f-87f5-69bca326bc90',
-    'https://firebasestorage.googleapis.com/v0/b/vocanoti.appspot.com/o/words%2Findex-8.json?alt=media&token=14f69885-3721-4dcc-8352-f9856a8971af',
-    'https://firebasestorage.googleapis.com/v0/b/vocanoti.appspot.com/o/words%2Findex-9.json?alt=media&token=42859e5f-19cf-4a45-adbb-1dff0e9f6902',
+const FileUrlPattern = 'https://firebasestorage.googleapis.com/v0/b/vocanoti.appspot.com/o/words%2Findex-#.json?alt=media&token=@'
+
+const WordDataFirebaseFileTokens = [
+    'cebdb704-31b9-4e63-8131-433f4e90d1bf',
+    '0cc804e7-a374-4a17-a48f-ae5866c3546d',
+    '324aba26-049b-4d12-aeca-220ea0c3e31f',
+    'a00c3dab-0fc2-4703-8b4d-6003a9ae2b8f',
+    '73718e7b-c010-4a41-b06e-ec642a6767c7',
+    'd45b51cc-cd41-4e07-8665-1753fd9bf984',
+    '704f8705-fd80-4ca4-981b-1eb64d68e044',
+    '247b705b-3b09-4e0b-bb55-488c5d0abf73',
+    '89606f42-1abf-4245-8089-43d8b30b13fb',
 ] as const
 
 type CachedWordData = {
@@ -71,14 +73,18 @@ export const GetWordsDataCurrentLevelAsync = async (wordStrings: string[]): Prom
  * @returns undefined is success
  */
 export const DownloadWordDataAsync = async (popularityIdx: number): Promise<undefined | Error> => {
-    if (popularityIdx < 1 || popularityIdx > WordDataFirebaseFileUrls.length)
+    if (popularityIdx < 1 || popularityIdx > WordDataFirebaseFileTokens.length)
         return new Error('[DownloadWordDataAsync] out of index WordDataFirebaseFileUrls: ' + popularityIdx)
 
     if (IsLog) {
         console.log('[GetAllWordsDataAsync] start to download file word data... index', popularityIdx);
     }
 
-    const url = WordDataFirebaseFileUrls[popularityIdx - 1]
+    const url = FileUrlPattern
+        .replace('#', popularityIdx.toString())
+        .replace('@', WordDataFirebaseFileTokens[popularityIdx - 1])
+
+    console.log(url);
 
     const fileDLRes = await DownloadFile_GetJsonAsync(
         url,
