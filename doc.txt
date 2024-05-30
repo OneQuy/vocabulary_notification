@@ -10,12 +10,19 @@ alert not priority (after alerts above):
 
 alternativeValue:
 
-1. onequyApps
-2. microsoft
-3. systran
-4. lingvanex
-5. deep
-6. devisty
+- onequyApps
+
+- microsoft
+- systran
+- lingvanex
+- deep
+- devisty
+
+word data file url pattern (default: 'https://firebasestorage.googleapis.com/v0/b/vocanoti.appspot.com/o/words%2Findex-#.json?alt=media&token=@')
+- dataFileUrlPattern
+
+word data file tokens
+- dataFileTokenIdx# (dataFileTokenIdx0 for index_0.json on firebase level 1 in app, dataFileTokenIdx1 for index_1.json on firebase level 2 in app,...)
 
 =========================================
 
