@@ -1,5 +1,6 @@
 import { GetNumberIntAsync, SetNumberAsync } from "../../Common/AsyncStorageUtils"
 import { DownloadFile_GetJsonAsync, ReadJsonFileAsync, ReadTextAsync } from "../../Common/FileUtils"
+import { GetAlternativeConfig } from "../../Common/RemoteConfig"
 import { CreateError, IsValuableArrayOrString } from "../../Common/UtilsTS"
 import { StorageKey_UsedWordIndex } from "../Constants/StorageKey"
 import { Word } from "../Types"
@@ -80,9 +81,12 @@ export const DownloadWordDataAsync = async (popularityIdx: number): Promise<unde
         console.log('[GetAllWordsDataAsync] start to download file word data... index', popularityIdx);
     }
 
-    const url = FileUrlPattern
+    const urlPattern = GetAlternativeConfig('dataFileUrlPattern', FileUrlPattern)
+    const token = GetAlternativeConfig(`dataFileTokenIdx${popularityIdx}`, WordDataFirebaseFileTokens[popularityIdx - 1])
+
+    const url = urlPattern
         .replace('#', popularityIdx.toString())
-        .replace('@', WordDataFirebaseFileTokens[popularityIdx - 1])
+        .replace('@', token)
 
     console.log(url);
 
