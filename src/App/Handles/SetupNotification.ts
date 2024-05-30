@@ -15,6 +15,8 @@ import { TranslatedResult } from "../../Common/TranslationApis/TranslationLangua
 
 const IsLog = __DEV__
 
+export const NotificationExtraDataKey_Mode = 'mode'
+
 type SavedAndWordData = {
     savedData: SavedWordData,
     wordData: Word,
@@ -449,17 +451,6 @@ const DataToNotification = (
             titleExtraInfoArr.push(phonetic.text)
     }
 
-    // // showPartOfSpeech
-
-    // if (showPartOfSpeech) {
-    //     const partOrUndefineds = data.wordData.meanings.map(i => i.partOfSpeech)
-    //     const parts = partOrUndefineds.filter(p => p !== undefined) as string[]
-
-    //     if (parts.length > 0) {
-    //         titleExtraInfoArr.push(parts.map(i => ToDisplayPartOfSpeech(i)).join(', '))
-    //     }
-    // }
-
     // showRank
 
     if (showRank)
@@ -506,6 +497,10 @@ const DataToNotification = (
         title,
         message,
         timestamp,
+
+        data: {
+            [NotificationExtraDataKey_Mode]: isSetOrTest ? 'set' : 'test'
+        }
     }
 
     // if (IsLog)
