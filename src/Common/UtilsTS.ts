@@ -221,10 +221,20 @@ export async function LoadJsonFromURLAsync(jsonURL: string) {
         var respone = await fetch(jsonURL);
         var jsonObject = await respone.json();
 
-        return {
-            json: jsonObject,
-            error: null,
-        };
+        // {"error": {"code": 403, "message": "Permission denied."}}
+
+        if (IsObjectError(jsonObject)) {
+            return {
+                json: null,
+                error: jsonObject,
+            }
+        }
+        else {
+            return {
+                json: jsonObject,
+                error: null,
+            }
+        }
     }
     catch (err) {
         return {
@@ -356,6 +366,23 @@ export const IsChar = (c: string) => {
 
 export const IsNumType = (o: any): o is number => {
     return typeof o === 'number' && !Number.isNaN(o)
+}
+
+/**
+ * 
+ * @returns object if true error. undefined if not error
+ */
+export const IsObjectError = (anything: any): object | undefined => {
+    if (anything instanceof Error)
+        return Error
+
+    if (typeof anything === 'string')
+        anything = SafeParse<object>(anything)
+
+    if (anything && anything.error && anything.error.message)
+        return anything as object
+    else
+        return undefined
 }
 
 // array utils ---------------------------
@@ -1179,15 +1206,29 @@ export const IsPointInRect = ( // main
 }
 
 export const ToCanPrintError = (erroObj: any) => {
-    const err: string = erroObj?.code
-    const msg: string = erroObj?.message
+    if (!erroObj)
+        return erroObj
 
-    if (!err && !msg)
+    // console.log(erroObj);
+
+    if (typeof erroObj === 'string')
+        erroObj = SafeParse(erroObj)
+
+    let code: string = erroObj.code
+    let msg: string = erroObj.message
+
+    if (!code && !msg && erroObj.error) {
+        erroObj = erroObj.error
+        code = erroObj.code
+        msg = erroObj.message
+    }
+
+    if (!code && !msg)
         return ToCanPrint(erroObj)
-    else if (err && msg)
-        return err + ' - ' + msg
-    else if (err)
-        return err
+    else if (code && msg)
+        return code + ' - ' + msg
+    else if (code)
+        return code
     else
         return msg
 }
@@ -1397,6 +1438,8 @@ export function SafeValue<T>(
 
 export const CreateError = (anything: any): Error => {
     if (anything?.message)
+        return anything
+    else if (IsObjectError(anything))
         return anything
     else
         return new Error(ToCanPrint(anything))

@@ -627,10 +627,12 @@ export const SetupNotificationAsync = async (
                 settingExample,
                 settingShowPhonetic)
 
-            SetNotificationAsync(noti)
+            await SetNotificationAsync(noti)
+
+            const log = `(${new Date(timestamp).toLocaleString()}) ${noti.title}: ${noti.message}`
 
             if (IsLog)
-                console.log(`(${new Date(timestamp).toLocaleString()}) ${noti.title}: ${noti.message}`)
+                console.log(log)
 
             didSetNotiList.push({
                 wordAndLang: wordToPush.savedData.wordAndLang,

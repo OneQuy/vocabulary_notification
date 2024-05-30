@@ -190,7 +190,7 @@ const SetupScreen = () => {
   const setHandlingAndGetReadyDataAsync = async (popularityLevelIdx = -1): Promise<boolean> => {
     if (await IsCachedWordsDataCurrentLevelAsync(popularityLevelIdx))
       return true
-
+    
     set_handlingType('loading_local')
 
     if (popularityLevelIdx < 0)
@@ -211,7 +211,7 @@ const SetupScreen = () => {
         if (dlRes !== undefined) { // dl fail
           const isPressRight = await AlertAsync(
             texts.popup_error,
-            `${texts.fail_download}\n\n${dlRes}`,
+            `${texts.fail_download}\n\n${ToCanPrintError(dlRes)}`,
             texts.retry, // right btn
             texts.cancel) // left btn
 
