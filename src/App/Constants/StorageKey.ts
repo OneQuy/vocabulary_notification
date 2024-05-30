@@ -17,6 +17,7 @@ export const StorageKey_Streak = 'StorageKey_Streak'
 export const StorageKey_OpenAt = 'StorageKey_OpenAt'
 export const StorageKey_SubscribeData = 'StorageKey_SubscribeData'
 export const StorageKey_OneQuyAppLastSubDownload = 'StorageKey_OneQuyAppLastSubDownload'
+export const StorageKey_CacheEventNotification = 'StorageKey_CacheEventNotification'
 
 
 export const StorageKey_ForceDev = 'StorageKey_ForceDev'

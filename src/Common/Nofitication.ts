@@ -11,15 +11,18 @@
 //  iOS: add Push Notifications on XCode
 // --------------------------------
 
-import notifee, { AndroidChannel, AndroidImportance, AndroidStyle, AuthorizationStatus, Notification, NotificationAndroid, NotificationIOS, NotificationSettings, TimestampTrigger, TriggerType } from '@notifee/react-native';
+import notifee, { AndroidChannel, AndroidImportance, AndroidStyle, AuthorizationStatus, Event, EventType, Notification, NotificationAndroid, NotificationIOS, TimestampTrigger, TriggerType } from '@notifee/react-native';
 import { Linking, } from 'react-native';
 import { AlertAsync } from './UtilsTS';
 
 export type NotificationOption = {
+  subtitle?: string,
   message: string,
   title: string,
   timestamp?: number,
 }
+
+// const IsLog = __DEV__
 
 var androidChannelId: string
 
@@ -34,6 +37,41 @@ const DefaultAndroidLocalTextAlertIfDenied = {
   settingBtn: 'Open Settings',
 }
 
+const OnEventNotification = async (isBackgroundOrForeground: boolean, event: Event): Promise<void> => {
+  const eventType = EventType[event.type]
+
+  // AsyncStorage.setItem(StorageKey_CacheEventNotification,
+  //   eventType + ' ' +
+  //   isBackgroundOrForeground + ' ' +
+  //   SafeValue(event.detail.notification?.title, 'worddd')
+  // )
+
+
+  // const obj = {
+  //   eventType,
+  //   background: isBackgroundOrForeground,
+  //   time: new Date().toLocaleString(),
+  // }
+
+  // const notiTitle = event.detail.notification?.title
+
+  // if (notiTitle)
+  //   // @ts-ignore
+  //   obj.notiTitle = notiTitle
+
+  // TrackingAsync(
+  //   'notification',
+  //   [
+  //     `notification/${isBackgroundOrForeground ? 'background' : 'foreground'}/${Platform.OS}/` + eventType
+  //   ],
+  //   obj
+  // )
+
+  // AppendArrayAsync<object>(StorageKey_CacheEventNotification, obj)
+
+  // console.log('[OnEventNotification]', eventType, notiTitle);
+}
+
 const ConvertNotificationOptionToNotification = (option: NotificationOption): Notification => {
   const ios: NotificationIOS = {
     sound: 'default',
@@ -41,6 +79,9 @@ const ConvertNotificationOptionToNotification = (option: NotificationOption): No
 
   const android: NotificationAndroid = {
     channelId: androidChannelId,
+    pressAction: {
+      id: Math.random().toString(),
+    },
     style: {
       type: AndroidStyle.BIGTEXT,
       text: option.message,
@@ -48,6 +89,7 @@ const ConvertNotificationOptionToNotification = (option: NotificationOption): No
   }
 
   const noti: Notification = {
+    subtitle: option.subtitle,
     title: option.title,
     body: option.message,
     android,
@@ -80,7 +122,8 @@ const CheckAndInitAsync = async () => {
     sound: 'default',
   } as AndroidChannel);
 
-  notifee.onBackgroundEvent(async (_) => { })
+  notifee.onBackgroundEvent((event: Event) => OnEventNotification(true, event))
+  notifee.onForegroundEvent((event: Event) => OnEventNotification(false, event))
 }
 
 export const RequestPermissionNotificationAsync = async (
@@ -157,7 +200,7 @@ export const SetNotificationAsync = async (option: NotificationOption) => { // m
 
   // StorageLog_LogAsync('set noti: ' + new Date(option.timestamp).toLocaleString() + ', ' + option.message)
 
-  notifee.createTriggerNotification(
+  await notifee.createTriggerNotification(
     ConvertNotificationOptionToNotification(option),
     trigger,
   );
