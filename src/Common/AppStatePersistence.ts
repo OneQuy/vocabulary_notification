@@ -190,7 +190,7 @@ export const GetAndSetInstalledDaysCountAsync = async () => {
 const CheckForcePremiumDataAsync = async (setupParams: SetupAppStateAndStartTrackingParams) => {
     const data = await GetUserForcePremiumDataAsync()
 
-    console.log('[CheckForcePremiumDataAsync] data', data);
+    // console.log('[CheckForcePremiumDataAsync] data', data);
 
     if (!data)
         return
