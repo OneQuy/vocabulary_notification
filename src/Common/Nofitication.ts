@@ -22,8 +22,6 @@ export type NotificationOption = {
   timestamp?: number,
 }
 
-// const IsLog = __DEV__
-
 var androidChannelId: string
 
 var inited: boolean = false
