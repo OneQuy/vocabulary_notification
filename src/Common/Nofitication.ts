@@ -13,13 +13,17 @@
 
 import notifee, { AndroidChannel, AndroidImportance, AndroidStyle, AuthorizationStatus, Event, EventType, Notification, NotificationAndroid, NotificationIOS, TimestampTrigger, TriggerType } from '@notifee/react-native';
 import { Linking, } from 'react-native';
-import { AlertAsync } from './UtilsTS';
+import { AlertAsync, RoundWithDecimal, SafeValue } from './UtilsTS';
 
 export type NotificationOption = {
   subtitle?: string,
   message: string,
   title: string,
   timestamp?: number,
+
+  data?: {
+    [key: string]: string | object | number;
+  }
 }
 
 var androidChannelId: string
@@ -38,18 +42,23 @@ const DefaultAndroidLocalTextAlertIfDenied = {
 const OnEventNotification = async (isBackgroundOrForeground: boolean, event: Event): Promise<void> => {
   const eventType = EventType[event.type]
 
+  const now = Date.now()
+  const notiTimestamp = SafeValue(event.detail.notification?.data?.timestamp, now)
+  const offsetInSec = RoundWithDecimal(Math.abs(now - notiTimestamp) / 1000)
+
+  const obj = {
+    eventType,
+    background: isBackgroundOrForeground,
+    eventTime: new Date(now).toLocaleString(),
+    targetTime: new Date(notiTimestamp).toLocaleString(),
+    offsetInSec,
+  }
+
   // AsyncStorage.setItem(StorageKey_CacheEventNotification,
   //   eventType + ' ' +
   //   isBackgroundOrForeground + ' ' +
   //   SafeValue(event.detail.notification?.title, 'worddd')
   // )
-
-
-  // const obj = {
-  //   eventType,
-  //   background: isBackgroundOrForeground,
-  //   time: new Date().toLocaleString(),
-  // }
 
   // const notiTitle = event.detail.notification?.title
 
@@ -92,6 +101,11 @@ const ConvertNotificationOptionToNotification = (option: NotificationOption): No
     body: option.message,
     android,
     ios,
+
+    data: {
+      timestamp: SafeValue(option.timestamp, Date.now()),
+      ...option.data
+    }
   }
 
   return noti

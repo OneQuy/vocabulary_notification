@@ -367,7 +367,9 @@ export const TestNotificationAsync = async (setHandling: (type: HandlingType) =>
         settingDefinitions,
         settingShowPartOfSpeech,
         settingExample,
-        settingShowPhonetic)
+        settingShowPhonetic,
+        false,
+    )
 
     DisplayNotificationAsync(noti)
 
@@ -416,7 +418,8 @@ const DataToNotification = (
     showDefinitions: boolean,
     showPartOfSpeech: boolean,
     showExample: boolean,
-    showPhonetic: boolean
+    showPhonetic: boolean,
+    isSetOrTest: boolean,
 ): NotificationOption => {
     if (!data ||
         !data.savedData ||
@@ -625,7 +628,9 @@ export const SetupNotificationAsync = async (
                 settingDefinitions,
                 settingShowPartOfSpeech,
                 settingExample,
-                settingShowPhonetic)
+                settingShowPhonetic,
+                true
+            )
 
             await SetNotificationAsync(noti)
 
