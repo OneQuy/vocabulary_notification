@@ -490,7 +490,7 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
     const firebasePathsForNumberTracking: string[] = []
 
     if (distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs > 0)
-        objectNumber.lastActiveOpen = FromMsTo_TodayDays(distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs)
+        objectNumber.lastActiveOpenInDays = RoundWithDecimal(FromMsTo_TodayDays(distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs))
 
     if (IsNumType(loadedConfigLastTimeInHour))
         objectNumber.lastLoadedConfigInHour = RoundWithDecimal(loadedConfigLastTimeInHour)
