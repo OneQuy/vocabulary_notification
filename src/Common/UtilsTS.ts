@@ -370,17 +370,24 @@ export const IsNumType = (o: any): o is number => {
 
 /**
  * 
- * @returns object if true error. undefined if not error
+ * @returns object if true error, in 3 cases:
+ * + instanceof Error
+ * + object or string parsed: { error : { message: NotFalsyType }}
+ * + object or string parsed: { message: NotFalsyType, code: number }
+ * 
+ * @returns undefined if not error
  */
 export const IsObjectError = (anything: any): object | undefined => {
     if (anything instanceof Error)
-        return Error
+        return anything
 
     if (typeof anything === 'string')
         anything = SafeParse<object>(anything)
 
     if (anything && anything.error && anything.error.message)
-        return anything as object
+        return anything
+    else if (anything && typeof anything.code === 'number' && anything.message)
+        return anything
     else
         return undefined
 }
@@ -1437,12 +1444,15 @@ export function SafeValue<T>(
 }
 
 export const CreateError = (anything: any): Error => {
-    if (anything?.message)
-        return anything
-    else if (IsObjectError(anything))
-        return anything
+    // if (anything?.message)
+    //     return anything
+    // else if (IsObjectError(anything))
+    //     return anything
+
+    if (!anything)
+        return new Error('FalsyUnknownError')
     else
-        return new Error(ToCanPrint(anything))
+        return new Error(ToCanPrintError(anything))
 }
 
 export async function DelayAsync(msTime: number) {
