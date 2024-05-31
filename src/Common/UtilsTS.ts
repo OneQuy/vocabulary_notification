@@ -1431,8 +1431,10 @@ export function SafeValue<T>(
     forceNaNToDefault = true,
     forceEmptyStringToDefault = true
 ): T {
-    if (typeof anything === typeof defaultValue) {
-        if (forceEmptyStringToDefault && typeof anything === 'string' && anything.length <= 0)
+    const typeOfAnything = typeof anything
+
+    if (typeOfAnything === typeof defaultValue) {
+        if (forceEmptyStringToDefault && typeOfAnything === 'string' && anything.length <= 0)
             return defaultValue
         else if (forceNaNToDefault && Number.isNaN(anything))
             return defaultValue
