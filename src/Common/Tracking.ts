@@ -213,7 +213,7 @@ export const InitTrackingAsync = async (instancePosthog: PostHog) => {
 /**
  * 
  * @param eventName should be underscore format: event_name
- * @returns 
+ * @param firebasePaths should be underscore format: total/app/open_week
  */
 export const TrackingAsync = async ( // main 
     eventName: string,
