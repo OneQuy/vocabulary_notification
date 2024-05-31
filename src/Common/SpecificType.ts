@@ -2,6 +2,8 @@
 //
 // Created on 17 may 2024 (Coding Vocaby)
 
+import { NotificationExtraDataKey_Mode } from "../App/Handles/SetupNotification"
+
 export type RemoteConfig = { // CHANGE OPTIONAL
     // common
 
@@ -104,6 +106,6 @@ export interface NotificationTrackData { // NO CHANGE
 }
 
 export interface VocabyNotificationTrackData extends NotificationTrackData { // CHANGE OPTIONAL
-    [NotificationExtraDataKey_Mode: string]: any;
+    [NotificationExtraDataKey_Mode]: any;
     word: string;
 }
