@@ -1,16 +1,20 @@
-import { View, StyleSheet, Text, FlatList, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, Text, FlatList, TouchableOpacity, Alert } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import useLocalText from '../Hooks/useLocalText'
 import { Gap, Outline } from '../Constants/Constants_Outline'
 import { UpdatePushedWordsAndRefreshCurrentNotiWordsAsync } from '../Handles/SetupNotification'
 import { GetLocalizedWordFromDbAsync } from '../Handles/LocalizedWordsTable'
 import { SavedWordData } from '../Types'
-import { CapitalizeFirstLetter, DelayAsync, GetElementsOfPageArray, HexToRgb, SafeArrayLength } from '../../Common/UtilsTS'
+import { CapitalizeFirstLetter, DelayAsync, GetElementsOfPageArray, HexToRgb, IsValuableArrayOrString, SafeArrayLength } from '../../Common/UtilsTS'
 import { FontSize } from '../Constants/Constants_FontSize'
 import { HandlingType } from './SetupScreen'
 import { CheckDeserializeLocalizedData, ExtractWordFromWordLang } from '../Handles/AppUtils'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { Color_Text } from '../Hooks/useTheme'
+import { GetArrayAsync } from '../../Common/AsyncStorageUtils'
+import { StorageKey_CacheEventNotification } from '../Constants/StorageKey'
+import Clipboard from '@react-native-clipboard/clipboard'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const PageItemCount = 20
 
@@ -87,39 +91,69 @@ const HistoryScreen = ({
 
   useEffect(() => {
     (async () => {
-      await DelayAsync(200)
-      
-      setHandling('loading_local')
-      
-      await DelayAsync(200)
+      // const a = await AsyncStorage.getItem(StorageKey_CacheEventNotification)
 
-      // update pushed word to db
+      // if (a)
+      //   Alert.alert('aaaaa '  + a)
+      // else
+      //   Alert.alert('empty 222222')
 
-      await UpdatePushedWordsAndRefreshCurrentNotiWordsAsync()
 
-      // words 
 
-      const allPushed = await GetLocalizedWordFromDbAsync(undefined, true)
 
-      if (!Array.isArray(allPushed)) {
-        set_allPushedWordsOrError(allPushed)
-        setHandling(undefined)
-        return
-      }
+      // const arr = await GetArrayAsync<object>(StorageKey_CacheEventNotification)
 
-      for (let i = 0; i < allPushed.length; i++) {
-        const word = allPushed[i]
+      // if (!IsValuableArrayOrString(arr)) {
+      //   AsyncStorage.removeItem(StorageKey_CacheEventNotification)
+      //   Alert.alert('empty')
+      //   return
+      // }
 
-        CheckDeserializeLocalizedData(word)
-      }
+      // const s = JSON.stringify(arr, null, 1)
 
-      allPushed.sort((a, b) => {
-        return b.lastNotiTick - a.lastNotiTick
-      })
+      // Clipboard.setString(s)
 
-      set_allPushedWordsOrError(allPushed)
+      // if (arr)
+      //   Alert.alert(arr?.length.toString())
 
-      setHandling(undefined)
+      // AsyncStorage.removeItem(StorageKey_CacheEventNotification)
+
+
+
+
+      // await DelayAsync(200)
+
+      // setHandling('loading_local')
+
+      // await DelayAsync(200)
+
+      // // update pushed word to db
+
+      // await UpdatePushedWordsAndRefreshCurrentNotiWordsAsync()
+
+      // // words 
+
+      // const allPushed = await GetLocalizedWordFromDbAsync(undefined, true)
+
+      // if (!Array.isArray(allPushed)) {
+      //   set_allPushedWordsOrError(allPushed)
+      //   setHandling(undefined)
+      //   return
+      // }
+
+      // for (let i = 0; i < allPushed.length; i++) {
+      //   const word = allPushed[i]
+
+      //   CheckDeserializeLocalizedData(word)
+      // }
+
+      // allPushed.sort((a, b) => {
+      //   return b.lastNotiTick - a.lastNotiTick
+      // })
+
+      // set_allPushedWordsOrError(allPushed)
+
+      // setHandling(undefined)
     })()
   }, [])
 
