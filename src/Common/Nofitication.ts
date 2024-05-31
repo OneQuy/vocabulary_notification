@@ -14,6 +14,8 @@
 import notifee, { AndroidChannel, AndroidImportance, AndroidStyle, AuthorizationStatus, Event, EventType, Notification, NotificationAndroid, NotificationIOS, TimestampTrigger, TriggerType } from '@notifee/react-native';
 import { Linking, } from 'react-native';
 import { AlertAsync, RoundWithDecimal, SafeValue } from './UtilsTS';
+import { NotificationTrackData } from './SpecificType';
+import { OnEventNotification } from './SpecificUtils';
 
 export type NotificationOption = {
   subtitle?: string,
@@ -37,46 +39,6 @@ const DefaultAndroidLocalTextAlertIfDenied = {
   content: 'Please enable notifications in your phone Settings.',
   cancel: 'Cancel',
   settingBtn: 'Open Settings',
-}
-
-const OnEventNotification = async (isBackgroundOrForeground: boolean, event: Event): Promise<void> => {
-  const eventType = EventType[event.type]
-
-  const now = Date.now()
-  const notiTimestamp = SafeValue(event.detail.notification?.data?.timestamp, now)
-  const offsetInSec = RoundWithDecimal(Math.abs(now - notiTimestamp) / 1000)
-
-  const obj = {
-    eventType,
-    background: isBackgroundOrForeground,
-    eventTime: new Date(now).toLocaleString(),
-    targetTime: new Date(notiTimestamp).toLocaleString(),
-    offsetInSec,
-  }
-
-  // AsyncStorage.setItem(StorageKey_CacheEventNotification,
-  //   eventType + ' ' +
-  //   isBackgroundOrForeground + ' ' +
-  //   SafeValue(event.detail.notification?.title, 'worddd')
-  // )
-
-  // const notiTitle = event.detail.notification?.title
-
-  // if (notiTitle)
-  //   // @ts-ignore
-  //   obj.notiTitle = notiTitle
-
-  // TrackingAsync(
-  //   'notification',
-  //   [
-  //     `notification/${isBackgroundOrForeground ? 'background' : 'foreground'}/${Platform.OS}/` + eventType
-  //   ],
-  //   obj
-  // )
-
-  // AppendArrayAsync<object>(StorageKey_CacheEventNotification, obj)
-
-  // console.log('[OnEventNotification]', eventType, notiTitle);
 }
 
 const ConvertNotificationOptionToNotification = (option: NotificationOption): Notification => {
@@ -121,9 +83,9 @@ const CheckAndInitAsync = async () => {
   if (inited)
     return
 
-  inited = true
-
   // console.log('[CheckAndInitAsync Notification] inited');
+
+  inited = true
 
   // Create a channel (required for Android)
 
@@ -136,6 +98,24 @@ const CheckAndInitAsync = async () => {
 
   notifee.onBackgroundEvent((event: Event) => OnEventNotification(true, event))
   notifee.onForegroundEvent((event: Event) => OnEventNotification(false, event))
+}
+
+export const GenerateNotificationTrackData = (isBackgroundOrForeground: boolean, event: Event): NotificationTrackData => {
+  const eventType = EventType[event.type]
+
+  const now = Date.now()
+  const notiTimestamp = SafeValue(event.detail.notification?.data?.timestamp, now)
+  const offsetInSec = RoundWithDecimal(Math.abs(now - notiTimestamp) / 1000)
+
+  const objTrack: NotificationTrackData = {
+    eventType,
+    background: isBackgroundOrForeground,
+    eventTime: new Date(now).toLocaleString(),
+    targetTime: new Date(notiTimestamp).toLocaleString(),
+    offsetInSec,
+  }
+
+  return objTrack
 }
 
 export const RequestPermissionNotificationAsync = async (
@@ -181,7 +161,6 @@ export const RequestPermissionNotificationAsync = async (
 
   return false
 }
-
 export const CancelAllLocalNotificationsAsync = async () => {
   await notifee.cancelAllNotifications()
 }
