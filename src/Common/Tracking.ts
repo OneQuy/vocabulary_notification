@@ -210,6 +210,11 @@ export const InitTrackingAsync = async (instancePosthog: PostHog) => {
     await CheckTrackCachedTrackDataBeforeInitingAsync()
 }
 
+/**
+ * 
+ * @param eventName should be underscore format: event_name
+ * @returns 
+ */
 export const TrackingAsync = async ( // main 
     eventName: string,
     firebasePaths: string[],
