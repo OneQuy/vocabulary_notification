@@ -93,3 +93,17 @@ export type AppContextType = { // CHANGE OPTIONAL
     subscribedData: SubscribedData | undefined,
     onSetSubcribeDataAsync: (subscribedData: SubscribedData | undefined) => Promise<void>,
 }
+
+
+export interface NotificationTrackData { // NO CHANGE
+    eventType: string;
+    background: boolean;
+    eventTime: string;
+    targetTime: string;
+    offsetInSec: number;
+}
+
+export interface VocabyNotificationTrackData extends NotificationTrackData { // CHANGE OPTIONAL
+    [NotificationExtraDataKey_Mode: string]: any;
+    word: string;
+}
