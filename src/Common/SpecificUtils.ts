@@ -48,7 +48,7 @@ export const OnEventNotification = async (isBackgroundOrForeground: boolean, eve
 
     AppendArrayAsync<VocabyNotificationTrackData>(StorageKey_CacheEventNotification, objTrack)
 
-    // track (not need change)
+    // track on event (not need change)
 
     const eventName = 'on_event_notification'
 
