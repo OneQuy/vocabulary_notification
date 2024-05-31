@@ -3,6 +3,7 @@
 // Created on 17 may 2024 (Coding Vocaby)
 
 import { NotificationExtraDataKey_Mode } from "../App/Handles/SetupNotification"
+import { TrackingValuesObject } from "./Tracking"
 
 export type RemoteConfig = { // CHANGE OPTIONAL
     // common
@@ -97,7 +98,7 @@ export type AppContextType = { // CHANGE OPTIONAL
 }
 
 
-export interface NotificationTrackData { // NO CHANGE
+export interface NotificationTrackData extends TrackingValuesObject { // NO CHANGE
     eventType: string;
     background: boolean;
     eventTime: string;
@@ -106,6 +107,6 @@ export interface NotificationTrackData { // NO CHANGE
 }
 
 export interface VocabyNotificationTrackData extends NotificationTrackData { // CHANGE OPTIONAL
-    [NotificationExtraDataKey_Mode]: any;
+    [NotificationExtraDataKey_Mode]: string;
     word: string;
 }

@@ -41,6 +41,8 @@ const FirebaseTrackingProductionPath = 'tracking/production/'
 const AptabaseIgnoredEventNamesDefault: string[] = [
 ] as const
 
+export type TrackingValuesObject = Record<string, string | number | boolean>
+
 type CacheTrackData = {
     eventName: string,
     firebasePaths: string[],
@@ -48,7 +50,7 @@ type CacheTrackData = {
     /**
      * aptabase, posthog,... (not firebase)
      */
-    trackingValuesObject?: Record<string, string | number | boolean>
+    trackingValuesObject?: TrackingValuesObject
 }
 
 var inited = false
@@ -222,7 +224,7 @@ export const TrackingAsync = async ( // main
     /**
      * aptabase, posthog,... (not firebase)
      */
-    trackingValuesObject?: Record<string, string | number | boolean>
+    trackingValuesObject?: TrackingValuesObject
 ): Promise<void> => {
     if (!inited) {
         console.log('[TrackingAsync] not inited yet. so caching...', eventName);
