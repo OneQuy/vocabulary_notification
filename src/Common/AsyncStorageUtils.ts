@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { DateDiff, DateDiff_InHour, DateDiff_InMinute, IsToday, IsTodayAndSameHour } from "./UtilsTS"
+import { DateDiff, DateDiff_InHour, DateDiff_InMinute, IsToday, IsTodayAndSameHour, PickAndRemoveFirstElementArray, SafeParse } from "./UtilsTS"
 
 // object =================
 
@@ -336,13 +336,26 @@ export const AppendArrayAsync = async <T>(key: string, itemOrArr: T[] | T): Prom
     await SetArrayAsync(key, savedArr)
 }
 
-export const GetArrayAsync = async <T>(key: string): Promise<T[] | undefined> => {
+export const GetArrayAsync = async <T>(key: string): Promise<T[] | undefined> => { // main 
     const s = await AsyncStorage.getItem(key)
 
     if (!s)
         return undefined
 
-    return JSON.parse(s) as T[]
+    return SafeParse<T[]>(s)
+}
+
+export const GetArrayAsync_PickAndRemoveFirstOne = async <T>(key: string): Promise<T | undefined> => { // sub 
+    let arr = await GetArrayAsync<T>(key)
+
+    if (!arr)
+        return undefined
+
+    const first = PickAndRemoveFirstElementArray<T>(arr)
+
+    await SetArrayAsync(key, arr)
+
+    return first
 }
 
 // other utils =================
