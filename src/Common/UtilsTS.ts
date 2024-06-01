@@ -470,7 +470,7 @@ export function IsAllValuableString(trimString: boolean, ...values: (string | nu
     }))
 }
 
-export function IsValuableArrayOrString(value: any, trimString: boolean = true) { // main 
+export function IsValuableArrayOrString(value: any, trimString: boolean = true) : value is string | any[] { // main 
     if (Array.isArray(value)) {
         return value.length > 0
     }
