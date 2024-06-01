@@ -24,7 +24,7 @@ import Aptabase, { trackEvent as AptabaseTrack } from "@aptabase/react-native";
 import { IsDev } from "./IsDev";
 import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig";
 import { ApatabaseKey_Dev, ApatabaseKey_Production } from "../../Keys"
-import { DateDiff_WithNow, DayName, FilterOnlyLetterAndNumberFromString, FromMsTo_TodayDays, GetDayHourMinSecFromMs_ToString, GetTodayStringUnderscore, IsNumType, IsValuableArrayOrString, RemoveEmptyAndFalsyFromObject, RoundWithDecimal, SafeValue, ToCanPrint } from "./UtilsTS";
+import { DateDiff_WithNow, DayName, DelayAsync, FilterOnlyLetterAndNumberFromString, FromMsTo_TodayDays, GetDayHourMinSecFromMs_ToString, GetTodayStringUnderscore, IsNumType, IsValuableArrayOrString, RemoveEmptyAndFalsyFromObject, RoundWithDecimal, SafeValue, ToCanPrint } from "./UtilsTS";
 import { FirebaseDatabase_IncreaseNumberAsync, FirebaseDatabase_SetValueAsync } from "./Firebase/FirebaseDatabase";
 import PostHog from "posthog-react-native";
 import { GetAndSetInstalledDaysCountAsync, GetAndSetLastFreshlyOpenAppToNowAsync, GetAndSetLastInstalledVersionAsync, GetAndClearPressUpdateObjectAsync, SetupAppStateAndStartTrackingParams } from "./AppStatePersistence";
@@ -139,6 +139,9 @@ const CheckTrackCachedTrackDataBeforeInitingAsync = async (): Promise<void> => {
         return
     }
     
+    if (!IsValuableArrayOrString(cachedTrackDataBeforeIniting))
+        return
+
     for (let eventData of cachedTrackDataBeforeIniting) {
         if (IsLog)
             console.log('[CheckTrackCachedTrackDataBeforeInitingAsync] tracking cached event...', eventData.eventName);
@@ -148,6 +151,8 @@ const CheckTrackCachedTrackDataBeforeInitingAsync = async (): Promise<void> => {
             eventData.firebasePaths,
             eventData.trackingValuesObject
         )
+
+        await DelayAsync(500)
     }
 
     cachedTrackDataBeforeIniting = []
