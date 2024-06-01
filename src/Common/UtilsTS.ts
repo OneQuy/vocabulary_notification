@@ -394,6 +394,14 @@ export const IsObjectError = (anything: any): object | undefined => {
 
 // array utils ---------------------------
 
+export function PickAndRemoveFirstElementArray<T>(arr: T[]): undefined | T {
+    if (!Array.isArray(arr) || arr.length === 0) {
+        return undefined // Return undefined if the array is empty
+    }
+    else
+        return arr.shift(); // Removes and returns the first element of the array
+}
+
 export function GetElementsOfPageArray<T>(array: T[], pageIdx: number, countPerPage: number) {
     if (!IsValuableArrayOrString(array)) {
         return {
@@ -470,7 +478,7 @@ export function IsAllValuableString(trimString: boolean, ...values: (string | nu
     }))
 }
 
-export function IsValuableArrayOrString(value: any, trimString: boolean = true) : value is string | any[] { // main 
+export function IsValuableArrayOrString(value: any, trimString: boolean = true): value is string | any[] { // main 
     if (Array.isArray(value)) {
         return value.length > 0
     }
