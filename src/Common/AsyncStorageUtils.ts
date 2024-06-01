@@ -345,17 +345,26 @@ export const GetArrayAsync = async <T>(key: string): Promise<T[] | undefined> =>
     return SafeParse<T[]>(s)
 }
 
-export const GetArrayAsync_PickAndRemoveFirstOne = async <T>(key: string): Promise<T | undefined> => { // sub 
+/**
+ * savedArray: is the last (removed element) saved array
+ */
+export const GetArrayAsync_PickAndRemoveFirstOne = async <T>(key: string): Promise<{ firstElement: T, savedArray: T[] } | undefined> => { // sub 
     let arr = await GetArrayAsync<T>(key)
 
     if (!arr)
         return undefined
+    
+    const firstElement = PickAndRemoveFirstElementArray<T>(arr)
 
-    const first = PickAndRemoveFirstElementArray<T>(arr)
+    if (!firstElement)
+        return undefined
 
     await SetArrayAsync(key, arr)
 
-    return first
+    return {
+        firstElement,
+        savedArray: arr
+    }
 }
 
 // other utils =================
