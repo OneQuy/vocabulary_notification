@@ -334,7 +334,7 @@ export const TrackEventNotificationAsync = async (trackObj: NotificationTrackDat
     await TrackingAsync(
         eventName,
         [
-            `total/app/${eventName}/${Platform.OS}/${trackObj.background ? 'background' : 'foreground'}/` + trackObj.eventType
+            `total/app/notification/${eventName}/${Platform.OS}/${trackObj.background ? 'background' : 'foreground'}/` + trackObj.eventType
         ],
         trackObj
     )
