@@ -68,7 +68,7 @@ const Set = () => {
     fs.writeFileSync(path, lines.join('\n'))
 
     // console.log('done', currentVerObj.verString, countLineOperation, countLineFixed);
-    console.log('done', currentVerObj.verString);
+    // console.log('done', currentVerObj.verString);
 }
 
 Set()
