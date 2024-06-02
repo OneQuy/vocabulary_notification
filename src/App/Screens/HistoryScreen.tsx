@@ -91,6 +91,11 @@ const HistoryScreen = ({
 
   useEffect(() => {
     (async () => {
+      // const s = await AsyncStorage.getItem('abc')
+
+      // Alert.alert('noooooo', s ?? 'loooooool')
+
+
       // const a = await AsyncStorage.getItem(StorageKey_CacheEventNotification)
 
       // if (a)
