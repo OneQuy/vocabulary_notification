@@ -21,6 +21,7 @@ import { RegisterOnChangedState } from "./AppStateMan"
 import { GetLastTimeFetchedRemoteConfigSuccessAndHandledAlerts, GetRemoteConfigWithCheckFetchAsync, HowLongToReloadRemoteConfigInHour } from "./RemoteConfig"
 import { FirebaseDatabaseTimeOutMs, FirebaseDatabase_GetValueAsyncWithTimeOut } from "./Firebase/FirebaseDatabase"
 import { CheckIsDevAsync } from "./IsDev"
+import { CheckTrackCachedNotification } from "./SpecificUtils"
 
 export type SetupAppStateAndStartTrackingParams = {
     posthog: PostHog,
@@ -341,6 +342,10 @@ const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async (
         loadedConfigLastTimeInHour,
         openOfLastDayCount
     )
+
+    // cached event notification (not important, should put at last)
+
+    CheckTrackCachedNotification()
 }
 
 const CheckShowAlertWhatsNewAsync = async (fromVer: number) => {
