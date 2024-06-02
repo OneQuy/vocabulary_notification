@@ -103,11 +103,26 @@ export interface NotificationTrackData extends TrackingValuesObject { // NO CHAN
     status: string,
     background: boolean;
     eventTime: string;
+
+    /**
+     * no_data if no notification data
+     */
     targetTime: string;
+
+    /**
+     * -1 if no notification data
+     */
     offsetInSec: number;
 }
 
 export interface VocabyNotificationTrackData extends NotificationTrackData { // CHANGE OPTIONAL
+    /**
+     * no_data if having no notification data
+     */
     [NotificationExtraDataKey_Mode]: string;
+
+    /**
+     * no_data if having no notification data
+     */
     word: string;
 }

@@ -105,15 +105,22 @@ export const GenerateNotificationTrackDataAsync = async (isBackgroundOrForegroun
   const status = AuthorizationStatus[(await notifee.getNotificationSettings()).authorizationStatus].toLowerCase()
 
   const now = Date.now()
-  const notiTimestamp = SafeValue(event.detail.notification?.data?.timestamp, now)
-  const offsetInSec = RoundWithDecimal(Math.abs(now - notiTimestamp) / 1000)
+
+  let targetTime = 'no_data'
+  let offsetInSec = -1
+
+  if (event.detail.notification) {
+    const notiTimestamp = SafeValue(event.detail.notification.data?.timestamp, now)
+    targetTime = new Date(notiTimestamp).toLocaleString()
+    offsetInSec = RoundWithDecimal(Math.abs(now - notiTimestamp) / 1000)
+  }
 
   const objTrack: NotificationTrackData = {
     eventType,
     status,
     background: isBackgroundOrForeground,
     eventTime: new Date(now).toLocaleString(),
-    targetTime: new Date(notiTimestamp).toLocaleString(),
+    targetTime,
     offsetInSec,
   }
 

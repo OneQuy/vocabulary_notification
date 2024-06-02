@@ -34,11 +34,19 @@ export const OnEventNotification = async (isBackgroundOrForeground: boolean, eve
 
     // setup data (specific) // CHANGE HERE 1
 
-    const setOrTestMode = SafeValue(event.detail.notification?.data?.[NotificationExtraDataKey_Mode], 'unknown')
+    let setOrTestMode = 'no_data'
+    let word = 'no_data'
 
-    const fullTitle = SafeValue(event.detail.notification?.title, '')
-    const titleSplitArr = fullTitle.split(' ')
-    const word = titleSplitArr.length >= 1 ? titleSplitArr[0] : 'unknown'
+    if (event.detail.notification) {
+        setOrTestMode = SafeValue(event.detail.notification.data?.[NotificationExtraDataKey_Mode], 'unknown')
+
+        const fullTitle = SafeValue(event.detail.notification.title, '')
+        const titleSplitArr = fullTitle.split(' ')
+
+        word = titleSplitArr.length >= 1 && titleSplitArr[0].length >= 1 ?
+            titleSplitArr[0] :
+            'unknown'
+    }
 
     const objTrack: VocabyNotificationTrackData = {
         ...baseData,
