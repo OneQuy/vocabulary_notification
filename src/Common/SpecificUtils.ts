@@ -4,7 +4,7 @@
 
 import { Linking, Platform, Share } from "react-native"
 import { AndroidLink, AppName, ShareAppContent, iOSLink } from "./SpecificConstants"
-import { Event } from "@notifee/react-native"
+import { Event, EventType } from "@notifee/react-native"
 import { DelayAsync, SafeValue, ToCanPrint } from "./UtilsTS"
 import { NotificationExtraDataKey_Mode } from "../App/Handles/SetupNotification"
 import { GenerateNotificationTrackDataAsync } from "./Nofitication"
@@ -28,6 +28,9 @@ export const ShareAppAsync = async () => {
 }
 
 export const OnEventNotification = async (isBackgroundOrForeground: boolean, event: Event): Promise<void> => {
+    if (event.type === EventType.TRIGGER_NOTIFICATION_CREATED)
+        return
+
     // setup data (common, not need change)
 
     const baseData = await GenerateNotificationTrackDataAsync(isBackgroundOrForeground, event)
