@@ -1226,8 +1226,12 @@ export const ToCanPrintError = (erroObj: any) => {
 
     // console.log(erroObj);
 
-    if (typeof erroObj === 'string')
-        erroObj = SafeParse(erroObj)
+    if (typeof erroObj === 'string') {
+        const parse = SafeParse(erroObj)
+
+        if (parse)
+            erroObj = parse
+    }
 
     let code: string = erroObj.code
     let msg: string = erroObj.message
