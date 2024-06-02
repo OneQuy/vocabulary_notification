@@ -117,12 +117,12 @@ export interface NotificationTrackData extends TrackingValuesObject { // NO CHAN
 
 export interface VocabyNotificationTrackData extends NotificationTrackData { // CHANGE OPTIONAL
     /**
-     * no_data if having no notification data
+     * 'no_data' if having no notification data
      */
     [NotificationExtraDataKey_Mode]: string;
 
     /**
-     * no_data if having no notification data
+     * 'no_data' if having no notification data. 'unknown' if can split vocabulary
      */
     word: string;
 }
