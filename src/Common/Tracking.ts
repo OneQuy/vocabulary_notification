@@ -33,6 +33,7 @@ import { VersionAsNumber } from "./CommonConstants";
 import { GetSplashTime } from "./Components/SplashScreen";
 import { AppStreakId, SetStreakAsync } from "./Streak";
 import { Cheat } from "./Cheat";
+import { NotificationTrackData } from "./SpecificType";
 
 const IsLog = Cheat('log_tracking')
 
@@ -324,6 +325,18 @@ export const TrackSimpleWithParam = (event: string, value: string) => { // sub
         {
             value,
         }
+    )
+}
+
+export const TrackEventNotificationAsync = async (trackObj: NotificationTrackData, isOnEventOrCached: boolean) => {
+    const eventName = isOnEventOrCached ? 'on_event_notification' : 'cached_event_notification'
+
+    await TrackingAsync(
+        eventName,
+        [
+            `total/app/${eventName}/${Platform.OS}/${trackObj.background ? 'background' : 'foreground'}/` + trackObj.eventType
+        ],
+        trackObj
     )
 }
 

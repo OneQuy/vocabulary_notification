@@ -11,7 +11,7 @@ import { GenerateNotificationTrackData } from "./Nofitication"
 import { VocabyNotificationTrackData } from "./SpecificType"
 import { AppendArrayAsync, GetArrayAsync_PickAndRemoveFirstOne } from "./AsyncStorageUtils"
 import { StorageKey_CacheEventNotification } from "../App/Constants/StorageKey"
-import { TrackingAsync } from "./Tracking"
+import { TrackEventNotificationAsync } from "./Tracking"
 
 const IsLog = __DEV__
 
@@ -52,17 +52,9 @@ export const OnEventNotification = async (isBackgroundOrForeground: boolean, eve
 
     // track on event (not need change)
 
-    const eventName = 'on_event_notification'
+    await TrackEventNotificationAsync(objTrack, true)
 
-    TrackingAsync(
-        eventName,
-        [
-            `total/app/${eventName}/${Platform.OS}/${isBackgroundOrForeground ? 'background' : 'foreground'}/` + baseData.eventType
-        ],
-        objTrack
-    )
-
-    console.log('[OnEventNotification]', ToCanPrint(objTrack))
+    console.log('[OnEventNotification]', 'track (on event):', ToCanPrint(objTrack))
 }
 
 /**
@@ -77,22 +69,15 @@ export const CheckTrackCachedNotification = async (): Promise<void> => {
     if (!saved) {
         if (IsLog)
             console.log('[CheckTrackCachedNotificationAsync] no events to track more')
-        
+
         return
     }
 
     // track on event (not need change)
 
     const firstEvent = saved.firstElement
-    const eventName = 'cached_event_notification'
 
-    await TrackingAsync(
-        eventName,
-        [
-            `total/app/${eventName}/${Platform.OS}/${firstEvent.background ? 'background' : 'foreground'}/` + firstEvent.eventType
-        ],
-        firstEvent
-    )
+    await TrackEventNotificationAsync(firstEvent, false)
 
     if (IsLog)
         console.log('[CheckTrackCachedNotificationAsync] remain events', saved.savedArray.length, 'tracked first cached one:', ToCanPrint(firstEvent))
