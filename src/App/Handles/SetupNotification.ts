@@ -364,7 +364,7 @@ export const TestNotificationAsync = async (setHandling: (type: HandlingType) =>
 
     const noti = DataToNotification(
         word,
-        0,
+        undefined,
         settingRankOfWord,
         settingDefinitions,
         settingShowPartOfSpeech,
@@ -415,7 +415,7 @@ const ToDisplayPartOfSpeech = (s: string) => {
 
 const DataToNotification = (
     data: SavedAndWordData,
-    timestamp: number,
+    timestamp: number | undefined,
     showRank: boolean,
     showDefinitions: boolean,
     showPartOfSpeech: boolean,
