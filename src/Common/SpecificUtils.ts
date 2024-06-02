@@ -85,7 +85,7 @@ export const CheckTrackCachedNotification = async (): Promise<void> => {
     // continue track next event
 
     if (saved.savedArray.length >= 1) {
-        await DelayAsync(200)
+        await DelayAsync(300)
 
         CheckTrackCachedNotification()
     }
