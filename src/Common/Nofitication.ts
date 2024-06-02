@@ -9,6 +9,8 @@
 // <string>Please grant permission to receive notification.</string>
 //
 //  iOS: add Push Notifications on XCode
+//  call RegisterNotificationEvent() at index.js
+//
 // --------------------------------
 
 import notifee, { AndroidChannel, AndroidImportance, AndroidStyle, AuthorizationStatus, Event, EventType, Notification, NotificationAndroid, NotificationIOS, NotificationSettings, TimestampTrigger, TriggerType } from '@notifee/react-native';
@@ -94,10 +96,21 @@ const CheckAndInitAsync = async () => {
     name: 'Main Channel',
     importance: AndroidImportance.HIGH,
     sound: 'default',
-  } as AndroidChannel);
+  } as AndroidChannel)
+}
 
-  notifee.onBackgroundEvent((event: Event) => OnEventNotification(true, event))
-  notifee.onForegroundEvent((event: Event) => OnEventNotification(false, event))
+export const RegisterNotificationEvent = () => {
+  notifee.onBackgroundEvent(async (event) => {
+    // console.log('bg', ToCanPrint(event));
+
+    await OnEventNotification(true, event)
+  })
+
+  notifee.onForegroundEvent(async (event) => {
+    // console.log('fg', ToCanPrint(event));
+
+    await OnEventNotification(false, event)
+  })
 }
 
 export const GenerateNotificationTrackDataAsync = async (isBackgroundOrForeground: boolean, event: Event): Promise<NotificationTrackData> => {
