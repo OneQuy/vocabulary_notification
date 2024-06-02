@@ -7,7 +7,7 @@ import { AndroidLink, AppName, ShareAppContent, iOSLink } from "./SpecificConsta
 import { Event } from "@notifee/react-native"
 import { DelayAsync, SafeValue, ToCanPrint } from "./UtilsTS"
 import { NotificationExtraDataKey_Mode } from "../App/Handles/SetupNotification"
-import { GenerateNotificationTrackData } from "./Nofitication"
+import { GenerateNotificationTrackDataAsync } from "./Nofitication"
 import { VocabyNotificationTrackData } from "./SpecificType"
 import { AppendArrayAsync, GetArrayAsync_PickAndRemoveFirstOne } from "./AsyncStorageUtils"
 import { StorageKey_CacheEventNotification } from "../App/Constants/StorageKey"
@@ -30,7 +30,7 @@ export const ShareAppAsync = async () => {
 export const OnEventNotification = async (isBackgroundOrForeground: boolean, event: Event): Promise<void> => {
     // setup data (common, not need change)
 
-    const baseData = GenerateNotificationTrackData(isBackgroundOrForeground, event)
+    const baseData = await GenerateNotificationTrackDataAsync(isBackgroundOrForeground, event)
 
     // setup data (specific) // CHANGE HERE 1
 

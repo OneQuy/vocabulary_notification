@@ -100,6 +100,7 @@ export type AppContextType = { // CHANGE OPTIONAL
 
 export interface NotificationTrackData extends TrackingValuesObject { // NO CHANGE
     eventType: string;
+    status: string,
     background: boolean;
     eventTime: string;
     targetTime: string;

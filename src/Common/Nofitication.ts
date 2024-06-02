@@ -11,7 +11,7 @@
 //  iOS: add Push Notifications on XCode
 // --------------------------------
 
-import notifee, { AndroidChannel, AndroidImportance, AndroidStyle, AuthorizationStatus, Event, EventType, Notification, NotificationAndroid, NotificationIOS, TimestampTrigger, TriggerType } from '@notifee/react-native';
+import notifee, { AndroidChannel, AndroidImportance, AndroidStyle, AuthorizationStatus, Event, EventType, Notification, NotificationAndroid, NotificationIOS, NotificationSettings, TimestampTrigger, TriggerType } from '@notifee/react-native';
 import { Linking, } from 'react-native';
 import { AlertAsync, RoundWithDecimal, SafeValue } from './UtilsTS';
 import { NotificationTrackData } from './SpecificType';
@@ -100,8 +100,9 @@ const CheckAndInitAsync = async () => {
   notifee.onForegroundEvent((event: Event) => OnEventNotification(false, event))
 }
 
-export const GenerateNotificationTrackData = (isBackgroundOrForeground: boolean, event: Event): NotificationTrackData => {
+export const GenerateNotificationTrackDataAsync = async (isBackgroundOrForeground: boolean, event: Event): Promise<NotificationTrackData> => {
   const eventType = EventType[event.type].toLowerCase()
+  const status = AuthorizationStatus[(await notifee.getNotificationSettings()).authorizationStatus].toLowerCase()
 
   const now = Date.now()
   const notiTimestamp = SafeValue(event.detail.notification?.data?.timestamp, now)
@@ -109,6 +110,7 @@ export const GenerateNotificationTrackData = (isBackgroundOrForeground: boolean,
 
   const objTrack: NotificationTrackData = {
     eventType,
+    status,
     background: isBackgroundOrForeground,
     eventTime: new Date(now).toLocaleString(),
     targetTime: new Date(notiTimestamp).toLocaleString(),
