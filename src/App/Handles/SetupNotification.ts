@@ -84,7 +84,7 @@ const LoadFromLocalizedDbOrTranslateWordsAsync = async (
 
     else {
         if (IsLog)
-            console.log('[LoadFromLocalizedDbOrTranslateWordsAsync] fetched (translated) success all', translatedArrOrError.length)
+            console.log('[LoadFromLocalizedDbOrTranslateWordsAsync] translated success all', translatedArrOrError.length)
 
         const alreadyArr = !Array.isArray(alreadySavedWords) ? [] : alreadySavedWords.map(word => SavedWordToTranslatedResult(word))
         return translatedArrOrError.concat(alreadyArr)
@@ -640,6 +640,9 @@ export const SetupNotificationAsync = async (
                 lastNotiTick: timestamp,
             })
         }
+
+        if (IsLog) // log break line
+            console.log()
     }
 
     if (IsLog) {
