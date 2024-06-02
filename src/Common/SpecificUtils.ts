@@ -54,7 +54,7 @@ export const OnEventNotification = async (isBackgroundOrForeground: boolean, eve
 
     await TrackEventNotificationAsync(objTrack, true)
 
-    console.log('[OnEventNotification]', 'track (on event):', ToCanPrint(objTrack))
+    console.log('[OnEventNotification]', 'tracked and cached (on event):', ToCanPrint(objTrack))
 }
 
 /**
@@ -68,7 +68,7 @@ export const CheckTrackCachedNotification = async (): Promise<void> => {
 
     if (!saved) {
         if (IsLog)
-            console.log('[CheckTrackCachedNotificationAsync] no events to track more')
+            console.log('[CheckTrackCachedNotificationAsync] no events to track from cache more')
 
         return
     }
@@ -80,7 +80,7 @@ export const CheckTrackCachedNotification = async (): Promise<void> => {
     await TrackEventNotificationAsync(firstEvent, false)
 
     if (IsLog)
-        console.log('[CheckTrackCachedNotificationAsync] remain events', saved.savedArray.length, 'tracked first cached one:', ToCanPrint(firstEvent))
+        console.log('[CheckTrackCachedNotificationAsync] remain cached events', saved.savedArray.length, 'tracked first cached one:', ToCanPrint(firstEvent))
 
     // continue track next event
 
