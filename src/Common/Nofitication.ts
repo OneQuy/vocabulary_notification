@@ -107,7 +107,7 @@ export const RegisterNotificationEvent = () => {
   })
 
   notifee.onForegroundEvent(async (event) => {
-    // console.log('fg', ToCanPrint(event));
+    // console.log('onForegroundEvent', EventType[event.type], event)
 
     await OnEventNotification(false, event)
   })
