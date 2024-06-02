@@ -101,7 +101,7 @@ const CheckAndInitAsync = async () => {
 }
 
 export const GenerateNotificationTrackData = (isBackgroundOrForeground: boolean, event: Event): NotificationTrackData => {
-  const eventType = EventType[event.type]
+  const eventType = EventType[event.type].toLowerCase()
 
   const now = Date.now()
   const notiTimestamp = SafeValue(event.detail.notification?.data?.timestamp, now)
