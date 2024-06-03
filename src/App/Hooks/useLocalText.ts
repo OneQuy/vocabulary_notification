@@ -29,6 +29,7 @@ const eng = {
     limit_words_per_day_explain: "Limit the number of vocabulary words you learn per day. If number of notifications exceeds this limit, the words will loop around.",
     num_days_to_push: 'Number of scheduled days',
     num_days_to_push_explain: "Number of days to schedule notifications for",
+    num_days_to_push_note: "Note: The more days you set, the more notifications will be created. Some devices have a limitation on the number of notifications, so if your phone is included in these devices, some notifications will not be shown in the last few days. However, you don't need to worry about this. If notifications stop appearing, just re-open the app and set them again!",
     noti_display: 'Notification display settings',
     noti_display_explain: "What information will be displayed in the notification?\nTap '##' for a demo.",
     no_limit: 'No limit',
@@ -59,6 +60,7 @@ const eng = {
     upgrade: "Upgrade",
     purchase_success: 'You have just upgraded successfully!\n\nThank you for purchasing. You unlocked all vocabularies and features of Vocaby!',
     push_will_showed_these_time: 'Every day, vocabulary notifications will be shown at these times',
+    push_notice: "Note: Because many notifications are set per day and some devices have a limitation on the number of notifications, if your phone is included in these devices, some notifications will not be shown in the last few days. However, you don't need to worry about this. If notifications stop appearing, just re-open the app and set them again!",
     
     show_rank_of_word: 'Show popularity #rank',
     show_part_of_speech: 'Show part of speech',
