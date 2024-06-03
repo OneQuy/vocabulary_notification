@@ -78,8 +78,8 @@ export const CheckTrackCachedNotification = async (): Promise<void> => {
     const saved = await GetArrayAsync_PickAndRemoveFirstOne<VocabyNotificationTrackData>(StorageKey_CacheEventNotification) // CHANGE HERE 3 (change type)
 
     if (!saved) {
-        if (IsLog)
-            console.log('[CheckTrackCachedNotificationAsync] no events to track from cache more')
+        // if (IsLog)
+        //     console.log('[CheckTrackCachedNotificationAsync] no events to track from cache more')
 
         return
     }
