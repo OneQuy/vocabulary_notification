@@ -538,7 +538,7 @@ const DataToNotification = (
 
 export const SetupNotificationAsync = async (
     process?: (process: number) => void
-): Promise<undefined | SetupNotificationError> => {
+): Promise<number | SetupNotificationError> => {
     const resPermission = await RequestPermissionNotificationAsync(true)
 
     if (!resPermission) {
@@ -626,6 +626,8 @@ export const SetupNotificationAsync = async (
         for (let iPushOfDay = 0; iPushOfDay < pushTimesPerDay.length; iPushOfDay++) { // pushes of day
             let timestamp = TimePickerResultToTimestamp(iday, pushTimesPerDay[iPushOfDay])
 
+            // check these pushes are passed of today, so let push at the end day
+
             if (timestamp <= Date.now()) {
                 // if (IsLog)
                 //     console.log(`(${new Date(timestamp).toLocaleString()}) skipped today`)
@@ -634,6 +636,8 @@ export const SetupNotificationAsync = async (
 
                 timestamp = TimePickerResultToTimestamp(numDaysToPush, pushTimesPerDay[iPushOfDay])
             }
+
+            // get word 
 
             const wordToPush = SafeGetArrayElement<SavedAndWordData>(wordsOfDay, undefined, iPushOfDay, true)
 
@@ -644,6 +648,8 @@ export const SetupNotificationAsync = async (
                     error: new Error('[SetNotificationAsync] what? wordToPush === undefined OR CheckDeserializeLocalizedData(wordToPush).translated === undefinded')
                 }
             }
+
+            // generate noti data
 
             const noti = DataToNotification(
                 wordToPush,
@@ -656,6 +662,8 @@ export const SetupNotificationAsync = async (
                 true
             )
 
+            // set !
+
             await SetNotificationAsync(noti)
 
             // const log = `(${new Date(timestamp).toLocaleString()}) ${noti.title}: ${noti.message}`
@@ -664,11 +672,15 @@ export const SetupNotificationAsync = async (
             if (IsLog)
                 console.log(log)
 
+            // add to push list
+
             didSetNotiList.push({
                 wordAndLang: wordToPush.savedData.wordAndLang,
                 localizedData: wordToPush.savedData.localizedData,
                 lastNotiTick: timestamp,
             })
+
+            // set max time 
 
             if (timestamp > maxTimestamp)
                 maxTimestamp = timestamp
@@ -686,5 +698,5 @@ export const SetupNotificationAsync = async (
 
     SetCurrentAllNotificationsAsync(didSetNotiList)
 
-    return undefined
+    return maxTimestamp
 }
