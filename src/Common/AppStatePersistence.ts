@@ -121,7 +121,7 @@ const CheckFirstOpenAppOfTheDayAsync = async (setupParams: SetupAppStateAndStart
 
     // newly_install
 
-    if (await GetBooleanAsync(StorageKey_TrackedNewlyInstall, false)) {
+    if (!(await GetBooleanAsync(StorageKey_TrackedNewlyInstall, false))) {
         SetBooleanAsync(StorageKey_TrackedNewlyInstall, true)
         isNewlyInstallThisOpen = true
         await TrackOnNewlyInstallAsync()
