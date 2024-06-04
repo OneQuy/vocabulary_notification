@@ -52,9 +52,9 @@ export const SetLimitWordsPerDayAsync = async (value: number): Promise<void> => 
     await SetNumberAsync(StorageKey_LimitWordsPerDay, value)
 }
 
-export const GetNumDaysToPushAsync = async (): Promise<number> => {
-    return await GetNumberIntAsync(StorageKey_NumDaysToPush, DefaultNumDaysToPush)
-}
+// export const GetNumDaysToPushAsync = async (): Promise<number> => {
+//     return await GetNumberIntAsync(StorageKey_NumDaysToPush, DefaultNumDaysToPush)
+// }
 
 // export const SetNumDaysToPushAsync = async (value: number): Promise<void> => {
 //     await SetNumberAsync(StorageKey_NumDaysToPush, value)

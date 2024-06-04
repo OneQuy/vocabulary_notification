@@ -6,7 +6,7 @@ import { LocalText, NoNotificationPermissionLocalKey, NoPermissionText, PleaseSe
 import { AddOrUpdateLocalizedWordsToDbAsync, GetLocalizedWordFromDbAsync, GetLocalizedWordsFromDbIfAvailableAsync } from "./LocalizedWordsTable";
 import { CalcNotiTimeListPerDay, CheckDeserializeLocalizedData, ExtractWordFromWordLang, SavedWordToTranslatedResult, TimePickerResultToTimestamp, ToWordLangString, TranslatedResultToSavedWord } from "./AppUtils";
 import { CapitalizeFirstLetter, PickRandomElement, SafeArrayLength, SafeGetArrayElement } from "../../Common/UtilsTS";
-import { GetExcludeTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetNumDaysToPushAsync, GetSourceLangAsync, GetTargetLangAsync } from "./Settings";
+import { GetExcludeTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetSourceLangAsync, GetTargetLangAsync } from "./Settings";
 import { GetNextWordsDataCurrentLevelForNotiAsync, GetWordsDataCurrentLevelAsync, SetUsedWordIndexCurrentLevelAsync } from "./WordsData";
 import { DisplayNotificationAsync, NotificationOption, SetNotificationAsync, CancelAllLocalNotificationsAsync, RequestPermissionNotificationAsync } from "../../Common/Nofitication";
 import { HandlingType } from "../Screens/SetupScreen";
@@ -413,6 +413,11 @@ const ToDisplayPartOfSpeech = (s: string) => {
         return s
 }
 
+const CalcNumDaysToPush = (totalPushsPerDay: number) => {
+
+    return 5
+}
+
 const DataToNotification = (
     data: SavedAndWordData,
     timestamp: number | undefined,
@@ -548,7 +553,8 @@ export const SetupNotificationAsync = async (
 
     // num Unique Words Of All Day
 
-    const numDaysToPush = await GetNumDaysToPushAsync()
+    const numDaysToPush = CalcNumDaysToPush(pushTimesPerDay.length)
+
     const numUniqueWordsOfAllDay = numUniqueWordsPerDay * numDaysToPush
 
     if (IsLog) {
