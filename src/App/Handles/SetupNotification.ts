@@ -522,7 +522,6 @@ export const SetupNotificationAsync = async (
 
     const intervalInMin = await GetIntervalMinAsync()
     const limitWordsPerDay = await GetLimitWordsPerDayAsync()
-    const numDaysToPush = await GetNumDaysToPushAsync()
     const excludedTimePairs = await GetExcludeTimesAsync()
 
     // numPushesPerDay
@@ -535,7 +534,7 @@ export const SetupNotificationAsync = async (
             'intervalInMin', intervalInMin)
     }
 
-    // numUniqueWordsPerDay
+    // num Unique Words Per Day
 
     const numUniqueWordsPerDay = limitWordsPerDay > 0 ?
         Math.min(pushTimesPerDay.length, limitWordsPerDay) : // limit
@@ -547,8 +546,9 @@ export const SetupNotificationAsync = async (
             'limitWordsPerDay', limitWordsPerDay)
     }
 
-    // numUniqueWordsOfAllDay
+    // num Unique Words Of All Day
 
+    const numDaysToPush = await GetNumDaysToPushAsync()
     const numUniqueWordsOfAllDay = numUniqueWordsPerDay * numDaysToPush
 
     if (IsLog) {
@@ -557,7 +557,7 @@ export const SetupNotificationAsync = async (
             'numDaysToPush', numDaysToPush)
     }
 
-    // uniqueWordsOfAllDay
+    // unique Words Of All Day
 
     const setupWordsResult = await SetupWordsForSetNotiAsync(numUniqueWordsOfAllDay, process)
 
