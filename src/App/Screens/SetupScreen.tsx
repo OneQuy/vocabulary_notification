@@ -1293,7 +1293,7 @@ const SetupScreen = () => {
             {/* list time text */}
             {
               handlingType === 'done' &&
-              <Text style={[SettingItemPanelStyle.explainTxt, { textAlign: 'center' }]}>{pushTimeListText}</Text>
+              <Text style={[SettingItemPanelStyle.explainTxt, { textAlign: 'left' }]}>{pushTimeListText}</Text>
             }
 
             {/* back btn */}
