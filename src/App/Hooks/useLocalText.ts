@@ -19,6 +19,7 @@ const eng = {
   repeat: 'Interval',
   hour: 'Hour',
   repeat_explain: "How long is the interval\nbetween notifications?",
+  interval_minimum_required: "The interval must be at least ## minutes.",
   minute: 'Minute',
   invalid_input: 'Invalid input',
   set_notification: 'Set notification',

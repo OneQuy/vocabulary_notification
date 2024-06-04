@@ -8,7 +8,7 @@ import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
 import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, IsNumType, PickRandomElementWithCount, PrependZero, RoundWithDecimal, SafeDateString, ToCanPrintError } from '../../Common/UtilsTS'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
-import { DefaultExcludedTimePairs, DefaultIntervalInMin, IntervalInMinPresets, LimitWordsPerDayPresets, PopuplarityLevelNumber, TranslationServicePresets } from '../Constants/AppConstants'
+import { DefaultExcludedTimePairs, DefaultIntervalInMin, IntervalInMinPresets, LimitWordsPerDayPresets, MinimumIntervalInMin, PopuplarityLevelNumber, TranslationServicePresets } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
 import { LucideIcon } from '../../Common/Components/LucideIcon'
 import { PairTime, TranslationService } from '../Types'
@@ -360,6 +360,12 @@ const SetupScreen = () => {
       editingExcludeTimePairAndElementIndex.current[1] === -1
     ) { // set for interval
       const min = time.hours * 60 + time.minutes
+
+      if (min < MinimumIntervalInMin) {
+        Alert.alert('Oooops', texts.interval_minimum_required.replace('##', MinimumIntervalInMin.toString()))
+        return
+      }
+
       set_displayIntervalInMin(min)
       SetIntervalMinAsync(min)
     }
@@ -515,17 +521,21 @@ const SetupScreen = () => {
   }, [displayIntervalInMin])
 
   const onPressInterval = useCallback((minutesOrCustom: number | undefined) => {
-    if (minutesOrCustom !== undefined)
-      set_displayIntervalInMin(minutesOrCustom)
-
     if (popupCloseCallbackRef.current)
-      popupCloseCallbackRef.current(() => {
-        if (minutesOrCustom === undefined) // custom
+      popupCloseCallbackRef.current(() => { // on closed
+        if (!IsNumType(minutesOrCustom)) // open custom timer
           set_showTimePicker(true)
-        else
+        else { // set value
+          if (minutesOrCustom < MinimumIntervalInMin) {
+            Alert.alert('Oooops', texts.interval_minimum_required.replace('##', MinimumIntervalInMin.toString()))
+            return
+          }
+
+          set_displayIntervalInMin(minutesOrCustom)
           SetIntervalMinAsync(minutesOrCustom)
+        }
       })
-  }, [])
+  }, [texts])
 
   const renderIntervals = useCallback(() => {
     return (

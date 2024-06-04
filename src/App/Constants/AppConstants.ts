@@ -3,7 +3,8 @@ import { PairTime, TranslationService } from "../Types"
 export const PopuplarityLevelNumber = 10
 
 
-export const DefaultIntervalInMin = 60
+export const MinimumIntervalInMin = 10
+export const DefaultIntervalInMin = 120
 
 export const IntervalInMinPresets: (undefined | number)[] = [
     10,
