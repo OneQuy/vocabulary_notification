@@ -132,7 +132,7 @@ export function GetRemoteFileConfigVersion(file: string): number {
         return Number.NaN
 }
 
-export const GetAlternativeConfig = (property: string, defaultValue: string): string => {
+export const GetAlternativeConfig = <T>(property: string, defaultValue: T): T => {
     const config = remoteConfig
 
     if (!config || !config.alternativeValue)
@@ -145,7 +145,7 @@ export const GetLastTimeFetchedRemoteConfigSuccessAndHandledAlerts = () => lastT
 
 export const IsRemoteConfigLoadedRecently = () => {
     const hourDiff = DateDiff_InHour_WithNow(lastTimeFetchedSuccess)
-    
+
     if (IsLog)
         console.log('[IsRemoteConfigLoadedRecently] ?', hourDiff < HowLongToReloadRemoteConfigInHour)
 
