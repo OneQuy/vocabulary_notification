@@ -6,7 +6,7 @@ import useLocalText, { NoPermissionText, PleaseSelectTargetLangText } from '../H
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, PickRandomElementWithCount, PrependZero, RoundWithDecimal, ToCanPrintError } from '../../Common/UtilsTS'
+import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, IsNumType, PickRandomElementWithCount, PrependZero, RoundWithDecimal, ToCanPrintError } from '../../Common/UtilsTS'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { DefaultExcludedTimePairs, DefaultIntervalInMin, IntervalInMinPresets, LimitWordsPerDayPresets, PopuplarityLevelNumber, TranslationServicePresets } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
@@ -159,7 +159,7 @@ const SetupScreen = () => {
     })
   }, [])
 
-  const generatePushTimeListText = useCallback(() => {
+  const generatePushTimeListText = useCallback((lastSetTimestamp: number) => {
     const pushTimesPerDay = CalcNotiTimeListPerDay(displayIntervalInMin, displayExcludedTimePairs)
 
     const arr = []
@@ -168,7 +168,14 @@ const SetupScreen = () => {
       arr.push(`${PrependZero(time.hours)}:${PrependZero(time.minutes)}`)
     }
 
-    set_pushTimeListText(`${texts.push_will_showed_these_time}: ${arr.join(', ')}`)
+    const lastSetDate = new Date(lastSetTimestamp)
+
+    let text = texts.push_notice
+      .replace('24/Oct/1994', lastSetDate.toLocaleDateString())
+      .replace('00:00', lastSetDate.toLocaleTimeString())
+      .replace('###', arr.join(', '))
+
+    set_pushTimeListText(text)
   }, [displayIntervalInMin, displayExcludedTimePairs])
 
   const onPressSubview = useCallback((type: SubView) => {
@@ -190,7 +197,7 @@ const SetupScreen = () => {
   const setHandlingAndGetReadyDataAsync = async (popularityLevelIdx = -1): Promise<boolean> => {
     if (await IsCachedWordsDataCurrentLevelAsync(popularityLevelIdx))
       return true
-    
+
     set_handlingType('loading_local')
 
     if (popularityLevelIdx < 0)
@@ -311,23 +318,23 @@ const SetupScreen = () => {
   const onPressSetNotification = useCallback(async () => {
     set_handlingType('setting_notification')
 
-    const res = await SetupNotificationAsync((process) => {
+    const lastSetTimestampOrError = await SetupNotificationAsync((process) => {
       set_processPercent(`${RoundWithDecimal(process * 100)}%`)
     })
 
-    if (res === undefined) { // success
+    if (IsNumType(lastSetTimestampOrError)) { // success
       set_handlingType('done')
-      generatePushTimeListText()
+      generatePushTimeListText(lastSetTimestampOrError)
     }
     else { // error
-      let s = res.errorText ? texts[res.errorText] : ''
+      let s = lastSetTimestampOrError.errorText ? texts[lastSetTimestampOrError.errorText] : ''
       const trackFirebase = s !== texts.no_permission
 
-      if (res.error) {
+      if (lastSetTimestampOrError.error) {
         if (s !== '')
           s += '\n\n'
 
-        s += ToCanPrintError(res.error)
+        s += ToCanPrintError(lastSetTimestampOrError.error)
       }
 
       HandleError(s, 'onPressSetNotification', true, trackFirebase)
