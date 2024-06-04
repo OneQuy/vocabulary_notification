@@ -56,9 +56,9 @@ export const GetNumDaysToPushAsync = async (): Promise<number> => {
     return await GetNumberIntAsync(StorageKey_NumDaysToPush, DefaultNumDaysToPush)
 }
 
-export const SetNumDaysToPushAsync = async (value: number): Promise<void> => {
-    await SetNumberAsync(StorageKey_NumDaysToPush, value)
-}
+// export const SetNumDaysToPushAsync = async (value: number): Promise<void> => {
+//     await SetNumberAsync(StorageKey_NumDaysToPush, value)
+// }
 
 
 export const GetExcludeTimesAsync = async (): Promise<PairTime[]> => {
