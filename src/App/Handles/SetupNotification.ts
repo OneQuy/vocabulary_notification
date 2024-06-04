@@ -13,6 +13,7 @@ import { HandlingType } from "../Screens/SetupScreen";
 import { HandleError } from "../../Common/Tracking";
 import { TranslatedResult } from "../../Common/TranslationApis/TranslationLanguages";
 import { GetAlternativeConfig } from "../../Common/RemoteConfig";
+import { Platform } from "react-native";
 
 const IsLog = __DEV__
 
@@ -416,8 +417,12 @@ const ToDisplayPartOfSpeech = (s: string) => {
 
 const CalcNumDaysToPush = (totalPushsPerDay: number) => {
     const LimitPushes = 64
+
     const MinDays = 1
-    const MaxDays = GetAlternativeConfig('maxDaysToPush', 10)
+
+    const MaxDays = Platform.OS === 'android' ?
+        GetAlternativeConfig('maxDaysToPushAndroid', 10) :
+        GetAlternativeConfig('maxDaysToPushiOS', 10)
 
     let numDays = 0
 
@@ -429,7 +434,7 @@ const CalcNumDaysToPush = (totalPushsPerDay: number) => {
     }
 
     if (IsLog) {
-        console.log('[CalcNumDaysToPush]', numDays, 'days')
+        console.log('[CalcNumDaysToPush]', 'num days to push', numDays)
     }
 
     return numDays
@@ -613,18 +618,21 @@ export const SetupNotificationAsync = async (
     await CancelAllLocalNotificationsAsync()
 
     const didSetNotiList: SavedWordData[] = []
+    let maxTimestamp = 0
 
     for (let iday = 0; iday < numDaysToPush; iday++) { // day by day
         const wordsOfDay = uniqueWordsOfAllDay.slice(iday * numUniqueWordsPerDay, iday * numUniqueWordsPerDay + numUniqueWordsPerDay)
 
         for (let iPushOfDay = 0; iPushOfDay < pushTimesPerDay.length; iPushOfDay++) { // pushes of day
-            const timestamp = TimePickerResultToTimestamp(iday, pushTimesPerDay[iPushOfDay])
+            let timestamp = TimePickerResultToTimestamp(iday, pushTimesPerDay[iPushOfDay])
 
             if (timestamp <= Date.now()) {
-                if (IsLog)
-                    console.log(`(${new Date(timestamp).toLocaleString()}) skipped today`)
+                // if (IsLog)
+                //     console.log(`(${new Date(timestamp).toLocaleString()}) skipped today`)
 
-                continue
+                // continue
+
+                timestamp = TimePickerResultToTimestamp(numDaysToPush, pushTimesPerDay[iPushOfDay])
             }
 
             const wordToPush = SafeGetArrayElement<SavedAndWordData>(wordsOfDay, undefined, iPushOfDay, true)
@@ -650,7 +658,8 @@ export const SetupNotificationAsync = async (
 
             await SetNotificationAsync(noti)
 
-            const log = `(${new Date(timestamp).toLocaleString()}) ${noti.title}: ${noti.message}`
+            // const log = `(${new Date(timestamp).toLocaleString()}) ${noti.title}: ${noti.message}`
+            const log = `(${new Date(timestamp).toLocaleString()}) ${noti.title}`
 
             if (IsLog)
                 console.log(log)
@@ -660,6 +669,9 @@ export const SetupNotificationAsync = async (
                 localizedData: wordToPush.savedData.localizedData,
                 lastNotiTick: timestamp,
             })
+
+            if (timestamp > maxTimestamp)
+                maxTimestamp = timestamp
         }
 
         if (IsLog) // log break line
@@ -668,7 +680,8 @@ export const SetupNotificationAsync = async (
 
     if (IsLog) {
         console.log('[SetNotificationAsync]',
-            'didSetNotiList', didSetNotiList.length)
+            'didSetNotiList', didSetNotiList.length,
+            'final push', new Date(maxTimestamp).toLocaleString())
     }
 
     SetCurrentAllNotificationsAsync(didSetNotiList)
