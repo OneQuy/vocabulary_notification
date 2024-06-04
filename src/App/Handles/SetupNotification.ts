@@ -5,13 +5,14 @@ import { BridgeTranslateMultiWordAsync } from "./TranslateBridge";
 import { LocalText, NoNotificationPermissionLocalKey, NoPermissionText, PleaseSelectTargetLangText } from "../Hooks/useLocalText";
 import { AddOrUpdateLocalizedWordsToDbAsync, GetLocalizedWordFromDbAsync, GetLocalizedWordsFromDbIfAvailableAsync } from "./LocalizedWordsTable";
 import { CalcNotiTimeListPerDay, CheckDeserializeLocalizedData, ExtractWordFromWordLang, SavedWordToTranslatedResult, TimePickerResultToTimestamp, ToWordLangString, TranslatedResultToSavedWord } from "./AppUtils";
-import { CapitalizeFirstLetter, PickRandomElement, SafeArrayLength, SafeGetArrayElement } from "../../Common/UtilsTS";
+import { CapitalizeFirstLetter, Clamp, IsNumType, PickRandomElement, SafeArrayLength, SafeGetArrayElement } from "../../Common/UtilsTS";
 import { GetExcludeTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetSourceLangAsync, GetTargetLangAsync } from "./Settings";
 import { GetNextWordsDataCurrentLevelForNotiAsync, GetWordsDataCurrentLevelAsync, SetUsedWordIndexCurrentLevelAsync } from "./WordsData";
 import { DisplayNotificationAsync, NotificationOption, SetNotificationAsync, CancelAllLocalNotificationsAsync, RequestPermissionNotificationAsync } from "../../Common/Nofitication";
 import { HandlingType } from "../Screens/SetupScreen";
 import { HandleError } from "../../Common/Tracking";
 import { TranslatedResult } from "../../Common/TranslationApis/TranslationLanguages";
+import { GetAlternativeConfig } from "../../Common/RemoteConfig";
 
 const IsLog = __DEV__
 
@@ -414,8 +415,24 @@ const ToDisplayPartOfSpeech = (s: string) => {
 }
 
 const CalcNumDaysToPush = (totalPushsPerDay: number) => {
+    const LimitPushes = 64
+    const MinDays = 1
+    const MaxDays = GetAlternativeConfig('maxDaysToPush', 10)
 
-    return 5
+    let numDays = 0
+
+    if (!IsNumType(totalPushsPerDay) || totalPushsPerDay <= 0)
+        numDays = MaxDays
+    else {
+        numDays = Math.floor(LimitPushes / totalPushsPerDay)
+        numDays = Clamp(numDays, MinDays, MaxDays)
+    }
+
+    if (IsLog) {
+        console.log('[CalcNumDaysToPush]', numDays, 'days')
+    }
+
+    return numDays
 }
 
 const DataToNotification = (
@@ -558,9 +575,7 @@ export const SetupNotificationAsync = async (
     const numUniqueWordsOfAllDay = numUniqueWordsPerDay * numDaysToPush
 
     if (IsLog) {
-        console.log('[SetNotificationAsync]',
-            'numUniqueWordsOfAllDay', numUniqueWordsOfAllDay,
-            'numDaysToPush', numDaysToPush)
+        console.log('[SetNotificationAsync] numUniqueWordsOfAllDay', numUniqueWordsOfAllDay)
     }
 
     // unique Words Of All Day
