@@ -58,11 +58,12 @@ const eng = {
   current_price: "Current sale price",
   upgrade: "Upgrade",
   purchase_success: 'You have just upgraded successfully!\n\nThank you for purchasing. You unlocked all vocabularies and features of Vocaby!',
+  and: 'and', 
 
   push_notice:
-    `Notifications are set up until 24/Oct/1994 at 00:00. Please open the app and re-set them after this time.
+    `Every day, vocabulary notifications will be shown at these times: ###.
     
-Every day, they will be shown at these times: ###.
+ They are set up until 24/Oct/1994 at 00:00. Please open the app and set new words after this time.
 
 Note: These times are estimates. Depending on the device and its status, sometimes notifications may not be shown or may be shown at different times. However, you don't need to worry about this. If notifications stop appearing completely, just re-open the app and set them up again!`,
 

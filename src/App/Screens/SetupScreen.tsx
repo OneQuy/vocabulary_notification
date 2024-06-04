@@ -6,7 +6,7 @@ import useLocalText, { NoPermissionText, PleaseSelectTargetLangText } from '../H
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, IsNumType, PickRandomElementWithCount, PrependZero, RoundWithDecimal, ToCanPrintError } from '../../Common/UtilsTS'
+import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, IsNumType, PickRandomElementWithCount, PrependZero, RoundWithDecimal, SafeDateString, ToCanPrintError } from '../../Common/UtilsTS'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { DefaultExcludedTimePairs, DefaultIntervalInMin, IntervalInMinPresets, LimitWordsPerDayPresets, PopuplarityLevelNumber, TranslationServicePresets } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
@@ -168,12 +168,20 @@ const SetupScreen = () => {
       arr.push(`${PrependZero(time.hours)}:${PrependZero(time.minutes)}`)
     }
 
+    let combineText = ''
+
+    if (arr.length >= 2) {
+      combineText = `${arr.slice(0, arr.length - 1).join(', ')} ${texts.and} ${arr[arr.length - 1]}`
+    }
+    else if (arr.length >= 1)
+      combineText = arr[0]
+
     const lastSetDate = new Date(lastSetTimestamp)
 
     let text = texts.push_notice
-      .replace('24/Oct/1994', lastSetDate.toLocaleDateString())
-      .replace('00:00', lastSetDate.toLocaleTimeString())
-      .replace('###', arr.join(', '))
+      .replace('24/Oct/1994', SafeDateString(lastSetDate, '/'))
+      .replace('00:00', `${PrependZero(lastSetDate.getHours())}:${PrependZero(lastSetDate.getMinutes())}`)
+      .replace('###', combineText)
 
     set_pushTimeListText(text)
   }, [displayIntervalInMin, displayExcludedTimePairs])
