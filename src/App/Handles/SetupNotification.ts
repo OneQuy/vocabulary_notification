@@ -5,7 +5,7 @@ import { BridgeTranslateMultiWordAsync } from "./TranslateBridge";
 import { LocalText, NoNotificationPermissionLocalKey, NoPermissionText, PleaseSelectTargetLangText } from "../Hooks/useLocalText";
 import { AddOrUpdateLocalizedWordsToDbAsync, GetLocalizedWordFromDbAsync, GetLocalizedWordsFromDbIfAvailableAsync } from "./LocalizedWordsTable";
 import { CalcNotiTimeListPerDay, CheckDeserializeLocalizedData, ExtractWordFromWordLang, SavedWordToTranslatedResult, TimePickerResultToTimestamp, ToWordLangString, TranslatedResultToSavedWord } from "./AppUtils";
-import { CapitalizeFirstLetter, Clamp, IsNumType, PickRandomElement, SafeArrayLength, SafeGetArrayElement } from "../../Common/UtilsTS";
+import { CapitalizeFirstLetter, Clamp, IsNumType, PickRandomElement, SafeArrayLength, SafeGetArrayElement, SafeGetArrayLastElement, SafeValue } from "../../Common/UtilsTS";
 import { GetExcludeTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetSourceLangAsync, GetTargetLangAsync } from "./Settings";
 import { GetNextWordsDataCurrentLevelForNotiAsync, GetWordsDataCurrentLevelAsync, SetUsedWordIndexCurrentLevelAsync } from "./WordsData";
 import { DisplayNotificationAsync, NotificationOption, SetNotificationAsync, CancelAllLocalNotificationsAsync, RequestPermissionNotificationAsync } from "../../Common/Nofitication";
@@ -285,6 +285,10 @@ const GetCurrentAllNotificationsAsync = async (): Promise<SavedWordData[] | unde
 }
 
 export const SetCurrentAllNotificationsAsync = async (currentAllNotifications: SavedWordData[]) => {
+    if (IsLog) {
+        console.log('[SetCurrentAllNotificationsAsync] set length', currentAllNotifications.length)
+    }
+
     await SetArrayAsync(StorageKey_CurrentAllNotifications, currentAllNotifications)
 }
 
@@ -536,6 +540,53 @@ const DataToNotification = (
     return noti
 }
 
+const SortTimestampAndSetNotificationsAsync = async (
+    notifications: NotificationOption[]
+): Promise<number> => {
+    notifications.sort((a, b) => {
+        if (!IsNumType(a.timestamp) || !IsNumType(b.timestamp))
+            return 0
+        else
+            return a.timestamp - b.timestamp
+    })
+
+    let previousDay = 0
+    let idx = 0
+
+    for (let push of notifications) {
+        // timestamp
+
+        let timestamp = push.timestamp
+
+        if (!IsNumType(timestamp)) {
+            HandleError('what? timestamp is not number', 'SortTimestampAndSetNotificationsAsync')
+            continue
+        }
+
+        const day = new Date(timestamp)
+
+        if (day.getDate() !== previousDay) {
+            previousDay = day.getDate()
+            console.log() // new day, break line
+        }
+
+        // set !
+
+        await SetNotificationAsync(push)
+
+        // log
+
+        const log = `${++idx}. (${day.toLocaleString()}) ${push.title}`
+
+        if (IsLog)
+            console.log(log)
+    }
+
+    const lastPush = SafeGetArrayLastElement<NotificationOption>(notifications)
+
+    return SafeValue(lastPush?.timestamp, 0)
+}
+
 export const SetupNotificationAsync = async (
     process?: (process: number) => void
 ): Promise<number | SetupNotificationError> => {
@@ -617,8 +668,12 @@ export const SetupNotificationAsync = async (
 
     await CancelAllLocalNotificationsAsync()
 
+    if (IsLog) {
+        console.log('[SetNotificationAsync] Canceled All Local Notifications')
+    }
+
     const didSetNotiList: SavedWordData[] = []
-    let maxTimestamp = 0
+    const notifications: NotificationOption[] = []
 
     for (let iday = 0; iday < numDaysToPush; iday++) { // day by day
         const wordsOfDay = uniqueWordsOfAllDay.slice(iday * numUniqueWordsPerDay, iday * numUniqueWordsPerDay + numUniqueWordsPerDay)
@@ -651,7 +706,7 @@ export const SetupNotificationAsync = async (
 
             // generate noti data
 
-            const noti = DataToNotification(
+            const notiData = DataToNotification(
                 wordToPush,
                 timestamp,
                 settingRankOfWord,
@@ -662,15 +717,9 @@ export const SetupNotificationAsync = async (
                 true
             )
 
-            // set !
+            // add to list
 
-            await SetNotificationAsync(noti)
-
-            // const log = `(${new Date(timestamp).toLocaleString()}) ${noti.title}: ${noti.message}`
-            const log = `(${new Date(timestamp).toLocaleString()}) ${noti.title}`
-
-            if (IsLog)
-                console.log(log)
+            notifications.push(notiData)
 
             // add to push list
 
@@ -679,24 +728,10 @@ export const SetupNotificationAsync = async (
                 localizedData: wordToPush.savedData.localizedData,
                 lastNotiTick: timestamp,
             })
-
-            // set max time 
-
-            if (timestamp > maxTimestamp)
-                maxTimestamp = timestamp
         }
-
-        if (IsLog) // log break line
-            console.log()
-    }
-
-    if (IsLog) {
-        console.log('[SetNotificationAsync]',
-            'didSetNotiList', didSetNotiList.length,
-            'final push', new Date(maxTimestamp).toLocaleString())
     }
 
     SetCurrentAllNotificationsAsync(didSetNotiList)
 
-    return maxTimestamp
+    return await SortTimestampAndSetNotificationsAsync(notifications)
 }
