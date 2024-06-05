@@ -243,6 +243,8 @@ export const SqlExecuteAsync = async <T extends object>(cmd: string): Promise<T[
                 function (_, err) {
                     resolve(new Error(err.message as string))
                     
+                    console.error(err);
+                    
                     // SQLStatementErrorCallback returns a boolean value.
                     // - true - ends the execution of the transaction. true is returned if there is no callback function specified as a parameter. Important: When true is returned, the transaction is rolled back.
                     // - false - continues executing the transaction
