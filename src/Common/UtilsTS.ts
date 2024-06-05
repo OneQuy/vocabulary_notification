@@ -440,6 +440,32 @@ export function SafeGetArrayElement_ForceValue<T>(arr: T[] | any, defaultValue: 
     return SafeGetArrayElement(arr, defaultValue) as T
 }
 
+export function SafeGetArrayFirstElement<T>(
+    arr: T[] | any,
+    defaultValue: T | undefined = undefined
+): undefined | T {
+    if (!Array.isArray(arr))
+        return defaultValue
+
+    if (arr.length <= 0)
+        return defaultValue
+
+    return arr[0]
+}
+
+export function SafeGetArrayLastElement<T>(
+    arr: T[] | any,
+    defaultValue: T | undefined = undefined
+): undefined | T {
+    if (!Array.isArray(arr))
+        return defaultValue
+
+    if (arr.length <= 0)
+        return defaultValue
+
+    return arr[arr.length - 1]
+}
+
 export function SafeGetArrayElement<T>( // main 
     arr: T[] | any,
     defaultValue: T | undefined = undefined,
