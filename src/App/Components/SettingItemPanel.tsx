@@ -21,7 +21,7 @@ export const SettingItemPanelStyle = StyleSheet.create({
 
         gap: Gap.Normal,
     },
-    
+
     master_Column: {
         backgroundColor: Color_BG2,
 
@@ -54,6 +54,12 @@ export const SettingItemPanelStyle = StyleSheet.create({
     explainTxt: {
         color: Color_Text2,
         fontSize: FontSize.Small,
+    },
+
+    doneTxt: {
+        color: Color_Text2,
+        fontSize: FontSize.Small,
+        textAlign: 'left',
     },
 
     valueTxt: {

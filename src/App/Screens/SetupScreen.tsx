@@ -31,6 +31,8 @@ import { usePostHog } from 'posthog-react-native'
 import { AppContext } from '../../Common/SpecificConstants'
 import useSpecificAppContext from '../../Common/Hooks/useSpecificAppContext'
 import { IsDev } from '../../Common/IsDev'
+import HairLine from '../../Common/Components/HairLine'
+import { StartupWindowSize } from '../../Common/CommonConstants'
 
 const IsLog = false
 
@@ -115,6 +117,20 @@ const SetupScreen = () => {
       downloadingView: { padding: Outline.Normal, gap: Gap.Normal, justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', position: 'absolute', backgroundColor: Color_BG },
       downloadingTxt: { fontSize: FontSize.Normal, fontWeight: FontBold.Bold, color: Color_Text },
 
+      doneView: {
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flex: 1,
+        gap: Gap.Normal,
+      },
+
+      doneTimeView: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        gap: Gap.Normal,
+      },
+
       normalBtn: {
         borderWidth: 0,
         borderRadius: BorderRadius.Small,
@@ -136,11 +152,8 @@ const SetupScreen = () => {
 
       handlingBackBtn: {
         borderWidth: 0,
-        borderRadius: BorderRadius.Small,
+        borderRadius: BorderRadius.Medium,
         padding: Outline.Normal,
-        flexDirection: 'row',
-        gap: Gap.Normal,
-        marginTop: '10%',
         width: '50%',
       },
 
@@ -1288,41 +1301,46 @@ const SetupScreen = () => {
               </>
             }
 
-            {/* icon done */}
+            {/* done state */}
             {
               handlingType === 'done' &&
-              <LucideIcon name='Check' size={FontSize.Normal} color={Color_Text} />
-            }
+              <View style={style.doneView}>
+                <View style={style.doneTimeView}>
+                  {/* icon done */}
+                  <LucideIcon name='Check' size={FontSize.Normal} color={Color_Text} />
 
-            {/* done text */}
-            {
-              handlingType === 'done' &&
-              <Text style={style.downloadingTxt}>{texts.done}!</Text>
-            }
+                  {/* done text */}
+                  <Text style={style.downloadingTxt}>{texts.done}!</Text>
 
-            {/* list time text */}
-            {
-              handlingType === 'done' &&
-              <Text style={[SettingItemPanelStyle.explainTxt, { textAlign: 'left' }]}>{pushTimeListText}</Text>
-            }
+                  {/* list time text */}
+                  <Text style={SettingItemPanelStyle.doneTxt}>{pushTimeListText}</Text>
 
-            {/* back btn */}
-            {
-              handlingType === 'done' &&
-              <LucideIconTextEffectButton
-                unselectedColorOfTextAndIcon={Color_Text}
+                  {/* back btn */}
+                  <LucideIconTextEffectButton
+                    unselectedColorOfTextAndIcon={Color_Text}
 
-                notChangeToSelected
-                manuallySelected={false}
-                canHandlePressWhenSelected
+                    notChangeToSelected
+                    manuallySelected={false}
+                    canHandlePressWhenSelected
 
-                style={style.handlingBackBtn}
+                    style={style.handlingBackBtn}
 
-                title={'Okay'}
-                titleProps={{ style: style.normalBtnTxt }}
+                    title={'Okay'}
+                    titleProps={{ style: style.normalBtnTxt }}
 
-                onPress={() => set_handlingType(undefined)}
-              />
+                    onPress={() => set_handlingType(undefined)}
+                  />
+                </View>
+
+                {/* hair line */}
+                <HairLine
+                  color={Color_Text2}
+                  widthPercent={StartupWindowSize.width - (Outline.Normal * 2)}
+                />
+
+                {/* note device */}
+                <Text style={SettingItemPanelStyle.doneTxt}>{texts.push_notice_device}</Text>
+              </View>
             }
           </View>
         }

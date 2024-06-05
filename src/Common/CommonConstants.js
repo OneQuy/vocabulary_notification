@@ -5,7 +5,7 @@ export const LogoScr = require('../../assets/images/logo.png')
 
 // window size
 
-const StartupWindowSize = Dimensions.get('window')
+export const StartupWindowSize = Dimensions.get('window')
 
 export const WindowSize_Max = Math.max(StartupWindowSize.width, StartupWindowSize.height)
 export const WindowSize_Min = Math.min(StartupWindowSize.width, StartupWindowSize.height)
