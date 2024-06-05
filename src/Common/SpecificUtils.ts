@@ -6,7 +6,7 @@ import { Linking, Platform, Share } from "react-native"
 import { AndroidLink, AppName, ShareAppContent, iOSLink } from "./SpecificConstants"
 import { Event, EventType } from "@notifee/react-native"
 import { DelayAsync, SafeValue, ToCanPrint } from "./UtilsTS"
-import { NotificationExtraDataKey_Mode } from "../App/Handles/SetupNotification"
+import { NotificationExtraDataKey_Mode, NotificationExtraDataKey_PushIndex } from "../App/Handles/SetupNotification"
 import { GenerateNotificationTrackDataAsync } from "./Nofitication"
 import { VocabyNotificationTrackData } from "./SpecificType"
 import { AppendArrayAsync, GetArrayAsync_PickAndRemoveFirstOne } from "./AsyncStorageUtils"
@@ -39,9 +39,18 @@ export const OnEventNotification = async (isBackgroundOrForeground: boolean, eve
 
     let setOrTestMode = 'no_data'
     let word = 'no_data'
+    let pushIdx = -1
 
     if (event.detail.notification) {
+        // pushIdx
+
+        pushIdx = SafeValue(event.detail.notification.data?.[NotificationExtraDataKey_PushIndex], -1)
+
+        // setOrTestMode
+
         setOrTestMode = SafeValue(event.detail.notification.data?.[NotificationExtraDataKey_Mode], 'unknown')
+
+        // word
 
         const fullTitle = SafeValue(event.detail.notification.title, '')
         const titleSplitArr = fullTitle.split(' ')
@@ -54,6 +63,7 @@ export const OnEventNotification = async (isBackgroundOrForeground: boolean, eve
     const objTrack: VocabyNotificationTrackData = {
         ...baseData,
         [NotificationExtraDataKey_Mode]: setOrTestMode,
+        [NotificationExtraDataKey_PushIndex]: pushIdx,
         word,
     }
 

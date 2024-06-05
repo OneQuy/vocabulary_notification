@@ -18,6 +18,7 @@ import { Platform } from "react-native";
 const IsLog = __DEV__
 
 export const NotificationExtraDataKey_Mode = 'mode'
+export const NotificationExtraDataKey_PushIndex = 'pushIdx'
 
 type SavedAndWordData = {
     savedData: SavedWordData,
@@ -569,6 +570,11 @@ const SortTimestampAndSetNotificationsAsync = async (
             previousDay = day.getDate()
             console.log() // new day, break line
         }
+
+        // set idx
+
+        if (push.data)
+            push.data[NotificationExtraDataKey_PushIndex] = idx
 
         // set !
 
