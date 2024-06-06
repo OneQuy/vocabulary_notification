@@ -341,7 +341,7 @@ export const TestNotificationAsync = async (setHandling: (type: HandlingType) =>
             return wordsResultOrError as Error
         }
 
-        const translatedArrOrError = await BridgeTranslateMultiWordAsync(
+        const translatedArrOrError = await LoadFromLocalizedDbOrTranslateWordsAsync(
             wordsResultOrError.words.map(i => i.word),
             targetLang,
             await GetSourceLangAsync())
