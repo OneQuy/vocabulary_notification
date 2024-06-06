@@ -67,11 +67,13 @@ export const OnEventNotification = async (isBackgroundOrForeground: boolean, eve
         word,
     }
 
-    // cache to storage (not need change)
+    // cache to storage // CHANGE HERE 2
 
-    AppendArrayAsync<VocabyNotificationTrackData>(StorageKey_CacheEventNotification, objTrack) // // CHANGE HERE 2 (change type)
+    if (setOrTestMode !== 'test') { // may change this condition
+        AppendArrayAsync<VocabyNotificationTrackData>(StorageKey_CacheEventNotification, objTrack) // change type
+    }
 
-    // track on event (not need change)
+    // track on-event (not need change)
 
     await TrackEventNotificationAsync(objTrack, true)
 
