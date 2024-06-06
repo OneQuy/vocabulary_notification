@@ -1,3 +1,10 @@
+kiểm tra last noti:
+
+- rà & check pushIdx số lớn nhất là bao nhiêu
+- hoặc dựa vào pushIdx của noti có word":"Congratulations!" của remind push
+
+=========================================
+
 alert_priority:
 
 1. await HandleAlertUpdateAppAsync(remoteConfig) // alert_priority_1 (doc)
