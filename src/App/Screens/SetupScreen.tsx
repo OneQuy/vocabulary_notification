@@ -119,6 +119,7 @@ const SetupScreen = () => {
         color: Color_Text2,
         fontSize: FontSize.Small,
         paddingHorizontal: Outline.Normal,
+        textAlign: 'center',
       },
 
       downloadingView: { padding: Outline.Normal, gap: Gap.Normal, justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', position: 'absolute', backgroundColor: Color_BG },
