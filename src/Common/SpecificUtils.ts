@@ -1,4 +1,4 @@
-// NUMBER OF [CHANGE HERE] 3
+// NUMBER OF [CHANGE HERE] 5
 //
 // Created on 17 may 2024 (Coding Vocaby)
 
@@ -73,9 +73,13 @@ export const OnEventNotification = async (isBackgroundOrForeground: boolean, eve
         AppendArrayAsync<VocabyNotificationTrackData>(StorageKey_CacheEventNotification, objTrack) // change type
     }
 
-    // track on-event (not need change)
+    // track on-event // CHANGE HERE 4
 
-    await TrackEventNotificationAsync(objTrack, true)
+    await TrackEventNotificationAsync(
+        objTrack, 
+        true, 
+        setOrTestMode // my change here
+    )
 
     console.log('[OnEventNotification]', 'tracked and cached (on event):', ToCanPrint(objTrack))
 }
@@ -96,11 +100,15 @@ export const CheckTrackCachedNotification = async (): Promise<void> => {
         return
     }
 
-    // track on event (not need change)
+    // track on event // CHANGE HERE 5
 
     const firstEvent = saved.firstElement
 
-    await TrackEventNotificationAsync(firstEvent, false)
+    await TrackEventNotificationAsync(
+        firstEvent, 
+        false, 
+        firstEvent[NotificationExtraDataKey_Mode] // may change here
+    )
 
     if (IsLog)
         console.log('[CheckTrackCachedNotificationAsync] remain cached events', saved.savedArray.length, 'tracked first cached one:', ToCanPrint(firstEvent))

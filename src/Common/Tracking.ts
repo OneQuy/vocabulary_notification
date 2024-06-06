@@ -139,14 +139,14 @@ const CheckTrackCachedTrackDataBeforeInitingAsync = async (): Promise<void> => {
         console.error('[CheckTrackCachedTrackDataBeforeInitingAsync] not inited yet!');
         return
     }
-    
+
     if (!IsValuableArrayOrString(cachedTrackDataBeforeIniting))
         return
 
     for (let eventData of cachedTrackDataBeforeIniting) {
         if (IsLog)
             console.log('[CheckTrackCachedTrackDataBeforeInitingAsync] tracking cached event...', eventData.eventName);
-        
+
         await TrackingAsync(
             eventData.eventName,
             eventData.firebasePaths,
@@ -328,13 +328,17 @@ export const TrackSimpleWithParam = (event: string, value: string) => { // sub
     )
 }
 
-export const TrackEventNotificationAsync = async (trackObj: NotificationTrackData, isOnEventOrCached: boolean) => {
+export const TrackEventNotificationAsync = async (
+    trackObj: NotificationTrackData,
+    isOnEventOrCached: boolean,
+    subPath?: string
+) => {
     const eventName = isOnEventOrCached ? 'on_event_notification' : 'cached_event_notification'
 
     await TrackingAsync(
         eventName,
         [
-            `total/app/notification/${eventName}/${Platform.OS}/${trackObj.background ? 'background' : 'foreground'}/` + trackObj.eventType
+            `total/app/notification${subPath ? ('/' + subPath) : ''}/${eventName}/${Platform.OS}/${trackObj.background ? 'background' : 'foreground'}/` + trackObj.eventType
         ],
         trackObj
     )
