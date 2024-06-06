@@ -339,9 +339,12 @@ const SetupScreen = () => {
   const onPressSetNotification = useCallback(async () => {
     set_handlingType('setting_notification')
 
-    const lastSetTimestampOrError = await SetupNotificationAsync((process) => {
-      set_processPercent(`${RoundWithDecimal(process * 100)}%`)
-    })
+    const lastSetTimestampOrError = await SetupNotificationAsync(
+      texts,
+      (process) => {
+        set_processPercent(`${RoundWithDecimal(process * 100)}%`)
+      }
+    )
 
     if (IsNumType(lastSetTimestampOrError)) { // success
       set_handlingType('done')

@@ -594,6 +594,7 @@ const SortTimestampAndSetNotificationsAsync = async (
 }
 
 export const SetupNotificationAsync = async (
+    texts: LocalText,
     process?: (process: number) => void
 ): Promise<number | SetupNotificationError> => {
     const resPermission = await RequestPermissionNotificationAsync(true)
@@ -670,7 +671,7 @@ export const SetupNotificationAsync = async (
     const settingExample = await GetBooleanAsync(StorageKey_ShowExample)
     const settingShowPartOfSpeech = await GetBooleanAsync(StorageKey_ShowPartOfSpeech)
 
-    // set noti !
+    // setup each noti
 
     await CancelAllLocalNotificationsAsync()
 
@@ -737,7 +738,35 @@ export const SetupNotificationAsync = async (
         }
     }
 
+    // cache list
+
     SetCurrentAllNotificationsAsync(didSetNotiList)
 
-    return await SortTimestampAndSetNotificationsAsync(notifications)
+    // sort time and set push
+
+    const timestampLastPush = await SortTimestampAndSetNotificationsAsync(notifications)
+
+    // set remind push
+
+    const remindTimestamp = TimePickerResultToTimestamp(numDaysToPush + 1, pushTimesPerDay[0])
+
+    const remindPush: NotificationOption = {
+        title: texts.congrats,
+        message: texts.run_out_push,
+        timestamp: remindTimestamp,
+        data: {
+            [NotificationExtraDataKey_PushIndex]: notifications.length,
+        }
+    }
+
+    await SetNotificationAsync(remindPush)
+
+    if (IsLog) {
+        console.log()
+        console.log(`${notifications.length + 1}.`, `(${new Date(remindTimestamp).toLocaleString()}) REMIND PUSH`, remindPush);
+    }
+
+    // return 
+
+    return timestampLastPush
 }
