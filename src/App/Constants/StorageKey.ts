@@ -1,4 +1,4 @@
-export const StorageKey_UsedWordIndex = (popularityIdx: number) => 'StorageKey_UsedWordIndex_' + popularityIdx
+//  common
 
 export const StorageKey_OpenAppOfDayCount = 'StorageKey_OpenAppOfDayCount'
 export const StorageKey_OpenAppOfDayCountForDate = 'StorageKey_OpenAppOfDayCountForDate'
@@ -20,6 +20,10 @@ export const StorageKey_OneQuyAppLastSubDownload = 'StorageKey_OneQuyAppLastSubD
 export const StorageKey_CacheEventNotification = 'StorageKey_CacheEventNotification'
 export const StorageKey_ForceDev = 'StorageKey_ForceDev'
 export const StorageKey_UserID = 'StorageKey_UserID'
+
+// specific
+
+export const StorageKey_UsedWordIndex = (popularityIdx: number) => 'StorageKey_UsedWordIndex_' + popularityIdx
 
 export const StorageKey_ShowPhonetic = 'StorageKey_ShowPhonetic'
 export const StorageKey_ShowExample = 'StorageKey_ShowExample'
