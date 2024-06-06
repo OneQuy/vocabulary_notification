@@ -421,21 +421,23 @@ const ToDisplayPartOfSpeech = (s: string) => {
 }
 
 const CalcNumDaysToPush = (totalPushsPerDay: number) => {
-    const LimitPushes = 64
+    const limitPushes = Platform.OS === 'android' ?
+        GetAlternativeConfig('limitPushsAndroid', 64) :
+        GetAlternativeConfig('limitPushsiOS', 64)
 
     const MinDays = 1
 
-    const MaxDays = Platform.OS === 'android' ?
+    const maxDays = Platform.OS === 'android' ?
         GetAlternativeConfig('maxDaysToPushAndroid', 10) :
         GetAlternativeConfig('maxDaysToPushiOS', 10)
 
     let numDays = 0
 
     if (!IsNumType(totalPushsPerDay) || totalPushsPerDay <= 0)
-        numDays = MaxDays
+        numDays = maxDays
     else {
-        numDays = Math.floor(LimitPushes / totalPushsPerDay)
-        numDays = Clamp(numDays, MinDays, MaxDays)
+        numDays = Math.floor(limitPushes / totalPushsPerDay)
+        numDays = Clamp(numDays, MinDays, maxDays)
     }
 
     if (IsLog) {

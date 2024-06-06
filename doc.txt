@@ -11,8 +11,12 @@ alert not priority (after alerts above):
 alternativeValue:
 
 - onequyApps
+
 - maxDaysToPushAndroid (default 10 days)
 - maxDaysToPushiOS (default 10 days)
+
+- limitPushsAndroid (default 64 pushs)
+- limitPushsiOS (default 64 pushs)
 
 - microsoft
 - systran
