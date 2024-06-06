@@ -18,17 +18,17 @@ export const StorageKey_OpenAt = 'StorageKey_OpenAt'
 export const StorageKey_SubscribeData = 'StorageKey_SubscribeData'
 export const StorageKey_OneQuyAppLastSubDownload = 'StorageKey_OneQuyAppLastSubDownload'
 export const StorageKey_CacheEventNotification = 'StorageKey_CacheEventNotification'
-
-
 export const StorageKey_ForceDev = 'StorageKey_ForceDev'
 export const StorageKey_UserID = 'StorageKey_UserID'
-export const StorageKey_CurrentAllNotifications = 'StorageKey_CurrentAllNotifications'
 
 export const StorageKey_ShowPhonetic = 'StorageKey_ShowPhonetic'
 export const StorageKey_ShowExample = 'StorageKey_ShowExample'
 export const StorageKey_ShowDefinitions = 'StorageKey_ShowDefinitions'
 export const StorageKey_ShowPartOfSpeech = 'StorageKey_ShowPartOfSpeech'
 export const StorageKey_ShowRankOfWord = 'StorageKey_ShowRankOfWord'
+
+export const StorageKey_CurrentAllNotifications = 'StorageKey_CurrentAllNotifications'
+export const StorageKey_LastPushTick = 'StorageKey_LastPushTick'
 
 
 // settings
