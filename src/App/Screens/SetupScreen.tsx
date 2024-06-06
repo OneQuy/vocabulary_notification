@@ -16,8 +16,8 @@ import { CalcNotiTimeListPerDay, ClearDbAndNotificationsAsync } from '../Handles
 import { SetupNotificationAsync, TestNotificationAsync } from '../Handles/SetupNotification'
 import { GetDefaultTranslationService, GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, GetTranslationServiceAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetPopularityLevelIndexAsync, SetTranslationServiceAsync, SetTargetLangAsyncAsync, GetSourceLangAsync } from '../Handles/Settings'
 import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync, IsCachedWordsDataCurrentLevelAsync } from '../Handles/WordsData'
-import { GetBooleanAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
-import { StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from '../Constants/StorageKey'
+import { GetBooleanAsync, GetNumberIntAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
+import { StorageKey_LastPushTick, StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from '../Constants/StorageKey'
 import HistoryScreen from './HistoryScreen'
 import { HandleError } from '../../Common/Tracking'
 import { GetLanguageFromCode, Language } from '../../Common/TranslationApis/TranslationLanguages'
@@ -75,6 +75,7 @@ const SetupScreen = () => {
   // const [displayNumDaysToPush, set_displayNumDaysToPush] = useState<number>(DefaultNumDaysToPush)
 
   const [displayTargetLang, set_displayTargetLang] = useState<Language | undefined>()
+  const [timestampLastPush, set_timestampLastPush] = useState(0)
 
   const [displayTranslationService, set_displayTranslationService] = useState<TranslationService>(GetDefaultTranslationService())
 
@@ -113,6 +114,12 @@ const SetupScreen = () => {
       },
 
       normalBtnTxt: { fontSize: FontSize.Normal, },
+
+      alreadySetInfoTxt: {
+        color: Color_Text2,
+        fontSize: FontSize.Small,
+        paddingHorizontal: Outline.Normal,
+      },
 
       downloadingView: { padding: Outline.Normal, gap: Gap.Normal, justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', position: 'absolute', backgroundColor: Color_BG },
       downloadingTxt: { fontSize: FontSize.Normal, fontWeight: FontBold.Bold, color: Color_Text },
@@ -168,9 +175,25 @@ const SetupScreen = () => {
         justifyContent: 'center',
         alignItems: 'center',
         padding: Outline.Normal,
+        // paddingBottom: Outline.Small,
       },
     })
   }, [])
+
+  const alreadySetInfoTxt = useMemo(() => {
+    if (!IsNumType(timestampLastPush))
+      return undefined
+
+    if (timestampLastPush > Date.now()) {
+      const lastSetDate = new Date(timestampLastPush)
+
+      return texts.already_set
+        .replace('24/Oct/1994', SafeDateString(lastSetDate, '/'))
+        .replace('00:00', `${PrependZero(lastSetDate.getHours())}:${PrependZero(lastSetDate.getMinutes())}`)
+    }
+    else
+      return texts.expired_set
+  }, [timestampLastPush, texts])
 
   const generatePushTimeListText = useCallback((lastSetTimestamp: number) => {
     const pushTimesPerDay = CalcNotiTimeListPerDay(displayIntervalInMin, displayExcludedTimePairs)
@@ -191,7 +214,7 @@ const SetupScreen = () => {
 
     const lastSetDate = new Date(lastSetTimestamp)
 
-    let text = texts.push_notice
+    const text = texts.push_notice
       .replace('24/Oct/1994', SafeDateString(lastSetDate, '/'))
       .replace('00:00', `${PrependZero(lastSetDate.getHours())}:${PrependZero(lastSetDate.getMinutes())}`)
       .replace('###', combineText)
@@ -348,6 +371,7 @@ const SetupScreen = () => {
 
     if (IsNumType(lastSetTimestampOrError)) { // success
       set_handlingType('done')
+      set_timestampLastPush(lastSetTimestampOrError)
       generatePushTimeListText(lastSetTimestampOrError)
     }
     else { // error
@@ -925,6 +949,9 @@ const SetupScreen = () => {
 
   useEffect(() => {
     (async () => {
+      const lastPushTick = await GetNumberIntAsync(StorageKey_LastPushTick)
+      set_timestampLastPush(lastPushTick)
+
       const levelPopularity = await GetPopularityLevelIndexAsync()
       set_displayPopularityLevelIdx(levelPopularity)
 
@@ -1202,37 +1229,44 @@ const SetupScreen = () => {
 
         {
           subView === 'setup' &&
-          <View style={style.bottomButtonsView}>
-            <LucideIconTextEffectButton
-              unselectedColorOfTextAndIcon={Color_Text}
+          <>
+            <View style={style.bottomButtonsView}>
+              <LucideIconTextEffectButton
+                unselectedColorOfTextAndIcon={Color_Text}
 
-              notChangeToSelected
-              style={style.normalBtn}
+                notChangeToSelected
+                style={style.normalBtn}
 
-              title={texts.test_notification}
-              titleProps={{ style: style.normalBtnTxt }}
+                title={texts.test_notification}
+                titleProps={{ style: style.normalBtnTxt }}
 
-              onPress={onPressTestNotificationAsync}
-            />
+                onPress={onPressTestNotificationAsync}
+              />
 
-            <LucideIconTextEffectButton
-              selectedBackgroundColor={Color_Text}
+              <LucideIconTextEffectButton
+                selectedBackgroundColor={Color_Text}
 
-              selectedColorOfTextAndIcon={Color_BG}
-              unselectedColorOfTextAndIcon={Color_Text}
+                selectedColorOfTextAndIcon={Color_BG}
+                unselectedColorOfTextAndIcon={Color_Text}
 
-              notChangeToSelected
-              manuallySelected={true}
-              canHandlePressWhenSelected
+                notChangeToSelected
+                manuallySelected={true}
+                canHandlePressWhenSelected
 
-              style={style.normalBtn}
+                style={style.normalBtn}
 
-              title={texts.set_notification}
-              titleProps={{ style: style.normalBtnTxt }}
+                title={texts.set_notification}
+                titleProps={{ style: style.normalBtnTxt }}
 
-              onPress={onPressSetNotification}
-            />
-          </View>
+                onPress={onPressSetNotification}
+              />
+            </View>
+
+            {
+              alreadySetInfoTxt &&
+              <Text style={style.alreadySetInfoTxt}>{alreadySetInfoTxt}</Text>
+            }
+          </>
         }
 
         {

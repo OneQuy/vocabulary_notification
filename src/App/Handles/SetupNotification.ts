@@ -1,6 +1,6 @@
 import { Definition, SavedWordData, Word } from "../Types";
-import { StorageKey_CurrentAllNotifications, StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from "../Constants/StorageKey";
-import { GetArrayAsync, GetBooleanAsync, SetArrayAsync } from "../../Common/AsyncStorageUtils";
+import { StorageKey_CurrentAllNotifications, StorageKey_LastPushTick, StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from "../Constants/StorageKey";
+import { GetArrayAsync, GetBooleanAsync, SetArrayAsync, SetNumberAsync } from "../../Common/AsyncStorageUtils";
 import { BridgeTranslateMultiWordAsync } from "./TranslateBridge";
 import { LocalText, NoNotificationPermissionLocalKey, NoPermissionText, PleaseSelectTargetLangText } from "../Hooks/useLocalText";
 import { AddOrUpdateLocalizedWordsToDbAsync, GetLocalizedWordFromDbAsync, GetLocalizedWordsFromDbIfAvailableAsync } from "./LocalizedWordsTable";
@@ -592,7 +592,11 @@ const SortTimestampAndSetNotificationsAsync = async (
 
     const lastPush = SafeGetArrayLastElement<NotificationOption>(notifications)
 
-    return SafeValue(lastPush?.timestamp, 0)
+    const timestampLastPush = SafeValue(lastPush?.timestamp, 0)
+
+    await SetNumberAsync(StorageKey_LastPushTick, timestampLastPush)
+    
+    return timestampLastPush
 }
 
 export const SetupNotificationAsync = async (
