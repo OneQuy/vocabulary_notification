@@ -175,7 +175,6 @@ const SetupScreen = () => {
         justifyContent: 'center',
         alignItems: 'center',
         padding: Outline.Normal,
-        // paddingBottom: Outline.Small,
       },
     })
   }, [])
