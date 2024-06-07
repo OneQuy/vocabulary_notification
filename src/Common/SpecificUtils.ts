@@ -6,7 +6,7 @@ import { Linking, Platform, Share } from "react-native"
 import { AndroidLink, AppName, ShareAppContent, iOSLink } from "./SpecificConstants"
 import { Event, EventType } from "@notifee/react-native"
 import { DelayAsync, SafeValue, ToCanPrint } from "./UtilsTS"
-import { NotificationExtraDataKey_Mode, NotificationExtraDataKey_PushIndex } from "../App/Handles/SetupNotification"
+import { NotificationExtraDataKey_IsLastPush, NotificationExtraDataKey_Mode, NotificationExtraDataKey_PushIndex } from "../App/Handles/SetupNotification"
 import { GenerateNotificationTrackDataAsync } from "./Nofitication"
 import { VocabyNotificationTrackData } from "./SpecificType"
 import { AppendArrayAsync, GetArrayAsync_PickAndRemoveFirstOne } from "./AsyncStorageUtils"
@@ -40,11 +40,16 @@ export const OnEventNotification = async (isBackgroundOrForeground: boolean, eve
     let setOrTestMode = 'no_data'
     let word = 'no_data'
     let pushIdx = -1
+    let isLast = 0
 
     if (event.detail.notification) {
         // pushIdx
 
         pushIdx = SafeValue(event.detail.notification.data?.[NotificationExtraDataKey_PushIndex], -1)
+        
+        // is last word push
+
+        isLast = SafeValue(event.detail.notification.data?.[NotificationExtraDataKey_IsLastPush], 0)
 
         // setOrTestMode
 
@@ -64,6 +69,7 @@ export const OnEventNotification = async (isBackgroundOrForeground: boolean, eve
         ...baseData,
         [NotificationExtraDataKey_Mode]: setOrTestMode,
         [NotificationExtraDataKey_PushIndex]: pushIdx,
+        [NotificationExtraDataKey_IsLastPush]: isLast,
         word,
     }
 

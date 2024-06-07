@@ -19,6 +19,7 @@ const IsLog = __DEV__
 
 export const NotificationExtraDataKey_Mode = 'mode'
 export const NotificationExtraDataKey_PushIndex = 'pushIdx'
+export const NotificationExtraDataKey_IsLastPush = 'isLast'
 
 type SavedAndWordData = {
     savedData: SavedWordData,
@@ -573,10 +574,12 @@ const SortTimestampAndSetNotificationsAsync = async (
             console.log() // new day, break line
         }
 
-        // set idx
+        // set data
 
-        if (push.data)
+        if (push.data) { // ts
             push.data[NotificationExtraDataKey_PushIndex] = idx
+            push.data[NotificationExtraDataKey_IsLastPush] = (idx === notifications.length - 1 ? 1 : 0)
+        }
 
         // set !
 
@@ -595,7 +598,7 @@ const SortTimestampAndSetNotificationsAsync = async (
     const timestampLastPush = SafeValue(lastPush?.timestamp, 0)
 
     await SetNumberAsync(StorageKey_LastPushTick, timestampLastPush)
-    
+
     return timestampLastPush
 }
 

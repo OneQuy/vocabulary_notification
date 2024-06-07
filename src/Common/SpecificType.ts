@@ -2,7 +2,7 @@
 //
 // Created on 17 may 2024 (Coding Vocaby)
 
-import { NotificationExtraDataKey_Mode, NotificationExtraDataKey_PushIndex } from "../App/Handles/SetupNotification"
+import { NotificationExtraDataKey_IsLastPush, NotificationExtraDataKey_Mode, NotificationExtraDataKey_PushIndex } from "../App/Handles/SetupNotification"
 import { TrackingValuesObject } from "./Tracking"
 
 export type RemoteConfig = { // CHANGE OPTIONAL
@@ -122,6 +122,8 @@ export interface VocabyNotificationTrackData extends NotificationTrackData { // 
     [NotificationExtraDataKey_Mode]: string;
     
     [NotificationExtraDataKey_PushIndex]: number;
+    
+    [NotificationExtraDataKey_IsLastPush]: number;
 
     /**
      * 'no_data' if having no notification data. 'unknown' if can split vocabulary
