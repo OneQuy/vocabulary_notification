@@ -19,9 +19,9 @@ type UseSpecificAppContextParam = {
 }
 
 const useSpecificAppContext = ({
-   posthog,
-   onActiveOrUseEffectOnceAsync,
-   onActiveOrUseEffectOnceWithGapAsync, 
+    posthog,
+    onActiveOrUseEffectOnceAsync,
+    onActiveOrUseEffectOnceWithGapAsync,
 }: UseSpecificAppContextParam) => {
     const [appContextValue, set_appContextValue] = useState<AppContextType>(DefaultAppContext)
     const texts = useLocalText()
@@ -69,7 +69,8 @@ const useSpecificAppContext = ({
                 posthog,
                 subscribedData: subscribedDataOrUndefined,
                 forceSetPremiumAsync: onSetSubcribeDataAsync,
-                onActiveOrUseEffectOnceWithGapAsync
+                onActiveOrUseEffectOnceWithGapAsync,
+                onActiveOrUseEffectOnceAsync,
             })
         })()
     }, [])

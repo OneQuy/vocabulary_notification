@@ -28,6 +28,7 @@ export type SetupAppStateAndStartTrackingParams = {
     subscribedData: SubscribedData | undefined,
     forceSetPremiumAsync: (setOrReset: SubscribedData | undefined) => Promise<void>,
     onActiveOrUseEffectOnceWithGapAsync?: (isUseEffectOnceOrOnActive: boolean) => Promise<void>,
+    onActiveOrUseEffectOnceAsync?: (isUseEffectOnceOrOnActive: boolean) => Promise<void>,
 }
 
 const IsLog = __DEV__
@@ -263,6 +264,9 @@ const OnActiveOrUseEffectOnceAsync = async (
 
     // callbacks
 
+    if (setupParams.onActiveOrUseEffectOnceAsync)
+        await setupParams.onActiveOrUseEffectOnceAsync(isUseEffectOnceOrOnActive)
+    
     await CheckFireOnActiveOrUseEffectOnceWithGapAsync(setupParams, isUseEffectOnceOrOnActive, loadedConfigLastTimeInHour)
 }
 

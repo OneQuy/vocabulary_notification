@@ -195,12 +195,12 @@ const SetupScreen = () => {
       return texts.expired_set
   }, [timestampLastPush, texts])
 
-  const onActiveOrUseEffectOnceWithGapAsync = useCallback(async (isUseEffectOnceOrOnActive: boolean) => {
+  const onActiveOrUseEffectOnceAsync = useCallback(async (isUseEffectOnceOrOnActive: boolean) => {
     const lastPushTick = await GetNumberIntAsync(StorageKey_LastPushTick)
     set_timestampLastPush(lastPushTick)
 
     if (IsLog)
-      console.log("[onActiveOrUseEffectOnceWithGapAsync] isUseEffectOnceOrOnActive", isUseEffectOnceOrOnActive);
+      console.log("[onActiveOrUseEffectOnceAsync] isUseEffectOnceOrOnActive", isUseEffectOnceOrOnActive);
   }, []) // must []
 
   const generatePushTimeListText = useCallback((lastSetTimestamp: number) => {
@@ -450,7 +450,7 @@ const SetupScreen = () => {
 
   const { appContextValue } = useSpecificAppContext({
     posthog,
-    onActiveOrUseEffectOnceWithGapAsync
+    onActiveOrUseEffectOnceAsync
   })
 
   // noti display
