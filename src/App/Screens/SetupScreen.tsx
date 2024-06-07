@@ -1265,7 +1265,7 @@ const SetupScreen = () => {
 
             {
               alreadySetInfoTxt &&
-              <Text style={style.alreadySetInfoTxt}>{alreadySetInfoTxt}</Text>
+              <Text numberOfLines={1} adjustsFontSizeToFit style={style.alreadySetInfoTxt}>{alreadySetInfoTxt}</Text>
             }
           </>
         }
