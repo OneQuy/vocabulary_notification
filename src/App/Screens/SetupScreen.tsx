@@ -195,11 +195,12 @@ const SetupScreen = () => {
       return texts.expired_set
   }, [timestampLastPush, texts])
 
-  const callbackFireOnActiveOrUseEffectOnceWithGapAsync = useCallback(async () => {
+  const callbackFireOnActiveOrUseEffectOnceWithGapAsync = useCallback(async (isUseEffectOnceOrOnActive: boolean) => {
     const lastPushTick = await GetNumberIntAsync(StorageKey_LastPushTick)
     set_timestampLastPush(lastPushTick)
 
-    console.log("[callbackFireOnActiveOrUseEffectOnceWithGapAsync]");
+    if (IsLog)
+      console.log("[callbackFireOnActiveOrUseEffectOnceWithGapAsync] isUseEffectOnceOrOnActive", isUseEffectOnceOrOnActive);
   }, []) // must []
 
   const generatePushTimeListText = useCallback((lastSetTimestamp: number) => {
@@ -954,13 +955,10 @@ const SetupScreen = () => {
     }
   }
 
-  // load setting
+  // load setting (once)
 
   useEffect(() => {
     (async () => {
-      const lastPushTick = await GetNumberIntAsync(StorageKey_LastPushTick)
-      set_timestampLastPush(lastPushTick)
-
       const levelPopularity = await GetPopularityLevelIndexAsync()
       set_displayPopularityLevelIdx(levelPopularity)
 

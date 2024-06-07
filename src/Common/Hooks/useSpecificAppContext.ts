@@ -14,7 +14,7 @@ import { AlertAsync } from '../UtilsTS'
 
 const useSpecificAppContext = (
     posthog: PostHog,
-    callbackFireOnActiveOrUseEffectOnceWithGapAsync?: () => Promise<void>,
+    callbackFireOnActiveOrUseEffectOnceWithGapAsync?: (isUseEffectOnceOrOnActive: boolean) => Promise<void>,
 ) => {
     const [appContextValue, set_appContextValue] = useState<AppContextType>(DefaultAppContext)
     const texts = useLocalText()
