@@ -27,7 +27,7 @@ export type SetupAppStateAndStartTrackingParams = {
     posthog: PostHog,
     subscribedData: SubscribedData | undefined,
     forceSetPremiumAsync: (setOrReset: SubscribedData | undefined) => Promise<void>,
-    callbackFireOnActiveOrUseEffectOnceWithGapAsync?: (isUseEffectOnceOrOnActive: boolean) => Promise<void>,
+    onActiveOrUseEffectOnceWithGapAsync?: (isUseEffectOnceOrOnActive: boolean) => Promise<void>,
 }
 
 const IsLog = __DEV__
@@ -294,8 +294,8 @@ const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async (
 
     await CheckIsDevAsync(true) // force reload dev
 
-    if (setupParams.callbackFireOnActiveOrUseEffectOnceWithGapAsync) // reset something in app
-        await setupParams.callbackFireOnActiveOrUseEffectOnceWithGapAsync(isUseEffectOnceOrOnActive)
+    if (setupParams.onActiveOrUseEffectOnceWithGapAsync) // reset something in app
+        await setupParams.onActiveOrUseEffectOnceWithGapAsync(isUseEffectOnceOrOnActive)
 
     // open of day count
 
