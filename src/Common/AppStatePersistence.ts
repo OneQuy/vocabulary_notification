@@ -27,6 +27,7 @@ export type SetupAppStateAndStartTrackingParams = {
     posthog: PostHog,
     subscribedData: SubscribedData | undefined,
     forceSetPremiumAsync: (setOrReset: SubscribedData | undefined) => Promise<void>,
+    callbackFireOnActiveOrUseEffectOnceWithGapAsync?: () => Promise<void>,
 }
 
 const IsLog = __DEV__
@@ -253,7 +254,7 @@ const CheckReloadRemoteConfig = (): undefined | number => {
  */
 const OnActiveOrUseEffectOnceAsync = async (
     setupParams: SetupAppStateAndStartTrackingParams,
-    isUseEffectOnce: boolean,
+    isUseEffectOnceOrOnActive: boolean,
     loadedConfigLastTimeInHour: number | undefined
 ) => {
     // first Open App Of The Day
@@ -262,7 +263,7 @@ const OnActiveOrUseEffectOnceAsync = async (
 
     // callbacks
 
-    await CheckFireOnActiveOrUseEffectOnceWithGapAsync(setupParams, isUseEffectOnce, loadedConfigLastTimeInHour)
+    await CheckFireOnActiveOrUseEffectOnceWithGapAsync(setupParams, isUseEffectOnceOrOnActive, loadedConfigLastTimeInHour)
 }
 
 /**
@@ -274,7 +275,7 @@ const OnActiveOrUseEffectOnceAsync = async (
  */
 const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async (
     setupParams: SetupAppStateAndStartTrackingParams,
-    isUseEffectOnce: boolean,
+    isUseEffectOnceOrOnActive: boolean,
     loadedConfigLastTimeInHour: number | undefined
 ) => {
     // CHECK /////////////////////////////
@@ -292,6 +293,9 @@ const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async (
     // HANDLE HERE /////////////////////////////
 
     await CheckIsDevAsync(true) // force reload dev
+
+    if (setupParams.callbackFireOnActiveOrUseEffectOnceWithGapAsync) // reset something in app
+        await setupParams.callbackFireOnActiveOrUseEffectOnceWithGapAsync()
 
     // open of day count
 
@@ -337,7 +341,7 @@ const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async (
         openTodaySoFar,
         distanceMs === now ? 0 : distanceMs,
         setupParams,
-        isUseEffectOnce,
+        isUseEffectOnceOrOnActive,
         openAtHour,
         loadedConfigLastTimeInHour,
         openOfLastDayCount

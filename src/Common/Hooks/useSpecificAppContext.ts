@@ -12,7 +12,10 @@ import { DefaultAppContext } from '../SpecificConstants'
 import useLocalText from '../../App/Hooks/useLocalText'
 import { AlertAsync } from '../UtilsTS'
 
-const useSpecificAppContext = (posthog: PostHog) => {
+const useSpecificAppContext = (
+    posthog: PostHog,
+    callbackFireOnActiveOrUseEffectOnceWithGapAsync?: () => Promise<void>,
+) => {
     const [appContextValue, set_appContextValue] = useState<AppContextType>(DefaultAppContext)
     const texts = useLocalText()
 
@@ -59,6 +62,7 @@ const useSpecificAppContext = (posthog: PostHog) => {
                 posthog,
                 subscribedData: subscribedDataOrUndefined,
                 forceSetPremiumAsync: onSetSubcribeDataAsync,
+                callbackFireOnActiveOrUseEffectOnceWithGapAsync,
             })
         })()
     }, [])

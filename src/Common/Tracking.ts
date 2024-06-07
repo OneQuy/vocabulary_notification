@@ -460,7 +460,7 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
     openTodaySoFar: number,
     distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs: number,
     setupParams: SetupAppStateAndStartTrackingParams,
-    isUseEffectOnce: boolean,
+    isUseEffectOnceOrOnActive: boolean,
     openAtHour: string | undefined,
     loadedConfigLastTimeInHour: number | undefined,
     openOfLastDayCount: number | undefined,
@@ -487,7 +487,7 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
     if (distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs > 0)
         objectString.lastActiveOpen = GetDayHourMinSecFromMs_ToString(distanceFromLastFireOnActiveOrOnceUseEffectWithGapInMs)
 
-    if (isUseEffectOnce) { // freshly_open
+    if (isUseEffectOnceOrOnActive) { // freshly_open
         const [
             lastFreshlyOpenAppToNow,
         ] = await Promise.all([
@@ -529,7 +529,7 @@ export const TrackOnActiveOrUseEffectOnceWithGapAsync = async (
         firebasePathsForNumberTracking.push(`total/app/open_per_day/${openOfLastDayCount}x`)
     }
 
-    if (isUseEffectOnce) { // freshly_open
+    if (isUseEffectOnceOrOnActive) { // freshly_open
         const [
             installedDaysCount,
             streakHandle

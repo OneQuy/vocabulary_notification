@@ -59,7 +59,6 @@ export type HandlingType =
 
 const SetupScreen = () => {
   const posthog = usePostHog()
-  const { appContextValue } = useSpecificAppContext(posthog)
   const texts = useLocalText()
 
   const [handlingType, set_handlingType] = useState<HandlingType>(undefined)
@@ -195,6 +194,13 @@ const SetupScreen = () => {
     else
       return texts.expired_set
   }, [timestampLastPush, texts])
+
+  const callbackFireOnActiveOrUseEffectOnceWithGapAsync = useCallback(async () => {
+    const lastPushTick = await GetNumberIntAsync(StorageKey_LastPushTick)
+    set_timestampLastPush(lastPushTick)
+
+    console.log("[callbackFireOnActiveOrUseEffectOnceWithGapAsync]");
+  }, []) // must []
 
   const generatePushTimeListText = useCallback((lastSetTimestamp: number) => {
     const pushTimesPerDay = CalcNotiTimeListPerDay(displayIntervalInMin, displayExcludedTimePairs)
@@ -440,6 +446,8 @@ const SetupScreen = () => {
       SetExcludedTimesAsync(obj)
     }
   }, [displayExcludedTimePairs, texts])
+
+  const { appContextValue } = useSpecificAppContext(posthog, callbackFireOnActiveOrUseEffectOnceWithGapAsync)
 
   // noti display
 
