@@ -119,6 +119,7 @@ const SetupScreen = () => {
         color: Color_Text2,
         fontSize: FontSize.Small,
         paddingHorizontal: Outline.Normal,
+        paddingBottom: Outline.Small,
         textAlign: 'center',
       },
 
