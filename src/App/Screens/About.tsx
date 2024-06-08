@@ -19,6 +19,8 @@ import { AllIAPProducts, AppContext, AppName } from '../../Common/SpecificConsta
 import OneQuyApp from '../../Common/Components/OneQuyApp'
 import { CheckTapSetDevPersistence, IsDev } from '../../Common/IsDev'
 import { VersionAsNumber } from '../../Common/CommonConstants'
+import Clipboard from '@react-native-clipboard/clipboard'
+import { UserID } from '../../Common/UserID'
 
 const About = () => {
     const texts = useLocalText()
@@ -88,6 +90,10 @@ const About = () => {
 
         set_isHandling(false)
     }, [texts, onPurchasedSuccess])
+
+    const onPressCheatCopyUserId = useCallback(() => {
+        Clipboard.setString(UserID())
+    }, [])
 
     const onPressCheatSetDev = useCallback(() => {
         const didSet = CheckTapSetDevPersistence()
@@ -253,7 +259,7 @@ const About = () => {
                 </View>
 
                 {/* version */}
-                <Text onPress={IsDev() ? undefined : undefined} style={SettingItemPanelStyle.explainTxt}>Version: v{VersionAsNumber}</Text>
+                <Text onPress={IsDev() ? onPressCheatCopyUserId : undefined} style={SettingItemPanelStyle.explainTxt}>Version: v{VersionAsNumber}</Text>
             </ScrollView>
         </View>
     )
