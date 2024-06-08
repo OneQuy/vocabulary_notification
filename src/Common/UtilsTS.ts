@@ -22,7 +22,8 @@ import { Buffer as TheBuffer } from 'buffer'
 // const -------------------------
 
 export const TimeOutError = '[time_out]'
-export const TimeOutStandardInMs = 5000
+
+// export const TimeOutStandardInMs = 10000 // 10s
 
 export const TempDirName = 'temp_dir';
 
