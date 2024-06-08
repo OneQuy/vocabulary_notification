@@ -26,6 +26,13 @@ export const SetObjectAsync = async  <T extends object>(key: string, value: T | 
 
 // boolean =================
 
+export const SetBooleanAsync = async (key: string, value: boolean): Promise<void> => {
+    await AsyncStorage.setItem(key, value ? '1' : '0')
+}
+
+/**
+ * @returns default returns false
+ */
 export const GetBooleanAsync = async (key: string, defaultValue?: boolean): Promise<boolean> => {
     const s = await AsyncStorage.getItem(key)
 
@@ -33,10 +40,6 @@ export const GetBooleanAsync = async (key: string, defaultValue?: boolean): Prom
         return defaultValue === undefined ? false : defaultValue
 
     return s === '1'
-}
-
-export const SetBooleanAsync = async (key: string, value: boolean): Promise<void> => {
-    await AsyncStorage.setItem(key, value ? '1' : '0')
 }
 
 // number =================
