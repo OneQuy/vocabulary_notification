@@ -24,9 +24,29 @@ export function FirebaseDatabase_SetValue(relativePath, valueObject, callback) {
 }
 
 /**
+ * @returns null if success
+ * @returns Error{} or other error if fail
+ */
+export async function FirebaseDatabase_SetValueAsyncWithTimeOut(relativePath, valueObject, timeout) { // sub 
+    const res = await ExecuteWithTimeoutAsync(
+        async () => await FirebaseDatabase_SetValueAsync(relativePath, valueObject),
+        timeout
+    )
+
+    if (res.isTimeOut || res.result === undefined) {
+        // handle time out or other error here
+        return new Error(TimeOutError)
+    }
+    else {
+        // handle susccess here
+        return res.result
+    }
+}
+
+/**
  * @returns null if SUCCESS, error if error.
  */
-export async function FirebaseDatabase_SetValueAsync(relativePath, valueObject) {
+export async function FirebaseDatabase_SetValueAsync(relativePath, valueObject) { // main 
     CheckAndInit();
 
     try {
