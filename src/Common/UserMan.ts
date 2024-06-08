@@ -1,15 +1,36 @@
 import { FirebaseDatabase_GetValueAsyncWithTimeOut, FirebaseDatabase_SetValueAsync, FirebaseDatabaseTimeOutMs } from "./Firebase/FirebaseDatabase"
 import { SubscribedData, User, UserForcePremiumDataProperty } from "./SpecificType"
 import { UserID } from "./UserID"
-import { IsValuableArrayOrString } from "./UtilsTS"
+import { CreateError, IsValuableArrayOrString } from "./UtilsTS"
+
+// path ///////////////////////////////
 
 const GetUserFirebasePath = (userId?: string) => {
     return `user_data/users/${IsValuableArrayOrString(userId) ? userId : UserID()}`
 }
 
 const GetUserFirebasePath_ForcePremiumData = (userId?: string) => {
-    return `user_data/users/${IsValuableArrayOrString(userId) ? userId : UserID()}/${UserForcePremiumDataProperty}`
+    return `${GetUserFirebasePath(userId)}/${UserForcePremiumDataProperty}`
 }
+
+// get ///////////////////////////////
+
+export const GetUserValueAsync = async <T>(property: string, userId?: string): Promise<T | null | Error> => {
+    const firepath = `${GetUserFirebasePath(userId)}/${property}`
+
+    const userRes = await FirebaseDatabase_GetValueAsyncWithTimeOut(firepath, FirebaseDatabaseTimeOutMs)
+
+    if (userRes.value !== null) { // success
+        return userRes.value as T
+    }
+    else if (userRes.error === null) { // no data
+        return null
+    }
+    else { // error
+        return CreateError(userRes.error)
+    }
+}
+
 
 /**
  * 
@@ -33,6 +54,8 @@ export const GetUserAsync = async (): Promise<{ user: User | undefined, error: a
         }
     }
 }
+
+// premium ///////////////////////////////
 
 export const GetUserForcePremiumDataAsync = async (userId?: string): Promise<SubscribedData | null> => {
     const userRes = await FirebaseDatabase_GetValueAsyncWithTimeOut(GetUserFirebasePath_ForcePremiumData(userId), FirebaseDatabaseTimeOutMs)
