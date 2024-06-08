@@ -3,7 +3,7 @@
 import { getDatabase, ref, onValue, set, get, remove } from 'firebase/database';
 import { ExecuteWithTimeoutAsync, TimeOutError } from '../UtilsTS'
 
-export const FirebaseDatabaseTimeOutMs = 5000
+export const FirebaseDatabaseTimeOutMs = 10000
 
 var db = null;
 
