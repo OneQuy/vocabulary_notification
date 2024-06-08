@@ -991,18 +991,31 @@ export const GetDayHourMinSecFromMs_ToString = (
     removeZeroElement = true,
     unitNameIsShortOrFull = true,
     unitChar = '',
+    maximumUnits = 2,
+    removeSecIfOverMin = true,
 ): string => {
+    if (ms < 0)
+        ms = 0
+
     let s = ''
 
     const arr = GetDayHourMinSecFromMs(ms)
     const units = unitNameIsShortOrFull ? TimeUnitNames_Short : TimeUnitNames_Full
 
+    let wroteUnits = 0
+
     for (let i = 0; i < 4; i++) {
-        if (arr[i] > 0 || !removeZeroElement) {
+        if ((maximumUnits >= 1 && wroteUnits >= maximumUnits) ||
+            (i >= 3 && removeSecIfOverMin === true && s.length >= 1)
+        )
+            break
+
+        if (arr[i] > 0 || !removeZeroElement || (s.length === 0 && i >= 3)) {
             if (s.length > 0)
                 s += separator
 
             s += `${arr[i]}${unitChar}${units[i]}`
+            wroteUnits++
         }
     }
 
