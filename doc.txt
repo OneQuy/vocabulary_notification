@@ -42,4 +42,5 @@ word data file tokens
 cheat:
 
 1. About > title 'Check out my apps': tap 20 times for set dev persistence.
+1. About > version: Copy UserId
 
