@@ -15,6 +15,11 @@ const GetUserFirebasePath_ForcePremiumData = (userId?: string) => {
 
 // get ///////////////////////////////
 
+/**
+ * @returns T if success
+ * @returns null if no data
+ * @returns Error{} if error
+ */
 export const GetUserValueAsync = async <T>(property: string, userId?: string): Promise<T | null | Error> => {
     const firepath = `${GetUserFirebasePath(userId)}/${property}`
 
@@ -30,7 +35,6 @@ export const GetUserValueAsync = async <T>(property: string, userId?: string): P
         return CreateError(userRes.error)
     }
 }
-
 
 /**
  * 
