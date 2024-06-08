@@ -18,6 +18,7 @@ import { GetRemoteConfigWithCheckFetchAsync } from '../../Common/RemoteConfig'
 import { AllIAPProducts, AppContext, AppName } from '../../Common/SpecificConstants'
 import OneQuyApp from '../../Common/Components/OneQuyApp'
 import { CheckTapSetDevPersistence, IsDev } from '../../Common/IsDev'
+import { VersionAsNumber } from '../../Common/CommonConstants'
 
 const About = () => {
     const texts = useLocalText()
@@ -250,6 +251,9 @@ const About = () => {
                         fontSize={FontSize.Small}
                     />
                 </View>
+
+                {/* version */}
+                <Text onPress={IsDev() ? undefined : undefined} style={SettingItemPanelStyle.explainTxt}>Version: v{VersionAsNumber}</Text>
             </ScrollView>
         </View>
     )
