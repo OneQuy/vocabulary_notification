@@ -1,4 +1,4 @@
-import { FirebaseDatabase_GetValueAsyncWithTimeOut, FirebaseDatabase_SetValueAsync, FirebaseDatabaseTimeOutMs } from "./Firebase/FirebaseDatabase"
+import { FirebaseDatabase_GetValueAsyncWithTimeOut, FirebaseDatabase_SetValueAsync, FirebaseDatabase_SetValueAsyncWithTimeOut, FirebaseDatabaseTimeOutMs } from "./Firebase/FirebaseDatabase"
 import { SubscribedData, User, UserForcePremiumDataProperty } from "./SpecificType"
 import { UserID } from "./UserID"
 import { CreateError, IsValuableArrayOrString } from "./UtilsTS"
@@ -11,6 +11,26 @@ const GetUserFirebasePath = (userId?: string) => {
 
 const GetUserFirebasePath_ForcePremiumData = (userId?: string) => {
     return `${GetUserFirebasePath(userId)}/${UserForcePremiumDataProperty}`
+}
+
+// set ///////////////////////////////
+
+/**
+ * @returns T if success
+ * @returns null if no data
+ * @returns Error{} if error
+ */
+export const SetUserValueAsync = async (property: string, value: any, userId?: string): Promise<null | Error> => {
+    const firepath = `${GetUserFirebasePath(userId)}/${property}`
+
+    const nullOrError = await FirebaseDatabase_SetValueAsyncWithTimeOut(firepath, value, FirebaseDatabaseTimeOutMs)
+
+    if (nullOrError === null) { // success
+        return null
+    }
+    else { // error
+        return CreateError(nullOrError)
+    }
 }
 
 // get ///////////////////////////////
