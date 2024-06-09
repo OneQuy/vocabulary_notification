@@ -7,8 +7,14 @@ kiểm tra last noti:
 
 alert_priority:
 
-1. await HandleAlertUpdateAppAsync(remoteConfig) // alert_priority_1 (doc)
-2. // alert_priority_whats_new (doc)
+- await HandleAlertUpdateAppAsync(remoteConfig) // alert_priority_1 (doc)
+=> splash screen, reload app config
+
+- alert_priority_set_start_using_app (doc)
+=> splash screen
+
+- alert_priority_whats_new (doc)
+=> first useEffect
 
 alert not priority (after alerts above):
 + Alert.alert('Wohoo!', texts.purchase_success) // alert whenever purchase success or FORCE SET PREMIUM AFTER SPLASH-SCREEN

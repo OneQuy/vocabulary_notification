@@ -5,6 +5,7 @@ import { FirebaseInit } from "./Firebase/Firebase";
 import { CheckIsDevAsync } from "./IsDev";
 import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig";
 import { InitUserIDAsync } from "./UserID";
+import { CheckSetStartUsingAppTickAsync } from "../App/Handles/PremiumHandler";
 
 export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
     // firebase init (for retrieving remote config, firebase db,...)
@@ -30,6 +31,10 @@ export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
         // check is dev (for initting PostHogProvider, trackings)
         CheckIsDevAsync(), // (must after GetRemoteConfigWithCheckFetchAsync)
     ])
+
+    // set start using app
+
+    await CheckSetStartUsingAppTickAsync() // alert_priority_set_start_using_app (doc)
 
     return {
         // someVariable: 7,
