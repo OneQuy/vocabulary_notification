@@ -37,7 +37,7 @@ export const CheckSetStartUsingAppTickAsync = async (): Promise<void> => {
 
     if (IsNumType(firebaseTickSet)) { // already set
         if (IsLog)
-            console.log('[CheckSetStartUsingAppTickAsync] did set (cached from firebase)');
+            console.log('[CheckSetStartUsingAppTickAsync] did set (cached from firebase)', firebaseTickSet);
 
         SetBooleanAsync(StorageKey_SetStartUsingAppTick, true)
         return
@@ -45,16 +45,20 @@ export const CheckSetStartUsingAppTickAsync = async (): Promise<void> => {
 
     // need to set
 
-    const nullSuccessOrError = await SetUserValueAsync(UserProperty_StartUsingAppTick, Date.now())
+    const now = Date.now()
+    const nullSuccessOrError = await SetUserValueAsync(UserProperty_StartUsingAppTick, now)
 
     if (nullSuccessOrError === null) { // success
         if (IsLog)
-            console.log('[CheckSetStartUsingAppTickAsync] set firebase success');
+            console.log('[CheckSetStartUsingAppTickAsync] set firebase success', now);
 
         SetBooleanAsync(StorageKey_SetStartUsingAppTick, true)
         return
     }
     else {
+        if (IsLog)
+            console.log('[CheckSetStartUsingAppTickAsync] set firebase fail', now);
+
         await AlertAsync(
             PopupTitleError,
             CanNotSetupUserData,
