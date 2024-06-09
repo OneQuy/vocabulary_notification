@@ -16,8 +16,7 @@ const GetUserFirebasePath_ForcePremiumData = (userId?: string) => {
 // set ///////////////////////////////
 
 /**
- * @returns T if success
- * @returns null if no data
+ * @returns null if success
  * @returns Error{} if error
  */
 export const SetUserValueAsync = async (property: string, value: any, userId?: string): Promise<null | Error> => {

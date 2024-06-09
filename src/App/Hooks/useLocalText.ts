@@ -1,6 +1,9 @@
 export const NoPermissionText = "Make sure you have enabled notifications for the app in your phone Settings. If you have, try again!"
 export const NotLatestConfig = "Can not get latest config. Please check your internet and try again."
 export const PleaseSelectTargetLangText = 'Please set [Translation language] you wish to translate to firstly.'
+export const CanNotSetupUserData = 'Can not setup data. Please check your internet and try again.'
+export const PopupTitleError = 'Error'
+export const RetryText = 'Retry'
 
 export const NoNotificationPermissionLocalKey = 'no_permission'
 
@@ -39,7 +42,7 @@ const eng = {
   downloading_data: 'Downloading data',
   loading_data: 'Loading data',
   translating: 'Translating',
-  retry: 'Retry',
+  retry: RetryText,
   cancel: 'Cancel',
   done: 'Done',
   not_show: 'Excluded time',
@@ -82,7 +85,7 @@ They are set up until 24/Oct/1994 at 00:00. Please open the app and set new ones
   history: 'History',
   about: 'About',
 
-  popup_error: 'Oops',
+  popup_error: PopupTitleError,
   [NoNotificationPermissionLocalKey]: NoPermissionText,
   pls_set_target_lang: PleaseSelectTargetLangText,
   fail_translate: 'Can not get words transation.',

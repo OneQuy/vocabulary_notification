@@ -82,11 +82,18 @@ export type SubscribedData = { // MAYBE NO CHANGE
 
 
 export const UserForcePremiumDataProperty = 'forcePremiumData' // NO CHANGE
+export const UserProperty_StartUsingAppTick = 'startUsingAppTick' // CHANGE OPTIONAL
+export const UserProperty_SelectedPopularityIndex = 'selectedPopularityIndex' // CHANGE OPTIONAL
 
 export type User = { // CHANGE OPTIONAL
     // common
 
     [UserForcePremiumDataProperty]: SubscribedData,
+
+    // specific
+
+    [UserProperty_StartUsingAppTick]?: number,
+    [UserProperty_SelectedPopularityIndex]?: number,
 }
 
 
@@ -120,9 +127,9 @@ export interface VocabyNotificationTrackData extends NotificationTrackData { // 
      * 'no_data' if having no notification data
      */
     [NotificationExtraDataKey_Mode]: string;
-    
+
     [NotificationExtraDataKey_PushIndex]: number;
-    
+
     [NotificationExtraDataKey_IsLastPush]: number;
 
     /**
