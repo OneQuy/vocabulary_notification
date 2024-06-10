@@ -68,7 +68,7 @@ export class LocalFirstThenFirebaseValue {
      ** then, save firebase
      *
      * @returns null if success (saved both local and firebase)
-     * @returns Error{} or other error if fail (when save to firebase)
+     * @returns Error{} or other error if fail (when save local success but fail firebase)
      */
     static SetValueAsync = async (storageKey: string, firebasePath: string, value: any): Promise<null | Error> => {
         // save to local
