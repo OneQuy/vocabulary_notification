@@ -1,13 +1,14 @@
-import { GetBooleanAsync, SetBooleanAsync } from "../../Common/AsyncStorageUtils"
-import { UserProperty_StartUsingAppTick } from "../../Common/SpecificType"
-import { GetUserValueAsync, SetUserValueAsync } from "../../Common/UserMan"
-import { AlertAsync, IsNumType } from "../../Common/UtilsTS"
-import { StorageKey_SetStartUsingAppTick } from "../Constants/StorageKey"
-import { CanNotSetupUserData, PopupTitleError, RetryText } from "../Hooks/useLocalText"
 
 // goal: 
 //      + can change level within 7 days or did PREMIUM
 //      + after that, can change other levels, only use current level.
+
+import { LocalFirstThenFirebaseValue } from "../../Common/LocalFirstThenFirebaseValue"
+import { UserProperty_StartUsingAppTick } from "../../Common/SpecificType"
+import { GetUserPropertyFirebasePath } from "../../Common/UserMan"
+import { AlertAsync, IsNumType } from "../../Common/UtilsTS"
+import { StorageKey_StartUsingAppTick } from "../Constants/StorageKey"
+import { CanNotSetupUserData, PopupTitleError, RetryText } from "../Hooks/useLocalText"
 
 // logic:
 //      + at load screen
@@ -17,54 +18,42 @@ import { CanNotSetupUserData, PopupTitleError, RetryText } from "../Hooks/useLoc
 //              - if within 7 days, can change level
 //              - if no, show premium alert
 
-const IsLog = __DEV__
+// const IsLog = __DEV__
 
+/**
+ * make sure did set in order to enter the app!
+ */
 export const CheckSetStartUsingAppTickAsync = async (): Promise<void> => {
-    // if did set, then no action
+    const firebasePath = GetUserPropertyFirebasePath(UserProperty_StartUsingAppTick)
 
-    const didSetStartUsingAppTick = await GetBooleanAsync(StorageKey_SetStartUsingAppTick, false)
+    // check did set?
 
-    if (didSetStartUsingAppTick) {
-        if (IsLog)
-            console.log('[CheckSetStartUsingAppTickAsync] did set (cached)');
+    const value = await LocalFirstThenFirebaseValue.GetValueAsync<number>(
+        StorageKey_StartUsingAppTick,
+        firebasePath
+    )
 
-        return
-    }
-
-    // need to set, but check if did set on firebase first
-
-    const firebaseTickSet = await GetUserValueAsync<number>(UserProperty_StartUsingAppTick)
-
-    if (IsNumType(firebaseTickSet)) { // already set
-        if (IsLog)
-            console.log('[CheckSetStartUsingAppTickAsync] did set (cached from firebase)', firebaseTickSet);
-
-        SetBooleanAsync(StorageKey_SetStartUsingAppTick, true)
+    if (IsNumType(value)) { // did set
         return
     }
 
     // need to set
 
-    const now = Date.now()
-    const nullSuccessOrError = await SetUserValueAsync(UserProperty_StartUsingAppTick, now)
+    const setRes = await LocalFirstThenFirebaseValue.SetValueAsync(
+        StorageKey_StartUsingAppTick,
+        firebasePath,
+        Date.now()
+    )
 
-    if (nullSuccessOrError === null) { // success
-        if (IsLog)
-            console.log('[CheckSetStartUsingAppTickAsync] set firebase success', now);
-
-        SetBooleanAsync(StorageKey_SetStartUsingAppTick, true)
+    if (setRes === null) { // set success
         return
     }
-    else {
-        if (IsLog)
-            console.log('[CheckSetStartUsingAppTickAsync] set firebase fail', now);
 
-        await AlertAsync(
-            PopupTitleError,
-            CanNotSetupUserData,
-            RetryText
-        )
+    await AlertAsync(
+        PopupTitleError,
+        CanNotSetupUserData,
+        RetryText
+    )
 
-        await CheckSetStartUsingAppTickAsync()
-    }
+    await CheckSetStartUsingAppTickAsync()
 }
