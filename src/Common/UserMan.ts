@@ -5,8 +5,12 @@ import { CreateError, IsValuableArrayOrString } from "./UtilsTS"
 
 // path ///////////////////////////////
 
-const GetUserFirebasePath = (userId?: string) => {
+const GetUserFirebasePath = (userId?: string) => { // main 
     return `user_data/users/${IsValuableArrayOrString(userId) ? userId : UserID()}`
+}
+
+export const GetUserPropertyFirebasePath = (property: string, userId?: string): string => { // sub 
+    return `${GetUserFirebasePath(userId)}/${property}`
 }
 
 const GetUserFirebasePath_ForcePremiumData = (userId?: string) => {
