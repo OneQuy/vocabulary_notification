@@ -24,7 +24,7 @@ export class LocalFirstThenFirebaseValue {
 
         if (savedLocalValue !== null) { //  already saved local
             if (IsLog)
-                console.log('[LocalFirstThenFirebaseValue-Get] did set (local)', savedLocalValue);
+                console.log('[LocalFirstThenFirebaseValue] get value (local) success', savedLocalValue, 'key', storageKey);
 
             return JSON.parse(savedLocalValue) as T
         }
@@ -42,12 +42,21 @@ export class LocalFirstThenFirebaseValue {
 
             // return
 
+            if (IsLog)
+                console.log('[LocalFirstThenFirebaseValue] get value (firebase) success and saved to local', value, 'firebasePath', firebasePath);
+
             return value
         }
         else if (fetchResult.error === null) { // no data
+            if (IsLog)
+                console.log('[LocalFirstThenFirebaseValue] get value (firebase) no-data', 'firebasePath', firebasePath);
+
             return null
         }
         else { // error
+            if (IsLog)
+                console.log('[LocalFirstThenFirebaseValue] get value (firebase) fail', 'firebasePath', firebasePath, fetchResult.error);
+
             return CreateError(fetchResult.error)
         }
     }
@@ -71,9 +80,15 @@ export class LocalFirstThenFirebaseValue {
         const nullSuccessOrError = await FirebaseDatabase_SetValueAsyncWithTimeOut(firebasePath, value, FirebaseDatabaseTimeOutMs)
 
         if (nullSuccessOrError === null) { // success
+            if (IsLog)
+                console.log('[LocalFirstThenFirebaseValue] set value local & firebase success', value, 'key', storageKey);
+
             return null
         }
         else { // error
+            if (IsLog)
+                console.log('[LocalFirstThenFirebaseValue] set value local success but firebase fail', nullSuccessOrError, 'key', storageKey);
+
             return CreateError(nullSuccessOrError)
         }
     }
