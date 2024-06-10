@@ -59,14 +59,14 @@ export class LocalFirstThenFirebaseValue {
      ** then, save firebase
      *
      * @returns null if success (saved both local and firebase)
-     * @returns Error{} or other error if fail (fail save to firebase)
+     * @returns Error{} or other error if fail (when save to firebase)
      */
     static SetValueAsync = async (storageKey: string, firebasePath: string, value: any): Promise<null | Error> => {
         // save to local
 
         await AsyncStorage.setItem(storageKey, JSON.stringify(value))
 
-        // check if did set on firebase
+        // save to firebase
 
         const nullSuccessOrError = await FirebaseDatabase_SetValueAsyncWithTimeOut(firebasePath, value, FirebaseDatabaseTimeOutMs)
 
