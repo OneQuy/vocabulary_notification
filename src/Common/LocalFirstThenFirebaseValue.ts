@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FirebaseDatabaseTimeOutMs, FirebaseDatabase_GetValueAsyncWithTimeOut, FirebaseDatabase_SetValueAsyncWithTimeOut } from "./Firebase/FirebaseDatabase";
-import { CreateError } from "./UtilsTS";
+import { AlertAsync, CreateError, IsObjectError } from "./UtilsTS";
 
 const IsLog = __DEV__
 
@@ -91,6 +91,90 @@ export class LocalFirstThenFirebaseValue {
                 console.log('[LocalFirstThenFirebaseValue] set value fail (both firebase & local)', nullSuccessOrError, 'key', storageKey);
 
             return CreateError(nullSuccessOrError)
+        }
+    }
+
+    /**
+    ** #### how it works:
+    ** (1) check get local first:
+    **      + if available: return. done. (already did set both local & firebase)
+    **      + if no available: (2)
+    ** (2) fetch firebase
+    **      + if sucess (and have value): done (did set both local & firebase)
+    **      + if sucess (and no value): (3)
+    **      + if fail => loop: (2)
+    ** (3) set firebase
+    **      + if sucess: done (did set both local & firebase)
+    **      + if fail => loop: (3)
+    */
+    static MakeSureDidSetOrSetNewNowAsync = async <T>(
+        storageKey: string,
+        firebasePath: string,
+        valueIfSetNew: T,
+        alertTitleErrorTxt = 'Error',
+        alertContentErrorTxt = 'Can not setup data. Please check your internet and try again.',
+        alertBtnRetryTxt = 'Retry',
+    ): Promise<void> => {
+        // check if did set
+
+        while (true) {
+            const value = await LocalFirstThenFirebaseValue.GetValueAsync<T>(
+                storageKey,
+                firebasePath
+            )
+
+            if (value !== null && !IsObjectError(value)) { // did set (local & firebase)
+                if (IsLog)
+                    console.log('[LocalFirstThenFirebaseValue-MakeSureDidSetOrSetNewNowAsync] GET success, value', value);
+
+                return
+            }
+            else if (value === null) { // no value => need to set new
+                if (IsLog)
+                    console.log('[LocalFirstThenFirebaseValue-MakeSureDidSetOrSetNewNowAsync] GET success but no-data');
+
+                break
+            }
+            else { // error => need to re-fetch
+                if (IsLog)
+                    console.log('[LocalFirstThenFirebaseValue-MakeSureDidSetOrSetNewNowAsync] GET failed');
+
+                await AlertAsync(
+                    alertTitleErrorTxt,
+                    alertContentErrorTxt,
+                    alertBtnRetryTxt
+                )
+            }
+        }
+
+        // need to set
+
+        while (true) {
+            const setRes = await LocalFirstThenFirebaseValue.SetValueAsync(
+                storageKey,
+                firebasePath,
+                valueIfSetNew
+            )
+
+            // set success
+
+            if (setRes === null) {
+                if (IsLog)
+                    console.log('[LocalFirstThenFirebaseValue-MakeSureDidSetOrSetNewNowAsync] SET success, value', valueIfSetNew);
+
+                return
+            }
+
+            // set failed
+
+            if (IsLog)
+                console.log('[LocalFirstThenFirebaseValue-MakeSureDidSetOrSetNewNowAsync] SET failed');
+
+            await AlertAsync(
+                alertTitleErrorTxt,
+                alertContentErrorTxt,
+                alertBtnRetryTxt
+            )
         }
     }
 }
