@@ -10,7 +10,7 @@ export class LocalFirstThenFirebaseValue {
      ** check get local first:
      **      + if available: return value. done
      **      + if no available: 
-     **          - fetch firebase 
+     **          - fetch firebase (notice the note below)
      **          - save value local if sucess
      * 
      ** #### note: get function of firebase can return a valid value if previously did called 'set' even fail

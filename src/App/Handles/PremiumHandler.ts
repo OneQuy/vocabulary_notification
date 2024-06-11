@@ -39,21 +39,21 @@ export const CheckSetStartUsingAppTickAsync = async (): Promise<void> => {
 
     // need to set
 
-    const setRes = await LocalFirstThenFirebaseValue.SetValueAsync(
-        StorageKey_StartUsingAppTick,
-        firebasePath,
-        Date.now()
-    )
+    while (true) {
+        const setRes = await LocalFirstThenFirebaseValue.SetValueAsync(
+            StorageKey_StartUsingAppTick,
+            firebasePath,
+            Date.now()
+        )
 
-    if (setRes === null) { // set success
-        return
+        if (setRes === null) { // set success
+            return
+        }
+
+        await AlertAsync(
+            PopupTitleError,
+            CanNotSetupUserData,
+            RetryText
+        )
     }
-
-    await AlertAsync(
-        PopupTitleError,
-        CanNotSetupUserData,
-        RetryText
-    )
-
-    await CheckSetStartUsingAppTickAsync()
 }
