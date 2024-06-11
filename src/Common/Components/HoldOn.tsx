@@ -28,9 +28,13 @@ const HoldOn = ({
     }, [color, marginTop])
 
     useEffect(() => {
-        setTimeout(() => {
+        const timeOut = setTimeout(() => {
             set_show(true)
         }, 3000);
+
+        return () => {
+            clearTimeout(timeOut)
+        }
     }, [])
 
     if (!show)
