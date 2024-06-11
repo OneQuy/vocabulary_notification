@@ -107,7 +107,7 @@ export class LocalFirstThenFirebaseValue {
     **      + if sucess: done (did set both local & firebase)
     **      + if fail => loop: (3)
     */
-    static MakeSureDidSetOrSetNewNowAsync = async <T>(
+    static MakeSureDidSetOrSetNewAsync = async <T>(
         storageKey: string,
         firebasePath: string,
         valueIfSetNew: T,

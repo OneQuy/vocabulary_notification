@@ -25,7 +25,7 @@ import { CanNotSetupUserData, PopupTitleError, RetryText } from "../Hooks/useLoc
 export const CheckSetStartUsingAppTickAsync = async (): Promise<void> => {
     const firebasePath = GetUserPropertyFirebasePath(UserProperty_StartUsingAppTick)
 
-    await LocalFirstThenFirebaseValue.MakeSureDidSetOrSetNewNowAsync(
+    await LocalFirstThenFirebaseValue.MakeSureDidSetOrSetNewAsync(
         StorageKey_StartUsingAppTick,
         firebasePath,
         Date.now(),
