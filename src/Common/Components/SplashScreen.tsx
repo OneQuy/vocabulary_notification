@@ -34,6 +34,8 @@ const SplashScreen = (
 
         return () => {
             splashTime = Date.now() - now
+
+            console.log('splash time', splashTime);
         }
     }, [])
 
