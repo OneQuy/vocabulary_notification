@@ -6,7 +6,6 @@
 import { LocalFirstThenFirebaseValue } from "../../Common/LocalFirstThenFirebaseValue"
 import { UserProperty_StartUsingAppTick } from "../../Common/SpecificType"
 import { GetUserPropertyFirebasePath } from "../../Common/UserMan"
-import { AlertAsync, IsNumType } from "../../Common/UtilsTS"
 import { StorageKey_StartUsingAppTick } from "../Constants/StorageKey"
 import { CanNotSetupUserData, PopupTitleError, RetryText } from "../Hooks/useLocalText"
 
@@ -26,45 +25,11 @@ import { CanNotSetupUserData, PopupTitleError, RetryText } from "../Hooks/useLoc
 export const CheckSetStartUsingAppTickAsync = async (): Promise<void> => {
     const firebasePath = GetUserPropertyFirebasePath(UserProperty_StartUsingAppTick)
 
-    // check did set?
-
-    while (true) {
-        const value = await LocalFirstThenFirebaseValue.GetValueAsync<number>(
-            StorageKey_StartUsingAppTick,
-            firebasePath
-        )
-
-        if (IsNumType(value)) { // did set (local & firebase)
-            return
-        }
-        else if (value === null) // no value
-            break
-        else { // error => need to re-fetch
-            await AlertAsync(
-                PopupTitleError,
-                CanNotSetupUserData,
-                RetryText
-            )
-        }
-    }
-
-    // need to set
-
-    while (true) {
-        const setRes = await LocalFirstThenFirebaseValue.SetValueAsync(
-            StorageKey_StartUsingAppTick,
-            firebasePath,
-            Date.now()
-        )
-
-        if (setRes === null) { // set success
-            return
-        }
-
-        await AlertAsync(
-            PopupTitleError,
-            CanNotSetupUserData,
-            RetryText
-        )
-    }
+    await LocalFirstThenFirebaseValue.MakeSureDidSetOrSetNewNowAsync(
+        StorageKey_StartUsingAppTick,
+        firebasePath,
+        PopupTitleError,
+        CanNotSetupUserData,
+        RetryText
+    )
 }
