@@ -8,7 +8,7 @@ export class LocalFirstThenFirebaseValue {
     /**
      ** #### how it works:
      ** check get local first:
-     **      + if available: return value. done
+     **      + if available: return value. done. (already done set on firebase)
      **      + if no available: 
      **          - fetch firebase (notice the note below)
      **          - save value local if sucess
@@ -16,7 +16,7 @@ export class LocalFirstThenFirebaseValue {
      ** #### note: get function of firebase can return a valid value if previously did called 'set' even fail
      **  
      ** 
-     * @returns T if success get (either local or firebase)
+     * @returns T if success get (either local or firebase) (notice the note above)
      * @returns null if no data (both local & firebase)
      * @returns Error{} if error (when fetch froom firebase)
      */
@@ -66,31 +66,29 @@ export class LocalFirstThenFirebaseValue {
 
 
     /**
-     ** #### how it works:
-     ** save local
-     ** then, save firebase
+     ** #### how it works: save firebase first. if success: save local
      *
      * @returns null if success (saved both local and firebase)
-     * @returns Error{} or other error if fail (when save local success but fail firebase)
+     * @returns Error{} or other error if fail (failed both local and firebase)
      */
     static SetValueAsync = async (storageKey: string, firebasePath: string, value: any): Promise<null | Error> => {
-        // save to local
-
-        await AsyncStorage.setItem(storageKey, JSON.stringify(value))
-
         // save to firebase
 
         const nullSuccessOrError = await FirebaseDatabase_SetValueAsyncWithTimeOut(firebasePath, value, FirebaseDatabaseTimeOutMs)
 
         if (nullSuccessOrError === null) { // success
+            // save to local
+
+            await AsyncStorage.setItem(storageKey, JSON.stringify(value))
+
             if (IsLog)
-                console.log('[LocalFirstThenFirebaseValue] set value local & firebase success', value, 'key', storageKey);
+                console.log('[LocalFirstThenFirebaseValue] set value success (both local & firebase)', value, 'key', storageKey);
 
             return null
         }
         else { // error
             if (IsLog)
-                console.log('[LocalFirstThenFirebaseValue] set value local success but firebase fail', nullSuccessOrError, 'key', storageKey);
+                console.log('[LocalFirstThenFirebaseValue] set value fail (both firebase & local)', nullSuccessOrError, 'key', storageKey);
 
             return CreateError(nullSuccessOrError)
         }
