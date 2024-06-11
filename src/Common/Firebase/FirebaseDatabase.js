@@ -74,6 +74,8 @@ export function FirebaseDatabase_OnValue(relativePath, callback) {
 
 
 /**
+ * #### note: get function of firebase can return a valid value if previously did called 'set' even fail
+ * 
  * @returns Object {
  *      value: value. Or null if has no data,
  *      error: error. Or null if success }
@@ -97,6 +99,8 @@ export async function FirebaseDatabase_GetValueAsyncWithTimeOut(relativePath, ti
 }
 
 /**
+ * #### note: get function of firebase can return a valid value if previously did called 'set' even fail
+ *
  * @returns Object {
  *      value: value. Or null if has no data,
  *      error: error. Or null if success }

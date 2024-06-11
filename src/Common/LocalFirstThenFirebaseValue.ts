@@ -13,6 +13,9 @@ export class LocalFirstThenFirebaseValue {
      **          - fetch firebase 
      **          - save value local if sucess
      * 
+     ** #### note: get function of firebase can return a valid value if previously did called 'set' even fail
+     **  
+     ** 
      * @returns T if success get (either local or firebase)
      * @returns null if no data (both local & firebase)
      * @returns Error{} if error (when fetch froom firebase)
