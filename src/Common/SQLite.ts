@@ -1,3 +1,5 @@
+// Created May 2024 (coding Vocaby)
+
 // https://github.com/craftzdog/react-native-sqlite-2
 // https://docs.kony.com/konylibrary/visualizer/viz_api_dev_guide/content/kony.db_functions.htm#SQLStatementErrorCallback
 
