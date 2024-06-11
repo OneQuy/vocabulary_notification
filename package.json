@@ -1,6 +1,6 @@
 {
   "name": "vocabulary_notification",
-  "version": "0.4.9",
+  "version": "0.5.0",
   "private": true,
   "builda": "node editor/common/incver && node editor/common/setver_ios && git add . && git commit -am 'builda' && cd android && ./gradlew assembleRelease && cd .. && npm run sendapk",
   "scripts": {
