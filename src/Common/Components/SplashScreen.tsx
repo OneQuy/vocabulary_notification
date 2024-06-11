@@ -4,6 +4,7 @@ import { View, Text, Image, StatusBar, StatusBarStyle, ColorValue } from 'react-
 import React, { useEffect } from 'react'
 import { LogoScr, WindowSize_Max } from '../CommonConstants';
 import { Color_Logo, Color_Text } from '../../App/Hooks/useTheme';
+import HoldOn from './HoldOn';
 
 const logoSize = WindowSize_Max * 0.13
 
@@ -23,6 +24,7 @@ const SplashScreen = (
 
     const bgColor: ColorValue = Color_Logo
     const textColor: ColorValue = Color_Text
+    const holdOnColor: ColorValue = Color_Text
     const barStyle: StatusBarStyle = 'light-content'
     const appName: string | undefined = undefined
     const slogan: string | undefined = undefined
@@ -52,6 +54,8 @@ const SplashScreen = (
                 slogan &&
                 <Text style={{ color: textColor, fontSize: 15 }}>{slogan}</Text>
             }
+
+            <HoldOn color={holdOnColor} />
         </View>
     )
 }
