@@ -5,10 +5,12 @@ const HoldOn = ({
     color,
     marginTop = '10%',
     text = "Checking internet...\nThis may take a while. Please hold on...",
+    timeToAppearMs = 4000,
 }: {
     color?: ColorValue,
     marginTop?: DimensionValue,
     text?: string,
+    timeToAppearMs?: number,
 }) => {
     const [show, set_show] = useState(false)
 
@@ -30,7 +32,7 @@ const HoldOn = ({
     useEffect(() => {
         const timeOut = setTimeout(() => {
             set_show(true)
-        }, 3000);
+        }, timeToAppearMs)
 
         return () => {
             clearTimeout(timeOut)
