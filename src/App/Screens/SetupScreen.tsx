@@ -33,6 +33,7 @@ import useSpecificAppContext from '../../Common/Hooks/useSpecificAppContext'
 import { IsDev } from '../../Common/IsDev'
 import HairLine from '../../Common/Components/HairLine'
 import { StartupWindowSize } from '../../Common/CommonConstants'
+import { HandleBeforeShowPopupPopularityLevelAsync } from '../Handles/PremiumHandler'
 
 const IsLog = false
 
@@ -234,9 +235,18 @@ const SetupScreen = () => {
     set_subView(type)
   }, [])
 
-  const onPressShowPopup = useCallback((type: PopupType) => {
+  const onPressShowPopupAsync = useCallback(async (type: PopupType) => {
+    let canOpen = true
+
+    if (type === 'popularity') {
+      canOpen = await HandleBeforeShowPopupPopularityLevelAsync(set_handlingType, texts)
+    }
+
+    if (!canOpen)
+      return
+
     set_showPopup(type)
-  }, [])
+  }, [texts])
 
   const onPressMoreSetting = useCallback(() => {
     set_showMoreSetting(v => !v)
@@ -719,15 +729,15 @@ const SetupScreen = () => {
         texts.popup_error,
         texts.pls_set_target_lang, [
         {
-          onPress: () => onPressShowPopup('target-lang')
+          onPress: () => onPressShowPopupAsync('target-lang')
         }
       ])
 
       return
     }
 
-    onPressShowPopup('translation_service')
-  }, [displayTargetLang, onPressShowPopup, texts])
+    onPressShowPopupAsync('translation_service')
+  }, [displayTargetLang, onPressShowPopupAsync, texts])
 
   const onPressConfirmInPopupTranslationService = useCallback((service?: ValueAndDisplayText, targetLang?: Language) => {
     if (!popupCloseCallbackRef.current)
@@ -1054,7 +1064,7 @@ const SetupScreen = () => {
             {/* popularity_level */}
 
             <SettingItemPanel
-              onPress={() => onPressShowPopup('popularity')}
+              onPress={() => onPressShowPopupAsync('popularity')}
               title={texts.popularity_level}
               explain={texts.popularity_level_explain}
               value={displayPopularityLevelIdx + 1}
@@ -1064,7 +1074,7 @@ const SetupScreen = () => {
             {/* repeat */}
 
             <SettingItemPanel
-              onPress={() => onPressShowPopup('interval')}
+              onPress={() => onPressShowPopupAsync('interval')}
               title={texts.repeat}
               explain={texts.repeat_explain}
               value={repeatValueAndDisplayText.value}
@@ -1101,7 +1111,7 @@ const SetupScreen = () => {
             {/* target lang */}
 
             <SettingItemPanel
-              onPress={() => onPressShowPopup('target-lang')}
+              onPress={() => onPressShowPopupAsync('target-lang')}
               title={texts.translate_to}
               explain={texts.translate_language_explain}
               value={displayTargetLang?.name ?? '?'}
@@ -1129,7 +1139,7 @@ const SetupScreen = () => {
             {
               showMoreSetting &&
               <SettingItemPanel
-                onPress={() => onPressShowPopup('limit-word')}
+                onPress={() => onPressShowPopupAsync('limit-word')}
                 title={texts.limit_words_per_day}
                 explain={texts.limit_words_per_day_explain}
                 value={displayWordLimitNumber === 0 ? texts.no_limit : displayWordLimitNumber}
