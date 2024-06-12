@@ -25,24 +25,34 @@ export const HandleBeforeShowPopupPopularityLevelAsync = async (
     setHandling: (type: HandlingType) => void,
     texts: LocalText,
 ): Promise<boolean> => {
+    // in case fetch too long can show loading
+
     const timeOut = setTimeout(() => setHandling('downloading'), 1000)
 
-    const [premium] = await Promise.all([
+    // fetch
+
+    const [
+        premiumData,
+        startUsingAppTick
+    ] = await Promise.all([
         LocalFirstThenFirebaseValue.GetValueAsync<SubscribedData>(
             StorageKey_SubscribeData,
             GetUserPropertyFirebasePath(UserPremiumDataProperty)
         ),
-        LocalFirstThenFirebaseValue.GetValueAsync<SubscribedData>(
-            StorageKey_SubscribeData,
-            GetUserPropertyFirebasePath(UserPremiumDataProperty)
+        LocalFirstThenFirebaseValue.GetValueAsync<number>(
+            StorageKey_StartUsingAppTick,
+            GetUserPropertyFirebasePath(UserProperty_StartUsingAppTick)
         ),
     ])
 
+    console.log(premiumData, startUsingAppTick);
+
+    // not need to show loading anymore
+
     clearTimeout(timeOut)
-
-    console.log(premium);
-
     setHandling(undefined)
+
+    // can show popup
 
     return true
 }
