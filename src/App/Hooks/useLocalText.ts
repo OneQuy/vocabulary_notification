@@ -66,7 +66,7 @@ const eng = {
   congrats: 'Congratulations!',
   run_out_push: 'Awesome!! You have learned all the vocabulary from the last setup. Please open the app to re-setup the new words and continue learning!',
   already_set: "You already set notifications until 24/Oct/1994 at 00:00.",
-  expired_set: "All vocabulary is shown. Tap to set the new ones!",
+  expired_set: "All vocabulary is shown. Please set your next ones!",
 
   push_notice:
     `Every day, vocabulary notifications will be shown at these times: ###.

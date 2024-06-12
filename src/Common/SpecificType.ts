@@ -80,9 +80,11 @@ export type SubscribedData = { // MAYBE NO CHANGE
     purchasedTick: number
 }
 
-
 export const UserForcePremiumDataProperty = 'forcePremiumData' // NO CHANGE
+export const UserPremiumDataProperty = 'premiumData' // CHANGE OPTIONAL
+
 export const UserProperty_StartUsingAppTick = 'startUsingAppTick' // CHANGE OPTIONAL
+
 export const UserProperty_SelectedPopularityIndex = 'selectedPopularityIndex' // CHANGE OPTIONAL
 
 export type User = { // CHANGE OPTIONAL
@@ -92,6 +94,7 @@ export type User = { // CHANGE OPTIONAL
 
     // specific
 
+    [UserPremiumDataProperty]?: SubscribedData,
     [UserProperty_StartUsingAppTick]?: number,
     [UserProperty_SelectedPopularityIndex]?: number,
 }
