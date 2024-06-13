@@ -31,6 +31,9 @@ alternativeValue:
 - limitPushsAndroid (default 64 pushs)
 - limitPushsiOS (default 64 pushs)
 
+- trialDays
+
+key apis
 - microsoft
 - systran
 - lingvanex
