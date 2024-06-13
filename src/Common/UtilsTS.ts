@@ -369,6 +369,13 @@ export const IsNumType = (o: any): o is number => {
     return typeof o === 'number' && !Number.isNaN(o)
 }
 
+export const IsNullOrNot_Null_Undefined_ObjectError = <T>(anything: any): anything is (T | null) => {
+    if (anything === null)
+        return true
+    else
+        return IsNot_Null_Undefined_ObjectError(anything)
+}
+
 export const IsNot_Null_Undefined_ObjectError = <T>(anything: any): anything is T => {
     return anything !== undefined &&
         anything !== null &&
