@@ -34,6 +34,7 @@ export const StorageKey_ShowRankOfWord = 'StorageKey_ShowRankOfWord'
 export const StorageKey_CurrentAllNotifications = 'StorageKey_CurrentAllNotifications'
 export const StorageKey_LastPushTick = 'StorageKey_LastPushTick'
 export const StorageKey_StartUsingAppTick = 'StorageKey_StartUsingAppTick'
+export const StorageKey_ShowedIntroTrial = 'StorageKey_ShowedIntroTrial'
 
 // specific (app settings)
 

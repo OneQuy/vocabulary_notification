@@ -37,7 +37,7 @@ import { HandleBeforeShowPopupPopularityLevelAsync } from '../Handles/PremiumHan
 
 const IsLog = false
 
-type SubView =
+export type SubView =
   'setup' |
   'history' |
   'about'
@@ -239,7 +239,11 @@ const SetupScreen = () => {
     let canOpen = true
 
     if (type === 'popularity') {
-      canOpen = await HandleBeforeShowPopupPopularityLevelAsync(set_handlingType, texts)
+      canOpen = await HandleBeforeShowPopupPopularityLevelAsync(
+        set_handlingType,
+        set_subView,
+        texts
+      )
     }
 
     if (!canOpen)

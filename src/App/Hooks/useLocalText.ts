@@ -56,6 +56,7 @@ const eng = {
   not_fount_suppport_target_lang: 'This service doesnt support ## or something errors. Please pick the language you wish to translate to again!',
   onequy_apps: 'Check out my other awesome apps',
   vocaby_lifetime: 'Vocaby Lifetime',
+  lifetime: 'Lifetime',
   restore_purchase: 'Restore purchase',
   restore: 'Restore',
   vocaby_lifetime_explain: "Upgrade once. Unlock all vocabularies and features.",
@@ -67,8 +68,8 @@ const eng = {
   run_out_push: 'Awesome!! You have learned all the vocabulary from the last setup. Please open the app to re-setup the new words and continue learning!',
   already_set: "You already set notifications until 24/Oct/1994 at 00:00.",
   expired_set: "All vocabulary is shown. Please set your next ones!",
-  out_of_trial: "You are out of the trial period. Please upgrade to Premium to unlock all levels!",
-  introduce_trial: "You can change to any level during the ##-day trial. After this period, you can continue using the selected level. Upgrade to Premium to unlock all levels from now on.",
+  out_of_trial: "You are out of the trial period. Please upgrade to Lifetime to unlock all levels!",
+  introduce_trial: "You can change to any level during the ##-day trial. After this period, you can continue using the selected level. Upgrade to Lifetime to unlock all levels from now on.",
 
   push_notice:
     `Every day, vocabulary notifications will be shown at these times: ###.
