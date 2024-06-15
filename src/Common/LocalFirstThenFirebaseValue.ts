@@ -127,19 +127,19 @@ export class LocalFirstThenFirebaseValue {
 
             if (value !== null && !IsObjectError(value)) { // did set (local & firebase)
                 if (IsLog)
-                    console.log('[LocalFirstThenFirebaseValue-MakeSureDidSetOrSetNewNowAsync] GET success, value', value);
+                    console.log('[LocalFirstThenFirebaseValue-MakeSureDidSetOrSetNewNowAsync] GET success, value', value, 'key', storageKey);
 
                 return
             }
             else if (value === null) { // no value => need to set new
                 if (IsLog)
-                    console.log('[LocalFirstThenFirebaseValue-MakeSureDidSetOrSetNewNowAsync] GET success but no-data');
+                    console.log('[LocalFirstThenFirebaseValue-MakeSureDidSetOrSetNewNowAsync] GET success but no-data', 'key', storageKey);
 
                 break
             }
             else { // error => need to re-fetch
                 if (IsLog)
-                    console.log('[LocalFirstThenFirebaseValue-MakeSureDidSetOrSetNewNowAsync] GET failed');
+                    console.log('[LocalFirstThenFirebaseValue-MakeSureDidSetOrSetNewNowAsync] GET failed', 'key', storageKey);
 
                 await AlertAsync(
                     alertTitleErrorTxt,
@@ -162,7 +162,7 @@ export class LocalFirstThenFirebaseValue {
 
             if (setRes === null) {
                 if (IsLog)
-                    console.log('[LocalFirstThenFirebaseValue-MakeSureDidSetOrSetNewNowAsync] SET success, value', valueIfSetNew);
+                    console.log('[LocalFirstThenFirebaseValue-MakeSureDidSetOrSetNewNowAsync] SET success, value', valueIfSetNew, 'key', storageKey);
 
                 return
             }
@@ -170,7 +170,7 @@ export class LocalFirstThenFirebaseValue {
             // set failed
 
             if (IsLog)
-                console.log('[LocalFirstThenFirebaseValue-MakeSureDidSetOrSetNewNowAsync] SET failed');
+                console.log('[LocalFirstThenFirebaseValue-MakeSureDidSetOrSetNewNowAsync] SET failed', 'key', storageKey);
 
             await AlertAsync(
                 alertTitleErrorTxt,
