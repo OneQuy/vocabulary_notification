@@ -73,6 +73,9 @@ export class LoopSetValueFirebase {
         }
     }
 
+    /**
+     * not need to await
+     */
     static CheckRunLoopAsync = async (): Promise<void> => {
         if (IsLog)
             console.log('[LoopSetValueFirebase-CheckRunLoopAsync] is running?', this.isRunningLoop);
