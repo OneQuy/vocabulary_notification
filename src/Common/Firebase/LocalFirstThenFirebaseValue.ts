@@ -3,6 +3,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FirebaseDatabaseTimeOutMs, FirebaseDatabase_GetValueAsyncWithTimeOut, FirebaseDatabase_SetValueAsyncWithTimeOut } from "./FirebaseDatabase";
 import { AlertAsync, CreateError, IsObjectError } from "../UtilsTS";
+import { TruelyValueType } from "../SpecificType";
 
 const IsLog = __DEV__
 
@@ -22,7 +23,7 @@ export class LocalFirstThenFirebaseValue {
      * @returns null if no data (both local & firebase)
      * @returns Error{} if error (when fetch froom firebase)
      */
-    static GetValueAsync = async <T>(storageKey: string, firebasePath: string): Promise<T | null | Error> => {
+    static GetValueAsync = async <T extends TruelyValueType>(storageKey: string, firebasePath: string): Promise<T | null | Error> => {
         // if did set local, then no action
 
         const savedLocalValue = await AsyncStorage.getItem(storageKey)
@@ -73,7 +74,7 @@ export class LocalFirstThenFirebaseValue {
      * @returns null if success (saved both local and firebase)
      * @returns Error{} or other error if fail (failed both local and firebase)
      */
-    static SetValueAsync = async (storageKey: string, firebasePath: string, value: any): Promise<null | Error> => {
+    static SetValueAsync = async <T extends TruelyValueType>(storageKey: string, firebasePath: string, value: T): Promise<null | Error> => {
         // save to firebase
 
         const nullSuccessOrError = await FirebaseDatabase_SetValueAsyncWithTimeOut(firebasePath, value, FirebaseDatabaseTimeOutMs)
@@ -109,7 +110,7 @@ export class LocalFirstThenFirebaseValue {
     **      + if sucess: done (did set both local & firebase)
     **      + if fail => loop: (3)
     */
-    static MakeSureDidSetOrSetNewAsync = async <T>(
+    static MakeSureDidSetOrSetNewAsync = async <T extends TruelyValueType>(
         storageKey: string,
         firebasePath: string,
         valueIfSetNew: T,

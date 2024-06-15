@@ -60,6 +60,7 @@ export type RemoteConfig = { // CHANGE OPTIONAL
     currentLifetimeId: string,
 }
 
+export type TruelyValueType = number | string | object | boolean
 
 type LatestVersionConfig = { // MAYBE NO CHANGE
     version: number,
