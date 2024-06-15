@@ -456,7 +456,7 @@ const SetupScreen = () => {
   const onPressShowPopupAsync = useCallback(async (type: PopupType) => {
     let canOpen = true
 
-    if (type === 'popularity') {
+    if (appContextValue.subscribedData === undefined && type === 'popularity') {
       canOpen = await HandleBeforeShowPopupPopularityLevelAsync(
         set_handlingType,
         set_subView,
@@ -469,7 +469,7 @@ const SetupScreen = () => {
       return
 
     set_showPopup(type)
-  }, [texts, onSetSubcribeDataAsync])
+  }, [texts, onSetSubcribeDataAsync, appContextValue])
 
   // noti display
 
