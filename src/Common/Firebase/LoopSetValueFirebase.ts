@@ -75,6 +75,7 @@ export class LoopSetValueFirebase {
 
     /**
      * not need to await
+     * can called multi times
      */
     static CheckRunLoopAsync = async (): Promise<void> => {
         // if (IsLog)
