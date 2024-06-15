@@ -53,10 +53,10 @@ export const HandleBeforeShowPopupPopularityLevelAsync = async (
 
         if (IsLog) {
             console.log('[HandleBeforeShowPopupPopularityLevelAsync] premium', premiumData, 'startUsingAppTick', startUsingAppTick,
-                'IsNullOrNot_Null_Undefined_ObjectError<SubscribedData>(premiumData)', IsNullOrNot_Null_Undefined_ObjectError<SubscribedData>(premiumData),
-                'IsNullOrNot_Null_Undefined_ObjectError<number>(startUsingAppTick)', IsNullOrNot_Null_Undefined_ObjectError<number>(startUsingAppTick),
-                'IsObjectError(premiumData)', IsObjectError(premiumData),
-                'IsObjectError(startUsingAppTick)', IsObjectError(startUsingAppTick)
+                // 'IsNullOrNot_Null_Undefined_ObjectError<SubscribedData>(premiumData)', IsNullOrNot_Null_Undefined_ObjectError<SubscribedData>(premiumData),
+                // 'IsNullOrNot_Null_Undefined_ObjectError<number>(startUsingAppTick)', IsNullOrNot_Null_Undefined_ObjectError<number>(startUsingAppTick),
+                // 'IsObjectError(premiumData)', IsObjectError(premiumData),
+                // 'IsObjectError(startUsingAppTick)', IsObjectError(startUsingAppTick)
             )
         }
 
