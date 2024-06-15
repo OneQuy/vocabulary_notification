@@ -136,7 +136,7 @@ export const GetAllWordsDataCurrentLevelAsync = async (popularityIdx = -1): Prom
 
     if (cache) {
         if (IsLog) {
-            console.log('[GetAllWordsDataAsync] loaded from cached, index', popularityIdx);
+            // console.log('[GetAllWordsDataAsync] loaded from cached, index', popularityIdx);
         }
 
         return cache.data
@@ -154,7 +154,7 @@ export const GetAllWordsDataCurrentLevelAsync = async (popularityIdx = -1): Prom
         words = require('../../../assets/words_0.json') as Word[]
 
         if (IsLog) {
-            console.log('[GetAllWordsDataAsync] loaded from require assets, index', popularityIdx);
+            // console.log('[GetAllWordsDataAsync] loaded from require assets, index', popularityIdx);
         }
     }
 
@@ -173,7 +173,7 @@ export const GetAllWordsDataCurrentLevelAsync = async (popularityIdx = -1): Prom
             words = jsonOrError
 
             if (IsLog) {
-                console.log('[GetAllWordsDataAsync] loaded from local file, index', popularityIdx);
+                // console.log('[GetAllWordsDataAsync] loaded from local file, index', popularityIdx);
             }
         }
 
