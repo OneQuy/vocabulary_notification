@@ -122,8 +122,9 @@ export const HandleBeforeShowPopupPopularityLevelAsync = async (
                     }
                 }
             }
-            else { // premium
-                // set to state?
+            else { // premium => can enter popup
+                onSetSubcribeDataAsync(premiumData)
+                return true
             }
         }
 
