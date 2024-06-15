@@ -1,8 +1,8 @@
 // Created 10 June 2024 (coding Vocaby)
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { FirebaseDatabaseTimeOutMs, FirebaseDatabase_GetValueAsyncWithTimeOut, FirebaseDatabase_SetValueAsyncWithTimeOut } from "./Firebase/FirebaseDatabase";
-import { AlertAsync, CreateError, IsObjectError } from "./UtilsTS";
+import { FirebaseDatabaseTimeOutMs, FirebaseDatabase_GetValueAsyncWithTimeOut, FirebaseDatabase_SetValueAsyncWithTimeOut } from "./FirebaseDatabase";
+import { AlertAsync, CreateError, IsObjectError } from "../UtilsTS";
 
 const IsLog = __DEV__
 
