@@ -100,7 +100,7 @@ export const HandleBeforeShowPopupPopularityLevelAsync = async (
 
                         const pressedOKOrLifeTime = await AlertAsync(
                             texts.popularity_level,
-                            texts.introduce_trial,
+                            texts.introduce_trial.replaceAll('##', trialDays.toString()),
                             'OK',
                             texts.lifetime
                         )
@@ -115,7 +115,9 @@ export const HandleBeforeShowPopupPopularityLevelAsync = async (
                     else // showed intro trial 
                     {
                         if (IsLog) {
-                            console.log('[HandleBeforeShowPopupPopularityLevelAsync] still in trial')
+                            console.log('[HandleBeforeShowPopupPopularityLevelAsync] still in trial',
+                                'diffDays', diffDays,
+                                'trialDays', trialDays)
                         }
 
                         return true
