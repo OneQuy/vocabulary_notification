@@ -232,6 +232,9 @@ export const TrackingAsync = async ( // main
      */
     trackingValuesObject?: TrackingValuesObject
 ): Promise<void> => {
+    if (!Cheat('__dev__tracking'))
+        return
+
     if (!inited) {
         console.log('[TrackingAsync] not inited yet. so caching...', eventName);
 
