@@ -133,11 +133,15 @@ export const HandleBeforeShowPopupPopularityLevelAsync = async (
         // fetch error need to re-fetch
 
         else {
-            await AlertAsync(
+            const pressedRetry = await AlertAsync(
                 PopupTitleError,
                 CanNotSetupUserData,
-                RetryText
+                RetryText,
+                texts.cancel
             )
+
+            if (!pressedRetry)
+                return false
         }
     }
 }
