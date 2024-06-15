@@ -76,7 +76,8 @@ const useSpecificAppContext = ({
     }, [])
 
     return {
-        appContextValue
+        appContextValue,
+        onSetSubcribeDataAsync,
     }
 }
 

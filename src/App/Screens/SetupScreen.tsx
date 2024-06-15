@@ -235,23 +235,6 @@ const SetupScreen = () => {
     set_subView(type)
   }, [])
 
-  const onPressShowPopupAsync = useCallback(async (type: PopupType) => {
-    let canOpen = true
-
-    if (type === 'popularity') {
-      canOpen = await HandleBeforeShowPopupPopularityLevelAsync(
-        set_handlingType,
-        set_subView,
-        texts
-      )
-    }
-
-    if (!canOpen)
-      return
-
-    set_showPopup(type)
-  }, [texts])
-
   const onPressMoreSetting = useCallback(() => {
     set_showMoreSetting(v => !v)
   }, [displayTargetLang])
@@ -462,10 +445,31 @@ const SetupScreen = () => {
     }
   }, [displayExcludedTimePairs, texts])
 
-  const { appContextValue } = useSpecificAppContext({
+  const {
+    appContextValue,
+    onSetSubcribeDataAsync
+  } = useSpecificAppContext({
     posthog,
     onActiveOrUseEffectOnceAsync
   })
+
+  const onPressShowPopupAsync = useCallback(async (type: PopupType) => {
+    let canOpen = true
+
+    if (type === 'popularity') {
+      canOpen = await HandleBeforeShowPopupPopularityLevelAsync(
+        set_handlingType,
+        set_subView,
+        onSetSubcribeDataAsync,
+        texts
+      )
+    }
+
+    if (!canOpen)
+      return
+
+    set_showPopup(type)
+  }, [texts, onSetSubcribeDataAsync])
 
   // noti display
 

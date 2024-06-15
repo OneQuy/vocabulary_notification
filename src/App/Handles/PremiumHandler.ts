@@ -27,6 +27,7 @@ const IsLog = __DEV__
 export const HandleBeforeShowPopupPopularityLevelAsync = async (
     setHandling: (type: HandlingType) => void,
     setSubview: (type: SubView) => void,
+    onSetSubcribeDataAsync: (subscribedData: SubscribedData | undefined) => Promise<void>,
     texts: LocalText,
 ): Promise<boolean> => {
     while (true) {
