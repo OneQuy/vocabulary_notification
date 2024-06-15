@@ -3,6 +3,7 @@
 export const StorageKey_OpenAppOfDayCount = 'StorageKey_OpenAppOfDayCount'
 export const StorageKey_OpenAppOfDayCountForDate = 'StorageKey_OpenAppOfDayCountForDate'
 
+export const StorageKey_LoopSetValueFirebase = 'StorageKey_LoopSetValueFirebase'
 export const StorageKey_CachedIAP = 'StorageKey_CachedIAP'
 export const StorageKey_LastCheckFirstOpenOfTheDay = 'StorageKey_LastCheckFirstOpenOfTheDay'
 export const StorageKey_FirstTimeInstallTick = 'StorageKey_FirstTimeInstallTick'
