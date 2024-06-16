@@ -110,8 +110,6 @@ const About = () => {
 
         const res = await PurchaseAsync(currentLifetimeProduct.sku)
 
-        // LogStringify(res)
-
         if (res === undefined) { // success
             onPurchasedSuccess(currentLifetimeProduct.sku)
         }
