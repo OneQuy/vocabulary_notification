@@ -3,7 +3,6 @@
 export const StorageKey_OpenAppOfDayCount = 'StorageKey_OpenAppOfDayCount'
 export const StorageKey_OpenAppOfDayCountForDate = 'StorageKey_OpenAppOfDayCountForDate'
 
-export const StorageKey_LoopSetValueFirebase = 'StorageKey_LoopSetValueFirebase'
 export const StorageKey_CachedIAP = 'StorageKey_CachedIAP'
 export const StorageKey_LastCheckFirstOpenOfTheDay = 'StorageKey_LastCheckFirstOpenOfTheDay'
 export const StorageKey_FirstTimeInstallTick = 'StorageKey_FirstTimeInstallTick'
@@ -21,6 +20,7 @@ export const StorageKey_OneQuyAppLastSubDownload = 'StorageKey_OneQuyAppLastSubD
 export const StorageKey_CacheEventNotification = 'StorageKey_CacheEventNotification'
 export const StorageKey_ForceDev = 'StorageKey_ForceDev'
 export const StorageKey_UserID = 'StorageKey_UserID'
+export const StorageKey_LoopSetValueFirebase = 'StorageKey_LoopSetValueFirebase'
 
 // specific
 
