@@ -70,6 +70,7 @@ const eng = {
   expired_set: "All vocabulary is shown. Please set your next ones!",
   out_of_trial: "You are out of the trial period. Please upgrade to Lifetime to unlock all levels!",
   introduce_trial: "You can change to any level during the ##-day trial. After this period, you can continue using the selected level. Upgrade to Lifetime to unlock all levels from now on.",
+  purchased_but_cannot_sync: "Purchase successful! You have the Lifetime subscription, but data cannot sync to the server. Please check your internet and try again.",
 
   push_notice:
     `Every day, vocabulary notifications will be shown at these times: ###.
@@ -94,6 +95,7 @@ They are set up until 24/Oct/1994 at 00:00. Please open the app and set new ones
   fail_translate: 'Can not get words transation.',
   fail_download: 'Fail to download.',
   restore_purchase_no_products: 'No product to restore',
+  cannot_setup_data: CanNotSetupUserData
 } as const
 
 export type LocalText = typeof eng

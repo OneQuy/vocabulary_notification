@@ -78,7 +78,7 @@ export const HandleBeforeShowPopupPopularityLevelAsync = async (
 
                 if (diffDays >= trialDays) { // no premium & exceeded the trial
                     const pressedOKOrLifeTime = await AlertAsync(
-                        PopupTitleError,
+                        texts.popup_error,
                         texts.out_of_trial,
                         'OK',
                         texts.lifetime
@@ -134,9 +134,9 @@ export const HandleBeforeShowPopupPopularityLevelAsync = async (
 
         else {
             const pressedRetry = await AlertAsync(
-                PopupTitleError,
-                CanNotSetupUserData,
-                RetryText,
+                texts.popup_error,
+                texts.cannot_setup_data,
+                texts.retry,
                 texts.cancel
             )
 

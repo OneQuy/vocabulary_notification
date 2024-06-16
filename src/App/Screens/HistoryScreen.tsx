@@ -1,15 +1,14 @@
 import { View, StyleSheet, Text, FlatList, TouchableOpacity } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import useLocalText, { CanNotSetupUserData, PopupTitleError, RetryText } from '../Hooks/useLocalText'
+import useLocalText, { } from '../Hooks/useLocalText'
 import { Gap, Outline } from '../Constants/Constants_Outline'
 import { SavedWordData } from '../Types'
-import { CapitalizeFirstLetter, DelayAsync, GetElementsOfPageArray, HexToRgb, SafeArrayLength } from '../../Common/UtilsTS'
+import { CapitalizeFirstLetter, GetElementsOfPageArray, HexToRgb, SafeArrayLength } from '../../Common/UtilsTS'
 import { FontSize } from '../Constants/Constants_FontSize'
 import { HandlingType } from './SetupScreen'
 import { ExtractWordFromWordLang } from '../Handles/AppUtils'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { Color_Text } from '../Hooks/useTheme'
-import { LoopSetValueFirebase } from '../../Common/Firebase/LoopSetValueFirebase'
 
 const PageItemCount = 20
 

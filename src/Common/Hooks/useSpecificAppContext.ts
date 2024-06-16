@@ -37,7 +37,11 @@ const useSpecificAppContext = ({
         await LoopSetValueFirebase.SetValueAsync(
             StorageKey_SubscribeData,
             GetUserPropertyFirebasePath(UserPremiumDataProperty),
-            subscribedData
+            subscribedData,
+            texts.popup_error,
+            texts.purchased_but_cannot_sync,
+            texts.retry,
+            texts.cancel
         )
 
         // set useContext (update ui)
