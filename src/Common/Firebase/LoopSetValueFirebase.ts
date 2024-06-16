@@ -28,7 +28,7 @@ export class LoopSetValueFirebase {
 
         if (!IsValuableArrayOrString(dataArr)) {
             if (IsLog)
-                console.log('[LoopSetValueFirebase-CheckUploadTheNextCacheAsync] no item to set');
+                console.log('[LoopSetValueFirebase-CheckUploadTheNextCacheAsync] no item to upload');
 
             return false
         }
