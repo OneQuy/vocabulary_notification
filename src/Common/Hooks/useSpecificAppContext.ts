@@ -28,8 +28,8 @@ const useSpecificAppContext = ({
     const texts = useLocalText()
 
     /**
-   * undefined is to clear premium
-   */
+     * undefined is to clear premium
+     */
     const onSetSubcribeDataAsync = useCallback(async (subscribedData: SubscribedData | undefined): Promise<void> => {
         // set useContext
 
