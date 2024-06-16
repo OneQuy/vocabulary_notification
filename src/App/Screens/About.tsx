@@ -59,8 +59,8 @@ const About = () => {
         })
     }, [])
 
-    const onPurchasedSuccess = useCallback(async (sku: string) => {
-        onSetSubcribeDataAsync({
+    const onPurchasedSuccessAsync = useCallback(async (sku: string) => {
+        await onSetSubcribeDataAsync({
             id: sku,
             purchasedTick: Date.now()
         })
@@ -77,7 +77,7 @@ const About = () => {
             const firstProduct = SafeGetArrayElement<Purchase>(products)
 
             if (firstProduct)
-                onPurchasedSuccess(firstProduct.productId)
+                onPurchasedSuccessAsync(firstProduct.productId)
             else
                 Alert.alert(
                     texts.popup_error,
@@ -89,7 +89,7 @@ const About = () => {
         }
 
         set_isHandling(false)
-    }, [texts, onPurchasedSuccess])
+    }, [texts, onPurchasedSuccessAsync])
 
     const onPressCheatCopyUserId = useCallback(() => {
         Clipboard.setString(UserID())
@@ -111,7 +111,7 @@ const About = () => {
         const res = await PurchaseAsync(currentLifetimeProduct.sku)
 
         if (res === undefined) { // success
-            onPurchasedSuccess(currentLifetimeProduct.sku)
+            await onPurchasedSuccessAsync(currentLifetimeProduct.sku)
         }
 
         else if (res === null) { } // user canceled
@@ -122,7 +122,7 @@ const About = () => {
 
         set_isHandling(false)
     }, [
-        onPurchasedSuccess,
+        onPurchasedSuccessAsync,
         isHandling,
         isReadyPurchase,
         currentLifetimeProduct,
