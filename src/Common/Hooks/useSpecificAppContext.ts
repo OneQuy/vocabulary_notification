@@ -11,6 +11,7 @@ import { SetupAppStateAndStartTrackingAsync } from '../AppStatePersistence'
 import { DefaultAppContext } from '../SpecificConstants'
 import useLocalText from '../../App/Hooks/useLocalText'
 import { AlertAsync } from '../UtilsTS'
+import { LoopSetValueFirebase } from '../Firebase/LoopSetValueFirebase'
 
 type UseSpecificAppContextParam = {
     posthog: PostHog,
@@ -51,7 +52,11 @@ const useSpecificAppContext = ({
 
     useEffect(() => {
         (async () => {
-            // load subcribe data
+            // check upload firebase value cached
+
+            LoopSetValueFirebase.CheckRunLoopAsync();
+
+            // load subcribe data (from local)
 
             const subscribedDataOrUndefined = await GetObjectAsync<SubscribedData>(StorageKey_SubscribeData)
 
