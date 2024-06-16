@@ -41,7 +41,7 @@ const useSpecificAppContext = ({
             texts.popup_error,
             texts.purchased_but_cannot_sync,
             texts.retry,
-            texts.cancel
+            texts.later
         )
 
         // set useContext (update ui)

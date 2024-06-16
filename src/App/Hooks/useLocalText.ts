@@ -43,6 +43,7 @@ const eng = {
   loading_data: 'Loading data',
   translating: 'Translating',
   retry: RetryText,
+  later: 'Later',
   cancel: 'Cancel',
   done: 'Done',
   not_show: 'Excluded time',

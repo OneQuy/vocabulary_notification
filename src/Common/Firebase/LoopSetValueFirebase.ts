@@ -120,7 +120,7 @@ export class LoopSetValueFirebase {
         alertTitleErrorTxt = 'Error',
         alertContentErrorTxt = 'Can not sync data. Please check your internet and try again.',
         alertBtnRetryTxt = 'Retry',
-        alertBtnCancelTxt = 'Sync later',
+        alertBtnLaterTxt = 'Later',
     ): Promise<null | Error> => {
         // save to local first
 
@@ -174,7 +174,7 @@ export class LoopSetValueFirebase {
                     alertTitleErrorTxt,
                     alertContentErrorTxt,
                     alertBtnRetryTxt,
-                    alertBtnCancelTxt,
+                    alertBtnLaterTxt,
                 )
 
                 if (pressedRetry) { } // press retry
