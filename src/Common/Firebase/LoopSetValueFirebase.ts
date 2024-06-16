@@ -120,13 +120,15 @@ export class LoopSetValueFirebase {
         alertTitleErrorTxt = 'Error',
         alertContentErrorTxt = 'Can not sync data. Please check your internet and try again.',
         alertBtnRetryTxt = 'Retry',
-        alertBtnCancelTxt = 'Cancel',
+        alertBtnCancelTxt = 'Sync later',
     ): Promise<null | Error> => {
         // save to local first
 
         await AsyncStorage.setItem(storageKey, JSON.stringify(value))
 
         // save to firebase
+
+        let failAndDidSetRunLoop = false
 
         while (true) {
             const nullSuccessOrError = await FirebaseDatabase_SetValueAsyncWithTimeOut(
@@ -148,18 +150,12 @@ export class LoopSetValueFirebase {
 
             else {
                 if (IsLog)
-                    console.log('[LoopSetValueFirebase-SetValueAsync] saved local but set fail firebase (cached data)', nullSuccessOrError, 'key', storageKey);
+                    console.log('[LoopSetValueFirebase-SetValueAsync] saved local but set fail firebase', nullSuccessOrError, 'key', storageKey, 'did cached data', failAndDidSetRunLoop);
 
-                const pressedRetry = await AlertAsync(
-                    alertTitleErrorTxt,
-                    alertContentErrorTxt,
-                    alertBtnRetryTxt,
-                    alertBtnCancelTxt,
-                )
+                // cache data (caching here prevent user from quite app completely)
 
-                if (pressedRetry) { } // press retry
-                else { // press cancel
-                    // cache data
+                if (!failAndDidSetRunLoop) {
+                    failAndDidSetRunLoop = true
 
                     const cacheData: LoopSetValueFirebaseCacheData = {
                         firebasePath,
@@ -170,12 +166,22 @@ export class LoopSetValueFirebase {
                         StorageKey_LoopSetValueFirebase,
                         cacheData
                     )
+                }
 
+                // alert
+
+                const pressedRetry = await AlertAsync(
+                    alertTitleErrorTxt,
+                    alertContentErrorTxt,
+                    alertBtnRetryTxt,
+                    alertBtnCancelTxt,
+                )
+
+                if (pressedRetry) { } // press retry
+                else { // press cancel
                     // run loop
 
                     this.CheckRunLoopAsync()
-
-                    // return
 
                     return CreateError(nullSuccessOrError)
                 }
