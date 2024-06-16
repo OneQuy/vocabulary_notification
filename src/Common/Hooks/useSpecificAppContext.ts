@@ -32,7 +32,7 @@ const useSpecificAppContext = ({
      * undefined is to clear premium
      */
     const onSetSubcribeDataAsync = useCallback(async (subscribedData: SubscribedData | undefined): Promise<void> => {
-        // save local & firebase
+        // save local & firebase (maybe loop)
 
         await LoopSetValueFirebase.SetValueAsync(
             StorageKey_SubscribeData,
@@ -40,7 +40,7 @@ const useSpecificAppContext = ({
             subscribedData
         )
 
-        // set useContext
+        // set useContext (update ui)
 
         set_appContextValue(curValue => {
             return {
