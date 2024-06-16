@@ -23,15 +23,17 @@ alert not priority (after alerts above):
 
 alternativeValue:
 
+onequy app json firebase url
 - onequyApps
+
+- trialDays (7)
+- postHogAutoCapture (false)
 
 - maxDaysToPushAndroid (default 10 days)
 - maxDaysToPushiOS (default 10 days)
 
 - limitPushsAndroid (default 64 pushs)
 - limitPushsiOS (default 64 pushs)
-
-- trialDays
 
 key apis
 - microsoft

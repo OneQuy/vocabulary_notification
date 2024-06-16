@@ -7,6 +7,7 @@ import { SplashScreenLoader } from './src/Common/SplashScreenLoader'
 import SplashScreen from './src/Common/Components/SplashScreen'
 import { PostHogProvider } from 'posthog-react-native'
 import { PostHogKey_Production } from './Keys'
+import { GetAlternativeConfig } from './src/Common/RemoteConfig'
 
 const App = () => {
   const { handled } = useAsyncHandle(async () => SplashScreenLoader());
@@ -20,8 +21,10 @@ const App = () => {
   if (!handled)
     return <SplashScreen />
 
+  const postHogAutocapture = GetAlternativeConfig('postHogAutoCapture', false)
+
   return (
-    <PostHogProvider apiKey={PostHogKey_Production}>
+    <PostHogProvider apiKey={PostHogKey_Production} autocapture={postHogAutocapture}>
       <SafeAreaView style={style.master}>
         <StatusBar backgroundColor={Color_BG} barStyle={'light-content'} />
         <SetupScreen />
