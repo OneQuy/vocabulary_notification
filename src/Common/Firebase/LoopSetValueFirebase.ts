@@ -106,9 +106,9 @@ export class LoopSetValueFirebase {
      * 1. save local first
      * 2. save firebase (1)
      *  + if success: return
-     *  + if fail: show alert
+     *  + if fail: backup key-value to local then show alert
      *      - if press Retry: (1)
-     *      - if press Cancel: backup key-value, run loop
+     *      - if press Cancel: run loop
      * 
      * @returns null if success (both local & firebase)
      * @returns Error{} if saved local success but failed save to firebase (and run loop)
