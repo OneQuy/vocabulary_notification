@@ -1,20 +1,15 @@
-import { View, StyleSheet, Text, FlatList, TouchableOpacity, Alert } from 'react-native'
+import { View, StyleSheet, Text, FlatList, TouchableOpacity } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import useLocalText from '../Hooks/useLocalText'
+import useLocalText, { CanNotSetupUserData, PopupTitleError, RetryText } from '../Hooks/useLocalText'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { UpdatePushedWordsAndRefreshCurrentNotiWordsAsync } from '../Handles/SetupNotification'
-import { GetLocalizedWordFromDbAsync } from '../Handles/LocalizedWordsTable'
 import { SavedWordData } from '../Types'
-import { CapitalizeFirstLetter, DelayAsync, GetElementsOfPageArray, HexToRgb, IsValuableArrayOrString, SafeArrayLength } from '../../Common/UtilsTS'
+import { CapitalizeFirstLetter, DelayAsync, GetElementsOfPageArray, HexToRgb, SafeArrayLength } from '../../Common/UtilsTS'
 import { FontSize } from '../Constants/Constants_FontSize'
 import { HandlingType } from './SetupScreen'
-import { CheckDeserializeLocalizedData, ExtractWordFromWordLang } from '../Handles/AppUtils'
+import { ExtractWordFromWordLang } from '../Handles/AppUtils'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { Color_Text } from '../Hooks/useTheme'
-import { GetArrayAsync } from '../../Common/AsyncStorageUtils'
-import { StorageKey_CacheEventNotification } from '../Constants/StorageKey'
-import Clipboard from '@react-native-clipboard/clipboard'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { LoopSetValueFirebase } from '../../Common/Firebase/LoopSetValueFirebase'
 
 const PageItemCount = 20
 
@@ -27,6 +22,7 @@ const HistoryScreen = ({
 
   const [allPushedWordsOrError, set_allPushedWordsOrError] = useState<Error | SavedWordData[]>([])
   const [curPageIdx, set_curPageIdx] = useState(0)
+  const [text, set_text] = useState(0)
 
   // memos
 
@@ -91,38 +87,20 @@ const HistoryScreen = ({
 
   useEffect(() => {
     (async () => {
-      // const s = await AsyncStorage.getItem('abc')
+      // await LoopSetValueFirebase.SetValueAsync(
+      //   'num' + Date.now(),
+      //   'haha/num' + Date.now(),
+      //   Date.now(),
+      //   PopupTitleError,
+      //   CanNotSetupUserData,
+      //   RetryText,
+      //   texts.cancel
+      // )
 
-      // Alert.alert('noooooo', s ?? 'loooooool')
-
-
-      // const a = await AsyncStorage.getItem(StorageKey_CacheEventNotification)
-
-      // if (a)
-      //   Alert.alert('aaaaa '  + a)
-      // else
-      //   Alert.alert('empty 222222')
-
-
-
-
-      // const arr = await GetArrayAsync<object>(StorageKey_CacheEventNotification)
-
-      // if (!IsValuableArrayOrString(arr)) {
-      //   AsyncStorage.removeItem(StorageKey_CacheEventNotification)
-      //   Alert.alert('empty')
-      //   return
+      // while (true) {
+      //   set_text(t => t + 1)
+      //   await DelayAsync(1000)
       // }
-
-      // const s = JSON.stringify(arr, null, 1)
-
-      // Clipboard.setString(s)
-
-      // if (arr)
-      //   Alert.alert(arr?.length.toString())
-
-      // AsyncStorage.removeItem(StorageKey_CacheEventNotification)
-
 
 
 
