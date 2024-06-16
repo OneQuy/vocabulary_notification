@@ -85,7 +85,7 @@ export class LoopSetValueFirebase {
             return
 
         if (IsLog)
-            console.log('[LoopSetValueFirebase-CheckRunLoopAsync] start run');
+            console.log('[LoopSetValueFirebase-CheckRunLoopAsync] start looping');
 
         this.isRunningLoop = true
 
@@ -94,6 +94,10 @@ export class LoopSetValueFirebase {
 
             if (!needContinue) {
                 this.isRunningLoop = false
+
+                if (IsLog)
+                    console.log('[LoopSetValueFirebase-CheckRunLoopAsync] exit looping');
+
                 break
             }
         }
