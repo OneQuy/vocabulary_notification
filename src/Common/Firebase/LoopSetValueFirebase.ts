@@ -1,7 +1,6 @@
 // Created 15 June 2024 (coding Vocaby)
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { TruelyValueType } from "../SpecificType";
 import { FirebaseDatabaseTimeOutMs, FirebaseDatabase_SetValueAsyncWithTimeOut } from "./FirebaseDatabase";
 import { AlertAsync, CreateError, IsValuableArrayOrString, PickAndRemoveFirstElementArray } from "../UtilsTS";
 import { AppendArrayAsync, GetArrayAsync, SetArrayAsync } from "../AsyncStorageUtils";
@@ -11,7 +10,7 @@ const IsLog = __DEV__
 
 export type LoopSetValueFirebaseCacheData = {
     firebasePath: string,
-    value: TruelyValueType,
+    value: any,
 }
 
 export class LoopSetValueFirebase {
@@ -117,7 +116,7 @@ export class LoopSetValueFirebase {
     static SetValueAsync = async (
         storageKey: string,
         firebasePath: string,
-        value: TruelyValueType,
+        value: any,
         alertTitleErrorTxt = 'Error',
         alertContentErrorTxt = 'Can not sync data. Please check your internet and try again.',
         alertBtnRetryTxt = 'Retry',
