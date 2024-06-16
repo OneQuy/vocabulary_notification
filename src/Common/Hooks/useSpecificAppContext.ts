@@ -3,8 +3,8 @@
 // Created on 23 may 2024 (Coding Vocaby)
 
 import { useCallback, useEffect, useState } from 'react'
-import { GetObjectAsync, SetObjectAsync } from '../AsyncStorageUtils'
-import { AppContextType, SubscribedData } from '../SpecificType'
+import { GetObjectAsync } from '../AsyncStorageUtils'
+import { AppContextType, SubscribedData, UserPremiumDataProperty } from '../SpecificType'
 import { StorageKey_SubscribeData } from '../../App/Constants/StorageKey'
 import PostHog from 'posthog-react-native'
 import { SetupAppStateAndStartTrackingAsync } from '../AppStatePersistence'
@@ -12,6 +12,7 @@ import { DefaultAppContext } from '../SpecificConstants'
 import useLocalText from '../../App/Hooks/useLocalText'
 import { AlertAsync } from '../UtilsTS'
 import { LoopSetValueFirebase } from '../Firebase/LoopSetValueFirebase'
+import { GetUserPropertyFirebasePath } from '../UserMan'
 
 type UseSpecificAppContextParam = {
     posthog: PostHog,
@@ -42,7 +43,11 @@ const useSpecificAppContext = ({
 
         // save local & firebase
 
-        await SetObjectAsync(StorageKey_SubscribeData, subscribedData)
+        await LoopSetValueFirebase.SetValueAsync(
+            StorageKey_SubscribeData,
+            GetUserPropertyFirebasePath(UserPremiumDataProperty),
+            subscribedData
+        )
 
         // alert success
 
