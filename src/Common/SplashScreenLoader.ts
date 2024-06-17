@@ -6,6 +6,7 @@ import { CheckIsDevAsync } from "./IsDev";
 import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig";
 import { InitUserIDAsync } from "./UserID";
 import { CheckSetStartUsingAppTickAsync } from "../App/Handles/PremiumHandler";
+import { FetchUserDataOnNewlyInstall } from "./FetchUserDataOnNewlyInstall";
 
 export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
     // firebase init (for retrieving remote config, firebase db,...)
@@ -32,9 +33,15 @@ export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
         CheckIsDevAsync(), // (must after GetRemoteConfigWithCheckFetchAsync)
     ])
 
-    // set start using app
+    // app specific: fetch newly user data
+
+    await FetchUserDataOnNewlyInstall.CheckFetchAsync() // ND
+
+    // app specific: set start using app
 
     await CheckSetStartUsingAppTickAsync() // alert_priority_set_start_using_app (doc)
+
+    // return
 
     return {
         // someVariable: 7,
