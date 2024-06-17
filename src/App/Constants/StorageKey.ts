@@ -21,6 +21,7 @@ export const StorageKey_CacheEventNotification = 'StorageKey_CacheEventNotificat
 export const StorageKey_ForceDev = 'StorageKey_ForceDev'
 export const StorageKey_UserID = 'StorageKey_UserID'
 export const StorageKey_LoopSetValueFirebase = 'StorageKey_LoopSetValueFirebase'
+export const StorageKey_DidFetchUserDataOnNewlyInstall = 'StorageKey_DidFetchUserDataOnNewlyInstall'
 
 // specific
 
