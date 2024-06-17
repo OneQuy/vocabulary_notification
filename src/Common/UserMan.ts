@@ -1,3 +1,7 @@
+// NUMBER OF [CHANGE HERE]: 0
+
+// Created on early 2024, Gooday
+
 import { FirebaseDatabase_GetValueAsyncWithTimeOut, FirebaseDatabase_SetValueAsync, FirebaseDatabase_SetValueAsyncWithTimeOut, FirebaseDatabaseTimeOutMs } from "./Firebase/FirebaseDatabase"
 import { SubscribedData, User, UserForcePremiumDataProperty } from "./SpecificType"
 import { UserID } from "./UserID"
