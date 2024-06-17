@@ -421,9 +421,7 @@ export const CheckTrackUpdatedAppAsync = async (): Promise<number> => {
  * this track: newly_install, version, platform
  */
 export const TrackOnNewlyInstallAsync = async () => {
-    //////////////////////
     // newly_install
-    //////////////////////
 
     const event = 'newly_install'
 
@@ -436,15 +434,11 @@ export const TrackOnNewlyInstallAsync = async () => {
             userID: UserID(),
         })
 
-    //////////////////////
     // version
-    //////////////////////
 
     TrackSimpleWithParam('version', 'v' + VersionAsNumber)
 
-    //////////////////////
     // platform
-    //////////////////////
 
     TrackSimpleWithParam('platform', Platform.OS.toString())
 }
