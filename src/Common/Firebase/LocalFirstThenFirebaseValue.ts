@@ -124,15 +124,39 @@ export class LocalFirstThenFirebaseValue {
 
             const firstError = valueNullOrErrorArr.find(valueNullOrError => IsObjectError(valueNullOrError))
 
-            if (firstError) { // has at least a error
+            if (firstError || valueNullOrErrorArr.length !== firebasePathAndLocalStorageKeyArr.length) { // has at least a error
                 await AlertAsync(
                     alertTitleErrorTxt,
                     alertContentErrorTxt,
                     alertBtnRetryTxt
                 )
             }
-            else // success all
+            else // success all => save local
+            {
+                // save to local
+
+                for (let i = 0; i < valueNullOrErrorArr.length; i++) {
+                    const pathKey = firebasePathAndLocalStorageKeyArr[i]
+                    const value = valueNullOrErrorArr[i]
+
+                    if (value) {
+                        if (IsLog) {
+                            console.log('[LocalFirstThenFirebaseValue-MakeSureDidGetSuccessAsync] (GET success ALL) saving to local key', pathKey.storageKey, 'value', value, 'type', typeof value);
+                        }
+
+                        await AsyncStorage.setItem(pathKey.storageKey, JSON.stringify(value))
+                    }
+                    else { // no-data, not save
+                        if (IsLog) {
+                            console.log('[LocalFirstThenFirebaseValue-MakeSureDidGetSuccessAsync] (GET success ALL) no-data, not save key', pathKey.storageKey);
+                        }
+                    }
+                }
+
+                // quit
+
                 return
+            }
         }
     }
 
