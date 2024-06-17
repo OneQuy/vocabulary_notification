@@ -24,7 +24,7 @@ import Aptabase, { trackEvent as AptabaseTrack } from "@aptabase/react-native";
 import { IsDev } from "./IsDev";
 import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig";
 import { ApatabaseKey_Dev, ApatabaseKey_Production } from "../../Keys"
-import { DateDiff_WithNow, DayName, DelayAsync, FilterOnlyLetterAndNumberFromString, FromMsTo_TodayDays, GetDayHourMinSecFromMs_ToString, GetTodayStringUnderscore, IsNumType, IsValuableArrayOrString, RemoveEmptyAndFalsyFromObject, RoundWithDecimal, SafeValue, ToCanPrint } from "./UtilsTS";
+import { DateDiff_WithNow, DayName, DelayAsync, ExecuteWithTimeoutAsync, FilterOnlyLetterAndNumberFromString, FromMsTo_TodayDays, GetDayHourMinSecFromMs_ToString, GetTodayStringUnderscore, IsNumType, IsValuableArrayOrString, RemoveEmptyAndFalsyFromObject, RoundWithDecimal, SafeValue, ToCanPrint } from "./UtilsTS";
 import { FirebaseDatabase_IncreaseNumberAsync, FirebaseDatabase_SetValueAsync } from "./Firebase/FirebaseDatabase";
 import PostHog from "posthog-react-native";
 import { GetAndSetInstalledDaysCountAsync, GetAndSetLastFreshlyOpenAppToNowAsync, GetAndSetLastInstalledVersionAsync, GetAndClearPressUpdateObjectAsync, SetupAppStateAndStartTrackingParams } from "./AppStatePersistence";
@@ -34,6 +34,7 @@ import { GetSplashTime } from "./Components/SplashScreen";
 import { AppStreakId, SetStreakAsync } from "./Streak";
 import { Cheat } from "./Cheat";
 import { NotificationTrackData } from "./SpecificType";
+import { GetUserPropertyFirebasePath } from "./UserMan";
 
 const IsLog = Cheat('log_tracking')
 
@@ -421,6 +422,15 @@ export const CheckTrackUpdatedAppAsync = async (): Promise<number> => {
  * this track: newly_install, version, platform
  */
 export const TrackOnNewlyInstallAsync = async () => {
+    // get count of new install
+
+    const installedCountRes = await ExecuteWithTimeoutAsync(
+        async () => await FirebaseDatabase_IncreaseNumberAsync(GetUserPropertyFirebasePath('installedCount'), 0),
+        2000
+    )
+
+    const installedCount = SafeValue(installedCountRes.result?.value, -1)
+
     // newly_install
 
     const event = 'newly_install'
@@ -432,6 +442,7 @@ export const TrackOnNewlyInstallAsync = async () => {
         ],
         {
             userID: UserID(),
+            installedCount,
         })
 
     // version
