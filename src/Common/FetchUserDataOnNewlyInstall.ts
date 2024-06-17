@@ -1,3 +1,5 @@
+// NUMBER OF [CHANGE HERE] 0
+//
 // Created on 17 Jun 2024, Vocaby
 
 import { StorageKey_DidFetchUserDataOnNewlyInstall, StorageKey_SubscribeData } from "../App/Constants/StorageKey"
@@ -9,6 +11,9 @@ import { IsValuableArrayOrString } from "./UtilsTS"
 
 const IsLog = __DEV__
 
+/**
+ * only enter app if fetched success (maybe no-data)
+ */
 export class FetchUserDataOnNewlyInstall {
     private static GetDefaultPathKeys = (): FirebasePathAndLocalStorageKey[] => {
         const arr: FirebasePathAndLocalStorageKey[] = [
