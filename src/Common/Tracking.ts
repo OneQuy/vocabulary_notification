@@ -438,6 +438,7 @@ export const TrackOnNewlyInstallAsync = async () => {
     await TrackingAsync(event,
         [
             `total/app/${event}`,
+            `total/app/installed_count/${installedCount >= 0 ? (installedCount + 'x') : 'no_data'}`,
             `date/${event}/#d`,
         ],
         {
