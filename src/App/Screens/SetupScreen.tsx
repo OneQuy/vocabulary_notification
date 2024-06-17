@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, Alert, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Alert, ActivityIndicator, ViewProps } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import { Color_BG, Color_Text, Color_Text2 } from '../Hooks/useTheme'
@@ -17,7 +17,7 @@ import { SetupNotificationAsync, TestNotificationAsync } from '../Handles/SetupN
 import { GetDefaultTranslationService, GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, GetTranslationServiceAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetPopularityLevelIndexAsync, SetTranslationServiceAsync, SetTargetLangAsyncAsync, GetSourceLangAsync } from '../Handles/Settings'
 import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync, IsCachedWordsDataCurrentLevelAsync } from '../Handles/WordsData'
 import { GetBooleanAsync, GetNumberIntAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
-import { StorageKey_LastPushTick, StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from '../Constants/StorageKey'
+import { StorageKey_LastPushTick, StorageKey_PopularityIndex, StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from '../Constants/StorageKey'
 import HistoryScreen from './HistoryScreen'
 import { HandleError } from '../../Common/Tracking'
 import { GetLanguageFromCode, Language } from '../../Common/TranslationApis/TranslationLanguages'
@@ -34,6 +34,8 @@ import { IsDev } from '../../Common/IsDev'
 import HairLine from '../../Common/Components/HairLine'
 import { StartupWindowSize } from '../../Common/CommonConstants'
 import { HandleBeforeShowPopupPopularityLevelForNoPremiumAsync } from '../Handles/PremiumHandler'
+import { LoopSetValueFirebase } from '../../Common/Firebase/LoopSetValueFirebase'
+import { GetUserPropertyFirebasePath } from '../../Common/UserMan'
 
 const IsLog = false
 
@@ -63,6 +65,7 @@ const SetupScreen = () => {
   const texts = useLocalText()
 
   const [handlingType, set_handlingType] = useState<HandlingType>(undefined)
+  const [pointerEvents, set_pointerEvents] = useState<ViewProps['pointerEvents']>('auto')
   const [processPercent, set_processPercent] = useState<'' | `${number}%`>('')
   const [subView, set_subView] = useState<SubView>('setup')
   const [pushTimeListText, set_pushTimeListText] = useState('')
@@ -457,10 +460,14 @@ const SetupScreen = () => {
     let canOpen = true
 
     if (appContextValue.subscribedData === undefined && type === 'popularity') {
+      set_pointerEvents('none')
+
       canOpen = await HandleBeforeShowPopupPopularityLevelForNoPremiumAsync(
         set_subView,
         texts
       )
+
+      set_pointerEvents(undefined)
     }
 
     if (!canOpen)
@@ -533,6 +540,15 @@ const SetupScreen = () => {
         return
 
       const popularityLevelIdx = value.value
+
+      // save local & firebase
+
+      LoopSetValueFirebase.SetValueAsync(
+        StorageKey_PopularityIndex,
+        GetUserPropertyFirebasePath(''),
+        popularityLevelIdx)
+
+      // make sure data is ready
 
       const dataReady = await setHandlingAndGetReadyDataAsync(popularityLevelIdx)
 
@@ -1020,7 +1036,7 @@ const SetupScreen = () => {
 
   return (
     <AppContext.Provider value={appContextValue} >
-      <View style={style.master}>
+      <View pointerEvents={pointerEvents} style={style.master}>
         {/* topbar */}
         <View style={style.topbarView}>
           <LucideIconTextEffectButton
