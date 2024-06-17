@@ -7,6 +7,11 @@ import { TruelyValueType } from "../SpecificType";
 
 const IsLog = __DEV__
 
+export type FirebasePathAndLocalStorageKey = {
+    storageKey: string,
+    firebasePath: string,
+}
+
 export class LocalFirstThenFirebaseValue {
     /**
      ** #### how it works:
@@ -98,7 +103,41 @@ export class LocalFirstThenFirebaseValue {
     }
 
     /**
-    ** #### how it works:
+    ** #### how it works: only pass this func if did get successfully (maybe no-data)
+    ** #### save to local if success.
+    */
+    static MakeSureDidGetSuccessAsync = async (
+        firebasePathAndLocalStorageKeyArr: FirebasePathAndLocalStorageKey[],
+        alertTitleErrorTxt = 'Error',
+        alertContentErrorTxt = 'Can not fetch data. Please check your internet and try again.',
+        alertBtnRetryTxt = 'Retry',
+    ): Promise<void> => {
+        while (true) {
+            const valueNullOrErrorArr = await Promise.all(
+                firebasePathAndLocalStorageKeyArr.map(pathAndKey =>
+                    LocalFirstThenFirebaseValue.GetValueAsync(
+                        pathAndKey.storageKey,
+                        pathAndKey.firebasePath
+                    )
+                )
+            )
+
+            const firstError = valueNullOrErrorArr.find(valueNullOrError => IsObjectError(valueNullOrError))
+
+            if (firstError) { // has at least a error
+                await AlertAsync(
+                    alertTitleErrorTxt,
+                    alertContentErrorTxt,
+                    alertBtnRetryTxt
+                )
+            }
+            else // success all
+                return
+        }
+    }
+
+    /**
+    ** #### how it works: only pass this func if did set successfully
     ** (1) check get local first:
     **      + if available: return. done. (already did set both local & firebase)
     **      + if no available: (2)
