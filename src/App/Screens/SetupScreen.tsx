@@ -33,7 +33,7 @@ import useSpecificAppContext from '../../Common/Hooks/useSpecificAppContext'
 import { IsDev } from '../../Common/IsDev'
 import HairLine from '../../Common/Components/HairLine'
 import { StartupWindowSize } from '../../Common/CommonConstants'
-import { HandleBeforeShowPopupPopularityLevelAsync } from '../Handles/PremiumHandler'
+import { HandleBeforeShowPopupPopularityLevelForNoPremiumAsync } from '../Handles/PremiumHandler'
 
 const IsLog = false
 
@@ -457,10 +457,8 @@ const SetupScreen = () => {
     let canOpen = true
 
     if (appContextValue.subscribedData === undefined && type === 'popularity') {
-      canOpen = await HandleBeforeShowPopupPopularityLevelAsync(
-        set_handlingType,
+      canOpen = await HandleBeforeShowPopupPopularityLevelForNoPremiumAsync(
         set_subView,
-        onSetSubcribeDataAsync,
         texts
       )
     }

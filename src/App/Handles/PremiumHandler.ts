@@ -12,136 +12,80 @@
 //              - if no, show premium alert
 
 
-import { GetBooleanAsync, SetBooleanAsync } from "../../Common/AsyncStorageUtils"
+import { GetBooleanAsync, GetNumberIntAsync, SetBooleanAsync } from "../../Common/AsyncStorageUtils"
 import { LocalFirstThenFirebaseValue } from "../../Common/Firebase/LocalFirstThenFirebaseValue"
 import { GetAlternativeConfig } from "../../Common/RemoteConfig"
-import { SubscribedData, UserPremiumDataProperty, UserProperty_StartUsingAppTick } from "../../Common/SpecificType"
+import { UserProperty_StartUsingAppTick } from "../../Common/SpecificType"
 import { GetUserPropertyFirebasePath } from "../../Common/UserMan"
-import { AlertAsync, DateDiff_WithNow, IsNullOrNot_Null_Undefined_ObjectError, SafeValue } from "../../Common/UtilsTS"
-import { StorageKey_ShowedIntroTrial, StorageKey_StartUsingAppTick, StorageKey_SubscribeData } from "../Constants/StorageKey"
+import { AlertAsync, DateDiff_WithNow } from "../../Common/UtilsTS"
+import { StorageKey_ShowedIntroTrial, StorageKey_StartUsingAppTick } from "../Constants/StorageKey"
 import { CanNotSetupUserData, LocalText, PopupTitleError, RetryText } from "../Hooks/useLocalText"
-import { HandlingType, SubView } from "../Screens/SetupScreen"
+import { SubView } from "../Screens/SetupScreen"
 
 const IsLog = __DEV__
 
-export const HandleBeforeShowPopupPopularityLevelAsync = async (
-    setHandling: (type: HandlingType) => void,
+export const HandleBeforeShowPopupPopularityLevelForNoPremiumAsync = async (
     setSubview: (type: SubView) => void,
-    onSetSubcribeDataAsync: (subscribedData: SubscribedData | undefined) => Promise<void>,
     texts: LocalText,
 ): Promise<boolean> => {
-    while (true) {
-        // in case fetch too long can show loading
+    const startUsingAppTick = await GetNumberIntAsync(StorageKey_StartUsingAppTick, 0) // note: startUsingAppTick must be valid, cuz this did set before enter app!
 
-        const timeOut = setTimeout(() => setHandling('downloading'), 1000)
+    const diffDays = DateDiff_WithNow(startUsingAppTick)
 
-        // fetch
+    const trialDays = GetAlternativeConfig('trialDays', 7)
 
-        const [
-            premiumData,
-            startUsingAppTick
-        ] = await Promise.all([
-            LocalFirstThenFirebaseValue.GetValueAsync<SubscribedData>(
-                StorageKey_SubscribeData,
-                GetUserPropertyFirebasePath(UserPremiumDataProperty)
-            ),
-            LocalFirstThenFirebaseValue.GetValueAsync<number>(
-                StorageKey_StartUsingAppTick,
-                GetUserPropertyFirebasePath(UserProperty_StartUsingAppTick)
-            ),
-        ])
+    if (IsLog) {
+        console.log(
+            '[HandleBeforeShowPopupPopularityLevelForNoPremiumAsync] startUsingAppTick', startUsingAppTick,
+            'trialDAys', trialDays,
+            'diffDays', diffDays)
+    }
 
-        if (IsLog) {
-            console.log('[HandleBeforeShowPopupPopularityLevelAsync] premium', premiumData, 'startUsingAppTick', startUsingAppTick,
-                // 'IsNullOrNot_Null_Undefined_ObjectError<SubscribedData>(premiumData)', IsNullOrNot_Null_Undefined_ObjectError<SubscribedData>(premiumData),
-                // 'IsNullOrNot_Null_Undefined_ObjectError<number>(startUsingAppTick)', IsNullOrNot_Null_Undefined_ObjectError<number>(startUsingAppTick),
-                // 'IsObjectError(premiumData)', IsObjectError(premiumData),
-                // 'IsObjectError(startUsingAppTick)', IsObjectError(startUsingAppTick)
-            )
+    if (diffDays >= trialDays) { // no premium & exceeded the trial
+        const pressedOKOrLifeTime = await AlertAsync(
+            texts.popup_error,
+            texts.out_of_trial,
+            'OK',
+            texts.lifetime
+        )
+
+        if (!pressedOKOrLifeTime) { //  pressed Lifetime 
+            setSubview('about')
         }
 
-        // close loading view
+        return false
+    }
+    else { // no premium & but still in trial
+        // check if showed intro trial?
 
-        clearTimeout(timeOut)
-        setHandling(undefined)
+        const showedIntroTrial = await GetBooleanAsync(StorageKey_ShowedIntroTrial)
 
-        // success fetch (maybe no-data)
+        if (!showedIntroTrial) { // not showed trial yet => show
+            SetBooleanAsync(StorageKey_ShowedIntroTrial, true)
 
-        if (IsNullOrNot_Null_Undefined_ObjectError<SubscribedData>(premiumData) &&
-            IsNullOrNot_Null_Undefined_ObjectError<number>(startUsingAppTick)) {
-            if (premiumData === null) { // no premium
-                // note: startUsingAppTick === null => can NOT happen, cuz this did set before enter app!
-
-                const diffDays = DateDiff_WithNow(SafeValue(startUsingAppTick, 0))
-
-                const trialDays = GetAlternativeConfig('trialDays', 7)
-
-                if (diffDays >= trialDays) { // no premium & exceeded the trial
-                    const pressedOKOrLifeTime = await AlertAsync(
-                        texts.popup_error,
-                        texts.out_of_trial,
-                        'OK',
-                        texts.lifetime
-                    )
-
-                    if (!pressedOKOrLifeTime) { //  pressed Lifetime 
-                        setSubview('about')
-                    }
-
-                    return false
-                }
-                else { // no premium & but still in trial
-                    // check if showed intro trial?
-
-                    const showedIntroTrial = await GetBooleanAsync(StorageKey_ShowedIntroTrial)
-
-                    if (!showedIntroTrial) {
-                        SetBooleanAsync(StorageKey_ShowedIntroTrial, true)
-
-                        const pressedOKOrLifeTime = await AlertAsync(
-                            texts.popularity_level,
-                            texts.introduce_trial.replaceAll('##', trialDays.toString()),
-                            'OK',
-                            texts.lifetime
-                        )
-
-                        if (!pressedOKOrLifeTime) { // pressed Lifetime 
-                            setSubview('about')
-                            return false
-                        }
-                        else // press OK
-                            return true
-                    }
-                    else // showed intro trial 
-                    {
-                        if (IsLog) {
-                            console.log('[HandleBeforeShowPopupPopularityLevelAsync] still in trial',
-                                'diffDays', diffDays,
-                                'trialDays', trialDays)
-                        }
-
-                        return true
-                    }
-                }
-            }
-            else { // premium => can enter popup
-                onSetSubcribeDataAsync(premiumData)
-                return true
-            }
-        }
-
-        // fetch error need to re-fetch
-
-        else {
-            const pressedRetry = await AlertAsync(
-                texts.popup_error,
-                texts.cannot_setup_data,
-                texts.retry,
-                texts.cancel
+            const pressedOKOrLifeTime = await AlertAsync(
+                texts.popularity_level,
+                texts.introduce_trial.replaceAll('##', trialDays.toString()),
+                'OK',
+                texts.lifetime
             )
 
-            if (!pressedRetry)
+            if (!pressedOKOrLifeTime) { // pressed Lifetime 
+                setSubview('about')
                 return false
+            }
+            else // press OK
+                return true
+        }
+        else // showed intro trial, still in trial
+        {
+            if (IsLog) {
+                console.log('[HandleBeforeShowPopupPopularityLevelForNoPremiumAsync] still in trial',
+                    'diffDays', diffDays,
+                    'trialDays', trialDays)
+            }
+
+            return true
         }
     }
 }
