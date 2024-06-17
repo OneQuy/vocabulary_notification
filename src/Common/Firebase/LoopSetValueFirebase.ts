@@ -6,7 +6,8 @@ import { AlertAsync, CreateError, IsValuableArrayOrString, PickAndRemoveFirstEle
 import { AppendArrayAsync, GetArrayAsync, SetArrayAsync } from "../AsyncStorageUtils";
 import { StorageKey_LoopSetValueFirebase } from "../../App/Constants/StorageKey";
 
-const IsLog = __DEV__
+// const IsLog = __DEV__
+const IsLog = false
 
 export type LoopSetValueFirebaseCacheData = {
     firebasePath: string,
