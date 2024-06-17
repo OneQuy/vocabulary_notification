@@ -33,7 +33,7 @@ export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
         CheckIsDevAsync(), // (must after GetRemoteConfigWithCheckFetchAsync)
     ])
 
-    // app specific: fetch newly user data
+    // app specific: fetch newly user data (premium,...)
 
     await FetchUserDataOnNewlyInstall.CheckFetchAsync() // ND
 
