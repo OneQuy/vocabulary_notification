@@ -98,7 +98,7 @@ export class LocalFirstThenFirebaseValue {
     }
 
     /**
-    ** #### how it works:
+    ** #### how it works: only pass this func if did set successfully
     ** (1) check get local first:
     **      + if available: return. done. (already did set both local & firebase)
     **      + if no available: (2)
