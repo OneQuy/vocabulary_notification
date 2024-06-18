@@ -369,6 +369,11 @@ const SetupScreen = () => {
   }, [setHandlingAndGetReadyDataAsync])
 
   const onPressSetNotification = useCallback(async () => {
+    const dataReady = await setHandlingAndGetReadyDataAsync()
+
+    if (!dataReady)
+      return
+
     set_handlingType('setting_notification')
 
     const lastSetTimestampOrError = await SetupNotificationAsync(
@@ -402,7 +407,7 @@ const SetupScreen = () => {
     // reset
 
     set_processPercent('')
-  }, [texts, generatePushTimeListText])
+  }, [texts, setHandlingAndGetReadyDataAsync, generatePushTimeListText])
 
   const onConfirmTimePicker = useCallback((time: TimePickerResult) => {
     if (editingExcludeTimePairAndElementIndex.current[0] === undefined ||
