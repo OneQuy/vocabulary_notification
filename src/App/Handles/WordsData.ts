@@ -1,7 +1,7 @@
 import { GetNumberIntAsync, SetNumberAsync } from "../../Common/AsyncStorageUtils"
 import { DownloadFile_GetJsonAsync, ReadJsonFileAsync } from "../../Common/FileUtils"
 import { GetAlternativeConfig } from "../../Common/RemoteConfig"
-import { CreateError, IsValuableArrayOrString } from "../../Common/UtilsTS"
+import { AppDirName, CreateError, IsValuableArrayOrString } from "../../Common/UtilsTS"
 import { StorageKey_UsedWordIndex } from "../Constants/StorageKey"
 import { Word } from "../Types"
 import { GetPopularityLevelIndexAsync } from "./Settings"
@@ -35,7 +35,7 @@ type GetNextWordsDataForNotiResult = {
 const caches: Record<`index_${number}`, CachedWordData> = {}
 
 const GetLocalRlp = (popularityLevelIndex: number) => {
-    return `words/index-${popularityLevelIndex}.json`
+    return `${AppDirName}/words/index-${popularityLevelIndex}.json`
 }
 
 /**
