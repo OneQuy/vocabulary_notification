@@ -10,6 +10,9 @@ alert_priority:
 - await HandleAlertUpdateAppAsync(remoteConfig) // alert_priority_1 (doc)
 => splash screen, reload app config
 
+- alert_priority_fetch_error_user_newly_install (doc)
+=> splash screen
+
 - alert_priority_set_start_using_app (doc)
 => splash screen
 

@@ -1,12 +1,14 @@
 // NUMBER OF [CHANGE HERE]: 1
 
-import { SplashScreenLoaderResult } from "./SpecificType";
+import { SplashScreenLoaderResult, UserSelectedPopularityIndexProperty } from "./SpecificType";
 import { FirebaseInit } from "./Firebase/Firebase";
 import { CheckIsDevAsync } from "./IsDev";
 import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig";
 import { InitUserIDAsync } from "./UserID";
 import { CheckSetStartUsingAppTickAsync } from "../App/Handles/PremiumHandler";
 import { FetchUserDataOnNewlyInstall } from "./FetchUserDataOnNewlyInstall";
+import { StorageKey_PopularityIndex } from "../App/Constants/StorageKey";
+import { GetUserPropertyFirebasePath } from "./UserMan";
 
 export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
     // firebase init (for retrieving remote config, firebase db,...)
@@ -35,7 +37,12 @@ export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
 
     // app specific: fetch newly user data (premium,...)
 
-    await FetchUserDataOnNewlyInstall.CheckFetchAsync() // ND
+    await FetchUserDataOnNewlyInstall.CheckFetchAsync([
+        {
+            storageKey: StorageKey_PopularityIndex,
+            firebasePath: GetUserPropertyFirebasePath(UserSelectedPopularityIndexProperty),
+        }
+    ]) // ND // alert_priority_fetch_error_user_newly_install (doc)
 
     // app specific: set start using app
 
