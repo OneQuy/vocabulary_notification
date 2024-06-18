@@ -1,5 +1,5 @@
 import { GetNumberIntAsync, SetNumberAsync } from "../../Common/AsyncStorageUtils"
-import { DownloadFile_GetJsonAsync, ReadJsonFileAsync, ReadTextAsync } from "../../Common/FileUtils"
+import { DownloadFile_GetJsonAsync, ReadJsonFileAsync } from "../../Common/FileUtils"
 import { GetAlternativeConfig } from "../../Common/RemoteConfig"
 import { CreateError, IsValuableArrayOrString } from "../../Common/UtilsTS"
 import { StorageKey_UsedWordIndex } from "../Constants/StorageKey"
