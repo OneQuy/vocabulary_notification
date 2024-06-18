@@ -1356,7 +1356,7 @@ export const AlertAsync = async (
     msg?: string,
     rightText?: string,
     leftText?: string,
-) => new Promise((resolve) => {
+) => new Promise<boolean>((resolve) => {
     const rightBtn: AlertButton = {
         text: rightText ?? 'OK',
         onPress: () => resolve(true)

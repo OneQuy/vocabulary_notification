@@ -107,9 +107,11 @@ export class LoopSetValueFirebase {
      * 1. save local first
      * 2. save firebase (1)
      *  + if success: return
-     *  + if fail: backup key-value to local then show alert
-     *      - if press Retry: (1)
-     *      - if press Cancel: run loop
+     *  + if fail: backup key-value to local
+     *      + if not show alert: run loop
+     *      + if show alert
+     *          - if press Retry: (1)
+     *          - if press Cancel: run loop
      * 
      * @returns null if success (both local & firebase)
      * @returns Error{} if saved local success but failed save to firebase (and run loop)
@@ -122,6 +124,7 @@ export class LoopSetValueFirebase {
         alertContentErrorTxt = 'Can not sync data. Please check your internet and try again.',
         alertBtnRetryTxt = 'Retry',
         alertBtnLaterTxt = 'Later',
+        notShowAlert = false,
     ): Promise<null | Error> => {
         // save to local first
 
@@ -153,7 +156,7 @@ export class LoopSetValueFirebase {
                 if (IsLog)
                     console.log('[LoopSetValueFirebase-SetValueAsync] saved local but set fail firebase', nullSuccessOrError, 'key', storageKey, 'did cached data', failAndDidSetRunLoop);
 
-                // cache data (caching here prevent user from quite app completely)
+                // cache data (right here cuz of preventing user from quite app completely)
 
                 if (!failAndDidSetRunLoop) {
                     failAndDidSetRunLoop = true
@@ -171,15 +174,17 @@ export class LoopSetValueFirebase {
 
                 // alert
 
-                const pressedRetry = await AlertAsync(
-                    alertTitleErrorTxt,
-                    alertContentErrorTxt,
-                    alertBtnRetryTxt,
-                    alertBtnLaterTxt,
-                )
+                const pressedRetry = notShowAlert ?
+                    false :
+                    await AlertAsync(
+                        alertTitleErrorTxt,
+                        alertContentErrorTxt,
+                        alertBtnRetryTxt,
+                        alertBtnLaterTxt,
+                    )
 
                 if (pressedRetry) { } // press retry
-                else { // press cancel
+                else { // press later
                     // run loop
 
                     this.CheckRunLoopAsync()

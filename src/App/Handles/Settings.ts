@@ -30,9 +30,9 @@ export const GetPopularityLevelIndexAsync = async (): Promise<number> => {
     return await GetNumberIntAsync(StorageKey_PopularityIndex, 0)
 }
 
-export const SetPopularityLevelIndexAsync = async (index: number): Promise<void> => {
-    await SetNumberAsync(StorageKey_PopularityIndex, index)
-}
+// export const SetPopularityLevelIndexAsync = async (index: number): Promise<void> => {
+//     await SetNumberAsync(StorageKey_PopularityIndex, index)
+// }
 
 
 export const GetIntervalMinAsync = async (): Promise<number> => {
