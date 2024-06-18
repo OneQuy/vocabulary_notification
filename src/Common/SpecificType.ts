@@ -87,7 +87,6 @@ export const UserSelectedPopularityIndexProperty = 'popularityIdx' // CHANGE OPT
 
 export const UserProperty_StartUsingAppTick = 'startUsingAppTick' // CHANGE OPTIONAL
 
-export const UserProperty_SelectedPopularityIndex = 'selectedPopularityIndex' // CHANGE OPTIONAL
 
 export type User = { // CHANGE OPTIONAL
     // common
@@ -99,7 +98,6 @@ export type User = { // CHANGE OPTIONAL
     [UserPremiumDataProperty]?: SubscribedData,
     [UserSelectedPopularityIndexProperty]?: number,
     [UserProperty_StartUsingAppTick]?: number,
-    [UserProperty_SelectedPopularityIndex]?: number,
 }
 
 
