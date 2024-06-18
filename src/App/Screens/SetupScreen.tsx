@@ -14,7 +14,7 @@ import { LucideIcon } from '../../Common/Components/LucideIcon'
 import { PairTime, TranslationService } from '../Types'
 import { CalcNotiTimeListPerDay, ClearDbAndNotificationsAsync } from '../Handles/AppUtils'
 import { SetupNotificationAsync, TestNotificationAsync } from '../Handles/SetupNotification'
-import { GetDefaultTranslationService, GetExcludeTimesAsync as GetExcludedTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, GetTranslationServiceAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetPopularityLevelIndexAsync, SetTranslationServiceAsync, SetTargetLangAsyncAsync, GetSourceLangAsync } from '../Handles/Settings'
+import { GetExcludeTimesAsync, GetDefaultTranslationService, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, GetTranslationServiceAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetTranslationServiceAsync, SetTargetLangAsyncAsync, GetSourceLangAsync } from '../Handles/Settings'
 import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync, IsCachedWordsDataCurrentLevelAsync } from '../Handles/WordsData'
 import { GetBooleanAsync, GetNumberIntAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
 import { StorageKey_LastPushTick, StorageKey_PopularityIndex, StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from '../Constants/StorageKey'
@@ -36,6 +36,7 @@ import { StartupWindowSize } from '../../Common/CommonConstants'
 import { HandleBeforeShowPopupPopularityLevelForNoPremiumAsync } from '../Handles/PremiumHandler'
 import { LoopSetValueFirebase } from '../../Common/Firebase/LoopSetValueFirebase'
 import { GetUserPropertyFirebasePath } from '../../Common/UserMan'
+import { UserSelectedPopularityIndexProperty } from '../../Common/SpecificType'
 
 const IsLog = false
 
@@ -541,13 +542,6 @@ const SetupScreen = () => {
 
       const popularityLevelIdx = value.value
 
-      // save local & firebase
-
-      LoopSetValueFirebase.SetValueAsync(
-        StorageKey_PopularityIndex,
-        GetUserPropertyFirebasePath(''),
-        popularityLevelIdx)
-
       // make sure data is ready
 
       const dataReady = await setHandlingAndGetReadyDataAsync(popularityLevelIdx)
@@ -555,10 +549,22 @@ const SetupScreen = () => {
       if (!dataReady)
         return
 
-      // data ok!
+      // save local & firebase
+
+      LoopSetValueFirebase.SetValueAsync(
+        StorageKey_PopularityIndex,
+        GetUserPropertyFirebasePath(UserSelectedPopularityIndexProperty),
+        popularityLevelIdx,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        true
+      )
+
+      // set UI
 
       set_displayPopularityLevelIdx(popularityLevelIdx)
-      SetPopularityLevelIndexAsync(popularityLevelIdx)
     })
   }, [setHandlingAndGetReadyDataAsync])
 
@@ -1006,7 +1012,7 @@ const SetupScreen = () => {
       // const numDaysToPush = await GetNumDaysToPushAsync()
       // set_displayNumDaysToPush(numDaysToPush)
 
-      const excludedTimePairs = await GetExcludedTimesAsync()
+      const excludedTimePairs = await GetExcludeTimesAsync()
       set_displayExcludedTimePairs(excludedTimePairs)
 
       const service = await GetTranslationServiceAsync()
