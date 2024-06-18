@@ -6,7 +6,7 @@
 
 import RNFS, { DownloadProgressCallbackResult, StatResult } from "react-native-fs";
 import { Platform } from "react-native";
-import { CreateError, LoadJsonFromURLAsync, ShuffleArray, TempDirName, ToCanPrint } from "./UtilsTS";
+import { CreateError, LoadJsonFromURLAsync, ShuffleArray, TempDirName } from "./UtilsTS";
 
 /**
  * @returns null if success, otherwise error

@@ -9,11 +9,14 @@ import { CheckSetStartUsingAppTickAsync } from "../App/Handles/PremiumHandler";
 import { FetchUserDataOnNewlyInstall } from "./FetchUserDataOnNewlyInstall";
 import { StorageKey_PopularityIndex } from "../App/Constants/StorageKey";
 import { GetUserPropertyFirebasePath } from "./UserMan";
+import { ClearAllFilesAndStorageAsync } from "./SpecificUtils";
 
 export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
     // firebase init (for retrieving remote config, firebase db,...)
-
     FirebaseInit()
+
+    // cheat clear all files and storage
+    await ClearAllFilesAndStorageAsync(true) // ND
 
     ///////////////////////////
     // CHANGE HERE 1 (ALL BELOW)
@@ -25,9 +28,6 @@ export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
 
         // user id (for trackings)
         InitUserIDAsync(), // ND
-
-        // // cheat clear all local file
-        // CheckAndClearAllLocalFileBeforeLoadApp(), // ND
     ])
 
     await Promise.all([

@@ -26,6 +26,7 @@ export const TimeOutError = '[time_out]'
 // export const TimeOutStandardInMs = 10000 // 10s
 
 export const TempDirName = 'temp_dir';
+export const AppDirName = 'app_dir';
 
 const DayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 

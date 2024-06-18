@@ -5,13 +5,16 @@
 import { Linking, Platform, Share } from "react-native"
 import { AndroidLink, AppName, ShareAppContent, iOSLink } from "./SpecificConstants"
 import { Event, EventType } from "@notifee/react-native"
-import { DelayAsync, SafeValue, ToCanPrint } from "./UtilsTS"
+import { AppDirName, DelayAsync, SafeValue, ToCanPrint } from "./UtilsTS"
 import { NotificationExtraDataKey_IsLastPush, NotificationExtraDataKey_Mode, NotificationExtraDataKey_PushIndex } from "../App/Handles/SetupNotification"
 import { GenerateNotificationTrackDataAsync } from "./Nofitication"
 import { VocabyNotificationTrackData } from "./SpecificType"
 import { AppendArrayAsync, GetArrayAsync_PickAndRemoveFirstOne } from "./AsyncStorageUtils"
 import { StorageKey_CacheEventNotification } from "../App/Constants/StorageKey"
 import { TrackEventNotificationAsync } from "./Tracking"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import { DeleteFileAsync, DeleteTempDirAsync } from "./FileUtils"
+import { Cheat } from "./Cheat"
 
 const IsLog = __DEV__
 
@@ -25,6 +28,29 @@ export const ShareAppAsync = async () => {
         title: AppName,
         message: ShareAppContent,
     })
+}
+
+export async function ClearAllFilesAndStorageAsync(onlyWhenCheatOrForceClear: boolean): Promise<void> {
+    if (onlyWhenCheatOrForceClear) {
+        if (!Cheat('clear_all_file_and_data'))
+            return
+    }
+
+    // clear storage
+
+    await AsyncStorage.clear()
+
+    // clear temp dir files
+
+    await DeleteTempDirAsync()
+
+    // clear app dir files
+
+    await DeleteFileAsync(AppDirName, true);
+
+    if (IsLog) {
+        console.log('[ClearAllFilesAndStorageAsync] DID CLEAR ALL FILES AND STORAGE!')
+    }
 }
 
 export const OnEventNotification = async (isBackgroundOrForeground: boolean, event: Event): Promise<void> => {
@@ -46,7 +72,7 @@ export const OnEventNotification = async (isBackgroundOrForeground: boolean, eve
         // pushIdx
 
         pushIdx = SafeValue(event.detail.notification.data?.[NotificationExtraDataKey_PushIndex], -1)
-        
+
         // is last word push
 
         isLast = SafeValue(event.detail.notification.data?.[NotificationExtraDataKey_IsLastPush], 0)
@@ -82,8 +108,8 @@ export const OnEventNotification = async (isBackgroundOrForeground: boolean, eve
     // track on-event // CHANGE HERE 4
 
     await TrackEventNotificationAsync(
-        objTrack, 
-        true, 
+        objTrack,
+        true,
         setOrTestMode // my change here
     )
 
@@ -111,8 +137,8 @@ export const CheckTrackCachedNotification = async (): Promise<void> => {
     const firstEvent = saved.firstElement
 
     await TrackEventNotificationAsync(
-        firstEvent, 
-        false, 
+        firstEvent,
+        false,
         firstEvent[NotificationExtraDataKey_Mode] // may change here
     )
 
