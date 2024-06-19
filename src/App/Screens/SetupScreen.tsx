@@ -70,6 +70,7 @@ const SetupScreen = () => {
   const [processPercent, set_processPercent] = useState<'' | `${number}%`>('')
   const [subView, set_subView] = useState<SubView>('setup')
   const [pushTimeListText, set_pushTimeListText] = useState('')
+  const [useEFfectLoaded, set_useEFfectLoaded] = useState(false)
   const [showPopup, set_showPopup] = useState<PopupType>(undefined)
   const popupCloseCallbackRef = useRef<(onFinished?: () => void) => void>()
 
@@ -999,6 +1000,8 @@ const SetupScreen = () => {
       set_displaySettting_Definitions(showDefinitions);
       set_displaySettting_Example(showExample);
       set_displaySettting_ShowPartOfSpeech(showPartOfSpeech);
+
+      set_useEFfectLoaded(true)
     })()
   }, [])
 
@@ -1058,7 +1061,7 @@ const SetupScreen = () => {
             {/* target lang */}
 
             {
-              !displayTargetLang &&
+              !displayTargetLang && useEFfectLoaded &&
               <SettingItemPanel
                 onPress={() => onPressShowPopupAsync('target-lang')}
                 title={texts.translate_to}
