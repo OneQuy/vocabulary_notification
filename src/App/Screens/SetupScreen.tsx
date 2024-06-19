@@ -1091,9 +1091,21 @@ const SetupScreen = () => {
           />
         </View>
 
+        {/* main ui - scroll view */}
+
         {
           subView === 'setup' &&
           <ScrollView contentContainerStyle={style.scrollView} showsVerticalScrollIndicator={false}>
+            {/* target lang */}
+
+            <SettingItemPanel
+              onPress={() => onPressShowPopupAsync('target-lang')}
+              title={texts.translate_to}
+              explain={texts.translate_language_explain}
+              value={displayTargetLang?.name ?? '?'}
+              isLong
+            />
+
             {/* popularity_level */}
 
             <SettingItemPanel
@@ -1114,102 +1126,10 @@ const SetupScreen = () => {
               unit={repeatValueAndDisplayText.text}
             />
 
-            {/* exclude time */}
-
-            <View style={SettingItemPanelStyle.master_Column}>
-              {/* title */}
-              <View style={style.excludeTimeTitleView}>
-                <Text style={SettingItemPanelStyle.titleTxt}>{texts.not_show}</Text>
-
-                {/* add exclude time btn */}
-                <LucideIconTextEffectButton
-                  unselectedColorOfTextAndIcon={Color_Text}
-                  notChangeToSelected
-
-                  iconProps={{ name: 'Plus', size: FontSize.Normal }}
-
-                  onPress={onPressAddExcludeTime}
-                />
-              </View>
-
-              {/* explain */}
-              <Text style={SettingItemPanelStyle.explainTxt}>{texts.not_show_explain}</Text>
-
-              {/* list */}
-              {
-                renderExcludeTimes()
-              }
-            </View>
-
-            {/* target lang */}
-
-            <SettingItemPanel
-              onPress={() => onPressShowPopupAsync('target-lang')}
-              title={texts.translate_to}
-              explain={texts.translate_language_explain}
-              value={displayTargetLang?.name ?? '?'}
-              isLong
-            />
-
-            {/* more setting */}
-
-            <LucideIconTextEffectButton
-              unselectedColorOfTextAndIcon={Color_Text}
-              notChangeToSelected
-              style={style.moreSettingBtn}
-
-              title={texts.more_setting}
-
-              titleProps={{ style: style.normalBtnTxt }}
-
-              iconProps={{ name: showMoreSetting ? 'ChevronUp' : 'ChevronDown', size: FontSize.Normal, }}
-
-              onPress={onPressMoreSetting}
-            />
-
-            {/* limit words */}
-
-            {
-              showMoreSetting &&
-              <SettingItemPanel
-                onPress={() => onPressShowPopupAsync('limit-word')}
-                title={texts.limit_words_per_day}
-                explain={texts.limit_words_per_day_explain}
-                value={displayWordLimitNumber === 0 ? texts.no_limit : displayWordLimitNumber}
-                unit={AddS(texts.word, displayWordLimitNumber)}
-              />
-            }
-
-            {/* translate service */}
-
-            {
-              showMoreSetting &&
-              <SettingItemPanel
-                onPress={onPressOpenPopupChangeTranslationService}
-                title={texts.translation_service}
-                explain={texts.services_explain}
-                value={displayTranslationService.split(' ')[0]}
-                isLong
-              />
-            }
-
-            {/* num days to push
-
-            {
-              showMoreSetting &&
-              <SettingItemPanel
-                onPress={() => onPressShowPopup('num_days_push')}
-                title={texts.num_days_to_push}
-                explain={texts.num_days_to_push_explain}
-                value={displayNumDaysToPush}
-                unit={AddS(texts.day, displayNumDaysToPush)}
-              />
-            } */}
-
             {/* display of noti */}
 
             {
-              showMoreSetting &&
+              true &&
               <View style={SettingItemPanelStyle.master_Column}>
                 {/* title */}
                 <Text style={SettingItemPanelStyle.titleTxt}>{texts.noti_display}</Text>
@@ -1274,6 +1194,78 @@ const SetupScreen = () => {
                   )
                 }
               </View>
+            }
+
+            {/* more setting */}
+
+            <LucideIconTextEffectButton
+              unselectedColorOfTextAndIcon={Color_Text}
+              notChangeToSelected
+              style={style.moreSettingBtn}
+
+              title={texts.more_setting}
+
+              titleProps={{ style: style.normalBtnTxt }}
+
+              iconProps={{ name: showMoreSetting ? 'ChevronUp' : 'ChevronDown', size: FontSize.Normal, }}
+
+              onPress={onPressMoreSetting}
+            />
+
+            {/* exclude time */}
+
+            {
+              showMoreSetting &&
+              <View style={SettingItemPanelStyle.master_Column}>
+                {/* title */}
+                <View style={style.excludeTimeTitleView}>
+                  <Text style={SettingItemPanelStyle.titleTxt}>{texts.not_show}</Text>
+
+                  {/* add exclude time btn */}
+                  <LucideIconTextEffectButton
+                    unselectedColorOfTextAndIcon={Color_Text}
+                    notChangeToSelected
+
+                    iconProps={{ name: 'Plus', size: FontSize.Normal }}
+
+                    onPress={onPressAddExcludeTime}
+                  />
+                </View>
+
+                {/* explain */}
+                <Text style={SettingItemPanelStyle.explainTxt}>{texts.not_show_explain}</Text>
+
+                {/* list */}
+                {
+                  renderExcludeTimes()
+                }
+              </View>
+            }
+
+            {/* limit words */}
+
+            {
+              showMoreSetting &&
+              <SettingItemPanel
+                onPress={() => onPressShowPopupAsync('limit-word')}
+                title={texts.limit_words_per_day}
+                explain={texts.limit_words_per_day_explain}
+                value={displayWordLimitNumber === 0 ? texts.no_limit : displayWordLimitNumber}
+                unit={AddS(texts.word, displayWordLimitNumber)}
+              />
+            }
+
+            {/* translate service */}
+
+            {
+              showMoreSetting &&
+              <SettingItemPanel
+                onPress={onPressOpenPopupChangeTranslationService}
+                title={texts.translation_service}
+                explain={texts.services_explain}
+                value={displayTranslationService.split(' ')[0]}
+                isLong
+              />
             }
           </ScrollView>
         }
