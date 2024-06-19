@@ -37,6 +37,7 @@ export const StorageKey_CurrentAllNotifications = 'StorageKey_CurrentAllNotifica
 export const StorageKey_LastPushTick = 'StorageKey_LastPushTick'
 export const StorageKey_StartUsingAppTick = 'StorageKey_StartUsingAppTick'
 export const StorageKey_ShowedIntroTrial = 'StorageKey_ShowedIntroTrial'
+export const StorageKey_StatusText = 'StorageKey_StatusText'
 
 // specific (app settings)
 

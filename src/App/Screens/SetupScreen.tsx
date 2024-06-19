@@ -17,7 +17,7 @@ import { SetupNotificationAsync, TestNotificationAsync } from '../Handles/SetupN
 import { GetExcludeTimesAsync, GetDefaultTranslationService, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, GetTranslationServiceAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetTranslationServiceAsync, SetTargetLangAsyncAsync, GetSourceLangAsync } from '../Handles/Settings'
 import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync, IsCachedWordsDataCurrentLevelAsync } from '../Handles/WordsData'
 import { GetBooleanAsync, GetNumberIntAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
-import { StorageKey_LastPushTick, StorageKey_PopularityIndex, StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord } from '../Constants/StorageKey'
+import { StorageKey_LastPushTick, StorageKey_PopularityIndex, StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord, StorageKey_StatusText } from '../Constants/StorageKey'
 import HistoryScreen from './HistoryScreen'
 import { HandleError } from '../../Common/Tracking'
 import { GetLanguageFromCode, Language } from '../../Common/TranslationApis/TranslationLanguages'
@@ -28,7 +28,7 @@ import TargetLangPicker from '../Components/TargetLangPicker'
 import SettingItemPanel, { SettingItemPanelStyle } from '../Components/SettingItemPanel'
 import About from './About'
 import { usePostHog } from 'posthog-react-native'
-import { AppContext } from '../../Common/SpecificConstants'
+import { AppContext, AppName } from '../../Common/SpecificConstants'
 import useSpecificAppContext from '../../Common/Hooks/useSpecificAppContext'
 import { IsDev } from '../../Common/IsDev'
 import HairLine from '../../Common/Components/HairLine'
@@ -37,6 +37,7 @@ import { HandleBeforeShowPopupPopularityLevelForNoPremiumAsync } from '../Handle
 import { LoopSetValueFirebase } from '../../Common/Firebase/LoopSetValueFirebase'
 import { GetUserPropertyFirebasePath } from '../../Common/UserMan'
 import { UserSelectedPopularityIndexProperty } from '../../Common/SpecificType'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const IsLog = false
 
@@ -233,7 +234,21 @@ const SetupScreen = () => {
       .replace('###', combineText)
 
     set_pushTimeListText(text)
+
+    AsyncStorage.setItem(StorageKey_StatusText, text)
   }, [displayIntervalInMin, displayExcludedTimePairs])
+
+  const onPressStatusInfo = useCallback(async () => {
+    if (alreadySetInfoTxt === undefined || alreadySetInfoTxt === texts.expired_set)
+      return
+
+    const text = await AsyncStorage.getItem(StorageKey_StatusText)
+
+    if (!text)
+      return
+
+    Alert.alert(AppName, text)
+  }, [texts, alreadySetInfoTxt])
 
   const onPressSubview = useCallback((type: SubView) => {
     set_subView(type)
@@ -1287,7 +1302,7 @@ const SetupScreen = () => {
 
             {
               alreadySetInfoTxt &&
-              <Text numberOfLines={1} adjustsFontSizeToFit style={style.alreadySetInfoTxt}>{alreadySetInfoTxt}</Text>
+              <Text onPress={onPressStatusInfo} numberOfLines={1} adjustsFontSizeToFit style={style.alreadySetInfoTxt}>{alreadySetInfoTxt}</Text>
             }
           </>
         }
