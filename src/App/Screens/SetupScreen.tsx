@@ -511,7 +511,7 @@ const SetupScreen = () => {
 
   const renderDisplaySettingItem = useCallback((
     title: string,
-    getter: typeof displaySettting_ShowPhonetic,
+    getter: boolean,
     setter: typeof set_displaySettting_ShowPhonetic,
     storeKey: string,
   ) => {
@@ -1135,7 +1135,7 @@ const SetupScreen = () => {
                 {
                   renderDisplaySettingItem(
                     texts.show_part_of_speech,
-                    displaySettting_ShowPartOfSpeech,
+                    displaySettting_ShowPartOfSpeech || displaySettting_Example || displaySettting_Definitions,
                     set_displaySettting_ShowPartOfSpeech,
                     StorageKey_ShowPartOfSpeech
                   )
