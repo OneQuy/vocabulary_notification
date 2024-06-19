@@ -1141,17 +1141,6 @@ const SetupScreen = () => {
                   )
                 }
 
-                {/* display of noti - example */}
-
-                {
-                  renderDisplaySettingItem(
-                    texts.show_examble,
-                    displaySettting_Example,
-                    set_displaySettting_Example,
-                    StorageKey_ShowExample
-                  )
-                }
-
                 {/* display of noti - definitions */}
 
                 {
@@ -1160,6 +1149,17 @@ const SetupScreen = () => {
                     displaySettting_Definitions,
                     set_displaySettting_Definitions,
                     StorageKey_ShowDefinitions
+                  )
+                }
+
+                {/* display of noti - example */}
+
+                {
+                  renderDisplaySettingItem(
+                    texts.show_examble,
+                    displaySettting_Example,
+                    set_displaySettting_Example,
+                    StorageKey_ShowExample
                   )
                 }
 
