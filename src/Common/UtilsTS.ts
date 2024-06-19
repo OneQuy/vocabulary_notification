@@ -1075,6 +1075,26 @@ export const GetDayHourMinSecFromMs = (ms: number): [number, number, number, num
 // number ---------------------------
 
 /**
+ * 
+ * @returns number int or defaultValue or NaN
+ */
+export function SafeParseInt(value: any, defaultValue = NaN): number {
+    const res = parseInt(value)
+
+    return isNaN(res) ? defaultValue : res
+}
+
+/**
+ * 
+ * @returns number float or defaultValue or NaN
+ */
+export function SafeParseFloat(value: any, defaultValue = NaN): number {
+    const res = parseFloat(value)
+
+    return isNaN(res) ? defaultValue : res
+}
+
+/**
  * decimalCount = 1 default
  */
 export function RoundWithDecimal(value: number, decimalCount = 1): number {
@@ -1248,6 +1268,9 @@ export function AnimatedSimpleTiming(animatedValue: Animated.Value, duration?: n
 
 // object ---------------------------
 
+/**
+ * parse json (object)
+ */
 export function SafeParse<T extends object>(anything: any, defaultValue?: T): T | undefined {
     try {
         return JSON.parse(anything) as T
