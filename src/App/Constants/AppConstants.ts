@@ -22,7 +22,7 @@ export const IntervalInMinPresets: (undefined | number)[] = [
 ]
 
 
-export const DefaultLimitWords = 5
+export const DefaultLimitWords = 10
 
 export const LimitWordsPerDayPresets: (number)[] = [
     0,
