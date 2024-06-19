@@ -823,53 +823,6 @@ const SetupScreen = () => {
     style
   ])
 
-  //// num days to push
-
-  // const onPressNumDaysToPush = useCallback((numDays: number) => {
-  //   if (popupCloseCallbackRef.current) {
-  //     popupCloseCallbackRef.current(() => {
-  //       set_displayNumDaysToPush(numDays)
-  //       SetNumDaysToPushAsync(numDays)
-  //     })
-  //   }
-  // }, [])
-
-  // const renderNumDaysToPush = useCallback(() => {
-  //   return (
-  //     <ScrollView
-  //       showsVerticalScrollIndicator={false}
-  //       contentContainerStyle={style.scrollViewSlidingPopup}
-  //     >
-  //       {
-  //         NumDaysToPushPresets.map((dayNum: number) => {
-  //           const isSelected = dayNum === displayNumDaysToPush
-
-  //           return (
-  //             <LucideIconTextEffectButton
-  //               key={dayNum}
-
-  //               selectedColorOfTextAndIcon={Color_Text}
-  //               unselectedColorOfTextAndIcon={Color_BG}
-
-  //               onPress={() => onPressNumDaysToPush(dayNum)}
-
-  //               manuallySelected={isSelected}
-  //               notChangeToSelected
-  //               canHandlePressWhenSelected
-
-  //               style={isSelected ? style.normalBtn : style.normalBtn_NoBorder}
-
-  //               title={dayNum + ' ' + AddS(texts.day, dayNum)}
-
-  //               titleProps={{ style: style.normalBtnTxt }}
-  //             />
-  //           )
-  //         })
-  //       }
-  //     </ScrollView>
-  //   )
-  // }, [displayNumDaysToPush, style])
-
   // target lang
 
   const onPressTargetLang = useCallback((lang: Language) => {
