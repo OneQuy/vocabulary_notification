@@ -9,9 +9,9 @@ export const GetSourceLangAsync = async (): Promise<string> => {
     return await AsyncStorage.getItem(StorageKey_SourceLang) || 'en'
 }
 
-export const SetSourceLangAsyncAsync = async (lang: string): Promise<void> => {
-    await AsyncStorage.setItem(StorageKey_SourceLang, lang)
-}
+// export const SetSourceLangAsyncAsync = async (lang: string): Promise<void> => {
+//     await AsyncStorage.setItem(StorageKey_SourceLang, lang)
+// }
 
 
 export const GetTargetLangAsync = async (): Promise<string | null> => {

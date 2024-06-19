@@ -76,7 +76,6 @@ const SetupScreen = () => {
   const [displayPopularityLevelIdx, set_displayPopularityLevelIdx] = useState(0)
   const [displayIntervalInMin, set_displayIntervalInMin] = useState<number>(DefaultIntervalInMin)
   const [displayWordLimitNumber, set_displayWordLimitNumber] = useState<number>(5)
-  // const [displayNumDaysToPush, set_displayNumDaysToPush] = useState<number>(DefaultNumDaysToPush)
 
   const [displayTargetLang, set_displayTargetLang] = useState<Language | undefined>()
   const [timestampLastPush, set_timestampLastPush] = useState(0)
@@ -1005,41 +1004,50 @@ const SetupScreen = () => {
 
   useEffect(() => {
     (async () => {
-      const levelPopularity = await GetPopularityLevelIndexAsync()
-      set_displayPopularityLevelIdx(levelPopularity)
+      const [
+        levelPopularity,
+        intervalInMin,
+        limitWordsPerDay,
+        excludedTimePairs,
+        service,
+        targetLang,
+        showPhonetic,
+        showRankOfWord,
+        showDefinitions,
+        showExample,
+        showPartOfSpeech
+      ] = await Promise.all([
+        GetPopularityLevelIndexAsync(),
+        GetIntervalMinAsync(),
+        GetLimitWordsPerDayAsync(),
+        GetExcludeTimesAsync(),
+        GetTranslationServiceAsync(),
+        GetTargetLangAsync(),
+        GetBooleanAsync(StorageKey_ShowPhonetic),
+        GetBooleanAsync(StorageKey_ShowRankOfWord),
+        GetBooleanAsync(StorageKey_ShowDefinitions),
+        GetBooleanAsync(StorageKey_ShowExample),
+        GetBooleanAsync(StorageKey_ShowPartOfSpeech)
+      ]);
 
-      const intervalInMin = await GetIntervalMinAsync()
-      set_displayIntervalInMin(intervalInMin)
+      const suit = await GetCurrentTranslationServiceSuitAsync(service);
 
-      const limitWordsPerDay = await GetLimitWordsPerDayAsync()
-      set_displayWordLimitNumber(limitWordsPerDay)
+      const targetLanguage = targetLang
+        ? GetLanguageFromCode(targetLang, suit.supportedLanguages)
+        : undefined;
 
-      // const numDaysToPush = await GetNumDaysToPushAsync()
-      // set_displayNumDaysToPush(numDaysToPush)
+      set_displayTargetLang(targetLanguage);
+      set_displayPopularityLevelIdx(levelPopularity);
+      set_displayIntervalInMin(intervalInMin);
+      set_displayWordLimitNumber(limitWordsPerDay);
+      set_displayExcludedTimePairs(excludedTimePairs);
+      set_displayTranslationService(service);
 
-      const excludedTimePairs = await GetExcludeTimesAsync()
-      set_displayExcludedTimePairs(excludedTimePairs)
-
-      const service = await GetTranslationServiceAsync()
-      set_displayTranslationService(service)
-
-      const suit = await GetCurrentTranslationServiceSuitAsync(service)
-
-      const targetLang = await GetTargetLangAsync()
-
-      const targetLanguage = targetLang ?
-        GetLanguageFromCode(targetLang, suit.supportedLanguages) :
-        undefined
-
-      set_displayTargetLang(targetLanguage)
-
-      // setting display notifition
-
-      set_displaySettting_ShowPhonetic(await GetBooleanAsync(StorageKey_ShowPhonetic))
-      set_displaySettting_RankOfWord(await GetBooleanAsync(StorageKey_ShowRankOfWord))
-      set_displaySettting_Definitions(await GetBooleanAsync(StorageKey_ShowDefinitions))
-      set_displaySettting_Example(await GetBooleanAsync(StorageKey_ShowExample))
-      set_displaySettting_ShowPartOfSpeech(await GetBooleanAsync(StorageKey_ShowPartOfSpeech))
+      set_displaySettting_ShowPhonetic(showPhonetic);
+      set_displaySettting_RankOfWord(showRankOfWord);
+      set_displaySettting_Definitions(showDefinitions);
+      set_displaySettting_Example(showExample);
+      set_displaySettting_ShowPartOfSpeech(showPartOfSpeech);
     })()
   }, [])
 
@@ -1098,13 +1106,16 @@ const SetupScreen = () => {
           <ScrollView contentContainerStyle={style.scrollView} showsVerticalScrollIndicator={false}>
             {/* target lang */}
 
-            <SettingItemPanel
-              onPress={() => onPressShowPopupAsync('target-lang')}
-              title={texts.translate_to}
-              explain={texts.translate_language_explain}
-              value={displayTargetLang?.name ?? '?'}
-              isLong
-            />
+            {
+              !displayTargetLang &&
+              <SettingItemPanel
+                onPress={() => onPressShowPopupAsync('target-lang')}
+                title={texts.translate_to}
+                explain={texts.translate_language_explain}
+                value={'?'}
+                isLong
+              />
+            }
 
             {/* popularity_level */}
 
@@ -1264,6 +1275,19 @@ const SetupScreen = () => {
                 title={texts.translation_service}
                 explain={texts.services_explain}
                 value={displayTranslationService.split(' ')[0]}
+                isLong
+              />
+            }
+
+            {/* target lang */}
+
+            {
+              showMoreSetting &&
+              < SettingItemPanel
+                onPress={() => onPressShowPopupAsync('target-lang')}
+                title={texts.translate_to}
+                explain={texts.translate_language_explain}
+                value={displayTargetLang?.name ?? '?'}
                 isLong
               />
             }
