@@ -987,8 +987,6 @@ const SetupScreen = () => {
     contentToRenderInPopup = renderPickTargetLang
   else if (showPopup === 'translation_service')
     contentToRenderInPopup = renderPickTranslationService
-  // else if (showPopup === 'num_days_push')
-  //   contentToRenderInPopup = renderNumDaysToPush
   else { // not show any popup
     if (editingExcludeTimePairAndElementIndex.current[0] === undefined ||
       editingExcludeTimePairAndElementIndex.current[1] < 0)
