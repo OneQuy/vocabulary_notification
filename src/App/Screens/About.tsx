@@ -101,7 +101,7 @@ const About = () => {
                 SettingItemPanelStyle.explainTxt,
                 {
                     textDecorationLine: 'line-through',
-                    color: 'red'
+                    color: 'firebrick'
                 } as StyleProp<TextStyle>
             ),
 
