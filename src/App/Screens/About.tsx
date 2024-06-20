@@ -5,7 +5,7 @@ import useLocalText from '../Hooks/useLocalText'
 import { Gap, Outline } from '../Constants/Constants_Outline'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { Color_BG, Color_BG2, Color_Text } from '../Hooks/useTheme'
-import { FontSize } from '../Constants/Constants_FontSize'
+import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { useMyIAP } from '../../Common/IAP/useMyIAP'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -87,11 +87,21 @@ const About = () => {
                 padding: Outline.Normal,
             },
 
+            currentPriceTxt: Object.assign(
+                {},
+                SettingItemPanelStyle.explainTxt,
+                {
+                    color: 'chartreuse',
+                    fontWeight: '800',
+                } as StyleProp<TextStyle>
+            ),
+
             crossOriginPriceTxt: Object.assign(
                 {},
                 SettingItemPanelStyle.explainTxt,
                 {
-                    textDecorationLine: 'line-through'
+                    textDecorationLine: 'line-through',
+                    color: 'red'
                 } as StyleProp<TextStyle>
             ),
 
@@ -106,8 +116,12 @@ const About = () => {
     const renderPriceLine = useCallback(() => {
         const arr: WealthTextConfig[] = [
             {
-                text: `${texts.current_price}: ${localPrice ?? '...'}`,
+                text: `${texts.current_price}: `,
                 textStyle: SettingItemPanelStyle.explainTxt,
+            },
+            {
+                text: `${localPrice ?? '...'}`,
+                textStyle: style.currentPriceTxt,
             }
         ]
 
