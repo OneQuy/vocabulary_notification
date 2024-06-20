@@ -10,8 +10,8 @@ import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { useMyIAP } from '../../Common/IAP/useMyIAP'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { StorageKey_CachedIAP } from '../Constants/StorageKey'
-import { IAPProduct, PurchaseAsync, RestorePurchaseAsync } from '../../Common/IAP/IAP'
-import { CalculateSalePercentage, IsValuableArrayOrString, SafeGetArrayElement, SafeParseFloat, ToCanPrintError } from '../../Common/UtilsTS'
+import {  GetPercentDiscountTxtAndOriginLocalizedPriceTxt, IAPProduct, PurchaseAsync, RestorePurchaseAsync } from '../../Common/IAP/IAP'
+import { SafeGetArrayElement, ToCanPrintError } from '../../Common/UtilsTS'
 import { HandleError, TrackOneQuyApps } from '../../Common/Tracking'
 import { Purchase } from 'react-native-iap'
 import { GetRemoteConfigWithCheckFetchAsync } from '../../Common/RemoteConfig'
@@ -37,38 +37,9 @@ const About = () => {
         currentLifetimeProduct
     )
 
-    const discountTxts: undefined | { maxPriceTxt: string, percentDiscountTxt: string } = useMemo(() => {
-        if (!currentLifetimeProduct ||
-            currentLifetimeProduct.sku === IapProductMax.sku ||
-            !fetchedTargetProduct ||
-            !IsValuableArrayOrString(fetchedProducts)
-        ) {
-            return
-        }
-
-        const fetchedMax = fetchedProducts.find(iap => iap.productId === IapProductMax.sku)
-
-        if (!fetchedMax)
-            return
-
-        const priceMaxOrNaN = SafeParseFloat(fetchedMax.price ?? fetchedMax.originalPrice)
-
-        const localPriceMax = fetchedMax.localizedPrice
-
-        const currentPriceOrNaN = SafeParseFloat(fetchedTargetProduct.price ?? fetchedTargetProduct.originalPrice)
-
-        if (isNaN(priceMaxOrNaN) || isNaN(currentPriceOrNaN))
-            return
-
-        const percent = CalculateSalePercentage(priceMaxOrNaN, currentPriceOrNaN)
-
-        // console.log(percent, priceMaxOrNaN, currentPriceOrNaN)
-
-        return {
-            percentDiscountTxt: percent.toFixed(),
-            maxPriceTxt: localPriceMax,
-        }
-    }, [fetchedProducts, fetchedTargetProduct, currentLifetimeProduct])
+    const discountTxts = useMemo(() => {
+        return GetPercentDiscountTxtAndOriginLocalizedPriceTxt(IapProductMax, currentLifetimeProduct, fetchedProducts)
+    }, [fetchedProducts, currentLifetimeProduct])
 
     const style = useMemo(() => {
         return StyleSheet.create({
@@ -136,7 +107,7 @@ const About = () => {
             // origin price
 
             arr.push({
-                text: discountTxts.maxPriceTxt,
+                text: discountTxts.originLocalizedPriceTxt,
                 textStyle: style.crossOriginPriceTxt
             })
 

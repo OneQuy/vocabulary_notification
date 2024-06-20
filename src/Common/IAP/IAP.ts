@@ -29,7 +29,7 @@ import {
     getAvailablePurchases,
     Purchase,
 } from 'react-native-iap';
-import { CreateError, SafeGetArrayElement, ToCanPrint } from '../UtilsTS'
+import { CalculateSalePercentage, CreateError, IsValuableArrayOrString, SafeGetArrayElement, SafeParseFloat, ToCanPrint } from '../UtilsTS'
 import { Cheat } from '../Cheat';
 
 export type IAPProduct = {
@@ -278,7 +278,50 @@ export const RestorePurchaseAsync = async (): Promise<Purchase[] | Error | null>
     }
 }
 
+export const GetPercentDiscountTxtAndOriginLocalizedPriceTxt = (
+    originProduct: IAPProduct,
+    currentProduct?: IAPProduct,
+    fetchedProducts?: Product[],
+) => {
+    if (!currentProduct ||
+        currentProduct.sku === originProduct.sku ||
+        !IsValuableArrayOrString(fetchedProducts)
+    ) {
+        return
+    }
 
+    const fetchedCurrent = fetchedProducts.find(iap => iap.productId === currentProduct.sku)
+
+    if (!fetchedCurrent)
+        return
+
+    const fetchedOrigin = fetchedProducts.find(iap => iap.productId === originProduct.sku)
+
+    if (!fetchedOrigin)
+        return
+
+    const priceOriginOrNaN = SafeParseFloat(fetchedOrigin.price ?? fetchedOrigin.originalPrice)
+
+    const localPriceOrigin = fetchedOrigin.localizedPrice
+
+    const currentPriceOrNaN = SafeParseFloat(fetchedCurrent.price ?? fetchedCurrent.originalPrice)
+
+    if (isNaN(priceOriginOrNaN) || isNaN(currentPriceOrNaN))
+        return
+
+    const percent = CalculateSalePercentage(priceOriginOrNaN, currentPriceOrNaN)
+
+    // console.log(percent, priceOriginOrNaN, currentPriceOrNaN)
+
+    return {
+        /**
+         * string [0-100]
+         */
+        percentDiscountTxt: percent.toFixed(),
+
+        originLocalizedPriceTxt: localPriceOrigin,
+    }
+}
 
 
 
