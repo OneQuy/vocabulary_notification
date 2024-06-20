@@ -62,7 +62,7 @@ const About = () => {
 
         const percent = CalculateSalePercentage(priceMaxOrNaN, currentPriceOrNaN)
 
-        console.log(percent, priceMaxOrNaN, currentPriceOrNaN)
+        // console.log(percent, priceMaxOrNaN, currentPriceOrNaN)
 
         return {
             percentDiscountTxt: percent.toFixed(),
