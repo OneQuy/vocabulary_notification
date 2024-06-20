@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Alert } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Alert, StyleProp, TextStyle } from 'react-native'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { SettingItemPanelStyle } from '../Components/SettingItemPanel'
 import useLocalText from '../Hooks/useLocalText'
@@ -22,6 +22,7 @@ import { VersionAsNumber } from '../../Common/CommonConstants'
 import Clipboard from '@react-native-clipboard/clipboard'
 import { UserID } from '../../Common/UserID'
 import { LucideReceiptEuro } from 'lucide-react-native'
+import WealthText, { WealthTextConfig } from '../../Common/Components/WealthText'
 
 const About = () => {
     const texts = useLocalText()
@@ -87,13 +88,57 @@ const About = () => {
                 padding: Outline.Normal,
             },
 
+            crossOriginPriceTxt: Object.assign(
+                {},
+                SettingItemPanelStyle.explainTxt,
+                {
+                    textDecorationLine: 'line-through'
+                } as StyleProp<TextStyle>
+            ),
+
             restoreBtn: {
                 borderWidth: 0,
                 borderRadius: BorderRadius.Small,
                 padding: Outline.Small,
             },
         })
-    }, [])
+    }, [SettingItemPanelStyle])
+
+    const renderPriceLine = useCallback(() => {
+        const arr: WealthTextConfig[] = [
+            {
+                text: `${texts.current_price}: ${localPrice ?? '...'}`,
+                textStyle: SettingItemPanelStyle.explainTxt,
+            }
+        ]
+
+        if (discountTxts) {
+            // percent
+
+            arr.push({
+                text: ` (-${discountTxts.percentDiscountTxt}%, `,
+                textStyle: SettingItemPanelStyle.explainTxt,
+            })
+
+            // origin price
+
+            arr.push({
+                text: discountTxts.maxPriceTxt,
+                textStyle: style.crossOriginPriceTxt
+            })
+
+            // close bracket
+
+            arr.push({
+                text: ')',
+                textStyle: SettingItemPanelStyle.explainTxt,
+            })
+        }
+
+        return (
+            <WealthText textConfigs={arr} />
+        )
+    }, [discountTxts, localPrice, texts, SettingItemPanelStyle, style])
 
     const onPurchasedSuccessAsync = useCallback(async (sku: string) => {
         await onSetSubcribeDataAsync({
@@ -203,13 +248,7 @@ const About = () => {
 
                         {/* price */}
                         {
-                            discountTxts ?
-                                <View style={style.priceView}>
-                                    <Text style={[SettingItemPanelStyle.explainTxt]}>{`${texts.current_price}: ${localPrice ?? '...'}`}</Text>
-                                    <Text style={[SettingItemPanelStyle.explainTxt]}>{` (-${discountTxts.percentDiscountTxt}%, `}</Text>
-                                    <Text style={[SettingItemPanelStyle.explainTxt, { textDecorationLine: 'line-through' }]}>{`${discountTxts.maxPriceTxt ?? '...'})`}</Text>
-                                </View> :
-                                <Text style={[SettingItemPanelStyle.explainTxt]}>{`${texts.current_price}: ${localPrice ?? '...'}`}</Text>
+                            renderPriceLine()
                         }
 
                         {/* isHandling */}
