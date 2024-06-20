@@ -1076,6 +1076,25 @@ export const GetDayHourMinSecFromMs = (ms: number): [number, number, number, num
 
 /**
  * 
+ * @returns int number [0 - 100]
+ */
+const CalculateSalePercentage = (original: number, current: number): number => {
+    if (original <= 0) {
+        return 0;
+    }
+
+    if (current <= 0) {
+        return 100
+    }
+
+    const discount = original - current;
+    const salePercentage = (discount / original) * 100;
+
+    return salePercentage
+}
+
+/**
+ * 
  * @returns number int or defaultValue or NaN
  */
 export function SafeParseInt(value: any, defaultValue = NaN): number {
