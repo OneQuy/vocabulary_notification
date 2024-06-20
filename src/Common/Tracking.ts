@@ -233,7 +233,7 @@ export const TrackingAsync = async ( // main
      */
     trackingValuesObject?: TrackingValuesObject
 ): Promise<void> => {
-    if (!Cheat('__dev__tracking'))
+    if (__DEV__ && !Cheat('__dev__tracking'))
         return
 
     if (!inited) {
