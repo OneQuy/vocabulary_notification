@@ -1,3 +1,5 @@
+// Created on 20 June 2024 (Vocaby)
+
 import React from 'react';
 import { View, Text, StyleSheet, StyleProp, TextStyle } from 'react-native';
 
