@@ -1078,7 +1078,7 @@ export const GetDayHourMinSecFromMs = (ms: number): [number, number, number, num
  * 
  * @returns int number [0 - 100]
  */
-const CalculateSalePercentage = (original: number, current: number): number => {
+export const CalculateSalePercentage = (original: number, current: number): number => {
     if (original <= 0) {
         return 0;
     }
