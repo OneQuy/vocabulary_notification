@@ -11,16 +11,17 @@ import { useMyIAP } from '../../Common/IAP/useMyIAP'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { StorageKey_CachedIAP } from '../Constants/StorageKey'
 import { IAPProduct, PurchaseAsync, RestorePurchaseAsync } from '../../Common/IAP/IAP'
-import { SafeGetArrayElement, ToCanPrintError } from '../../Common/UtilsTS'
+import { CalculateSalePercentage, IsValuableArrayOrString, SafeGetArrayElement, SafeParseFloat, SafeParseInt, ToCanPrintError } from '../../Common/UtilsTS'
 import { HandleError, TrackOneQuyApps } from '../../Common/Tracking'
 import { Purchase } from 'react-native-iap'
 import { GetRemoteConfigWithCheckFetchAsync } from '../../Common/RemoteConfig'
-import { AllIAPProducts, AppContext, AppName } from '../../Common/SpecificConstants'
+import { AllIAPProducts, AppContext, AppName, IapProductMax } from '../../Common/SpecificConstants'
 import OneQuyApp from '../../Common/Components/OneQuyApp'
 import { CheckTapSetDevPersistence, IsDev } from '../../Common/IsDev'
 import { VersionAsNumber } from '../../Common/CommonConstants'
 import Clipboard from '@react-native-clipboard/clipboard'
 import { UserID } from '../../Common/UserID'
+import { LucideReceiptEuro } from 'lucide-react-native'
 
 const About = () => {
     const texts = useLocalText()
@@ -29,17 +30,52 @@ const About = () => {
 
     const [currentLifetimeProduct, set_currentLifetimeProduct] = useState<undefined | IAPProduct>(undefined)
 
-    const { isReadyPurchase, localPrice, initErrorObj } = useMyIAP(
+    const { isReadyPurchase, localPrice, initErrorObj, fetchedProducts, fetchedTargetProduct } = useMyIAP(
         AllIAPProducts,
         async (s: string) => AsyncStorage.setItem(StorageKey_CachedIAP, s),
         async () => AsyncStorage.getItem(StorageKey_CachedIAP),
         currentLifetimeProduct
     )
 
+    const discountTxts: undefined | { maxPriceTxt: string, percentDiscountTxt: string } = useMemo(() => {
+        if (!currentLifetimeProduct ||
+            currentLifetimeProduct.sku === IapProductMax.sku ||
+            !fetchedTargetProduct ||
+            !IsValuableArrayOrString(fetchedProducts)
+        ) {
+            return
+        }
+
+        const fetchedMax = fetchedProducts.find(iap => iap.productId === IapProductMax.sku)
+
+        if (!fetchedMax)
+            return
+
+        const priceMaxOrNaN = SafeParseFloat(fetchedMax.price)
+
+        const localPriceMax = fetchedMax.localizedPrice
+
+        const currentPriceOrNaN = SafeParseFloat(fetchedTargetProduct.price)
+
+        if (isNaN(priceMaxOrNaN) || isNaN(currentPriceOrNaN))
+            return
+
+        const percent = CalculateSalePercentage(priceMaxOrNaN, currentPriceOrNaN)
+
+        console.log(percent, priceMaxOrNaN, currentPriceOrNaN)
+
+        return {
+            percentDiscountTxt: percent.toFixed(),
+            maxPriceTxt: localPriceMax,
+        }
+    }, [fetchedProducts, fetchedTargetProduct, currentLifetimeProduct])
+
     const style = useMemo(() => {
         return StyleSheet.create({
             master: { flex: 1, },
             scrollView: { gap: Gap.Normal, padding: Outline.Normal, },
+
+            priceView: { flexDirection: 'row' },
 
             normalBtnTxt: { fontSize: FontSize.Normal, },
 
@@ -166,7 +202,15 @@ const About = () => {
                         <Text style={SettingItemPanelStyle.explainTxt}>{texts.vocaby_lifetime_explain}</Text>
 
                         {/* price */}
-                        <Text style={SettingItemPanelStyle.explainTxt}>{`${texts.current_price}: ${localPrice ?? '...'}`}</Text>
+                        {
+                            discountTxts ?
+                                <View style={style.priceView}>
+                                    <Text style={[SettingItemPanelStyle.explainTxt]}>{`${texts.current_price}: ${localPrice ?? '...'}`}</Text>
+                                    <Text style={[SettingItemPanelStyle.explainTxt]}>{` (-${discountTxts.percentDiscountTxt}%, `}</Text>
+                                    <Text style={[SettingItemPanelStyle.explainTxt, { textDecorationLine: 'line-through' }]}>{`${discountTxts.maxPriceTxt ?? '...'})`}</Text>
+                                </View> :
+                                <Text style={[SettingItemPanelStyle.explainTxt]}>{`${texts.current_price}: ${localPrice ?? '...'}`}</Text>
+                        }
 
                         {/* isHandling */}
                         {
