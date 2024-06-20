@@ -51,11 +51,11 @@ const About = () => {
         if (!fetchedMax)
             return
 
-        const priceMaxOrNaN = SafeParseFloat(fetchedMax.price)
+        const priceMaxOrNaN = SafeParseFloat(fetchedMax.price ?? fetchedMax.originalPrice)
 
         const localPriceMax = fetchedMax.localizedPrice
 
-        const currentPriceOrNaN = SafeParseFloat(fetchedTargetProduct.price)
+        const currentPriceOrNaN = SafeParseFloat(fetchedTargetProduct.price ?? fetchedTargetProduct.originalPrice)
 
         if (isNaN(priceMaxOrNaN) || isNaN(currentPriceOrNaN))
             return
