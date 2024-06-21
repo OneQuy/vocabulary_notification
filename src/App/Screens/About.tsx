@@ -218,7 +218,7 @@ const About = () => {
     }, [])
 
     return (
-        <View style={style.master}>
+        <View pointerEvents={isHandling ? 'none' : 'auto'} style={style.master}>
             <ScrollView contentContainerStyle={style.scrollView}>
                 {/* lifetime upgrade */}
                 {
