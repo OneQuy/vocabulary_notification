@@ -58,6 +58,7 @@ export type RemoteConfig = { // CHANGE OPTIONAL
     // specific
 
     currentLifetimeId: string,
+    saleEndTick?: number,
 }
 
 export type TruelyValueType = number | string | object | boolean
