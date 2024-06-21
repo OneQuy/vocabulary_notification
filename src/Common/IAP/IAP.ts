@@ -29,7 +29,7 @@ import {
     getAvailablePurchases,
     Purchase,
 } from 'react-native-iap';
-import { CalculateSalePercentage, CreateError, IsValuableArrayOrString, SafeGetArrayElement, SafeParseFloat, ToCanPrint } from '../UtilsTS'
+import { CalculateSalePercentage, CreateError, IsValuableArrayOrString, SafeGetArrayElement, SplitNumberInText, ToCanPrint } from '../UtilsTS'
 import { Cheat } from '../Cheat';
 
 export type IAPProduct = {
@@ -278,6 +278,15 @@ export const RestorePurchaseAsync = async (): Promise<Purchase[] | Error | null>
     }
 }
 
+export const GetPriceOfProduct = (product: Product) => {
+    const priceOrNaN = SplitNumberInText(product.price)
+
+    // console.log(SplitNumberInText('đ260,000'));
+    // console.log(SplitNumberInText('9.99'));
+
+    return priceOrNaN
+}
+
 export const GetPercentDiscountTxtAndOriginLocalizedPriceTxt = (
     originProduct: IAPProduct,
     currentProduct?: IAPProduct,
@@ -300,11 +309,11 @@ export const GetPercentDiscountTxtAndOriginLocalizedPriceTxt = (
     if (!fetchedOrigin)
         return
 
-    const priceOriginOrNaN = SafeParseFloat(fetchedOrigin.price ?? fetchedOrigin.originalPrice)
+    const priceOriginOrNaN = GetPriceOfProduct(fetchedOrigin)
 
     const localPriceOrigin = fetchedOrigin.localizedPrice
 
-    const currentPriceOrNaN = SafeParseFloat(fetchedCurrent.price ?? fetchedCurrent.originalPrice)
+    const currentPriceOrNaN = GetPriceOfProduct(fetchedCurrent)
 
     if (isNaN(priceOriginOrNaN) || isNaN(currentPriceOrNaN))
         return
