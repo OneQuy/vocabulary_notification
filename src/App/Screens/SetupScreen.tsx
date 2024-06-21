@@ -1179,7 +1179,7 @@ const SetupScreen = () => {
             {/* more setting */}
 
             <LucideIconTextEffectButton
-              unselectedColorOfTextAndIcon={Color_Text}
+              unselectedColorOfTextAndIcon={Color_Text2}
               notChangeToSelected
               style={style.moreSettingBtn}
 
