@@ -11,7 +11,7 @@ import { useMyIAP } from '../../Common/IAP/useMyIAP'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { StorageKey_CachedIAP } from '../Constants/StorageKey'
 import { GetPercentDiscountTxtAndOriginLocalizedPriceTxt, IAPProduct, PurchaseAsync, RestorePurchaseAsync } from '../../Common/IAP/IAP'
-import { SafeGetArrayElement, ToCanPrintError } from '../../Common/UtilsTS'
+import { SafeDateString, SafeGetArrayElement, SafeValue, ToCanPrintError } from '../../Common/UtilsTS'
 import { HandleError, TrackOneQuyApps } from '../../Common/Tracking'
 import { Purchase } from 'react-native-iap'
 import { GetRemoteConfigWithCheckFetchAsync } from '../../Common/RemoteConfig'
@@ -26,11 +26,12 @@ import WealthText, { WealthTextConfig } from '../../Common/Components/WealthText
 const About = () => {
     const texts = useLocalText()
     const [isHandling, set_isHandling] = useState(false)
+    const [expirtedSaleLine, set_expirtedSaleLine] = useState<undefined | string>(undefined)
     const { subscribedData, onSetSubcribeDataAsync } = useContext(AppContext)
 
     const [currentLifetimeProduct, set_currentLifetimeProduct] = useState<undefined | IAPProduct>(undefined)
 
-    const { isReadyPurchase, localPrice, initErrorObj, fetchedProducts, fetchedTargetProduct } = useMyIAP(
+    const { isReadyPurchase, localPrice, initErrorObj, fetchedProducts } = useMyIAP(
         AllIAPProducts,
         async (s: string) => AsyncStorage.setItem(StorageKey_CachedIAP, s),
         async () => AsyncStorage.getItem(StorageKey_CachedIAP),
@@ -197,20 +198,31 @@ const About = () => {
 
             // fetch premium product id
 
-            const config = await GetRemoteConfigWithCheckFetchAsync(false)
+            const remoteConfig = await GetRemoteConfigWithCheckFetchAsync(false)
 
             let premiumProduct: IAPProduct | undefined = (AllIAPProducts && AllIAPProducts.length > 1) ?
                 AllIAPProducts[1] :
                 AllIAPProducts[0]
 
-            if (config) {
-                const found = AllIAPProducts.find(i => i.sku === config.currentLifetimeId)
+            if (remoteConfig) {
+                const found = AllIAPProducts.find(i => i.sku === remoteConfig.currentLifetimeId)
 
                 if (found)
                     premiumProduct = found
             }
 
             set_currentLifetimeProduct(premiumProduct)
+
+            // sale expired line
+
+            const saleEndTick = SafeValue(remoteConfig?.saleEndTick, 0)
+
+            if (Date.now() < saleEndTick) {
+                set_expirtedSaleLine(`${texts.sale_ends.replace('###', SafeDateString(new Date(saleEndTick), '/'))}`)
+            }
+
+            // done
+
             set_isHandling(false)
         })()
     }, [])
@@ -231,6 +243,12 @@ const About = () => {
                         {/* price */}
                         {
                             renderPriceLine()
+                        }
+
+                        {/* expired date */}
+                        {
+                            expirtedSaleLine &&
+                            <Text style={SettingItemPanelStyle.explainTxt}>{expirtedSaleLine}</Text>
                         }
 
                         {/* isHandling */}
