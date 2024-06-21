@@ -48,7 +48,7 @@ const eng = {
   done: 'Done',
   not_show: 'Excluded time',
   not_show_explain: "Set time ranges during which notifications will not be shown to avoid interruptions during your resting or working time.",
-  more_setting: 'More settings',
+  more_setting: 'Optionals',
   history_empty: 'History is empty.',
   test: 'Test',
   confirm: 'Confirm',
