@@ -3,6 +3,7 @@
 // Created on early 2024, Gooday
 
 import { FirebaseDatabase_GetValueAsyncWithTimeOut, FirebaseDatabase_SetValueAsync, FirebaseDatabase_SetValueAsyncWithTimeOut, FirebaseDatabaseTimeOutMs } from "./Firebase/FirebaseDatabase"
+import { IsDev } from "./IsDev"
 import { SubscribedData, User, UserForcePremiumDataProperty } from "./SpecificType"
 import { UserID } from "./UserID"
 import { CreateError, IsValuableArrayOrString } from "./UtilsTS"
@@ -10,7 +11,7 @@ import { CreateError, IsValuableArrayOrString } from "./UtilsTS"
 // path ///////////////////////////////
 
 const GetUserFirebasePath = (userId?: string) => { // main 
-    return `user_data/users/${IsValuableArrayOrString(userId) ? userId : UserID()}`
+    return `user_data/${IsDev() ? 'dev' : 'production'}/users/${IsValuableArrayOrString(userId) ? userId : UserID()}`
 }
 
 export const GetUserPropertyFirebasePath = (property: string, userId?: string): string => { // sub 
