@@ -10,6 +10,7 @@ import { AppName } from '../../Common/SpecificConstants'
 import { Outline } from '../Constants/Constants_Outline'
 import SlideInView from '../../Common/Components/Effects/SlideInView'
 import { PopuplarityLevelNumber, TotalWords } from '../Constants/AppConstants'
+import TextTyper from '../../Common/Components/Effects/TextTyper'
 
 const WelcomeScreen = () => {
     const texts = useLocalText()
@@ -27,7 +28,7 @@ const WelcomeScreen = () => {
                 color: Color_Text,
                 fontWeight: FontBold.BoldMore,
             },
-            
+
             itemsView: {
                 alignItems: 'flex-start'
             },
@@ -36,7 +37,7 @@ const WelcomeScreen = () => {
 
     return (
         <View
-            key={3}
+            key={2}
             style={CommonStyles.flex1_justifyContentCenter_AlignItemsCenter}
         >
             {/* welcome */}
@@ -56,9 +57,16 @@ const WelcomeScreen = () => {
             </ScaleUpView>
 
             {/* content */}
-            <ScaleUpView isSpringOrTiming delay={200}>
+            {/* <ScaleUpView isSpringOrTiming delay={200}>
                 <Text style={style.contentTxt}>{texts.welcome_content.replace('###', AppName)}</Text>
-            </ScaleUpView>
+                </ScaleUpView> */}
+
+            <TextTyper
+                text={texts.welcome_content.replace('###', AppName)}
+                textStyle={style.contentTxt}
+                speed={1}
+            />
+
 
             {/* items */}
             <View style={style.itemsView}>
