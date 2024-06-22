@@ -22,6 +22,7 @@ export const StorageKey_ForceDev = 'StorageKey_ForceDev'
 export const StorageKey_UserID = 'StorageKey_UserID'
 export const StorageKey_LoopSetValueFirebase = 'StorageKey_LoopSetValueFirebase'
 export const StorageKey_DidFetchUserDataOnNewlyInstall = 'StorageKey_DidFetchUserDataOnNewlyInstall'
+export const StorageKey_ShowedWelcomeScreen = 'StorageKey_ShowedWelcomeScreen'
 
 // specific
 
