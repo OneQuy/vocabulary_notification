@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
-import { Animated, StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { Animated, StyleProp, ViewStyle } from 'react-native';
+import { CommonStyles } from '../../CommonConstants';
 
 const ScaleUpView = ({
     children,
@@ -35,18 +36,10 @@ const ScaleUpView = ({
     }, []);
 
     return (
-        <Animated.View style={[styles.container, containerStyle, { transform: [{ scale: scaleValue }] }]}>
+        <Animated.View style={[CommonStyles.justifyContentCenter_AlignItemsCenter, containerStyle, { transform: [{ scale: scaleValue }] }]}>
             {children}
         </Animated.View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        // Add other styles as needed
-    },
-});
 
 export default ScaleUpView;
