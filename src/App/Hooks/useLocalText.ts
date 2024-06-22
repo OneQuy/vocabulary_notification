@@ -79,6 +79,7 @@ const eng = {
   welcome_item_1: "Supports translations in over 100 languages",
   welcome_item_2: "### levels of vocabulary popularity",
   welcome_item_3: "A total of up to ### words to learn",
+  start_text: "Okayyyyyy",
 
   push_notice:
     `Every day, vocabulary notifications will be shown at these times: ###.

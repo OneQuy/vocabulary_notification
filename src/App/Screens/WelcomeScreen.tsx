@@ -1,16 +1,18 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React, { useMemo, useState } from 'react'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
-import { Color_Text } from '../Hooks/useTheme'
+import { Color_BG, Color_Text } from '../Hooks/useTheme'
 import ScaleUpView from '../../Common/Components/Effects/ScaleUpView'
 import useLocalText from '../Hooks/useLocalText'
-import { CommonStyles } from '../../Common/CommonConstants'
+import { CommonStyles, StartupWindowSize } from '../../Common/CommonConstants'
 import WealthText from '../../Common/Components/WealthText'
 import { AppName } from '../../Common/SpecificConstants'
 import { Outline } from '../Constants/Constants_Outline'
 import SlideInView from '../../Common/Components/Effects/SlideInView'
 import { PopuplarityLevelNumber, TotalWords } from '../Constants/AppConstants'
 import TextTyper from '../../Common/Components/Effects/TextTyper'
+import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
+import { BorderRadius } from '../Constants/Constants_BorderRadius'
 
 const WelcomeScreen = () => {
     const texts = useLocalText()
@@ -32,12 +34,25 @@ const WelcomeScreen = () => {
             itemsView: {
                 alignItems: 'flex-start'
             },
+
+            startBtnTxt: {
+                fontSize: FontSize.Normal
+            },
+
+            startBtn: {
+                borderWidth: 0,
+                borderRadius: BorderRadius.Small,
+                padding: Outline.Normal,
+                margin: Outline.Normal,
+                marginVertical: Outline.Normal * 2,
+                maxWidth: StartupWindowSize.width * 0.5,
+            },
         })
     }, [])
 
     return (
         <View
-            key={1}
+            key={4}
             style={CommonStyles.flex1_justifyContentCenter_AlignItemsCenter}
         >
             {/* welcome */}
@@ -81,6 +96,25 @@ const WelcomeScreen = () => {
                     </SlideInView>
                 </View>
             }
+
+            {/* start btn */}
+            <ScaleUpView delay={2000} isSpringOrTiming>
+                <LucideIconTextEffectButton
+                    selectedColorOfTextAndIcon={Color_BG}
+                    selectedBackgroundColor={Color_Text}
+
+                    // onPress={() => onConfirmValue(selectingValue, selectingTargetLang)}
+
+                    manuallySelected={true}
+                    canHandlePressWhenSelected
+
+                    style={style.startBtn}
+
+                    title={texts.start_text}
+
+                    titleProps={{ style: style.startBtnTxt }}
+                />
+            </ScaleUpView>
         </View>
     )
 }
