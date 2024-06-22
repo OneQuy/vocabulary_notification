@@ -73,6 +73,12 @@ const eng = {
   introduce_trial: "You can change to any level during the ##-day trial. After this period, you can continue using the selected level. Upgrade to Lifetime to unlock all levels from now on.",
   purchased_but_cannot_sync: "Purchase successful! You have the Lifetime subscription, but data cannot sync to the server. Please check your internet and try again.",
   sale_ends: "The sale ends on ###",
+  welcome: "Welcome to ",
+  welcome_content: "### is the app that helps you learn English vocabulary effortlessly through notifications. Each notification introduces a new word.",
+  welcome_item_0: "Customize the frequency of notifications",
+  welcome_item_1: "Supports translations in over 100 languages",
+  welcome_item_2: "### levels of vocabulary popularity",
+  welcome_item_3: "A total of up to ### words to learn",
 
   push_notice:
     `Every day, vocabulary notifications will be shown at these times: ###.

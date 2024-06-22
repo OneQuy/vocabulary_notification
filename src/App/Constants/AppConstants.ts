@@ -1,6 +1,7 @@
 import { PairTime, TranslationService } from "../Types"
 
 export const PopuplarityLevelNumber = 10
+export const TotalWords = '50,000'
 
 
 export const MinimumIntervalInMin = 10
