@@ -3,11 +3,13 @@ import { Animated, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
 const ScaleUpView = ({
     children,
+    isSpringOrTiming,
     duration,
     delay,
     containerStyle,
 }: {
     children: React.JSX.Element,
+    isSpringOrTiming?: boolean,
     duration?: number,
     delay?: number,
     containerStyle?: StyleProp<ViewStyle>,
@@ -15,12 +17,21 @@ const ScaleUpView = ({
     const scaleValue = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
-        Animated.timing(scaleValue, {
-            toValue: 1,
-            duration,
-            delay,
-            useNativeDriver: true,
-        }).start();
+        if (isSpringOrTiming === true) {
+            Animated.spring(scaleValue, {
+                toValue: 1,
+                delay,
+                useNativeDriver: true,
+            }).start();
+        }
+        else {
+            Animated.timing(scaleValue, {
+                toValue: 1,
+                duration,
+                delay,
+                useNativeDriver: true,
+            }).start();
+        }
     }, []);
 
     return (
