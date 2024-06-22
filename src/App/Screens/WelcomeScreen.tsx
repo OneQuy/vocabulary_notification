@@ -18,7 +18,7 @@ const WelcomeScreen = () => {
         return StyleSheet.create({
             welcomeTxt: { fontSize: FontSize.Big, color: Color_Text },
 
-            contentTxt: { marginVertical: Outline.Normal * 2, textAlign: 'center', fontSize: FontSize.Normal, color: Color_Text },
+            contentTxt: { marginHorizontal: Outline.Normal, marginVertical: Outline.Normal * 2, textAlign: 'center', fontSize: FontSize.Normal, color: Color_Text },
 
             contentItemTxt: { marginVertical: Outline.Small, textAlign: 'center', fontSize: FontSize.Normal, color: Color_Text },
 

@@ -74,7 +74,7 @@ const eng = {
   purchased_but_cannot_sync: "Purchase successful! You have the Lifetime subscription, but data cannot sync to the server. Please check your internet and try again.",
   sale_ends: "The sale ends on ###",
   welcome: "Welcome to ",
-  welcome_content: "### is the app that helps you learn English vocabulary effortlessly through notifications. Each notification introduces a new word.",
+  welcome_content: "### is a simple app that helps you learn English vocabulary effortlessly through notifications. Each notification introduces a new word.",
   welcome_item_0: "Customize the frequency of notifications",
   welcome_item_1: "Supports translations in over 100 languages",
   welcome_item_2: "### levels of vocabulary popularity",
