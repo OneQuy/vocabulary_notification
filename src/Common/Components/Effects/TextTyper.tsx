@@ -5,10 +5,12 @@ const TextTyper = ({
     text,
     speed = 10,
     textStyle,
+    onFinished,
 }: {
     text: string,
     speed?: number,
     textStyle?: StyleProp<TextStyle>,
+    onFinished?: () => void,
 }) => {
     const [displayedText, setDisplayedText] = useState('');
 
@@ -23,6 +25,9 @@ const TextTyper = ({
                 currentIndex++;
             } else {
                 clearInterval(intervalId);
+
+                if (onFinished)
+                    onFinished()
             }
         }, speed);
 
