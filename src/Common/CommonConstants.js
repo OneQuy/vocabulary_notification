@@ -80,4 +80,16 @@ export const CommonStyles = StyleSheet.create({
         flexDirection: 'row',
         width: '100%',
     },
+
+    row_JustifyContentCenter_AlignItemsCenter:
+    {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    row:
+    {
+        flexDirection: 'row',
+    },
 });
