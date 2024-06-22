@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from 'react-native'
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import { Color_Text } from '../Hooks/useTheme'
 import ScaleUpView from '../../Common/Components/Effects/ScaleUpView'
@@ -21,7 +21,7 @@ const WelcomeScreen = () => {
 
             contentTxt: { marginHorizontal: Outline.Normal, marginVertical: Outline.Normal * 2, textAlign: 'center', fontSize: FontSize.Normal, color: Color_Text },
 
-            contentItemTxt: { marginVertical: Outline.Small, textAlign: 'center', fontSize: FontSize.Normal, color: Color_Text },
+            contentItemTxt: { fontStyle: 'italic', marginVertical: Outline.Small, textAlign: 'center', fontSize: FontSize.Normal, color: Color_Text },
 
             appNameTxt: {
                 fontSize: FontSize.Big,
@@ -37,7 +37,7 @@ const WelcomeScreen = () => {
 
     return (
         <View
-            key={2}
+            key={1}
             style={CommonStyles.flex1_justifyContentCenter_AlignItemsCenter}
         >
             {/* welcome */}
@@ -57,35 +57,30 @@ const WelcomeScreen = () => {
             </ScaleUpView>
 
             {/* content */}
-            {/* <ScaleUpView isSpringOrTiming delay={200}>
+            <ScaleUpView isSpringOrTiming delay={200}>
                 <Text style={style.contentTxt}>{texts.welcome_content.replace('###', AppName)}</Text>
-                </ScaleUpView> */}
-
-            <TextTyper
-                text={texts.welcome_content.replace('###', AppName)}
-                textStyle={style.contentTxt}
-                speed={1}
-            />
-
+            </ScaleUpView>
 
             {/* items */}
-            <View style={style.itemsView}>
-                <SlideInView from={'right'} isSpringOrTiming delay={0}>
-                    <Text adjustsFontSizeToFit numberOfLines={1} style={style.contentItemTxt}>⭐️ {texts.welcome_item_0}</Text>
-                </SlideInView>
+            {
+                <View style={style.itemsView}>
+                    <SlideInView from={'right'} isSpringOrTiming delay={400}>
+                        <Text adjustsFontSizeToFit numberOfLines={1} style={style.contentItemTxt}>⭐️ {texts.welcome_item_0}</Text>
+                    </SlideInView>
 
-                <SlideInView from={'right'} isSpringOrTiming delay={100}>
-                    <Text adjustsFontSizeToFit numberOfLines={1} style={style.contentItemTxt}>⭐️ {texts.welcome_item_1}</Text>
-                </SlideInView>
+                    <SlideInView from={'right'} isSpringOrTiming delay={600}>
+                        <Text adjustsFontSizeToFit numberOfLines={1} style={style.contentItemTxt}>⭐️ {texts.welcome_item_1}</Text>
+                    </SlideInView>
 
-                <SlideInView from={'right'} isSpringOrTiming delay={200}>
-                    <Text adjustsFontSizeToFit numberOfLines={1} style={style.contentItemTxt}>⭐️ {texts.welcome_item_2.replace('###', PopuplarityLevelNumber.toString())}</Text>
-                </SlideInView>
+                    <SlideInView from={'right'} isSpringOrTiming delay={800}>
+                        <Text adjustsFontSizeToFit numberOfLines={1} style={style.contentItemTxt}>⭐️ {texts.welcome_item_2.replace('###', PopuplarityLevelNumber.toString())}</Text>
+                    </SlideInView>
 
-                <SlideInView from={'right'} isSpringOrTiming delay={300}>
-                    <Text adjustsFontSizeToFit numberOfLines={1} style={style.contentItemTxt}>⭐️ {texts.welcome_item_3.replace('###', TotalWords)}</Text>
-                </SlideInView>
-            </View>
+                    <SlideInView from={'right'} isSpringOrTiming delay={1000}>
+                        <Text adjustsFontSizeToFit numberOfLines={1} style={style.contentItemTxt}>⭐️ {texts.welcome_item_3.replace('###', TotalWords)}</Text>
+                    </SlideInView>
+                </View>
+            }
         </View>
     )
 }
