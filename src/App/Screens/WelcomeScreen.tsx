@@ -114,6 +114,7 @@ const WelcomeScreen = ({
 
                     onPress={onPressStart}
 
+                    notChangeToSelected
                     manuallySelected={true}
                     canHandlePressWhenSelected
 
