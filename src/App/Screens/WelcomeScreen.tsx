@@ -1,7 +1,7 @@
 // Created on 22 June 2024 (Vocaby)
 
 import { View, Text, StyleSheet } from 'react-native'
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import { Color_BG, Color_Text } from '../Hooks/useTheme'
 import ScaleUpView from '../../Common/Components/Effects/ScaleUpView'
@@ -15,7 +15,6 @@ import { PopuplarityLevelNumber, TotalWords } from '../Constants/AppConstants'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 
-
 const OffsetEffect = 200
 const DelayStartEffect = 300
 
@@ -25,6 +24,12 @@ const WelcomeScreen = ({
     onPressStart: () => void
 }) => {
     const texts = useLocalText()
+    const [pressedStart, set_pressedStart] = useState(false)
+
+    const onPressStartBtn = useCallback(() => {
+        set_pressedStart(true)
+        onPressStart()
+    }, [])
 
     const style = useMemo(() => {
         return StyleSheet.create({
@@ -109,12 +114,12 @@ const WelcomeScreen = ({
             }
 
             {/* start btn */}
-            <ScaleUpView delay={OffsetEffect * 6 + DelayStartEffect} isSpringOrTiming>
+            <ScaleUpView containerStyle={{ opacity: pressedStart ? 0 : 1 }} delay={OffsetEffect * 6 + DelayStartEffect} isSpringOrTiming>
                 <LucideIconTextEffectButton
                     selectedColorOfTextAndIcon={Color_BG}
                     selectedBackgroundColor={Color_Text}
 
-                    onPress={onPressStart}
+                    onPress={onPressStartBtn}
 
                     notChangeToSelected
                     manuallySelected={true}
