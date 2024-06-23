@@ -6,8 +6,8 @@ import { CommonStyles } from '../../CommonConstants';
 
 const ScaleUpView = ({
     children,
-    isSpringOrTiming,
-    duration,
+    isSpringOrTiming = true,
+    duration = 500,
     delay,
     containerStyle,
 }: {

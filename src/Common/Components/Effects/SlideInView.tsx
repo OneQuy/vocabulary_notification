@@ -6,7 +6,7 @@ import { Animated, Dimensions, StyleProp, ViewStyle } from 'react-native';
 const SlideInView = ({
     children,
     from = 'right',
-    isSpringOrTiming,
+    isSpringOrTiming = true,
     duration = 500,
     delay,
     containerStyle,
