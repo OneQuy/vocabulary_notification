@@ -1,5 +1,5 @@
 import { SafeAreaView, StyleSheet, StatusBar } from 'react-native'
-import React, { useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import SetupScreen from './src/App/Screens/SetupScreen'
 import { Color_BG } from './src/App/Hooks/useTheme'
 import useAsyncHandle from './src/Common/Hooks/useAsyncHandle'
@@ -8,9 +8,13 @@ import SplashScreen from './src/Common/Components/SplashScreen'
 import { PostHogProvider } from 'posthog-react-native'
 import { PostHogKey_Production } from './Keys'
 import { GetAlternativeConfig } from './src/Common/RemoteConfig'
+import WelcomeScreen from './src/App/Screens/WelcomeScreen'
+import { GetBooleanAsync, SetBooleanAsync } from './src/Common/AsyncStorageUtils'
+import { StorageKey_ShowedWelcomeScreen } from './src/App/Constants/StorageKey'
 
 const App = () => {
   const { handled } = useAsyncHandle(async () => SplashScreenLoader());
+  const [showWelcomeScreen, set_showWelcomeScreen] = useState(false)
 
   const style = useMemo(() => {
     return StyleSheet.create({
@@ -18,8 +22,28 @@ const App = () => {
     })
   }, [])
 
+  const onPressStartWelcomeScreen = useCallback(() => {
+    SetBooleanAsync(StorageKey_ShowedWelcomeScreen, true)
+    set_showWelcomeScreen(false)
+  }, [])
+
+  // check welcome screen
+
+  useEffect(() => {
+    (async () => {
+      const show = await GetBooleanAsync(StorageKey_ShowedWelcomeScreen)
+
+      if (!show) {
+        set_showWelcomeScreen(true)
+      }
+    })()
+  }, [])
+
   if (!handled)
     return <SplashScreen />
+
+  if (showWelcomeScreen)
+    return <WelcomeScreen onPressStart={onPressStartWelcomeScreen} />
 
   const postHogAutocapture = GetAlternativeConfig('postHogAutoCapture', false)
 
