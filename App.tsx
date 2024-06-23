@@ -39,11 +39,23 @@ const App = () => {
     })()
   }, [])
 
+  // splash screen
+
   if (!handled)
     return <SplashScreen />
 
-  if (showWelcomeScreen)
-    return <WelcomeScreen onPressStart={onPressStartWelcomeScreen} />
+  // welcome screen
+
+  if (showWelcomeScreen) {
+    return (
+      <SafeAreaView style={style.master}>
+        <StatusBar backgroundColor={Color_BG} barStyle={'light-content'} />
+        <WelcomeScreen onPressStart={onPressStartWelcomeScreen} />
+      </SafeAreaView>
+    )
+  }
+
+  // main app render
 
   const postHogAutocapture = GetAlternativeConfig('postHogAutoCapture', false)
 

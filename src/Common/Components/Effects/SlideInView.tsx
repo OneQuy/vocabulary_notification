@@ -1,3 +1,5 @@
+// Created on 22 June 2024 (Vocaby)
+
 import React, { useRef, useEffect } from 'react';
 import { Animated, Dimensions, StyleProp, ViewStyle } from 'react-native';
 

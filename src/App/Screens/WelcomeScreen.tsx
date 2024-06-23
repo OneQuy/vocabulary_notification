@@ -1,3 +1,5 @@
+// Created on 22 June 2024 (Vocaby)
+
 import { View, Text, StyleSheet } from 'react-native'
 import React, { useMemo } from 'react'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
