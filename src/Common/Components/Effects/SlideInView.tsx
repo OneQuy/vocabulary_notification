@@ -18,7 +18,7 @@ const SlideInView = ({
     delay?: number,
     containerStyle?: StyleProp<ViewStyle>,
 }) => {
-    const translateValue = useRef(new Animated.Value(0)).current;
+    const translateValue = useRef(new Animated.Value(Number.MAX_VALUE)).current;
 
     useEffect(() => {
         let initialPosition;
