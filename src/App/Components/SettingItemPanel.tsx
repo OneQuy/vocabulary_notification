@@ -4,6 +4,7 @@ import { Color_BG2, Color_Border, Color_Text, Color_Text2 } from '../Hooks/useTh
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import { Gap, Outline } from '../Constants/Constants_Outline'
+import FlickerView from '../../Common/Components/Effects/FlickerView'
 
 export const SettingItemPanelStyle = StyleSheet.create({
     master: {
@@ -118,7 +119,9 @@ const SettingItemPanel = ({
             </View>
 
             <TouchableOpacity style={memoStyle.rightPanelTO} onPress={onPress}>
-                <Text adjustsFontSizeToFit numberOfLines={1} style={SettingItemPanelStyle.valueTxt}>{value}</Text>
+                <FlickerView enable={value === '?'} interval={300}>
+                    <Text adjustsFontSizeToFit numberOfLines={1} style={SettingItemPanelStyle.valueTxt}>{value}</Text>
+                </FlickerView>
 
                 {
                     unit &&
