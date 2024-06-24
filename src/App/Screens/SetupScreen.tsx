@@ -1121,75 +1121,72 @@ const SetupScreen = () => {
 
             {/* display of noti */}
 
-            {
-              true &&
-              <ScaleUpView delay={EffectScaleUpOffset * 2}>
-                <View style={SettingItemPanelStyle.master_Column}>
-                  {/* title */}
-                  <Text style={SettingItemPanelStyle.titleTxt}>{texts.noti_display}</Text>
+            <ScaleUpView delay={EffectScaleUpOffset * 2}>
+              <View style={SettingItemPanelStyle.master_Column}>
+                {/* title */}
+                <Text style={SettingItemPanelStyle.titleTxt}>{texts.noti_display}</Text>
 
-                  {/* explain */}
-                  <Text style={SettingItemPanelStyle.explainTxt}>
-                    {texts.noti_display_explain.replace('##', texts.test_notification)}
-                  </Text>
+                {/* explain */}
+                <Text style={SettingItemPanelStyle.explainTxt}>
+                  {texts.noti_display_explain.replace('##', texts.test_notification)}
+                </Text>
 
-                  {/* display of noti - phonetic */}
+                {/* display of noti - phonetic */}
 
-                  {
-                    renderDisplaySettingItem(
-                      texts.show_phonetic,
-                      displaySettting_ShowPhonetic,
-                      set_displaySettting_ShowPhonetic,
-                      StorageKey_ShowPhonetic
-                    )
-                  }
+                {
+                  renderDisplaySettingItem(
+                    texts.show_phonetic,
+                    displaySettting_ShowPhonetic,
+                    set_displaySettting_ShowPhonetic,
+                    StorageKey_ShowPhonetic
+                  )
+                }
 
-                  {/* display of noti - part of speech */}
+                {/* display of noti - part of speech */}
 
-                  {
-                    renderDisplaySettingItem(
-                      texts.show_part_of_speech,
-                      displaySettting_ShowPartOfSpeech || displaySettting_Example || displaySettting_Definitions,
-                      set_displaySettting_ShowPartOfSpeech,
-                      StorageKey_ShowPartOfSpeech
-                    )
-                  }
+                {
+                  renderDisplaySettingItem(
+                    texts.show_part_of_speech,
+                    displaySettting_ShowPartOfSpeech || displaySettting_Example || displaySettting_Definitions,
+                    set_displaySettting_ShowPartOfSpeech,
+                    StorageKey_ShowPartOfSpeech
+                  )
+                }
 
-                  {/* display of noti - definitions */}
+                {/* display of noti - definitions */}
 
-                  {
-                    renderDisplaySettingItem(
-                      texts.show_definitions,
-                      displaySettting_Definitions,
-                      set_displaySettting_Definitions,
-                      StorageKey_ShowDefinitions
-                    )
-                  }
+                {
+                  renderDisplaySettingItem(
+                    texts.show_definitions,
+                    displaySettting_Definitions,
+                    set_displaySettting_Definitions,
+                    StorageKey_ShowDefinitions
+                  )
+                }
 
-                  {/* display of noti - example */}
+                {/* display of noti - example */}
 
-                  {
-                    renderDisplaySettingItem(
-                      texts.show_examble,
-                      displaySettting_Example,
-                      set_displaySettting_Example,
-                      StorageKey_ShowExample
-                    )
-                  }
+                {
+                  renderDisplaySettingItem(
+                    texts.show_examble,
+                    displaySettting_Example,
+                    set_displaySettting_Example,
+                    StorageKey_ShowExample
+                  )
+                }
 
-                  {/* display of noti - rank */}
+                {/* display of noti - rank */}
 
-                  {
-                    renderDisplaySettingItem(
-                      texts.show_rank_of_word,
-                      displaySettting_RankOfWord,
-                      set_displaySettting_RankOfWord,
-                      StorageKey_ShowRankOfWord
-                    )
-                  }
-                </View>
-              </ScaleUpView>
-            }
+                {
+                  renderDisplaySettingItem(
+                    texts.show_rank_of_word,
+                    displaySettting_RankOfWord,
+                    set_displaySettting_RankOfWord,
+                    StorageKey_ShowRankOfWord
+                  )
+                }
+              </View>
+            </ScaleUpView>
 
             {/* more setting */}
 
