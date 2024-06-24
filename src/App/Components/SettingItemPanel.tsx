@@ -36,6 +36,7 @@ export const SettingItemPanelStyle = StyleSheet.create({
         justifyContent: 'center',
         // alignItems: 'center',
 
+        width: '100%',
         gap: Gap.Small,
     },
 
