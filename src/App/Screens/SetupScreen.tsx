@@ -38,8 +38,11 @@ import { LoopSetValueFirebase } from '../../Common/Firebase/LoopSetValueFirebase
 import { GetUserPropertyFirebasePath } from '../../Common/UserMan'
 import { UserSelectedPopularityIndexProperty } from '../../Common/SpecificType'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import ScaleUpView from '../../Common/Components/Effects/ScaleUpView'
 
 const IsLog = false
+
+const EffectScaleUpOffset = 100
 
 export type SubView =
   'setup' |
@@ -1016,7 +1019,11 @@ const SetupScreen = () => {
       set_displaySettting_Example(showExample);
       set_displaySettting_ShowPartOfSpeech(showPartOfSpeech);
 
-      set_useEFfectLoaded(true)
+      // show target lang on top
+
+      setTimeout(() => {
+        set_useEFfectLoaded(true)
+      }, targetLang ? 0 : 500);
     })()
   }, [])
 
@@ -1077,103 +1084,111 @@ const SetupScreen = () => {
 
             {
               !displayTargetLang && useEFfectLoaded &&
-              <SettingItemPanel
-                onPress={() => onPressShowPopupAsync('target-lang')}
-                title={texts.translate_to}
-                explain={texts.translate_language_explain}
-                value={'?'}
-                isLong
-              />
+              <ScaleUpView delay={EffectScaleUpOffset * 0}>
+                <SettingItemPanel
+                  onPress={() => onPressShowPopupAsync('target-lang')}
+                  title={texts.translate_to}
+                  explain={texts.translate_language_explain}
+                  value={'?'}
+                  isLong
+                />
+              </ScaleUpView>
             }
 
             {/* popularity_level */}
 
-            <SettingItemPanel
-              onPress={() => onPressShowPopupAsync('popularity')}
-              title={texts.popularity_level}
-              explain={texts.popularity_level_explain}
-              value={displayPopularityLevelIdx + 1}
-              unit={texts.level}
-            />
+            <ScaleUpView delay={EffectScaleUpOffset * 0}>
+              <SettingItemPanel
+                onPress={() => onPressShowPopupAsync('popularity')}
+                title={texts.popularity_level}
+                explain={texts.popularity_level_explain}
+                value={displayPopularityLevelIdx + 1}
+                unit={texts.level}
+              />
+            </ScaleUpView>
 
             {/* repeat */}
 
-            <SettingItemPanel
-              onPress={() => onPressShowPopupAsync('interval')}
-              title={texts.repeat}
-              explain={texts.repeat_explain}
-              value={repeatValueAndDisplayText.value}
-              unit={repeatValueAndDisplayText.text}
-            />
+            <ScaleUpView delay={EffectScaleUpOffset * 1}>
+              <SettingItemPanel
+                onPress={() => onPressShowPopupAsync('interval')}
+                title={texts.repeat}
+                explain={texts.repeat_explain}
+                value={repeatValueAndDisplayText.value}
+                unit={repeatValueAndDisplayText.text}
+              />
+            </ScaleUpView>
 
             {/* display of noti */}
 
             {
               true &&
-              <View style={SettingItemPanelStyle.master_Column}>
-                {/* title */}
-                <Text style={SettingItemPanelStyle.titleTxt}>{texts.noti_display}</Text>
+              <ScaleUpView delay={EffectScaleUpOffset * 2}>
+                <View style={SettingItemPanelStyle.master_Column}>
+                  {/* title */}
+                  <Text style={SettingItemPanelStyle.titleTxt}>{texts.noti_display}</Text>
 
-                {/* explain */}
-                <Text style={SettingItemPanelStyle.explainTxt}>
-                  {texts.noti_display_explain.replace('##', texts.test_notification)}
-                </Text>
+                  {/* explain */}
+                  <Text style={SettingItemPanelStyle.explainTxt}>
+                    {texts.noti_display_explain.replace('##', texts.test_notification)}
+                  </Text>
 
-                {/* display of noti - phonetic */}
+                  {/* display of noti - phonetic */}
 
-                {
-                  renderDisplaySettingItem(
-                    texts.show_phonetic,
-                    displaySettting_ShowPhonetic,
-                    set_displaySettting_ShowPhonetic,
-                    StorageKey_ShowPhonetic
-                  )
-                }
+                  {
+                    renderDisplaySettingItem(
+                      texts.show_phonetic,
+                      displaySettting_ShowPhonetic,
+                      set_displaySettting_ShowPhonetic,
+                      StorageKey_ShowPhonetic
+                    )
+                  }
 
-                {/* display of noti - part of speech */}
+                  {/* display of noti - part of speech */}
 
-                {
-                  renderDisplaySettingItem(
-                    texts.show_part_of_speech,
-                    displaySettting_ShowPartOfSpeech || displaySettting_Example || displaySettting_Definitions,
-                    set_displaySettting_ShowPartOfSpeech,
-                    StorageKey_ShowPartOfSpeech
-                  )
-                }
+                  {
+                    renderDisplaySettingItem(
+                      texts.show_part_of_speech,
+                      displaySettting_ShowPartOfSpeech || displaySettting_Example || displaySettting_Definitions,
+                      set_displaySettting_ShowPartOfSpeech,
+                      StorageKey_ShowPartOfSpeech
+                    )
+                  }
 
-                {/* display of noti - definitions */}
+                  {/* display of noti - definitions */}
 
-                {
-                  renderDisplaySettingItem(
-                    texts.show_definitions,
-                    displaySettting_Definitions,
-                    set_displaySettting_Definitions,
-                    StorageKey_ShowDefinitions
-                  )
-                }
+                  {
+                    renderDisplaySettingItem(
+                      texts.show_definitions,
+                      displaySettting_Definitions,
+                      set_displaySettting_Definitions,
+                      StorageKey_ShowDefinitions
+                    )
+                  }
 
-                {/* display of noti - example */}
+                  {/* display of noti - example */}
 
-                {
-                  renderDisplaySettingItem(
-                    texts.show_examble,
-                    displaySettting_Example,
-                    set_displaySettting_Example,
-                    StorageKey_ShowExample
-                  )
-                }
+                  {
+                    renderDisplaySettingItem(
+                      texts.show_examble,
+                      displaySettting_Example,
+                      set_displaySettting_Example,
+                      StorageKey_ShowExample
+                    )
+                  }
 
-                {/* display of noti - rank */}
+                  {/* display of noti - rank */}
 
-                {
-                  renderDisplaySettingItem(
-                    texts.show_rank_of_word,
-                    displaySettting_RankOfWord,
-                    set_displaySettting_RankOfWord,
-                    StorageKey_ShowRankOfWord
-                  )
-                }
-              </View>
+                  {
+                    renderDisplaySettingItem(
+                      texts.show_rank_of_word,
+                      displaySettting_RankOfWord,
+                      set_displaySettting_RankOfWord,
+                      StorageKey_ShowRankOfWord
+                    )
+                  }
+                </View>
+              </ScaleUpView>
             }
 
             {/* more setting */}
