@@ -100,15 +100,15 @@ const WelcomeScreen = ({
                     </SlideInView>
 
                     <SlideInView from={'right'} isSpringOrTiming delay={OffsetEffect * 3 + DelayStartEffect}>
-                        <Text adjustsFontSizeToFit numberOfLines={1} style={style.contentItemTxt}>🔥 {texts.welcome_item_1}</Text>
+                        <Text adjustsFontSizeToFit numberOfLines={1} style={style.contentItemTxt}>⭐️ {texts.welcome_item_1}</Text>
                     </SlideInView>
 
                     <SlideInView from={'right'} isSpringOrTiming delay={OffsetEffect * 4 + DelayStartEffect}>
-                        <Text adjustsFontSizeToFit numberOfLines={1} style={style.contentItemTxt}>💛 {texts.welcome_item_2.replace('###', PopuplarityLevelNumber.toString())}</Text>
+                        <Text adjustsFontSizeToFit numberOfLines={1} style={style.contentItemTxt}>⭐️ {texts.welcome_item_2.replace('###', PopuplarityLevelNumber.toString())}</Text>
                     </SlideInView>
 
                     <SlideInView from={'right'} isSpringOrTiming delay={OffsetEffect * 5 + DelayStartEffect}>
-                        <Text adjustsFontSizeToFit numberOfLines={1} style={style.contentItemTxt}>✨ {texts.welcome_item_3.replace('###', TotalWords)}</Text>
+                        <Text adjustsFontSizeToFit numberOfLines={1} style={style.contentItemTxt}>⭐️ {texts.welcome_item_3.replace('###', TotalWords)}</Text>
                     </SlideInView>
                 </View>
             }
