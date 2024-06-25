@@ -600,6 +600,7 @@ const SetupScreen = () => {
     return (
       <ExampleWordView
         notTranslate
+        trackType='popularity'
         onConfirmValue={onPressConfirmInPopupPopularityLevel}
         getExampleAsync={getExampleWordsAsync}
         titleLeft={texts.level}
@@ -831,6 +832,7 @@ const SetupScreen = () => {
     return (
       <ExampleWordView
         initTargetLang={displayTargetLang}
+        trackType='translation_service'
         onConfirmValue={onPressConfirmInPopupTranslationService}
         getExampleAsync={getExampleWordsAsync}
         titleLeft={texts.services}
