@@ -3,12 +3,17 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import useLocalText, { } from '../Hooks/useLocalText'
 import { Gap, Outline } from '../Constants/Constants_Outline'
 import { SavedWordData } from '../Types'
-import { CapitalizeFirstLetter, GetElementsOfPageArray, HexToRgb, SafeArrayLength } from '../../Common/UtilsTS'
+import { CapitalizeFirstLetter, DelayAsync, GetElementsOfPageArray, HexToRgb, SafeArrayLength } from '../../Common/UtilsTS'
 import { FontSize } from '../Constants/Constants_FontSize'
 import { HandlingType } from './SetupScreen'
-import { ExtractWordFromWordLang } from '../Handles/AppUtils'
+import { CheckDeserializeLocalizedData, ExtractWordFromWordLang } from '../Handles/AppUtils'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { Color_Text } from '../Hooks/useTheme'
+import { SetBooleanAsync } from '../../Common/AsyncStorageUtils'
+import { StorageKey_ShowedWelcomeScreen, StorageKey_TargetLang } from '../Constants/StorageKey'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { UpdatePushedWordsAndRefreshCurrentNotiWordsAsync } from '../Handles/SetupNotification'
+import { GetLocalizedWordFromDbAsync } from '../Handles/LocalizedWordsTable'
 
 const PageItemCount = 20
 
@@ -82,60 +87,43 @@ const HistoryScreen = ({
     )
   }, [style])
 
-  // console.log(SafeArrayLength(allPushedWordsOrError));
-
+  // load 
+  
   useEffect(() => {
     (async () => {
-      // await LoopSetValueFirebase.SetValueAsync(
-      //   'num' + Date.now(),
-      //   'haha/num' + Date.now(),
-      //   Date.now(),
-      //   PopupTitleError,
-      //   CanNotSetupUserData,
-      //   RetryText,
-      //   texts.cancel
-      // )
+      await DelayAsync(200)
 
-      // while (true) {
-      //   set_text(t => t + 1)
-      //   await DelayAsync(1000)
-      // }
+      setHandling('loading_local')
 
+      await DelayAsync(200)
 
+      // update pushed word to db
 
-      // await DelayAsync(200)
+      await UpdatePushedWordsAndRefreshCurrentNotiWordsAsync()
 
-      // setHandling('loading_local')
+      // words 
 
-      // await DelayAsync(200)
+      const allPushed = await GetLocalizedWordFromDbAsync(undefined, true)
 
-      // // update pushed word to db
+      if (!Array.isArray(allPushed)) {
+        set_allPushedWordsOrError(allPushed)
+        setHandling(undefined)
+        return
+      }
 
-      // await UpdatePushedWordsAndRefreshCurrentNotiWordsAsync()
+      for (let i = 0; i < allPushed.length; i++) {
+        const word = allPushed[i]
 
-      // // words 
+        CheckDeserializeLocalizedData(word)
+      }
 
-      // const allPushed = await GetLocalizedWordFromDbAsync(undefined, true)
+      allPushed.sort((a, b) => {
+        return b.lastNotiTick - a.lastNotiTick
+      })
 
-      // if (!Array.isArray(allPushed)) {
-      //   set_allPushedWordsOrError(allPushed)
-      //   setHandling(undefined)
-      //   return
-      // }
+      set_allPushedWordsOrError(allPushed)
 
-      // for (let i = 0; i < allPushed.length; i++) {
-      //   const word = allPushed[i]
-
-      //   CheckDeserializeLocalizedData(word)
-      // }
-
-      // allPushed.sort((a, b) => {
-      //   return b.lastNotiTick - a.lastNotiTick
-      // })
-
-      // set_allPushedWordsOrError(allPushed)
-
-      // setHandling(undefined)
+      setHandling(undefined)
     })()
   }, [])
 
