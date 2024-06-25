@@ -54,7 +54,6 @@ type PopupType =
   'interval' |
   'limit-word' |
   'target-lang' |
-  'num_days_push' |
   'translation_service' |
   undefined
 
