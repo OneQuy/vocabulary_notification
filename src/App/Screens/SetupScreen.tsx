@@ -480,8 +480,6 @@ const SetupScreen = () => {
   })
 
   const onPressShowPopupAsync = useCallback(async (type: PopupType) => {
-    TrackSimpleWithParam('show_popup', type as string)
-
     let canOpen = true
 
     if (appContextValue.subscribedData === undefined && type === 'popularity') {
@@ -499,6 +497,8 @@ const SetupScreen = () => {
       return
 
     set_showPopup(type)
+
+    TrackSimpleWithParam('show_popup', type as string)
   }, [texts, onSetSubcribeDataAsync, appContextValue])
 
   // noti display
@@ -589,6 +589,10 @@ const SetupScreen = () => {
       // set UI
 
       set_displayPopularityLevelIdx(popularityLevelIdx)
+
+      // track
+
+      TrackSimpleWithParam('confirmed_popularity', 'level_' + (popularityLevelIdx + 1))
     })
   }, [setHandlingAndGetReadyDataAsync])
 
