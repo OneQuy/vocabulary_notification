@@ -53,7 +53,7 @@ type PopupType =
   'popularity' |
   'interval' |
   'limit_word' |
-  'target-lang' |
+  'target_lang' |
   'translation_service' |
   undefined
 
@@ -781,7 +781,7 @@ const SetupScreen = () => {
         texts.popup_error,
         texts.pls_set_target_lang, [
         {
-          onPress: () => onPressShowPopupAsync('target-lang')
+          onPress: () => onPressShowPopupAsync('target_lang')
         }
       ])
 
@@ -956,7 +956,7 @@ const SetupScreen = () => {
     contentToRenderInPopup = renderIntervals
   else if (showPopup === 'limit_word')
     contentToRenderInPopup = renderWordLimits
-  else if (showPopup === 'target-lang')
+  else if (showPopup === 'target_lang')
     contentToRenderInPopup = renderPickTargetLang
   else if (showPopup === 'translation_service')
     contentToRenderInPopup = renderPickTranslationService
@@ -1087,7 +1087,7 @@ const SetupScreen = () => {
               !displayTargetLang && useEFfectLoaded &&
               <ScaleUpView delay={EffectScaleUpOffset * 0}>
                 <SettingItemPanel
-                  onPress={() => onPressShowPopupAsync('target-lang')}
+                  onPress={() => onPressShowPopupAsync('target_lang')}
                   title={texts.translate_to}
                   explain={texts.translate_language_explain}
                   value={'?'}
@@ -1266,7 +1266,7 @@ const SetupScreen = () => {
             {
               showMoreSetting &&
               < SettingItemPanel
-                onPress={() => onPressShowPopupAsync('target-lang')}
+                onPress={() => onPressShowPopupAsync('target_lang')}
                 title={texts.translate_to}
                 explain={texts.translate_language_explain}
                 value={displayTargetLang?.name ?? '?'}
