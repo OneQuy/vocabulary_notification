@@ -317,12 +317,19 @@ const ExampleWordView = ({
                                 selectedColorOfTextAndIcon={Color_Text}
                                 unselectedColorOfTextAndIcon={Color_BG}
 
-                                onPress={() => generateExamplesAsync(
-                                    selectingValue && typeof selectingValue.value === 'string' ? (selectingValue.value as TranslationService) : undefined,
-                                    selectingValue && typeof selectingValue.value === 'number' ? selectingValue.value : undefined,
-                                    selectingTargetLang?.language,
-                                    notTranslate
-                                )}
+                                onPress={() => {
+                                    generateExamplesAsync(
+                                        selectingValue && typeof selectingValue.value === 'string' ? (selectingValue.value as TranslationService) : undefined,
+                                        selectingValue && typeof selectingValue.value === 'number' ? selectingValue.value : undefined,
+                                        selectingTargetLang?.language,
+                                        notTranslate
+                                    )
+
+                                    TrackSimpleWithParam(
+                                        'popup_press_other_words',
+                                        trackType,
+                                    )
+                                }}
 
                                 notChangeToSelected
 
