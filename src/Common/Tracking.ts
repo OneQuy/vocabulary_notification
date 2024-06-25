@@ -313,18 +313,22 @@ export const TrackingAsync = async ( // main
         console.log('****************')
 }
 
-export const TrackSimple = (event: string) => { // sub 
+export const TrackSimple = (event: string, isCommonAppEvent = false) => { // sub 
     TrackingAsync(event,
         [
-            `total/app/${event}`,
+            isCommonAppEvent ?
+                `total/app/${event}` :
+                `total/${event}`,
         ]
     )
 }
 
-export const TrackSimpleWithParam = (event: string, value: string) => { // sub 
+export const TrackSimpleWithParam = (event: string, value: string, isCommonAppEvent = false) => { // sub 
     TrackingAsync(event,
         [
-            `total/app/${event}/` + value,
+            isCommonAppEvent ?
+                `total/app/${event}/` + value :
+                `total/${event}/` + value,
         ],
         {
             value,
@@ -411,7 +415,7 @@ export const CheckTrackUpdatedAppAsync = async (): Promise<number> => {
             }
         )
 
-        TrackSimpleWithParam('version', 'v' + VersionAsNumber)
+        TrackSimpleWithParam('version', 'v' + VersionAsNumber, true)
     }
 
     return didUpdated ? lastInstalledVersion : NaN
@@ -448,11 +452,11 @@ export const TrackOnNewlyInstallAsync = async () => {
 
     // version
 
-    TrackSimpleWithParam('version', 'v' + VersionAsNumber)
+    TrackSimpleWithParam('version', 'v' + VersionAsNumber, true)
 
     // platform
 
-    TrackSimpleWithParam('platform', Platform.OS.toString())
+    TrackSimpleWithParam('platform', Platform.OS.toString(), true)
 }
 
 /**

@@ -204,14 +204,14 @@ const CheckForcePremiumDataAsync = async (setupParams: SetupAppStateAndStartTrac
 
     if (data.id === 'reset') {
         await setupParams.forceSetPremiumAsync(undefined)
-        TrackSimpleWithParam('forced_premium_reset', UserID())
+        TrackSimpleWithParam('forced_premium_reset', UserID(), true)
     }
 
     // force set
 
     else {
         await setupParams.forceSetPremiumAsync(data)
-        TrackSimpleWithParam('forced_premium_set', UserID() + '__' + data.id + '__' + data.purchasedTick)
+        TrackSimpleWithParam('forced_premium_set', UserID() + '__' + data.id + '__' + data.purchasedTick, true)
 
         // Alert.alert('Wohoo!', 'You granted: ' + data.id + '. Really thanks for your support!')
     }
@@ -404,7 +404,7 @@ const CheckShowAlertWhatsNewAsync = async (fromVer: number) => {
 
     s = s.replaceAll('@', '\n')
 
-    TrackSimpleWithParam('show_whats_new', versionsToTrack)
+    TrackSimpleWithParam('show_whats_new', versionsToTrack, true)
 
     await AlertAsync(
         "Thank you for updating!",
