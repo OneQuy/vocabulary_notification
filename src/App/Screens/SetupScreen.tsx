@@ -19,7 +19,7 @@ import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync, IsCachedWordsD
 import { GetBooleanAsync, GetNumberIntAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
 import { StorageKey_LastPushTick, StorageKey_PopularityIndex, StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord, StorageKey_StatusText } from '../Constants/StorageKey'
 import HistoryScreen from './HistoryScreen'
-import { HandleError } from '../../Common/Tracking'
+import { HandleError, TrackSimpleWithParam } from '../../Common/Tracking'
 import { GetLanguageFromCode, Language } from '../../Common/TranslationApis/TranslationLanguages'
 import { BridgeTranslateMultiWordAsync, GetCurrentTranslationServiceSuitAsync } from '../Handles/TranslateBridge'
 import ExampleWordView, { ValueAndDisplayText } from './ExampleWordView'
@@ -52,7 +52,7 @@ export type SubView =
 type PopupType =
   'popularity' |
   'interval' |
-  'limit-word' |
+  'limit_word' |
   'target-lang' |
   'translation_service' |
   undefined
@@ -480,6 +480,8 @@ const SetupScreen = () => {
   })
 
   const onPressShowPopupAsync = useCallback(async (type: PopupType) => {
+    TrackSimpleWithParam('show_popup', type as string)
+
     let canOpen = true
 
     if (appContextValue.subscribedData === undefined && type === 'popularity') {
@@ -952,7 +954,7 @@ const SetupScreen = () => {
     contentToRenderInPopup = renderPopularityLevels
   else if (showPopup === 'interval')
     contentToRenderInPopup = renderIntervals
-  else if (showPopup === 'limit-word')
+  else if (showPopup === 'limit_word')
     contentToRenderInPopup = renderWordLimits
   else if (showPopup === 'target-lang')
     contentToRenderInPopup = renderPickTargetLang
@@ -1238,7 +1240,7 @@ const SetupScreen = () => {
             {
               showMoreSetting &&
               <SettingItemPanel
-                onPress={() => onPressShowPopupAsync('limit-word')}
+                onPress={() => onPressShowPopupAsync('limit_word')}
                 title={texts.limit_words_per_day}
                 explain={texts.limit_words_per_day_explain}
                 value={displayWordLimitNumber === 0 ? texts.no_limit : displayWordLimitNumber}
