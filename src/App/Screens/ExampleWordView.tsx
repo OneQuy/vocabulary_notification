@@ -7,11 +7,12 @@ import { Gap, Outline } from '../Constants/Constants_Outline'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import { TranslationService } from '../Types'
-import { CapitalizeFirstLetter, DelayAsync, SafeParse, SafeValue, ToCanPrint } from '../../Common/UtilsTS'
+import { CapitalizeFirstLetter, DelayAsync, FilterOnlyLetterAndNumberFromString, SafeParse, SafeValue, ToCanPrint } from '../../Common/UtilsTS'
 import TargetLangPicker from '../Components/TargetLangPicker'
 import { Language } from '../../Common/TranslationApis/TranslationLanguages'
 import { CheckCapabilityLanguage } from '../Handles/AppUtils'
 import { GetCurrentTranslationServiceSuitAsync } from '../Handles/TranslateBridge'
+import { TrackSimpleWithParam } from '../../Common/Tracking'
 
 export type ValueAndDisplayText = {
     value: any,
@@ -25,6 +26,7 @@ export type ValueAndDisplayText = {
  */
 const ExampleWordView = ({
     notTranslate,
+    trackType,
     titleLeft,
     titleRight,
     values,
@@ -34,6 +36,7 @@ const ExampleWordView = ({
     onConfirmValue,
 }: {
     notTranslate?: boolean
+    trackType: string
     titleLeft: string,
     titleRight: string,
     values: ValueAndDisplayText[],
@@ -177,6 +180,11 @@ const ExampleWordView = ({
     }, [])
 
     const onPressValueLeftPanelAsync = useCallback(async (value: ValueAndDisplayText) => {
+        TrackSimpleWithParam(
+            'press_value_popup_' + trackType,
+            (typeof value.value === 'number' ? 'index_' : '') + FilterOnlyLetterAndNumberFromString(JSON.stringify(value.value))
+        )
+
         set_selectingValue(value)
 
         if (notTranslate || typeof value.value === 'number') {
@@ -214,7 +222,7 @@ const ExampleWordView = ({
                 (texts.not_fount_suppport_target_lang).replace('##', selectingTargetLang.name)
             )
         }
-    }, [selectingTargetLang, texts, generateExamplesAsync])
+    }, [selectingTargetLang, trackType, texts, generateExamplesAsync])
 
     useEffect(() => {
         (async () => {
