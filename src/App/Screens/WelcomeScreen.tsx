@@ -14,6 +14,8 @@ import SlideInView from '../../Common/Components/Effects/SlideInView'
 import { PopuplarityLevelNumber, TotalWords } from '../Constants/AppConstants'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
+import { TrackingAsync } from '../../Common/Tracking'
+import { RoundWithDecimal } from '../../Common/UtilsTS'
 
 const OffsetEffect = 200
 const DelayStartEffect = 300
@@ -25,10 +27,24 @@ const WelcomeScreen = ({
 }) => {
     const texts = useLocalText()
     const [pressedStart, set_pressedStart] = useState(false)
-
+    const tickStart = Date.now()
+    
     const onPressStartBtn = useCallback(() => {
         set_pressedStart(true)
         onPressStart()
+
+        // track
+
+        const event = 'welcome_screen'
+
+        TrackingAsync(event,
+            [
+                `total/app/${event}`,
+            ],
+            {
+                viewTimeInSec: RoundWithDecimal(((Date.now() - tickStart) / 1000)),
+            }
+        )
     }, [])
 
     const style = useMemo(() => {
@@ -70,6 +86,7 @@ const WelcomeScreen = ({
         <View
             key={5}
             style={style.master}
+            pointerEvents={pressedStart ? 'none' : 'auto'}
         >
             {/* welcome */}
             <ScaleUpView isSpringOrTiming delay={OffsetEffect * 0 + DelayStartEffect}>
