@@ -461,25 +461,6 @@ const SetupScreen = () => {
       checkSetInterval(min)
     }
     else { // for exclude time
-      // const totalMin = TotalMin(time)
-
-      // if (editingExcludeTimePairAndElementIndex.current[1] == 1) { // set end time
-      //   const totalMin_StartTime = TotalMin(editingExcludeTimePairAndElementIndex.current[0][0])
-
-      //   if (totalMin <= totalMin_StartTime) {
-      //     Alert.alert(texts.invalid_input, texts.invalid_end_time)
-      //     return
-      //   }
-      // }
-      // else { // set start time
-      //   const totalMin_EndTime = TotalMin(editingExcludeTimePairAndElementIndex.current[0][1])
-
-      //   if (totalMin >= totalMin_EndTime) {
-      //     Alert.alert(texts.invalid_input, texts.invalid_start_time)
-      //     return
-      //   }
-      // }
-
       editingExcludeTimePairAndElementIndex.current[0][editingExcludeTimePairAndElementIndex.current[1]] = time
       editingExcludeTimePairAndElementIndex.current = [undefined, -1]
 
