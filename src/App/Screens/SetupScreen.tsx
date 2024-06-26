@@ -19,7 +19,7 @@ import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync, IsCachedWordsD
 import { GetBooleanAsync, GetNumberIntAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
 import { StorageKey_LastPushTick, StorageKey_PopularityIndex, StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord, StorageKey_StatusText } from '../Constants/StorageKey'
 import HistoryScreen from './HistoryScreen'
-import { HandleError, TrackSimpleWithParam } from '../../Common/Tracking'
+import { HandleError, TrackSimpleWithParam, TrackingAsync } from '../../Common/Tracking'
 import { GetLanguageFromCode, Language } from '../../Common/TranslationApis/TranslationLanguages'
 import { BridgeTranslateMultiWordAsync, GetCurrentTranslationServiceSuitAsync } from '../Handles/TranslateBridge'
 import ExampleWordView, { ValueAndDisplayText } from './ExampleWordView'
@@ -426,19 +426,39 @@ const SetupScreen = () => {
     set_processPercent('')
   }, [texts, setHandlingAndGetReadyDataAsync, generatePushTimeListText])
 
+  const checkSetInterval = useCallback((minutes: number) => {
+    if (minutes < MinimumIntervalInMin) {
+      Alert.alert('Oooops', texts.interval_minimum_required.replace('##', MinimumIntervalInMin.toString()))
+      return
+    }
+
+    set_displayIntervalInMin(minutes)
+    SetIntervalMinAsync(minutes)
+
+    // track
+
+    const event = 'confirmed_interval'
+
+    const isInPreset = IntervalInMinPresets.includes(minutes)
+
+    TrackingAsync(event,
+      [
+        isInPreset ?
+          `total/${event}/${minutes}m` :
+          `total/${event}/custom`,
+      ],
+      {
+        minutes
+      }
+    )
+  }, [texts])
+
   const onConfirmTimePicker = useCallback((time: TimePickerResult) => {
     if (editingExcludeTimePairAndElementIndex.current[0] === undefined ||
       editingExcludeTimePairAndElementIndex.current[1] === -1
     ) { // set for interval
       const min = time.hours * 60 + time.minutes
-
-      if (min < MinimumIntervalInMin) {
-        Alert.alert('Oooops', texts.interval_minimum_required.replace('##', MinimumIntervalInMin.toString()))
-        return
-      }
-
-      set_displayIntervalInMin(min)
-      SetIntervalMinAsync(min)
+      checkSetInterval(min)
     }
     else { // for exclude time
       // const totalMin = TotalMin(time)
@@ -469,7 +489,7 @@ const SetupScreen = () => {
 
       SetExcludedTimesAsync(obj)
     }
-  }, [displayExcludedTimePairs, texts])
+  }, [checkSetInterval, displayExcludedTimePairs, texts])
 
   const {
     appContextValue,
@@ -646,16 +666,10 @@ const SetupScreen = () => {
         if (!IsNumType(minutesOrCustom)) // open custom timer
           set_showTimePicker(true)
         else { // set value
-          if (minutesOrCustom < MinimumIntervalInMin) {
-            Alert.alert('Oooops', texts.interval_minimum_required.replace('##', MinimumIntervalInMin.toString()))
-            return
-          }
-
-          set_displayIntervalInMin(minutesOrCustom)
-          SetIntervalMinAsync(minutesOrCustom)
+          checkSetInterval(minutesOrCustom)
         }
       })
-  }, [texts])
+  }, [texts, checkSetInterval])
 
   const renderIntervals = useCallback(() => {
     return (
