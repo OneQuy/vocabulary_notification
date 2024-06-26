@@ -529,6 +529,19 @@ const SetupScreen = () => {
 
       SetBooleanAsync(storageKey, toValue)
 
+      // track
+
+      const settingName = storageKey.substring('StorageKey'.length + 1).toLowerCase()
+
+      TrackSimpleWithParam(
+        toValue ?
+          'push_display_enalbe' :
+          'push_display_disable',
+        settingName
+      )
+
+      // return
+
       return toValue
     })
   }, [texts])
