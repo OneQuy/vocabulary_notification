@@ -470,7 +470,7 @@ const SetupScreen = () => {
 
       SetExcludedTimesAsync(obj)
     }
-  }, [checkSetInterval, displayExcludedTimePairs, texts])
+  }, [checkSetInterval, displayExcludedTimePairs])
 
   const {
     appContextValue,
