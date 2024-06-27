@@ -186,19 +186,28 @@ const About = () => {
 
         set_isHandling(true)
 
+        let valueTracking = ''
+
         const res = await PurchaseAsync(currentLifetimeProduct.sku)
 
         if (res === undefined) { // success
             await onPurchasedSuccessAsync(currentLifetimeProduct.sku)
+
+            valueTracking = 'success_' + currentLifetimeProduct.sku
         }
 
-        else if (res === null) { } // user canceled
+        else if (res === null) {
+            valueTracking = 'cancel'
+        } // user canceled
 
         else { // error
             HandleError(res, 'BuyLifetime', true)
+            valueTracking = 'error'
         }
 
         set_isHandling(false)
+
+        TrackSimpleWithParam('purchase', valueTracking)
     }, [
         onPurchasedSuccessAsync,
         isHandling,
