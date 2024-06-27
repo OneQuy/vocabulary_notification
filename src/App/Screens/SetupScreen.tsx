@@ -19,7 +19,7 @@ import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync, IsCachedWordsD
 import { GetBooleanAsync, GetDateAndSetNowAsync, GetNumberIntAsync, IncreaseNumberAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
 import { StorageKey_LastPushTick, StorageKey_LastSetSuccessTick, StorageKey_PopularityIndex, StorageKey_SetPushSuccessCount, StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord, StorageKey_StatusText } from '../Constants/StorageKey'
 import HistoryScreen from './HistoryScreen'
-import { HandleError, TrackSimple, TrackSimpleWithParam, TrackingAsync } from '../../Common/Tracking'
+import { HandleError, TrackPress, TrackSimple, TrackSimpleWithParam, TrackingAsync } from '../../Common/Tracking'
 import { GetLanguageFromCode, Language } from '../../Common/TranslationApis/TranslationLanguages'
 import { BridgeTranslateMultiWordAsync, GetCurrentTranslationServiceSuitAsync } from '../Handles/TranslateBridge'
 import ExampleWordView, { ValueAndDisplayText } from './ExampleWordView'
@@ -256,6 +256,8 @@ const SetupScreen = () => {
 
   const onPressSubview = useCallback((type: SubView) => {
     set_subView(type)
+
+    TrackPress(type)
   }, [])
 
   const onPressMoreSetting = useCallback(() => {

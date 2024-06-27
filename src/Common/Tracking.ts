@@ -323,6 +323,10 @@ export const TrackSimple = (event: string, isCommonAppEvent = false) => { // sub
     )
 }
 
+export const TrackPress = (button: string) => { // sub 
+    TrackSimpleWithParam('press', button)
+}
+
 export const TrackSimpleWithParam = (event: string, value: string, isCommonAppEvent = false) => { // sub 
     TrackingAsync(event,
         [
