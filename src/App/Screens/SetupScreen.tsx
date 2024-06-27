@@ -6,7 +6,7 @@ import useLocalText, { NoPermissionText, PleaseSelectTargetLangText } from '../H
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, AlertAsync, ArrayRemove, CloneObject, DateDiff_WithNow, FilterOnlyLetterAndNumberFromString, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, IsNumType, IsValuableArrayOrString, PickRandomElementWithCount, PrependZero, RoundWithDecimal, SafeDateString, ToCanPrintError } from '../../Common/UtilsTS'
+import { AddS, AlertAsync, ArrayRemove, CloneObject, DateDiff_WithNow, FilterOnlyLetterAndNumberFromString, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, IsNumType, IsValuableArrayOrString, PickRandomElementWithCount, PrependZero, RoundWithDecimal, SafeArrayLength, SafeDateString, ToCanPrintError } from '../../Common/UtilsTS'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { DefaultExcludedTimePairs, DefaultIntervalInMin, IntervalInMinPresets, LimitWordsPerDayPresets, MinimumIntervalInMin, PopuplarityLevelNumber, TranslationServicePresets } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
@@ -324,6 +324,8 @@ const SetupScreen = () => {
     const lastSetTick = await GetDateAndSetNowAsync(StorageKey_LastSetSuccessTick)
     const lastSetInDays = lastSetTick === undefined ? 0 : RoundWithDecimal(DateDiff_WithNow(lastSetTick))
 
+    const excludeTimePairs = SafeArrayLength(displayExcludedTimePairs)
+
     await TrackingAsync(
       'push_success_numbers',
       [
@@ -332,6 +334,9 @@ const SetupScreen = () => {
 
         // limit word
         `total/limit_word/${displayWordLimitNumber}_words`,
+        
+        // exclude Time Pairs
+        `total/exclude_times/${excludeTimePairs}_pairs`,
 
         // interval
         isIntervalInPresets ?
@@ -347,7 +352,8 @@ const SetupScreen = () => {
         limitWords: displayWordLimitNumber,
         setSuccessCount,
         lastSetInDays,
-
+        excludeTimePairs,
+        
         showPhonetic: displaySettting_ShowPhonetic ? 1 : 0,
         showRankOfWord: displaySettting_RankOfWord ? 1 : 0,
         showDefinitions: displaySettting_Definitions ? 1 : 0,
@@ -363,6 +369,7 @@ const SetupScreen = () => {
     displayWordLimitNumber,
     displayTranslationService,
     displayTargetLang,
+    displayExcludedTimePairs,
 
     displaySettting_ShowPartOfSpeech,
     displaySettting_ShowPhonetic,
