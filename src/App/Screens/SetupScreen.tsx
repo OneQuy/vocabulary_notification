@@ -799,7 +799,7 @@ const SetupScreen = () => {
 
                 style={isSelected ? style.normalBtn : style.normalBtn_NoBorder}
 
-                title={wordNum === 0 ? texts.no_limit : (wordNum + ' ' + AddS(texts.word, wordNum))}
+                title={wordNum <= 0 ? texts.no_limit : (wordNum + ' ' + AddS(texts.word, wordNum))}
 
                 titleProps={{ style: style.normalBtnTxt }}
               />
@@ -1318,7 +1318,7 @@ const SetupScreen = () => {
                 onPress={() => onPressShowPopupAsync('limit_word')}
                 title={texts.limit_words_per_day}
                 explain={texts.limit_words_per_day_explain}
-                value={displayWordLimitNumber === 0 ? texts.no_limit : displayWordLimitNumber}
+                value={displayWordLimitNumber <= 0 ? texts.no_limit : displayWordLimitNumber}
                 unit={AddS(texts.word, displayWordLimitNumber)}
               />
             }
