@@ -1,6 +1,7 @@
 {
     "clear_all_file_and_data": 0,
-    "force_iap_success": 1,
+    "force_iap_success": 0,
+    "force_food": 0,
     "__dev__tracking": 0,
     "log_tracking": 0
 }
