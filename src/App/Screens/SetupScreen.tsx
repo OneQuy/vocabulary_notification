@@ -6,7 +6,7 @@ import useLocalText, { NoPermissionText, PleaseSelectTargetLangText } from '../H
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, AlertAsync, ArrayRemove, CloneObject, DateDiff_WithNow, FilterOnlyLetterAndNumberFromString, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, IsNumType, IsValuableArrayOrString, PickRandomElementWithCount, PrependZero, RoundWithDecimal, SafeDateString, SafeValue, ToCanPrintError } from '../../Common/UtilsTS'
+import { AddS, AlertAsync, ArrayRemove, CloneObject, DateDiff_WithNow, FilterOnlyLetterAndNumberFromString, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, IsNumType, IsValuableArrayOrString, PickRandomElementWithCount, PrependZero, RoundWithDecimal, SafeDateString, ToCanPrintError } from '../../Common/UtilsTS'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { DefaultExcludedTimePairs, DefaultIntervalInMin, IntervalInMinPresets, LimitWordsPerDayPresets, MinimumIntervalInMin, PopuplarityLevelNumber, TranslationServicePresets } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
@@ -324,9 +324,6 @@ const SetupScreen = () => {
     const lastSetTick = await GetDateAndSetNowAsync(StorageKey_LastSetSuccessTick)
     const lastSetInDays = lastSetTick === undefined ? 0 : RoundWithDecimal(DateDiff_WithNow(lastSetTick))
 
-    const lastPushTick = await GetNumberIntAsync(StorageKey_LastPushTick)
-    const lastPushInDays = !IsNumType(lastPushTick) ? 0 : RoundWithDecimal(DateDiff_WithNow(lastPushTick))
-
     await TrackingAsync(
       'push_success_numbers',
       [
@@ -350,7 +347,6 @@ const SetupScreen = () => {
         limitWords: displayWordLimitNumber,
         setSuccessCount,
         lastSetInDays,
-        lastPushInDays,
 
         showPhonetic: displaySettting_ShowPhonetic ? 1 : 0,
         showRankOfWord: displaySettting_RankOfWord ? 1 : 0,
