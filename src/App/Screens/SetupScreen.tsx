@@ -6,7 +6,7 @@ import useLocalText, { NoPermissionText, PleaseSelectTargetLangText } from '../H
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, IsNumType, PickRandomElementWithCount, PrependZero, RoundWithDecimal, SafeDateString, ToCanPrintError } from '../../Common/UtilsTS'
+import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, IsNumType, IsValuableArrayOrString, PickRandomElementWithCount, PrependZero, RoundWithDecimal, SafeDateString, ToCanPrintError } from '../../Common/UtilsTS'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { DefaultExcludedTimePairs, DefaultIntervalInMin, IntervalInMinPresets, LimitWordsPerDayPresets, MinimumIntervalInMin, PopuplarityLevelNumber, TranslationServicePresets } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
@@ -262,7 +262,10 @@ const SetupScreen = () => {
     set_showMoreSetting(v => !v)
   }, [displayTargetLang])
 
-  const trackExcludeTimeList = useCallback(() => {
+  const getExcludeTimesAsStringForTracking = useCallback((): string => {
+    if (!IsValuableArrayOrString(displayExcludedTimePairs))
+      return ''
+
     const pairAsStringArr = displayExcludedTimePairs.map(pair => {
       const start = `${PrependZero(pair[0].hours)}:${PrependZero(pair[0].minutes)}`
       const end = `${PrependZero(pair[1].hours)}:${PrependZero(pair[1].minutes)}`
@@ -270,21 +273,75 @@ const SetupScreen = () => {
       return `[${start}-${end}]`
     })
 
-    const list = pairAsStringArr.join('')
-
-    TrackingAsync(ExcludeTimeTrackEventName,
-      [
-        `total/${ExcludeTimeTrackEventName}/set_time`,
-      ],
-      {
-        list
-      }
-    )
+    return pairAsStringArr.join('')
   }, [displayExcludedTimePairs])
 
-  const trackAfterSetNotificationSuccess = useCallback(() => {
-    trackExcludeTimeList()
-  }, [trackExcludeTimeList])
+  const trackAfterSetNotificationSuccessAsync = useCallback(async () => {
+    // track strings =====================
+
+    const excludeTimes = getExcludeTimesAsStringForTracking()
+
+    await TrackingAsync(
+      'push_success_strings',
+      [],
+      {
+        excludeTimes,
+      } as Record<string, string>
+    )
+
+    // track numbers ======================
+
+    const isIntervalInPresets = IntervalInMinPresets.includes(displayIntervalInMin)
+
+    const displaySettingFirebasePaths: string[] = []
+
+    if (displaySettting_ShowPhonetic)
+      displaySettingFirebasePaths.push(`total/display/phonetic`)
+    if (displaySettting_Example)
+      displaySettingFirebasePaths.push(`total/display/example`)
+    if (displaySettting_Definitions)
+      displaySettingFirebasePaths.push(`total/display/definition`)
+    if (displaySettting_RankOfWord)
+      displaySettingFirebasePaths.push(`total/display/rank`)
+    if (displaySettting_ShowPartOfSpeech)
+      displaySettingFirebasePaths.push(`total/display/part`)
+
+    await TrackingAsync(
+      'push_success_numbers',
+      [
+        // popularity
+        `total/popularity/index_${displayPopularityLevelIdx}/`,
+
+        // interval
+        isIntervalInPresets ?
+          `total/inteval/${displayIntervalInMin}m` :
+          `total/inteval/custom`,
+
+        // display Setting
+        ...displaySettingFirebasePaths,
+      ],
+      {
+        popularityIdx: displayPopularityLevelIdx,
+        intervalInMin: displayIntervalInMin,
+
+        showPhonetic: displaySettting_ShowPhonetic ? 1 : 0,
+        showRankOfWord: displaySettting_RankOfWord ? 1 : 0,
+        showDefinitions: displaySettting_Definitions ? 1 : 0,
+        showExample: displaySettting_Example ? 1 : 0,
+        showPartOfSpeech: displaySettting_ShowPartOfSpeech ? 1 : 0,
+      } as Record<string, number>
+    )
+  }, [
+    getExcludeTimesAsStringForTracking,
+    displayPopularityLevelIdx,
+    displayIntervalInMin,
+
+    displaySettting_ShowPartOfSpeech,
+    displaySettting_ShowPhonetic,
+    displaySettting_Example,
+    displaySettting_RankOfWord,
+    displaySettting_Definitions
+  ])
 
   /**
    * during handle if download failed, an alert showed up
@@ -433,7 +490,7 @@ const SetupScreen = () => {
 
       // track
 
-      trackAfterSetNotificationSuccess()
+      trackAfterSetNotificationSuccessAsync()
     }
     else { // error
       let s = lastSetTimestampOrError.errorText ? texts[lastSetTimestampOrError.errorText] : ''
@@ -454,7 +511,7 @@ const SetupScreen = () => {
     // reset
 
     set_processPercent('')
-  }, [texts, setHandlingAndGetReadyDataAsync, generatePushTimeListText, trackAfterSetNotificationSuccess])
+  }, [texts, setHandlingAndGetReadyDataAsync, generatePushTimeListText, trackAfterSetNotificationSuccessAsync])
 
   const checkSetInterval = useCallback((minutes: number) => {
     if (minutes < MinimumIntervalInMin) {
