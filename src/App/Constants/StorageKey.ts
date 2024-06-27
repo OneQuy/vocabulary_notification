@@ -39,6 +39,8 @@ export const StorageKey_LastPushTick = 'StorageKey_LastPushTick'
 export const StorageKey_StartUsingAppTick = 'StorageKey_StartUsingAppTick'
 export const StorageKey_ShowedIntroTrial = 'StorageKey_ShowedIntroTrial'
 export const StorageKey_StatusText = 'StorageKey_StatusText'
+export const StorageKey_SetPushSuccessCount = 'StorageKey_SetPushSuccessCount'
+export const StorageKey_LastSetSuccessTick = 'StorageKey_LastSetSuccessTick'
 
 // specific (app settings)
 
