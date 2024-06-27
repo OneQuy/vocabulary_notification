@@ -19,7 +19,7 @@ import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync, IsCachedWordsD
 import { GetBooleanAsync, GetDateAndSetNowAsync, GetNumberIntAsync, IncreaseNumberAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
 import { StorageKey_LastPushTick, StorageKey_LastSetSuccessTick, StorageKey_PopularityIndex, StorageKey_SetPushSuccessCount, StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord, StorageKey_StatusText } from '../Constants/StorageKey'
 import HistoryScreen from './HistoryScreen'
-import { HandleError, TrackSimpleWithParam, TrackingAsync } from '../../Common/Tracking'
+import { HandleError, TrackSimple, TrackSimpleWithParam, TrackingAsync } from '../../Common/Tracking'
 import { GetLanguageFromCode, Language } from '../../Common/TranslationApis/TranslationLanguages'
 import { BridgeTranslateMultiWordAsync, GetCurrentTranslationServiceSuitAsync } from '../Handles/TranslateBridge'
 import ExampleWordView, { ValueAndDisplayText } from './ExampleWordView'
@@ -334,7 +334,7 @@ const SetupScreen = () => {
 
         // limit word
         `total/limit_word/${displayWordLimitNumber}_words`,
-        
+
         // exclude Time Pairs
         `total/exclude_time/count/${excludeTimePairs}_pairs`,
 
@@ -353,7 +353,7 @@ const SetupScreen = () => {
         setSuccessCount,
         lastSetInDays,
         excludeTimePairs,
-        
+
         showPhonetic: displaySettting_ShowPhonetic ? 1 : 0,
         showRankOfWord: displaySettting_RankOfWord ? 1 : 0,
         showDefinitions: displaySettting_Definitions ? 1 : 0,
@@ -500,6 +500,10 @@ const SetupScreen = () => {
 
     if (res?.message) {
       HandleError(res, 'onPressTestNotificationAsync', true, res?.message !== NoPermissionText)
+    }
+
+    if (res === undefined) {
+      TrackSimple('test_success')
     }
   }, [setHandlingAndGetReadyDataAsync])
 
