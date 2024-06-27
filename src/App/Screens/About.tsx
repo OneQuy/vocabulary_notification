@@ -12,7 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { StorageKey_CachedIAP } from '../Constants/StorageKey'
 import { GetPercentDiscountTxtAndOriginLocalizedPriceTxt, IAPProduct, PurchaseAsync, RestorePurchaseAsync } from '../../Common/IAP/IAP'
 import { SafeDateString, SafeGetArrayElement, SafeValue, ToCanPrintError } from '../../Common/UtilsTS'
-import { HandleError, TrackOneQuyApps } from '../../Common/Tracking'
+import { HandleError, TrackOneQuyApps, TrackSimpleWithParam } from '../../Common/Tracking'
 import { Purchase } from 'react-native-iap'
 import { GetRemoteConfigWithCheckFetchAsync } from '../../Common/RemoteConfig'
 import { AllIAPProducts, AppContext, AppName, IapProductMax } from '../../Common/SpecificConstants'
@@ -137,22 +137,36 @@ const About = () => {
 
         // LogStringify(products)
 
+        let restoreResultForTracking = ''
+
         if (Array.isArray(products)) { // available products to restore
             const firstProduct = SafeGetArrayElement<Purchase>(products)
 
-            if (firstProduct)
+            if (firstProduct) {
                 onPurchasedSuccessAsync(firstProduct.productId)
-            else
+
+                restoreResultForTracking = 'success_' + firstProduct.productId
+            }
+            else {
+                restoreResultForTracking = 'no_product'
+
                 Alert.alert(
                     texts.popup_error,
                     texts.restore_purchase_no_products +
                     (products.length > 0 ? '\n\n' + ToCanPrintError(products) : ''))
+            }
         }
-        else if (products !== null) {
+        else if (products !== null) { // error
+            restoreResultForTracking = 'error'
             Alert.alert(texts.popup_error, texts.restore_purchase_no_products + '\n\n' + ToCanPrintError(products))
+        }
+        else { // user canceled
+            restoreResultForTracking = 'user_cancel'
         }
 
         set_isHandling(false)
+
+        TrackSimpleWithParam('restore_purchase', restoreResultForTracking)
     }, [texts, onPurchasedSuccessAsync])
 
     const onPressCheatCopyUserId = useCallback(() => {
