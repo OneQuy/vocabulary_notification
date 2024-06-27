@@ -6,7 +6,7 @@ import useLocalText, { NoPermissionText, PleaseSelectTargetLangText } from '../H
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, AlertAsync, ArrayRemove, CloneObject, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, IsNumType, IsValuableArrayOrString, PickRandomElementWithCount, PrependZero, RoundWithDecimal, SafeDateString, ToCanPrintError } from '../../Common/UtilsTS'
+import { AddS, AlertAsync, ArrayRemove, CloneObject, FilterOnlyLetterAndNumberFromString, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, IsNumType, IsValuableArrayOrString, PickRandomElementWithCount, PrependZero, RoundWithDecimal, SafeDateString, ToCanPrintError } from '../../Common/UtilsTS'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { DefaultExcludedTimePairs, DefaultIntervalInMin, IntervalInMinPresets, LimitWordsPerDayPresets, MinimumIntervalInMin, PopuplarityLevelNumber, TranslationServicePresets } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
@@ -280,12 +280,17 @@ const SetupScreen = () => {
     // track strings =====================
 
     const excludeTimes = getExcludeTimesAsStringForTracking()
+    const service = FilterOnlyLetterAndNumberFromString(displayTranslationService)
 
     await TrackingAsync(
       'push_success_strings',
-      [],
+      [
+        // translation Service
+        `total/service/${service}`,
+      ],
       {
         excludeTimes,
+        service,
       } as Record<string, string>
     )
 
@@ -306,11 +311,15 @@ const SetupScreen = () => {
     if (displaySettting_ShowPartOfSpeech)
       displaySettingFirebasePaths.push(`total/display/part`)
 
+
     await TrackingAsync(
       'push_success_numbers',
       [
         // popularity
-        `total/popularity/index_${displayPopularityLevelIdx}/`,
+        `total/popularity/index_${displayPopularityLevelIdx}`,
+
+        // limit word
+        `total/limit_word/${displayWordLimitNumber}_words`,
 
         // interval
         isIntervalInPresets ?
@@ -323,6 +332,7 @@ const SetupScreen = () => {
       {
         popularityIdx: displayPopularityLevelIdx,
         intervalInMin: displayIntervalInMin,
+        limitWords: displayWordLimitNumber,
 
         showPhonetic: displaySettting_ShowPhonetic ? 1 : 0,
         showRankOfWord: displaySettting_RankOfWord ? 1 : 0,
@@ -333,8 +343,11 @@ const SetupScreen = () => {
     )
   }, [
     getExcludeTimesAsStringForTracking,
+
     displayPopularityLevelIdx,
     displayIntervalInMin,
+    displayWordLimitNumber,
+    displayTranslationService,
 
     displaySettting_ShowPartOfSpeech,
     displaySettting_ShowPhonetic,
