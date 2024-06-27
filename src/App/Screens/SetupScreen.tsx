@@ -44,6 +44,8 @@ const IsLog = false
 
 const EffectScaleUpOffset = 100
 
+const ExcludeTimeTrackEventName = 'exclude_time'
+
 export type SubView =
   'setup' |
   'history' |
@@ -260,6 +262,30 @@ const SetupScreen = () => {
     set_showMoreSetting(v => !v)
   }, [displayTargetLang])
 
+  const trackExcludeTimeList = useCallback(() => {
+    const pairAsStringArr = displayExcludedTimePairs.map(pair => {
+      const start = `${PrependZero(pair[0].hours)}:${PrependZero(pair[0].minutes)}`
+      const end = `${PrependZero(pair[1].hours)}:${PrependZero(pair[1].minutes)}`
+
+      return `[${start}-${end}]`
+    })
+
+    const list = pairAsStringArr.join('')
+
+    TrackingAsync(ExcludeTimeTrackEventName,
+      [
+        `total/${ExcludeTimeTrackEventName}/set_time`,
+      ],
+      {
+        list
+      }
+    )
+  }, [displayExcludedTimePairs])
+
+  const trackAfterSetNotificationSuccess = useCallback(() => {
+    trackExcludeTimeList()
+  }, [trackExcludeTimeList])
+
   /**
    * during handle if download failed, an alert showed up
    * @returns ensuring data got cached
@@ -404,6 +430,10 @@ const SetupScreen = () => {
       set_handlingType('done')
       set_timestampLastPush(lastSetTimestampOrError)
       generatePushTimeListText(lastSetTimestampOrError)
+
+      // track
+
+      trackAfterSetNotificationSuccess()
     }
     else { // error
       let s = lastSetTimestampOrError.errorText ? texts[lastSetTimestampOrError.errorText] : ''
@@ -424,7 +454,7 @@ const SetupScreen = () => {
     // reset
 
     set_processPercent('')
-  }, [texts, setHandlingAndGetReadyDataAsync, generatePushTimeListText])
+  }, [texts, setHandlingAndGetReadyDataAsync, generatePushTimeListText, trackAfterSetNotificationSuccess])
 
   const checkSetInterval = useCallback((minutes: number) => {
     if (minutes < MinimumIntervalInMin) {
@@ -434,23 +464,6 @@ const SetupScreen = () => {
 
     set_displayIntervalInMin(minutes)
     SetIntervalMinAsync(minutes)
-
-    // track
-
-    const event = 'confirmed_interval'
-
-    const isInPreset = IntervalInMinPresets.includes(minutes)
-
-    TrackingAsync(event,
-      [
-        isInPreset ?
-          `total/${event}/${minutes}m` :
-          `total/${event}/custom`,
-      ],
-      {
-        minutes
-      }
-    )
   }, [texts])
 
   const onConfirmTimePicker = useCallback((time: TimePickerResult) => {
@@ -509,17 +522,6 @@ const SetupScreen = () => {
       const toValue = !val
 
       SetBooleanAsync(storageKey, toValue)
-
-      // track
-
-      const settingName = storageKey.substring('StorageKey'.length + 1).toLowerCase()
-
-      TrackSimpleWithParam(
-        toValue ?
-          'push_display_enalbe' :
-          'push_display_disable',
-        settingName
-      )
 
       // return
 
@@ -603,10 +605,6 @@ const SetupScreen = () => {
       // set UI
 
       set_displayPopularityLevelIdx(popularityLevelIdx)
-
-      // track
-
-      TrackSimpleWithParam('confirmed_popularity', 'level_' + (popularityLevelIdx + 1))
     })
   }, [setHandlingAndGetReadyDataAsync])
 
@@ -890,6 +888,10 @@ const SetupScreen = () => {
     set_displayExcludedTimePairs(obj)
 
     SetExcludedTimesAsync(obj)
+
+    // track
+
+    TrackSimpleWithParam(ExcludeTimeTrackEventName, 'add')
   }, [displayExcludedTimePairs])
 
   const onPressRemoveExcludeTime = useCallback((pair: PairTime) => {
@@ -900,6 +902,8 @@ const SetupScreen = () => {
     set_displayExcludedTimePairs(obj)
 
     SetExcludedTimesAsync(obj)
+
+    TrackSimpleWithParam(ExcludeTimeTrackEventName, 'remove')
   }, [displayExcludedTimePairs])
 
   const renderExcludeTimes = useCallback(() => {
