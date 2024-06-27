@@ -6,7 +6,7 @@ import useLocalText, { NoPermissionText, PleaseSelectTargetLangText } from '../H
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, AlertAsync, ArrayRemove, CloneObject, FilterOnlyLetterAndNumberFromString, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, IsNumType, IsValuableArrayOrString, PickRandomElementWithCount, PrependZero, RoundWithDecimal, SafeDateString, ToCanPrintError } from '../../Common/UtilsTS'
+import { AddS, AlertAsync, ArrayRemove, CloneObject, FilterOnlyLetterAndNumberFromString, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, IsNumType, IsValuableArrayOrString, PickRandomElementWithCount, PrependZero, RoundWithDecimal, SafeDateString, SafeValue, ToCanPrintError } from '../../Common/UtilsTS'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { DefaultExcludedTimePairs, DefaultIntervalInMin, IntervalInMinPresets, LimitWordsPerDayPresets, MinimumIntervalInMin, PopuplarityLevelNumber, TranslationServicePresets } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
@@ -281,16 +281,21 @@ const SetupScreen = () => {
 
     const excludeTimes = getExcludeTimesAsStringForTracking()
     const service = FilterOnlyLetterAndNumberFromString(displayTranslationService)
+    const targetLang = FilterOnlyLetterAndNumberFromString(SafeValue(displayTargetLang, ''))
 
     await TrackingAsync(
       'push_success_strings',
       [
         // translation Service
         `total/service/${service}`,
+
+        // target lang
+        `total/target_lang/${targetLang}`,
       ],
       {
         excludeTimes,
         service,
+        targetLang,
       } as Record<string, string>
     )
 
@@ -348,6 +353,7 @@ const SetupScreen = () => {
     displayIntervalInMin,
     displayWordLimitNumber,
     displayTranslationService,
+    displayTargetLang,
 
     displaySettting_ShowPartOfSpeech,
     displaySettting_ShowPhonetic,
