@@ -6,7 +6,7 @@ import useLocalText, { NoPermissionText, PleaseSelectTargetLangText } from '../H
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { AddS, AlertAsync, ArrayRemove, CloneObject, FilterOnlyLetterAndNumberFromString, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, IsNumType, IsValuableArrayOrString, PickRandomElementWithCount, PrependZero, RoundWithDecimal, SafeDateString, SafeValue, ToCanPrintError } from '../../Common/UtilsTS'
+import { AddS, AlertAsync, ArrayRemove, CloneObject, DateDiff_WithNow, FilterOnlyLetterAndNumberFromString, GetDayHourMinSecFromMs, GetDayHourMinSecFromMs_ToString, IsNumType, IsValuableArrayOrString, PickRandomElementWithCount, PrependZero, RoundWithDecimal, SafeDateString, SafeValue, ToCanPrintError } from '../../Common/UtilsTS'
 import SlidingPopup from '../../Common/Components/SlidingPopup'
 import { DefaultExcludedTimePairs, DefaultIntervalInMin, IntervalInMinPresets, LimitWordsPerDayPresets, MinimumIntervalInMin, PopuplarityLevelNumber, TranslationServicePresets } from '../Constants/AppConstants'
 import TimePicker, { TimePickerResult } from '../Components/TimePicker'
@@ -16,8 +16,8 @@ import { CalcNotiTimeListPerDay, ClearDbAndNotificationsAsync } from '../Handles
 import { SetupNotificationAsync, TestNotificationAsync } from '../Handles/SetupNotification'
 import { GetExcludeTimesAsync, GetDefaultTranslationService, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, GetTranslationServiceAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetTranslationServiceAsync, SetTargetLangAsyncAsync, GetSourceLangAsync } from '../Handles/Settings'
 import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync, IsCachedWordsDataCurrentLevelAsync } from '../Handles/WordsData'
-import { GetBooleanAsync, GetNumberIntAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
-import { StorageKey_LastPushTick, StorageKey_PopularityIndex, StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord, StorageKey_StatusText } from '../Constants/StorageKey'
+import { GetBooleanAsync, GetDateAndSetNowAsync, GetNumberIntAsync, IncreaseNumberAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
+import { StorageKey_LastPushTick, StorageKey_LastSetSuccessTick, StorageKey_PopularityIndex, StorageKey_SetPushSuccessCount, StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord, StorageKey_StatusText } from '../Constants/StorageKey'
 import HistoryScreen from './HistoryScreen'
 import { HandleError, TrackSimpleWithParam, TrackingAsync } from '../../Common/Tracking'
 import { GetLanguageFromCode, Language } from '../../Common/TranslationApis/TranslationLanguages'
@@ -316,6 +316,10 @@ const SetupScreen = () => {
     if (displaySettting_ShowPartOfSpeech)
       displaySettingFirebasePaths.push(`total/display/part`)
 
+    const setSuccessCount = await IncreaseNumberAsync(StorageKey_SetPushSuccessCount)
+
+    const lastSetTick = await GetDateAndSetNowAsync(StorageKey_LastSetSuccessTick)
+    const lastSetInDays = lastSetTick === undefined ? 0 : RoundWithDecimal(DateDiff_WithNow(lastSetTick))
 
     await TrackingAsync(
       'push_success_numbers',
@@ -338,7 +342,9 @@ const SetupScreen = () => {
         popularityIdx: displayPopularityLevelIdx,
         intervalInMin: displayIntervalInMin,
         limitWords: displayWordLimitNumber,
-
+        setSuccessCount,
+        lastSetInDays,
+        
         showPhonetic: displaySettting_ShowPhonetic ? 1 : 0,
         showRankOfWord: displaySettting_RankOfWord ? 1 : 0,
         showDefinitions: displaySettting_Definitions ? 1 : 0,
