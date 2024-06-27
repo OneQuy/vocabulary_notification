@@ -320,6 +320,9 @@ const SetupScreen = () => {
 
     const lastSetTick = await GetDateAndSetNowAsync(StorageKey_LastSetSuccessTick)
     const lastSetInDays = lastSetTick === undefined ? 0 : RoundWithDecimal(DateDiff_WithNow(lastSetTick))
+    
+    const lastPushTick = await GetNumberIntAsync(StorageKey_LastPushTick)
+    const lastPushInDays = !IsNumType(lastPushTick) ? 0 : RoundWithDecimal(DateDiff_WithNow(lastPushTick))
 
     await TrackingAsync(
       'push_success_numbers',
@@ -344,6 +347,7 @@ const SetupScreen = () => {
         limitWords: displayWordLimitNumber,
         setSuccessCount,
         lastSetInDays,
+        lastPushInDays,
         
         showPhonetic: displaySettting_ShowPhonetic ? 1 : 0,
         showRankOfWord: displaySettting_RankOfWord ? 1 : 0,
