@@ -22,6 +22,7 @@ import { GetLastTimeFetchedRemoteConfigSuccessAndHandledAlerts, GetRemoteConfigW
 import { FirebaseDatabaseTimeOutMs, FirebaseDatabase_GetValueAsyncWithTimeOut } from "./Firebase/FirebaseDatabase"
 import { CheckIsDevAsync } from "./IsDev"
 import { CheckTrackCachedNotification } from "./SpecificUtils"
+import { Cheat } from "./Cheat"
 
 export type SetupAppStateAndStartTrackingParams = {
     posthog: PostHog,
@@ -107,14 +108,23 @@ const CheckFirstOpenAppOfTheDayAsync = async (setupParams: SetupAppStateAndStart
 
     isHandling_CheckAndTriggerFirstOpenAppOfTheDayAsync = true
 
-    const checkedToday = await GetDateAsync_IsValueExistedAndIsToday(StorageKey_LastCheckFirstOpenOfTheDay)
+    const forceFood = Cheat('force_food')
 
-    if (checkedToday) {
+    if (forceFood) {
+        console.log('[CheckFirstOpenAppOfTheDayAsync] FORCE FOOD');
+    }
+
+    const checkedToday = forceFood ?
+        false :
+        await GetDateAsync_IsValueExistedAndIsToday(StorageKey_LastCheckFirstOpenOfTheDay)
+
+    if (checkedToday) { // already done
         isHandling_CheckAndTriggerFirstOpenAppOfTheDayAsync = false
         return
     }
 
     await SetDateAsync_Now(StorageKey_LastCheckFirstOpenOfTheDay)
+
     isHandling_CheckAndTriggerFirstOpenAppOfTheDayAsync = false
 
     //////////////////////////////////////
@@ -136,9 +146,8 @@ const CheckFirstOpenAppOfTheDayAsync = async (setupParams: SetupAppStateAndStart
 
         // CheckForcePremiumDataAsync
 
-        CheckForcePremiumDataAsync(setupParams)
+        await CheckForcePremiumDataAsync(setupParams)
     }
-
 }
 
 export const GetAndClearPressUpdateObjectAsync = async (): Promise<string | null> => {
@@ -193,7 +202,7 @@ export const GetAndSetInstalledDaysCountAsync = async () => {
 const CheckForcePremiumDataAsync = async (setupParams: SetupAppStateAndStartTrackingParams) => {
     const data = await GetUserForcePremiumDataAsync()
 
-    // console.log('[CheckForcePremiumDataAsync] data', data);
+    console.log('[CheckForcePremiumDataAsync] data', data);
 
     if (!data)
         return
@@ -266,7 +275,7 @@ const OnActiveOrUseEffectOnceAsync = async (
 
     if (setupParams.onActiveOrUseEffectOnceAsync)
         await setupParams.onActiveOrUseEffectOnceAsync(isUseEffectOnceOrOnActive)
-    
+
     await CheckFireOnActiveOrUseEffectOnceWithGapAsync(setupParams, isUseEffectOnceOrOnActive, loadedConfigLastTimeInHour)
 }
 
