@@ -281,7 +281,10 @@ const SetupScreen = () => {
 
     const excludeTimes = getExcludeTimesAsStringForTracking()
     const service = FilterOnlyLetterAndNumberFromString(displayTranslationService)
-    const targetLang = FilterOnlyLetterAndNumberFromString(SafeValue(displayTargetLang, ''))
+
+    const targetLang = displayTargetLang ?
+      FilterOnlyLetterAndNumberFromString(displayTargetLang.name) :
+      ''
 
     await TrackingAsync(
       'push_success_strings',
@@ -320,7 +323,7 @@ const SetupScreen = () => {
 
     const lastSetTick = await GetDateAndSetNowAsync(StorageKey_LastSetSuccessTick)
     const lastSetInDays = lastSetTick === undefined ? 0 : RoundWithDecimal(DateDiff_WithNow(lastSetTick))
-    
+
     const lastPushTick = await GetNumberIntAsync(StorageKey_LastPushTick)
     const lastPushInDays = !IsNumType(lastPushTick) ? 0 : RoundWithDecimal(DateDiff_WithNow(lastPushTick))
 
@@ -348,7 +351,7 @@ const SetupScreen = () => {
         setSuccessCount,
         lastSetInDays,
         lastPushInDays,
-        
+
         showPhonetic: displaySettting_ShowPhonetic ? 1 : 0,
         showRankOfWord: displaySettting_RankOfWord ? 1 : 0,
         showDefinitions: displaySettting_Definitions ? 1 : 0,
