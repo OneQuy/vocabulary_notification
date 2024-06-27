@@ -336,7 +336,7 @@ const SetupScreen = () => {
         `total/limit_word/${displayWordLimitNumber}_words`,
         
         // exclude Time Pairs
-        `total/exclude_times/${excludeTimePairs}_pairs`,
+        `total/exclude_time/count/${excludeTimePairs}_pairs`,
 
         // interval
         isIntervalInPresets ?
