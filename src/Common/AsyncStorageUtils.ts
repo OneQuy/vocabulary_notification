@@ -240,6 +240,13 @@ export const GetDateAsync = async (key: string): Promise<Date | undefined> => {
     }
 }
 
+export const GetDateAndSetNowAsync = async (key: string): Promise<Date | undefined> => {
+    const date = await GetDateAsync(key)
+    await SetDateAsync_Now(key)
+
+    return date
+}
+
 export const GetDateAsync_IsValueExistedAndIsToday = async (key: string): Promise<boolean> => {
     const d = await GetDateAsync(key)
 
