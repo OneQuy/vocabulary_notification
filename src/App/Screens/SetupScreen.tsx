@@ -956,14 +956,18 @@ const SetupScreen = () => {
   // target lang
 
   const onPressTargetLang = useCallback((lang: Language) => {
+    if (!popupCloseCallbackRef.current)
+      return
 
-    if (popupCloseCallbackRef.current) {
-      popupCloseCallbackRef.current(() => {
-        set_displayTargetLang(lang)
-        SetTargetLangAsyncAsync(lang.language)
-      })
-    }
-  }, [])
+    popupCloseCallbackRef.current(() => { // closed
+      if (!displayTargetLang) {
+        Alert.alert(AppName, texts.first_guide_app)
+      }
+
+      set_displayTargetLang(lang)
+      SetTargetLangAsyncAsync(lang.language)
+    })
+  }, [displayTargetLang, texts])
 
   const renderPickTargetLang = useCallback(() => {
     return (
