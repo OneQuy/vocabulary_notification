@@ -80,7 +80,8 @@ const eng = {
   welcome_item_2: "### levels of vocabulary popularity",
   welcome_item_3: "A total of up to ### words to learn",
   start_text: "Okayyyyyy",
-
+  first_guide_app: "You selected ###! Everything is ready now. You can tap 'Set notification' to start and learn vocabulary! Or you can adjust the settings to fit your needs and then tap it!",
+  
   push_notice:
     `Every day, vocabulary notifications will be shown at these times: ###.
     
