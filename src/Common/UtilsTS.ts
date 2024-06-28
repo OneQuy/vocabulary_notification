@@ -1343,12 +1343,12 @@ export const ToCanPrintError = (erroObj: any) => {
     }
 
     let code: string = erroObj.code
-    let msg: string = erroObj.message
+    let msg: string = erroObj.message ?? erroObj.msg
 
     if (!code && !msg && erroObj.error) {
         erroObj = erroObj.error
         code = erroObj.code
-        msg = erroObj.message
+        msg = erroObj.message ?? erroObj.msg
     }
 
     if (!code && !msg)
