@@ -961,7 +961,10 @@ const SetupScreen = () => {
 
     popupCloseCallbackRef.current(() => { // closed
       if (!displayTargetLang) {
-        Alert.alert(AppName, texts.first_guide_app)
+        Alert.alert(
+          AppName, 
+          texts.first_guide_app.replace('###', lang.name)
+        )
       }
 
       set_displayTargetLang(lang)
