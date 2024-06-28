@@ -102,7 +102,7 @@ They are set up until 24/Oct/1994 at 00:00. Please open the app and set new ones
   popup_error: PopupTitleError,
   [NoNotificationPermissionLocalKey]: NoPermissionText,
   pls_set_target_lang: PleaseSelectTargetLangText,
-  fail_translate: 'Can not get words translation.',
+  fail_translate: 'Can not get words translation. Please try again!',
   fail_download: 'Fail to download.',
   restore_purchase_no_products: 'No product to restore',
   cannot_setup_data: CanNotSetupUserData
