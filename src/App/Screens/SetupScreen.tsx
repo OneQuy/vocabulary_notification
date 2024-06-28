@@ -1387,12 +1387,12 @@ const SetupScreen = () => {
             {/* target lang */}
 
             {
-              showMoreSetting &&
+              showMoreSetting && displayTargetLang &&
               < SettingItemPanel
                 onPress={() => onPressShowPopupAsync('target_lang')}
                 title={texts.translate_to}
                 explain={texts.translate_language_explain}
-                value={displayTargetLang?.name ?? '?'}
+                value={displayTargetLang.name.split(' ')[0]}
                 isLong
               />
             }
