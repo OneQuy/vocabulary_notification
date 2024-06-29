@@ -4,7 +4,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { GetObjectAsync } from '../AsyncStorageUtils'
-import { AppContextType, SubscribedData, UserPremiumDataProperty } from '../SpecificType'
+import { AppContextType, OnSetSubcribeDataAsyncFunc, SubscribedData, UserPremiumDataProperty } from '../SpecificType'
 import { StorageKey_SubscribeData } from '../../App/Constants/StorageKey'
 import PostHog from 'posthog-react-native'
 import { SetupAppStateAndStartTrackingAsync } from '../AppStatePersistence'
@@ -31,7 +31,7 @@ const useSpecificAppContext = ({
     /**
      * undefined is to clear premium
      */
-    const onSetSubcribeDataAsync = useCallback(async (subscribedData: SubscribedData | undefined): Promise<void> => {
+    const onSetSubcribeDataAsync: OnSetSubcribeDataAsyncFunc = useCallback(async (subscribedData: SubscribedData | undefined): Promise<void> => {
         // save local & firebase (maybe loop)
 
         await LoopSetValueFirebase.SetValueAsync(
