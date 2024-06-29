@@ -39,6 +39,7 @@ import { GetUserPropertyFirebasePath } from '../../Common/UserMan'
 import { UserSelectedPopularityIndexProperty } from '../../Common/SpecificType'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import ScaleUpView from '../../Common/Components/Effects/ScaleUpView'
+import Paywall from './Paywall'
 
 const IsLog = false
 
@@ -77,6 +78,7 @@ const SetupScreen = () => {
   const [pushTimeListText, set_pushTimeListText] = useState('')
   const [useEFfectLoaded, set_useEFfectLoaded] = useState(false)
   const [showPopup, set_showPopup] = useState<PopupType>(undefined)
+  const [showPaywall, set_showPaywall] = useState(true)
   const popupCloseCallbackRef = useRef<(onFinished?: () => void) => void>()
 
   const [displayPopularityLevelIdx, set_displayPopularityLevelIdx] = useState(0)
@@ -962,7 +964,7 @@ const SetupScreen = () => {
     popupCloseCallbackRef.current(() => { // closed
       if (!displayTargetLang) {
         Alert.alert(
-          AppName, 
+          AppName,
           texts.first_guide_app.replace('###', lang.name)
         )
       }
@@ -1153,6 +1155,12 @@ const SetupScreen = () => {
 
   // render
 
+  if (showPaywall) {
+    return (
+      <Paywall onPressCancel={() => {}} />
+    )
+  }
+  
   return (
     <AppContext.Provider value={appContextValue} >
       <View pointerEvents={pointerEvents} style={style.master}>
