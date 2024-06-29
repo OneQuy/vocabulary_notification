@@ -101,12 +101,13 @@ export type User = { // CHANGE OPTIONAL
     [UserProperty_StartUsingAppTick]?: number,
 }
 
+export type OnSetSubcribeDataAsyncFunc = (subscribedData: SubscribedData | undefined) => Promise<void> // MAYBE NO CHANGE
 
 export type AppContextType = { // CHANGE OPTIONAL
     // common
 
     subscribedData: SubscribedData | undefined,
-    onSetSubcribeDataAsync: (subscribedData: SubscribedData | undefined) => Promise<void>,
+    onSetSubcribeDataAsync: OnSetSubcribeDataAsyncFunc,
 }
 
 

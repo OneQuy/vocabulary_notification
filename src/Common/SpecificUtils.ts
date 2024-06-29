@@ -8,13 +8,14 @@ import { Event, EventType } from "@notifee/react-native"
 import { AppDirName, DelayAsync, SafeValue, ToCanPrint } from "./UtilsTS"
 import { NotificationExtraDataKey_IsLastPush, NotificationExtraDataKey_Mode, NotificationExtraDataKey_PushIndex } from "../App/Handles/SetupNotification"
 import { GenerateNotificationTrackDataAsync } from "./Nofitication"
-import { VocabyNotificationTrackData } from "./SpecificType"
+import { OnSetSubcribeDataAsyncFunc, VocabyNotificationTrackData } from "./SpecificType"
 import { AppendArrayAsync, GetArrayAsync_PickAndRemoveFirstOne } from "./AsyncStorageUtils"
 import { StorageKey_CacheEventNotification } from "../App/Constants/StorageKey"
-import { TrackEventNotificationAsync } from "./Tracking"
+import { HandleError, TrackEventNotificationAsync, TrackSimpleWithParam } from "./Tracking"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { DeleteFileAsync, DeleteTempDirAsync } from "./FileUtils"
 import { Cheat } from "./Cheat"
+import { PurchaseAsync } from "./IAP/IAP"
 
 const IsLog = __DEV__
 
@@ -152,4 +153,45 @@ export const CheckTrackCachedNotification = async (): Promise<void> => {
 
         CheckTrackCachedNotification()
     }
+}
+
+/**
+ * ### usage:
+```tsx
+set_isHandling(true)
+await UpgradeAsync(sku, onSetSubcribeDataAsync)
+set_isHandling(false)
+```
+ */
+export const UpgradeAsync = async (sku: string, onSetSubcribeDataAsync: OnSetSubcribeDataAsyncFunc) => {
+    let valueTracking = ''
+
+    const res = await PurchaseAsync(sku)
+
+    // success
+
+    if (res === undefined) {
+
+        await onSetSubcribeDataAsync({
+            id: sku,
+            purchasedTick: Date.now()
+        })
+
+        valueTracking = 'success_' + sku
+    }
+
+    // cancel
+
+    else if (res === null) {
+        valueTracking = 'cancel'
+    }
+
+    // error
+
+    else {
+        HandleError(res, 'BuyLifetime', true)
+        valueTracking = 'error'
+    }
+
+    TrackSimpleWithParam('purchase', valueTracking)
 }
