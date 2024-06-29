@@ -1,4 +1,4 @@
-import { LogStringify, SafeValue } from "../../Common/UtilsTS"
+import { SafeValue } from "../../Common/UtilsTS"
 import { LocalizedData, PairTime, SavedWordData } from "../Types"
 import { TimePickerResult } from "../Components/TimePicker"
 import { DeleteAllRowsTableAsync } from "./LocalizedWordsTable"
@@ -6,8 +6,26 @@ import { SetCurrentAllNotificationsAsync } from "./SetupNotification"
 import { CancelAllLocalNotificationsAsync } from "../../Common/Nofitication"
 import { HandleError } from "../../Common/Tracking"
 import { Language, TranslatedResult } from "../../Common/TranslationApis/TranslationLanguages"
+import { IAPProduct } from "../../Common/IAP/IAP"
+import { AllIAPProducts } from "../../Common/SpecificConstants"
+import { RemoteConfig } from "../../Common/SpecificType"
 
 const IsLog = true
+
+export const GetCurrentLifetimeProduct = (remoteConfig: RemoteConfig | undefined): IAPProduct => {
+    // config
+
+    if (remoteConfig) {
+        const found = AllIAPProducts.find(i => i.sku === remoteConfig.currentLifetimeId)
+
+        if (found)
+            return found
+    }
+
+    // default 
+
+    return AllIAPProducts[AllIAPProducts.length - 1]
+}
 
 export const CheckCapabilityLanguage = (currentLang: Language, supportedLangs: Language[]): Language | undefined => {
     const find = supportedLangs.find(i =>
@@ -132,7 +150,7 @@ const IsInExcludeTime = (hour: number, minute: number, excludePairs: PairTime[])
 
         if (totalMinutes === endTotalMinutes && pair[1].hours === 23 && pair[1].minutes === 59)
             return true
-        
+
         if (totalMinutes === startTotalMinutes && pair[0].hours === 0 && pair[0].minutes === 0)
             return true
 

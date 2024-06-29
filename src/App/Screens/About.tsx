@@ -22,6 +22,7 @@ import { VersionAsNumber } from '../../Common/CommonConstants'
 import Clipboard from '@react-native-clipboard/clipboard'
 import { UserID } from '../../Common/UserID'
 import WealthText, { WealthTextConfig } from '../../Common/Components/WealthText'
+import { GetCurrentLifetimeProduct } from '../Handles/AppUtils'
 
 const About = () => {
     const texts = useLocalText()
@@ -223,16 +224,7 @@ const About = () => {
 
             const remoteConfig = await GetRemoteConfigWithCheckFetchAsync(false)
 
-            let premiumProduct: IAPProduct | undefined = (AllIAPProducts && AllIAPProducts.length > 1) ?
-                AllIAPProducts[1] :
-                AllIAPProducts[0]
-
-            if (remoteConfig) {
-                const found = AllIAPProducts.find(i => i.sku === remoteConfig.currentLifetimeId)
-
-                if (found)
-                    premiumProduct = found
-            }
+            const premiumProduct = GetCurrentLifetimeProduct(remoteConfig)
 
             set_currentLifetimeProduct(premiumProduct)
 
