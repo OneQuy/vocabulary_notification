@@ -1,6 +1,6 @@
 // Created on 29 June 2024 (Vocaby)
 
-import { View, Text, StyleSheet, StyleProp, TextStyle } from 'react-native'
+import { View, Text, StyleSheet, StyleProp, TextStyle, ActivityIndicator } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import { Color_BG, Color_Text } from '../Hooks/useTheme'
@@ -10,7 +10,7 @@ import { StartupWindowSize } from '../../Common/CommonConstants'
 import WealthText, { WealthTextConfig } from '../../Common/Components/WealthText'
 import { AllIAPProducts, AppName, IapProductMax } from '../../Common/SpecificConstants'
 import { Gap, Outline } from '../Constants/Constants_Outline'
-import { PopuplarityLevelNumber } from '../Constants/AppConstants'
+import { PopuplarityLevelNumber, TotalWords } from '../Constants/AppConstants'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { useMyIAP } from '../../Common/IAP/useMyIAP'
@@ -41,7 +41,11 @@ const Paywall = ({
         currentLifetimeProduct
     )
 
-    const onPressCancelBtn = useCallback(() => {
+    const onPressUpgradeAsync = useCallback(async () => {
+        if (!isReadyPurchase || handling)
+            return
+
+
         // set_handling(true)
         // onPressCancel()
 
@@ -57,17 +61,17 @@ const Paywall = ({
         //         viewTimeInSec: RoundWithDecimal(((Date.now() - tickStart) / 1000)),
         //     }
         // )
-    }, [])
+    }, [isReadyPurchase, handling])
 
     const style = useMemo(() => {
         return StyleSheet.create({
             master: { backgroundColor: Color_BG, justifyContent: 'center', alignItems: 'center', flex: 1 },
 
-            welcomeTxt: { fontSize: FontSize.Big, color: Color_Text },
+            titleTxt: { fontSize: FontSize.Big, color: Color_Text },
 
-            contentItemTxt: { marginVertical: Outline.Small, textAlign: 'center', fontSize: FontSize.Normal, color: Color_Text },
+            contentItemTxt: { marginHorizontal: Outline.Normal, marginVertical: Outline.Small, textAlign: 'center', fontSize: FontSize.Normal, color: Color_Text },
 
-            appNameTxt: {
+            proTxt: {
                 fontSize: FontSize.Big,
                 color: Color_Text,
                 fontWeight: FontBold.BoldMore,
@@ -91,11 +95,11 @@ const Paywall = ({
                 } as StyleProp<TextStyle>
             ),
 
-            startBtnTxt: {
+            upgradeBtnTxt: {
                 fontSize: FontSize.Normal
             },
 
-            startBtn: {
+            upgradeBtn: {
                 borderWidth: 0,
                 borderRadius: BorderRadius.Small,
                 padding: Outline.Normal,
@@ -172,7 +176,7 @@ const Paywall = ({
 
     return (
         <View
-            key={2}
+            key={4}
             style={style.master}
             pointerEvents={handling ? 'none' : 'auto'}
         >
@@ -182,11 +186,11 @@ const Paywall = ({
                     textConfigs={[
                         {
                             text: AppName,
-                            textStyle: style.welcomeTxt,
+                            textStyle: style.titleTxt,
                         },
                         {
                             text: ' ' + texts.pro,
-                            textStyle: style.appNameTxt,
+                            textStyle: style.proTxt,
                         },
                     ]}
                 />
@@ -196,32 +200,35 @@ const Paywall = ({
             {
                 <ScaleUpView isSpringOrTiming delay={OffsetEffect * 1 + DelayStartEffect}>
                     <Text
-                        adjustsFontSizeToFit
-                        numberOfLines={1}
                         style={style.contentItemTxt}
                     >
-                        {texts.pro_item_content.replace('###', PopuplarityLevelNumber.toString())}
+                        {
+                            texts.
+                            pro_item_content.
+                            replace('###', PopuplarityLevelNumber.toString()).
+                            replace('@@@', TotalWords.toString())
+                        }
                     </Text>
                 </ScaleUpView>
             }
 
             {/* upgrade btn */}
-            <ScaleUpView containerStyle={{ opacity: handling ? 0 : 1 }} delay={OffsetEffect * 2 + DelayStartEffect} isSpringOrTiming>
+            <ScaleUpView delay={OffsetEffect * 2 + DelayStartEffect} isSpringOrTiming>
                 <LucideIconTextEffectButton
                     selectedColorOfTextAndIcon={Color_BG}
                     selectedBackgroundColor={Color_Text}
 
-                    onPress={onPressCancelBtn}
+                    onPress={onPressUpgradeAsync}
 
                     notChangeToSelected
                     manuallySelected={true}
                     canHandlePressWhenSelected
 
-                    style={style.startBtn}
+                    style={style.upgradeBtn}
 
                     title={texts.upgrade}
 
-                    titleProps={{ style: style.startBtnTxt }}
+                    titleProps={{ style: style.upgradeBtnTxt }}
                 />
             </ScaleUpView>
 
@@ -231,6 +238,11 @@ const Paywall = ({
                     renderPriceLine()
                 }
             </ScaleUpView>
+
+            {
+                (!isReadyPurchase || handling) &&
+                <ActivityIndicator color={Color_Text} />
+            }
         </View>
     )
 }
