@@ -58,6 +58,8 @@ const eng = {
   onequy_apps: 'Check out my other awesome apps',
   vocaby_lifetime: 'Vocaby Lifetime',
   lifetime: 'Lifetime',
+  pro: 'Pro',
+  pro_item_content: 'Unlock all ### vocabulary popularity levels',
   restore_purchase: 'Restore purchase',
   restore: 'Restore',
   vocaby_lifetime_explain: "Upgrade once. Unlock all vocabularies and features.",
