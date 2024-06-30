@@ -1,7 +1,7 @@
 // https://feathericons.com/
 // LucideIconTextEffectButton - 7 Apr 2024 (Creating StyleShot)
 
-import { View, Text, StyleSheet, ColorValue, TouchableOpacity, Animated, ViewStyle, TextStyle, Image, ImagePropsBase, GestureResponderEvent, TextProps, Platform } from 'react-native'
+import { View, Text, StyleSheet, ColorValue, TouchableOpacity, Animated, ViewStyle, TextStyle, Image, ImagePropsBase, GestureResponderEvent, TextProps, Platform, ActivityIndicator } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { LucideIcon, LucideIconProps } from './LucideIcon'
 import { SafeValue } from '../UtilsTS'
@@ -24,6 +24,8 @@ interface Props extends React.ComponentProps<typeof TouchableOpacity> {
     notChangeToSelected?: boolean,
 
     canHandlePressWhenSelected?: boolean,
+    
+    enableIndicator?: boolean,
 
     effectDuration?: number,
     effectType?: 'scale' | 'fade',
@@ -103,6 +105,7 @@ const LucideIconTextEffectButton = ({
     notChangeToSelected,
     canHandlePressWhenSelected,
     manuallySelected,
+    enableIndicator = false,
 
     effectDuration = 100,
     effectType = undefined,
@@ -340,6 +343,9 @@ const LucideIconTextEffectButton = ({
     }, [effectDuration, effectType, effectDelay])
 
     const onPress = useCallback((e: GestureResponderEvent) => {
+        if (enableIndicator)
+            return
+
         if (manuallySelected === true && isSelected && canHandlePressWhenSelected !== true)
             return
 
@@ -353,6 +359,7 @@ const LucideIconTextEffectButton = ({
 
         set_isSelected(v => !v)
     }, [
+        enableIndicator,
         manuallySelected,
         isSelected,
         playEffect,
@@ -379,7 +386,7 @@ const LucideIconTextEffectButton = ({
 
     return (
         <TouchableOpacity
-            activeOpacity={notChangeToSelected ? undefined : 1}
+            activeOpacity={notChangeToSelected && !enableIndicator ? undefined : 1}
             onPress={onPress}
             style={finalMasterStyle}
         >
@@ -414,7 +421,7 @@ const LucideIconTextEffectButton = ({
 
             {/* icon */}
             {
-                iconProps &&
+                iconProps && !enableIndicator &&
                 <View style={styles.iconView}>
                     <LucideIcon  {...iconProps} color={textAndIconColor} />
                 </View>
@@ -422,7 +429,7 @@ const LucideIconTextEffectButton = ({
 
             {/* title */}
             {
-                title &&
+                title && !enableIndicator &&
                 <Text
                     adjustsFontSizeToFit={Platform.OS === 'android' ? false : true}
                     numberOfLines={1}
@@ -431,6 +438,14 @@ const LucideIconTextEffectButton = ({
                 >
                     {title}
                 </Text>
+            }
+
+            {/* indicator */}
+            {
+                enableIndicator &&
+                <View style={styles.title}>
+                    <ActivityIndicator />
+                </View>
             }
         </TouchableOpacity>
     )
