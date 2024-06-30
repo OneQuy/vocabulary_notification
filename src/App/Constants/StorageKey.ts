@@ -41,6 +41,7 @@ export const StorageKey_ShowedIntroTrial = 'StorageKey_ShowedIntroTrial'
 export const StorageKey_StatusText = 'StorageKey_StatusText'
 export const StorageKey_SetPushSuccessCount = 'StorageKey_SetPushSuccessCount'
 export const StorageKey_LastSetSuccessTick = 'StorageKey_LastSetSuccessTick'
+export const StorageKey_ShouldShowPaywallCount = 'StorageKey_ShouldShowPaywallCount'
 
 // specific (app settings)
 
