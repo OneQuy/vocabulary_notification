@@ -59,7 +59,7 @@ const eng = {
   vocaby_lifetime: 'Vocaby Lifetime',
   lifetime: 'Lifetime',
   pro: 'Pro',
-  pro_item_content: "Unlock all ### vocabulary popularity levels to learn up to @@@ words.",
+  pro_item_content: "Currently, you can choose 1 level for free. Upgrade to unlock all ### vocabulary popularity levels and learn up to @@@ words.",
   restore_purchase: 'Restore purchase',
   restore: 'Restore',
   vocaby_lifetime_explain: "Upgrade once. Unlock all vocabularies and features.",
