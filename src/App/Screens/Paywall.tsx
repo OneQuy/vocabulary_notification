@@ -21,6 +21,7 @@ import { SettingItemPanelStyle } from '../Components/SettingItemPanel'
 import { GetRemoteConfigWithCheckFetchAsync } from '../../Common/RemoteConfig'
 import { GetCurrentLifetimeProduct } from '../Handles/AppUtils'
 import { PurchaseAndTrackingAsync } from '../../Common/SpecificUtils'
+import { SafeDateString, SafeValue } from '../../Common/UtilsTS'
 
 const OffsetEffect = 200
 const DelayStartEffect = 300
@@ -32,6 +33,7 @@ const Paywall = ({
 }) => {
     const texts = useLocalText()
     const [handling, set_handling] = useState(false)
+    const [expiredSaleLine, set_expiredSaleLine] = useState<string | undefined>(undefined)
     const { onSetSubcribeDataAsync } = useContext(AppContext)
 
     const [currentLifetimeProduct, set_currentLifetimeProduct] = useState<undefined | IAPProduct>(undefined)
@@ -157,11 +159,11 @@ const Paywall = ({
 
             // sale expired line
 
-            // const saleEndTick = SafeValue(remoteConfig?.saleEndTick, 0)
+            const saleEndTick = SafeValue(remoteConfig?.saleEndTick, 0)
 
-            // if (Date.now() < saleEndTick) {
-            //     set_expirtedSaleLine(`${texts.sale_ends.replace('###', SafeDateString(new Date(saleEndTick), '/'))}`)
-            // }
+            if (Date.now() < saleEndTick) {
+                set_expiredSaleLine(`${texts.sale_ends.replace('###', SafeDateString(new Date(saleEndTick), '/'))}`)
+            }
 
             // done
 
@@ -171,7 +173,7 @@ const Paywall = ({
 
     return (
         <View
-            key={2}
+            key={4}
             style={style.master}
             pointerEvents={handling ? 'none' : 'auto'}
         >
@@ -218,8 +220,8 @@ const Paywall = ({
                     notChangeToSelected
                     canHandlePressWhenSelected
                     manuallySelected={true}
-                    
-                    enableIndicator={!isReadyPurchase || handling}
+
+                    enableIndicator={!isReadyPurchase || handling || !currentLifetimeProduct}
                     // enableIndicator={true}
 
                     style={style.upgradeBtn}
@@ -235,6 +237,15 @@ const Paywall = ({
                 {
                     renderPriceLine()
                 }
+            </ScaleUpView>
+
+            {/* sale end */}
+            <ScaleUpView isSpringOrTiming delay={OffsetEffect * 4 + DelayStartEffect}>
+                <Text
+                    style={SettingItemPanelStyle.explainTxt}
+                >
+                    {expiredSaleLine}
+                </Text>
             </ScaleUpView>
         </View>
     )
