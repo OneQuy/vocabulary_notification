@@ -11,15 +11,21 @@ import { GetAlternativeConfig } from './src/Common/RemoteConfig'
 import WelcomeScreen from './src/App/Screens/WelcomeScreen'
 import { GetBooleanAsync, SetBooleanAsync } from './src/Common/AsyncStorageUtils'
 import { StorageKey_ShowedWelcomeScreen } from './src/App/Constants/StorageKey'
+import Paywall from './src/App/Screens/Paywall'
 
 const App = () => {
   const { handled } = useAsyncHandle(async () => SplashScreenLoader());
   const [showWelcomeScreen, set_showWelcomeScreen] = useState(false)
+  const [showPaywall, set_showPaywall] = useState(false)
 
   const style = useMemo(() => {
     return StyleSheet.create({
       master: { flex: 1, backgroundColor: Color_BG }
     })
+  }, [])
+
+  const onPressLaterPaywall = useCallback(() => {
+    set_showPaywall(false)
   }, [])
 
   const onPressStartWelcomeScreen = useCallback(() => {
@@ -31,10 +37,11 @@ const App = () => {
 
   useEffect(() => {
     (async () => {
-      const show = await GetBooleanAsync(StorageKey_ShowedWelcomeScreen)
+      const showed = await GetBooleanAsync(StorageKey_ShowedWelcomeScreen)
 
-      if (!show) {
+      if (!showed) {
         set_showWelcomeScreen(true)
+        set_showPaywall(true)
       }
     })()
   }, [])
@@ -51,6 +58,17 @@ const App = () => {
       <SafeAreaView style={style.master}>
         <StatusBar backgroundColor={Color_BG} barStyle={'light-content'} />
         <WelcomeScreen onPressStart={onPressStartWelcomeScreen} />
+      </SafeAreaView>
+    )
+  }
+
+  // paywall
+
+  if (showPaywall) {
+    return (
+      <SafeAreaView style={style.master}>
+        <StatusBar backgroundColor={Color_BG} barStyle={'light-content'} />
+        <Paywall onPressCancel={onPressLaterPaywall} />
       </SafeAreaView>
     )
   }
