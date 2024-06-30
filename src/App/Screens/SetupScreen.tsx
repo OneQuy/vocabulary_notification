@@ -40,6 +40,7 @@ import { UserSelectedPopularityIndexProperty } from '../../Common/SpecificType'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import ScaleUpView from '../../Common/Components/Effects/ScaleUpView'
 import Paywall from './Paywall'
+import { GetAlternativeConfig } from '../../Common/RemoteConfig'
 
 const IsLog = false
 
@@ -568,8 +569,11 @@ const SetupScreen = () => {
 
   const onPressSetNotification = useCallback(async () => {
     const paywallCount = await IncreaseNumberAsync(StorageKey_ShouldShowPaywallCount)
+    const setToShowPayWallCount = GetAlternativeConfig('setToShowPayWallCount', 3)
 
-    if (paywallCount >= 3) {
+    // console.log('paywallCount', paywallCount, 'setToShowPayWallCount', setToShowPayWallCount);
+    
+    if (paywallCount >= setToShowPayWallCount) {
       needToSetNotification.current = true
       set_showPaywall(true)
       return
