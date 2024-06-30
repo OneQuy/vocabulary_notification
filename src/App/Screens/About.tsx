@@ -10,9 +10,9 @@ import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { useMyIAP } from '../../Common/IAP/useMyIAP'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { StorageKey_CachedIAP } from '../Constants/StorageKey'
-import { GetPercentDiscountTxtAndOriginLocalizedPriceTxt, IAPProduct, PurchaseAsync, RestorePurchaseAsync } from '../../Common/IAP/IAP'
+import { GetPercentDiscountTxtAndOriginLocalizedPriceTxt, IAPProduct, RestorePurchaseAsync } from '../../Common/IAP/IAP'
 import { SafeDateString, SafeGetArrayElement, SafeValue, ToCanPrintError } from '../../Common/UtilsTS'
-import { HandleError, TrackOneQuyApps, TrackSimpleWithParam } from '../../Common/Tracking'
+import { TrackOneQuyApps, TrackSimpleWithParam } from '../../Common/Tracking'
 import { Purchase } from 'react-native-iap'
 import { GetRemoteConfigWithCheckFetchAsync } from '../../Common/RemoteConfig'
 import { AllIAPProducts, AppContext, AppName, IapProductMax } from '../../Common/SpecificConstants'
@@ -23,6 +23,7 @@ import Clipboard from '@react-native-clipboard/clipboard'
 import { UserID } from '../../Common/UserID'
 import WealthText, { WealthTextConfig } from '../../Common/Components/WealthText'
 import { GetCurrentLifetimeProduct } from '../Handles/AppUtils'
+import { PurchaseAndTrackingAsync } from '../../Common/SpecificUtils'
 
 const About = () => {
     const texts = useLocalText()
@@ -124,13 +125,6 @@ const About = () => {
         )
     }, [localPrice, fetchedProducts, texts, currentLifetimeProduct, SettingItemPanelStyle, style])
 
-    const onPurchasedSuccessAsync = useCallback(async (sku: string) => {
-        await onSetSubcribeDataAsync({
-            id: sku,
-            purchasedTick: Date.now()
-        })
-    }, [texts, onSetSubcribeDataAsync])
-
     const onPressRestorePurchaseAsync = useCallback(async () => {
         set_isHandling(true)
 
@@ -144,7 +138,7 @@ const About = () => {
             const firstProduct = SafeGetArrayElement<Purchase>(products)
 
             if (firstProduct) {
-                onPurchasedSuccessAsync(firstProduct.productId)
+                await onSetSubcribeDataAsync(firstProduct.productId)
 
                 restoreResultForTracking = 'success_' + firstProduct.productId
             }
@@ -168,7 +162,7 @@ const About = () => {
         set_isHandling(false)
 
         TrackSimpleWithParam('restore_purchase', restoreResultForTracking)
-    }, [texts, onPurchasedSuccessAsync])
+    }, [texts, onSetSubcribeDataAsync])
 
     const onPressCheatCopyUserId = useCallback(() => {
         Clipboard.setString(UserID())
@@ -187,30 +181,11 @@ const About = () => {
 
         set_isHandling(true)
 
-        let valueTracking = ''
-
-        const res = await PurchaseAsync(currentLifetimeProduct.sku)
-
-        if (res === undefined) { // success
-            await onPurchasedSuccessAsync(currentLifetimeProduct.sku)
-
-            valueTracking = 'success_' + currentLifetimeProduct.sku
-        }
-
-        else if (res === null) {
-            valueTracking = 'cancel'
-        } // user canceled
-
-        else { // error
-            HandleError(res, 'BuyLifetime', true)
-            valueTracking = 'error'
-        }
+        await PurchaseAndTrackingAsync(currentLifetimeProduct.sku, onSetSubcribeDataAsync)
 
         set_isHandling(false)
-
-        TrackSimpleWithParam('purchase', valueTracking)
     }, [
-        onPurchasedSuccessAsync,
+        onSetSubcribeDataAsync,
         isHandling,
         isReadyPurchase,
         currentLifetimeProduct,

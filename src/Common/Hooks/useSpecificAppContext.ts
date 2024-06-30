@@ -4,7 +4,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { GetObjectAsync } from '../AsyncStorageUtils'
-import { AppContextType, OnSetSubcribeDataAsyncFunc, SubscribedData, UserPremiumDataProperty } from '../SpecificType'
+import { AppContextType, OnSetSubcribeDataAsyncFunc, OnSetSubcribeDataAsyncFuncParam, SubscribedData, UserPremiumDataProperty } from '../SpecificType'
 import { StorageKey_SubscribeData } from '../../App/Constants/StorageKey'
 import PostHog from 'posthog-react-native'
 import { SetupAppStateAndStartTrackingAsync } from '../AppStatePersistence'
@@ -31,13 +31,24 @@ const useSpecificAppContext = ({
     /**
      * undefined is to clear premium
      */
-    const onSetSubcribeDataAsync: OnSetSubcribeDataAsyncFunc = useCallback(async (subscribedData: SubscribedData | undefined): Promise<void> => {
+    const onSetSubcribeDataAsync: OnSetSubcribeDataAsyncFunc = useCallback(async (subscribedData: OnSetSubcribeDataAsyncFuncParam): Promise<void> => {
+        let data: SubscribedData | undefined = undefined
+
+        if (typeof subscribedData === 'string') {
+            data = {
+                id: subscribedData,
+                purchasedTick: Date.now(),
+            } as SubscribedData
+        }
+        else
+            data = subscribedData
+
         // save local & firebase (maybe loop)
 
         await LoopSetValueFirebase.SetValueAsync(
             StorageKey_SubscribeData,
             GetUserPropertyFirebasePath(UserPremiumDataProperty),
-            subscribedData,
+            data,
             texts.popup_error,
             texts.purchased_but_cannot_sync,
             texts.retry,
@@ -49,13 +60,13 @@ const useSpecificAppContext = ({
         set_appContextValue(curValue => {
             return {
                 ...curValue,
-                subscribedData,
+                data,
             }
         })
 
         // alert success
 
-        if (subscribedData) {
+        if (data) {
             await AlertAsync('Wohoo!', texts.purchase_success) // alert whenever purchase success or FORCE SET PREMIUM AFTER SPLASH-SCREEN
         }
     }, [texts])

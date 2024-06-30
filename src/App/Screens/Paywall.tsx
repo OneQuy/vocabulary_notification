@@ -63,6 +63,14 @@ const Paywall = ({
         // )
     }, [isReadyPurchase, handling])
 
+
+    // const onPurchasedSuccessAsync = useCallback(async (sku: string) => {
+    //     await onSetSubcribeDataAsync({
+    //         id: sku,
+    //         purchasedTick: Date.now()
+    //     })
+    // }, [texts, onSetSubcribeDataAsync])
+
     const style = useMemo(() => {
         return StyleSheet.create({
             master: { backgroundColor: Color_BG, justifyContent: 'center', alignItems: 'center', flex: 1 },
@@ -204,9 +212,9 @@ const Paywall = ({
                     >
                         {
                             texts.
-                            pro_item_content.
-                            replace('###', PopuplarityLevelNumber.toString()).
-                            replace('@@@', TotalWords.toString())
+                                pro_item_content.
+                                replace('###', PopuplarityLevelNumber.toString()).
+                                replace('@@@', TotalWords.toString())
                         }
                     </Text>
                 </ScaleUpView>

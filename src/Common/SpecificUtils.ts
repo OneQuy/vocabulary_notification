@@ -163,7 +163,7 @@ await UpgradeAsync(sku, onSetSubcribeDataAsync)
 set_isHandling(false)
 ```
  */
-export const UpgradeAsync = async (sku: string, onSetSubcribeDataAsync: OnSetSubcribeDataAsyncFunc) => {
+export const PurchaseAndTrackingAsync = async (sku: string, onSetSubcribeDataAsync: OnSetSubcribeDataAsyncFunc) => {
     let valueTracking = ''
 
     const res = await PurchaseAsync(sku)
