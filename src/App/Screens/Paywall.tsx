@@ -1,14 +1,14 @@
 // Created on 29 June 2024 (Vocaby)
 
 import { View, Text, StyleSheet, StyleProp, TextStyle, ActivityIndicator } from 'react-native'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import { Color_BG, Color_Text } from '../Hooks/useTheme'
 import ScaleUpView from '../../Common/Components/Effects/ScaleUpView'
 import useLocalText from '../Hooks/useLocalText'
 import { StartupWindowSize } from '../../Common/CommonConstants'
 import WealthText, { WealthTextConfig } from '../../Common/Components/WealthText'
-import { AllIAPProducts, AppName, IapProductMax } from '../../Common/SpecificConstants'
+import { AllIAPProducts, AppContext, AppName, IapProductMax } from '../../Common/SpecificConstants'
 import { Gap, Outline } from '../Constants/Constants_Outline'
 import { PopuplarityLevelNumber, TotalWords } from '../Constants/AppConstants'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
@@ -20,6 +20,7 @@ import { GetPercentDiscountTxtAndOriginLocalizedPriceTxt, IAPProduct } from '../
 import { SettingItemPanelStyle } from '../Components/SettingItemPanel'
 import { GetRemoteConfigWithCheckFetchAsync } from '../../Common/RemoteConfig'
 import { GetCurrentLifetimeProduct } from '../Handles/AppUtils'
+import { PurchaseAndTrackingAsync } from '../../Common/SpecificUtils'
 
 const OffsetEffect = 200
 const DelayStartEffect = 300
@@ -31,10 +32,11 @@ const Paywall = ({
 }) => {
     const texts = useLocalText()
     const [handling, set_handling] = useState(false)
+    const { onSetSubcribeDataAsync } = useContext(AppContext)
 
     const [currentLifetimeProduct, set_currentLifetimeProduct] = useState<undefined | IAPProduct>(undefined)
 
-    const { isReadyPurchase, localPrice, initErrorObj, fetchedProducts } = useMyIAP(
+    const { isReadyPurchase, localPrice, fetchedProducts } = useMyIAP(
         AllIAPProducts,
         async (s: string) => AsyncStorage.setItem(StorageKey_CachedIAP, s),
         async () => AsyncStorage.getItem(StorageKey_CachedIAP),
@@ -42,34 +44,19 @@ const Paywall = ({
     )
 
     const onPressUpgradeAsync = useCallback(async () => {
-        if (!isReadyPurchase || handling)
+        if (!isReadyPurchase ||
+            handling ||
+            !currentLifetimeProduct
+        )
             return
 
 
-        // set_handling(true)
-        // onPressCancel()
+        set_handling(true)
 
-        // // track
+        await PurchaseAndTrackingAsync(currentLifetimeProduct.sku, onSetSubcribeDataAsync)
 
-        // const event = 'welcome_screen'
-
-        // TrackingAsync(event,
-        //     [
-        //         `total/app/${event}`,
-        //     ],
-        //     {
-        //         viewTimeInSec: RoundWithDecimal(((Date.now() - tickStart) / 1000)),
-        //     }
-        // )
-    }, [isReadyPurchase, handling])
-
-
-    // const onPurchasedSuccessAsync = useCallback(async (sku: string) => {
-    //     await onSetSubcribeDataAsync({
-    //         id: sku,
-    //         purchasedTick: Date.now()
-    //     })
-    // }, [texts, onSetSubcribeDataAsync])
+        set_handling(false)
+    }, [onSetSubcribeDataAsync, isReadyPurchase, handling, currentLifetimeProduct])
 
     const style = useMemo(() => {
         return StyleSheet.create({
