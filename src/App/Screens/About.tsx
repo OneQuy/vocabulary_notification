@@ -28,7 +28,7 @@ import { PurchaseAndTrackingAsync } from '../../Common/SpecificUtils'
 const About = () => {
     const texts = useLocalText()
     const [isHandling, set_isHandling] = useState(false)
-    const [expirtedSaleLine, set_expirtedSaleLine] = useState<undefined | string>(undefined)
+    const [expiredSaleLine, set_expiredSaleLine] = useState<undefined | string>(undefined)
     const { subscribedData, onSetSubcribeDataAsync } = useContext(AppContext)
 
     const [currentLifetimeProduct, set_currentLifetimeProduct] = useState<undefined | IAPProduct>(undefined)
@@ -97,7 +97,7 @@ const About = () => {
 
         const discountTxts = GetPercentDiscountTxtAndOriginLocalizedPriceTxt(IapProductMax, currentLifetimeProduct, fetchedProducts)
 
-        if (discountTxts) {
+        if (discountTxts && expiredSaleLine) {
             // percent
 
             arr.push({
@@ -123,7 +123,7 @@ const About = () => {
         return (
             <WealthText textConfigs={arr} />
         )
-    }, [localPrice, fetchedProducts, texts, currentLifetimeProduct, SettingItemPanelStyle, style])
+    }, [localPrice, expiredSaleLine, fetchedProducts, texts, currentLifetimeProduct, SettingItemPanelStyle, style])
 
     const onPressRestorePurchaseAsync = useCallback(async () => {
         set_isHandling(true)
@@ -208,7 +208,7 @@ const About = () => {
             const saleEndTick = SafeValue(remoteConfig?.saleEndTick, 0)
 
             if (Date.now() < saleEndTick) {
-                set_expirtedSaleLine(`${texts.sale_ends.replace('###', SafeDateString(new Date(saleEndTick), '/'))}`)
+                set_expiredSaleLine(`${texts.sale_ends.replace('###', SafeDateString(new Date(saleEndTick), '/'))}`)
             }
 
             // done
@@ -237,8 +237,8 @@ const About = () => {
 
                         {/* expired date */}
                         {
-                            expirtedSaleLine &&
-                            <Text style={SettingItemPanelStyle.explainTxt}>{expirtedSaleLine}</Text>
+                            expiredSaleLine &&
+                            <Text style={SettingItemPanelStyle.explainTxt}>{expiredSaleLine}</Text>
                         }
 
                         {/* isHandling */}

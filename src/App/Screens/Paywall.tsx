@@ -117,7 +117,7 @@ const Paywall = ({
 
         const discountTxts = GetPercentDiscountTxtAndOriginLocalizedPriceTxt(IapProductMax, currentLifetimeProduct, fetchedProducts)
 
-        if (discountTxts) {
+        if (discountTxts && expiredSaleLine) {
             // percent
 
             arr.push({
@@ -143,7 +143,7 @@ const Paywall = ({
         return (
             <WealthText textConfigs={arr} />
         )
-    }, [localPrice, fetchedProducts, texts, currentLifetimeProduct, SettingItemPanelStyle, style])
+    }, [localPrice, expiredSaleLine, fetchedProducts, texts, currentLifetimeProduct, SettingItemPanelStyle, style])
 
     useEffect(() => {
         (async () => {
