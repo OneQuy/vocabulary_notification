@@ -1,6 +1,6 @@
 // Created on 29 June 2024 (Vocaby)
 
-import { View, Text, StyleSheet, StyleProp, TextStyle, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, StyleProp, TextStyle } from 'react-native'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import { Color_BG, Color_Text } from '../Hooks/useTheme'
@@ -9,7 +9,7 @@ import useLocalText from '../Hooks/useLocalText'
 import { CommonStyles, StartupWindowSize } from '../../Common/CommonConstants'
 import WealthText, { WealthTextConfig } from '../../Common/Components/WealthText'
 import { AllIAPProducts, AppContext, AppName, IapProductMax } from '../../Common/SpecificConstants'
-import { Gap, Outline } from '../Constants/Constants_Outline'
+import { Outline } from '../Constants/Constants_Outline'
 import { PopuplarityLevelNumber, TotalWords } from '../Constants/AppConstants'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
@@ -50,7 +50,7 @@ const Paywall = ({
     const onPressLaterAsync = useCallback(async () => {
         if (timeLeft > 0)
             return
-        
+
         onPressCancel()
     }, [timeLeft, onPressCancel])
 

@@ -17,7 +17,7 @@ import { SetupNotificationAsync, TestNotificationAsync } from '../Handles/SetupN
 import { GetExcludeTimesAsync, GetDefaultTranslationService, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, GetTranslationServiceAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetTranslationServiceAsync, SetTargetLangAsyncAsync, GetSourceLangAsync } from '../Handles/Settings'
 import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync, IsCachedWordsDataCurrentLevelAsync } from '../Handles/WordsData'
 import { GetBooleanAsync, GetDateAndSetNowAsync, GetNumberIntAsync, IncreaseNumberAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
-import { StorageKey_LastPushTick, StorageKey_LastSetSuccessTick, StorageKey_PopularityIndex, StorageKey_SetPushSuccessCount, StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord, StorageKey_StatusText } from '../Constants/StorageKey'
+import { StorageKey_LastPushTick, StorageKey_LastSetSuccessTick, StorageKey_PopularityIndex, StorageKey_SetPushSuccessCount, StorageKey_ShouldShowPaywallCount, StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord, StorageKey_StatusText } from '../Constants/StorageKey'
 import HistoryScreen from './HistoryScreen'
 import { HandleError, TrackPress, TrackSimple, TrackSimpleWithParam, TrackingAsync } from '../../Common/Tracking'
 import { GetLanguageFromCode, Language } from '../../Common/TranslationApis/TranslationLanguages'
@@ -80,6 +80,7 @@ const SetupScreen = () => {
   const [showPopup, set_showPopup] = useState<PopupType>(undefined)
   const [showPaywall, set_showPaywall] = useState(false)
   const popupCloseCallbackRef = useRef<(onFinished?: () => void) => void>()
+  const needToSetNotification = useRef(false)
 
   const [displayPopularityLevelIdx, set_displayPopularityLevelIdx] = useState(0)
   const [displayIntervalInMin, set_displayIntervalInMin] = useState<number>(DefaultIntervalInMin)
@@ -511,7 +512,7 @@ const SetupScreen = () => {
     }
   }, [setHandlingAndGetReadyDataAsync])
 
-  const onPressSetNotification = useCallback(async () => {
+  const SetNotificationAsync = useCallback(async () => {
     const dataReady = await setHandlingAndGetReadyDataAsync()
 
     if (!dataReady)
@@ -555,6 +556,27 @@ const SetupScreen = () => {
 
     set_processPercent('')
   }, [texts, setHandlingAndGetReadyDataAsync, generatePushTimeListText, trackAfterSetNotificationSuccessAsync])
+
+  const onPressLaterPaywall = useCallback(() => {
+    set_showPaywall(false)
+
+    if (needToSetNotification.current) {
+      needToSetNotification.current = false
+      SetNotificationAsync()
+    }
+  }, [SetNotificationAsync])
+
+  const onPressSetNotification = useCallback(async () => {
+    const paywallCount = await IncreaseNumberAsync(StorageKey_ShouldShowPaywallCount)
+
+    if (paywallCount >= 3) {
+      needToSetNotification.current = true
+      set_showPaywall(true)
+      return
+    }
+
+    SetNotificationAsync()
+  }, [SetNotificationAsync])
 
   const checkSetInterval = useCallback((minutes: number) => {
     if (minutes < MinimumIntervalInMin) {
@@ -1157,7 +1179,7 @@ const SetupScreen = () => {
 
   if (showPaywall) {
     return (
-      <Paywall onPressCancel={() => set_showPaywall(false)} />
+      <Paywall onPressCancel={onPressLaterPaywall} />
     )
   }
 
