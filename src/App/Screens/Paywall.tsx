@@ -171,7 +171,7 @@ const Paywall = ({
 
     return (
         <View
-            key={4}
+            key={2}
             style={style.master}
             pointerEvents={handling ? 'none' : 'auto'}
         >
@@ -216,8 +216,11 @@ const Paywall = ({
                     onPress={onPressUpgradeAsync}
 
                     notChangeToSelected
-                    manuallySelected={true}
                     canHandlePressWhenSelected
+                    manuallySelected={true}
+                    
+                    enableIndicator={!isReadyPurchase || handling}
+                    // enableIndicator={true}
 
                     style={style.upgradeBtn}
 
@@ -233,11 +236,6 @@ const Paywall = ({
                     renderPriceLine()
                 }
             </ScaleUpView>
-
-            {
-                (!isReadyPurchase || handling) &&
-                <ActivityIndicator color={Color_Text} />
-            }
         </View>
     )
 }
