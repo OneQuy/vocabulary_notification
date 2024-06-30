@@ -23,6 +23,7 @@ import { GetCurrentLifetimeProduct } from '../Handles/AppUtils'
 import { PurchaseAndTrackingAsync } from '../../Common/SpecificUtils'
 import { SafeDateString, SafeValue } from '../../Common/UtilsTS'
 import useCountdown from '../../Common/Hooks/useCountdown'
+import { TrackSimpleWithParam } from '../../Common/Tracking'
 
 const OffsetEffect = 200
 const DelayStartEffect = 300
@@ -51,6 +52,7 @@ const Paywall = ({
         if (timeLeft > 0)
             return
 
+        TrackSimpleWithParam('paywall', 'press_later')
         onPressCancel()
     }, [timeLeft, onPressCancel])
 
@@ -60,6 +62,7 @@ const Paywall = ({
             !currentLifetimeProduct)
             return
 
+        TrackSimpleWithParam('paywall', 'press_upgrade')
 
         set_handling(true)
 
@@ -155,6 +158,8 @@ const Paywall = ({
 
     useEffect(() => {
         (async () => {
+            TrackSimpleWithParam('paywall', 'show')
+
             set_handling(true)
 
             // fetch premium product id
