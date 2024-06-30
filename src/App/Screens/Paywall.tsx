@@ -6,7 +6,7 @@ import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import { Color_BG, Color_Text } from '../Hooks/useTheme'
 import ScaleUpView from '../../Common/Components/Effects/ScaleUpView'
 import useLocalText from '../Hooks/useLocalText'
-import { StartupWindowSize } from '../../Common/CommonConstants'
+import { CommonStyles, StartupWindowSize } from '../../Common/CommonConstants'
 import WealthText, { WealthTextConfig } from '../../Common/Components/WealthText'
 import { AllIAPProducts, AppContext, AppName, IapProductMax } from '../../Common/SpecificConstants'
 import { Gap, Outline } from '../Constants/Constants_Outline'
@@ -18,10 +18,11 @@ import { StorageKey_CachedIAP } from '../Constants/StorageKey'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { GetPercentDiscountTxtAndOriginLocalizedPriceTxt, IAPProduct } from '../../Common/IAP/IAP'
 import { SettingItemPanelStyle } from '../Components/SettingItemPanel'
-import { GetRemoteConfigWithCheckFetchAsync } from '../../Common/RemoteConfig'
+import { GetAlternativeConfig, GetRemoteConfigWithCheckFetchAsync } from '../../Common/RemoteConfig'
 import { GetCurrentLifetimeProduct } from '../Handles/AppUtils'
 import { PurchaseAndTrackingAsync } from '../../Common/SpecificUtils'
 import { SafeDateString, SafeValue } from '../../Common/UtilsTS'
+import useCountdown from '../../Common/Hooks/useCountdown'
 
 const OffsetEffect = 200
 const DelayStartEffect = 300
@@ -35,6 +36,7 @@ const Paywall = ({
     const [handling, set_handling] = useState(false)
     const [expiredSaleLine, set_expiredSaleLine] = useState<string | undefined>(undefined)
     const { onSetSubcribeDataAsync } = useContext(AppContext)
+    const { timeLeft } = useCountdown(GetAlternativeConfig('payWallWaitInSec', 3))
 
     const [currentLifetimeProduct, set_currentLifetimeProduct] = useState<undefined | IAPProduct>(undefined)
 
@@ -45,11 +47,17 @@ const Paywall = ({
         currentLifetimeProduct
     )
 
+    const onPressLaterAsync = useCallback(async () => {
+        if (timeLeft > 0)
+            return
+        
+        onPressCancel()
+    }, [timeLeft, onPressCancel])
+
     const onPressUpgradeAsync = useCallback(async () => {
         if (!isReadyPurchase ||
             handling ||
-            !currentLifetimeProduct
-        )
+            !currentLifetimeProduct)
             return
 
 
@@ -173,80 +181,100 @@ const Paywall = ({
 
     return (
         <View
-            key={4}
+            key={9}
             style={style.master}
             pointerEvents={handling ? 'none' : 'auto'}
         >
-            {/* title */}
-            <ScaleUpView isSpringOrTiming delay={OffsetEffect * 0 + DelayStartEffect}>
-                <WealthText
-                    textConfigs={[
-                        {
-                            text: AppName,
-                            textStyle: style.titleTxt,
-                        },
-                        {
-                            text: ' ' + texts.pro,
-                            textStyle: style.proTxt,
-                        },
-                    ]}
-                />
-            </ScaleUpView>
+            <View style={CommonStyles.flex1_justifyContentCenter_AlignItemsCenter}>
+                {/* title */}
+                <ScaleUpView isSpringOrTiming delay={OffsetEffect * 0 + DelayStartEffect}>
+                    <WealthText
+                        textConfigs={[
+                            {
+                                text: AppName,
+                                textStyle: style.titleTxt,
+                            },
+                            {
+                                text: ' ' + texts.pro,
+                                textStyle: style.proTxt,
+                            },
+                        ]}
+                    />
+                </ScaleUpView>
 
-            {/* content */}
-            {
-                <ScaleUpView isSpringOrTiming delay={OffsetEffect * 1 + DelayStartEffect}>
+                {/* content */}
+                {
+                    <ScaleUpView isSpringOrTiming delay={OffsetEffect * 1 + DelayStartEffect}>
+                        <Text
+                            style={style.contentItemTxt}
+                        >
+                            {
+                                texts.
+                                    pro_item_content.
+                                    replace('###', PopuplarityLevelNumber.toString()).
+                                    replace('@@@', TotalWords.toString())
+                            }
+                        </Text>
+                    </ScaleUpView>
+                }
+
+                {/* upgrade btn */}
+                <ScaleUpView delay={OffsetEffect * 2 + DelayStartEffect} isSpringOrTiming>
+                    <LucideIconTextEffectButton
+                        selectedColorOfTextAndIcon={Color_BG}
+                        selectedBackgroundColor={Color_Text}
+
+                        onPress={onPressUpgradeAsync}
+
+                        notChangeToSelected
+                        canHandlePressWhenSelected
+                        manuallySelected={true}
+
+                        enableIndicator={!isReadyPurchase || handling || !currentLifetimeProduct}
+                        // enableIndicator={true}
+
+                        style={style.upgradeBtn}
+
+                        title={texts.upgrade}
+
+                        titleProps={{ style: style.upgradeBtnTxt }}
+                    />
+                </ScaleUpView>
+
+                {/* price */}
+                <ScaleUpView delay={OffsetEffect * 3 + DelayStartEffect} isSpringOrTiming>
+                    {
+                        renderPriceLine()
+                    }
+                </ScaleUpView>
+
+                {/* sale end */}
+                <ScaleUpView isSpringOrTiming delay={OffsetEffect * 4 + DelayStartEffect}>
                     <Text
-                        style={style.contentItemTxt}
+                        style={SettingItemPanelStyle.explainTxt}
                     >
-                        {
-                            texts.
-                                pro_item_content.
-                                replace('###', PopuplarityLevelNumber.toString()).
-                                replace('@@@', TotalWords.toString())
-                        }
+                        {expiredSaleLine}
                     </Text>
                 </ScaleUpView>
-            }
+            </View>
 
-            {/* upgrade btn */}
-            <ScaleUpView delay={OffsetEffect * 2 + DelayStartEffect} isSpringOrTiming>
-                <LucideIconTextEffectButton
-                    selectedColorOfTextAndIcon={Color_BG}
-                    selectedBackgroundColor={Color_Text}
+            {/* later btn */}
+            <LucideIconTextEffectButton
+                unselectedColorOfTextAndIcon={Color_Text}
 
-                    onPress={onPressUpgradeAsync}
+                onPress={onPressLaterAsync}
 
-                    notChangeToSelected
-                    canHandlePressWhenSelected
-                    manuallySelected={true}
+                notChangeToSelected
 
-                    enableIndicator={!isReadyPurchase || handling || !currentLifetimeProduct}
-                    // enableIndicator={true}
+                enableIndicator={handling}
+                // enableIndicator={true}
 
-                    style={style.upgradeBtn}
+                style={style.upgradeBtn}
 
-                    title={texts.upgrade}
+                title={timeLeft > 0 ? timeLeft.toString() : texts.later}
 
-                    titleProps={{ style: style.upgradeBtnTxt }}
-                />
-            </ScaleUpView>
-
-            {/* price */}
-            <ScaleUpView delay={OffsetEffect * 3 + DelayStartEffect} isSpringOrTiming>
-                {
-                    renderPriceLine()
-                }
-            </ScaleUpView>
-
-            {/* sale end */}
-            <ScaleUpView isSpringOrTiming delay={OffsetEffect * 4 + DelayStartEffect}>
-                <Text
-                    style={SettingItemPanelStyle.explainTxt}
-                >
-                    {expiredSaleLine}
-                </Text>
-            </ScaleUpView>
+                titleProps={{ style: style.upgradeBtnTxt }}
+            />
         </View>
     )
 }

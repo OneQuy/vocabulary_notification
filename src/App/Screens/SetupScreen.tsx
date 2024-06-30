@@ -78,7 +78,7 @@ const SetupScreen = () => {
   const [pushTimeListText, set_pushTimeListText] = useState('')
   const [useEFfectLoaded, set_useEFfectLoaded] = useState(false)
   const [showPopup, set_showPopup] = useState<PopupType>(undefined)
-  const [showPaywall, set_showPaywall] = useState(true)
+  const [showPaywall, set_showPaywall] = useState(false)
   const popupCloseCallbackRef = useRef<(onFinished?: () => void) => void>()
 
   const [displayPopularityLevelIdx, set_displayPopularityLevelIdx] = useState(0)
@@ -1157,10 +1157,10 @@ const SetupScreen = () => {
 
   if (showPaywall) {
     return (
-      <Paywall onPressCancel={() => {}} />
+      <Paywall onPressCancel={() => set_showPaywall(false)} />
     )
   }
-  
+
   return (
     <AppContext.Provider value={appContextValue} >
       <View pointerEvents={pointerEvents} style={style.master}>
