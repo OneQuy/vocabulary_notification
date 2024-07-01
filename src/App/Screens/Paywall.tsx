@@ -115,6 +115,13 @@ const Paywall = ({
                 marginTop: Outline.Normal * 2,
                 maxWidth: StartupWindowSize.width * 0.5,
             },
+
+            laterBtn: {
+                padding: Outline.Normal,
+                margin: Outline.Normal,
+                marginTop: Outline.Normal * 2,
+                width: '100%',
+            },
         })
     }, [])
 
@@ -274,7 +281,7 @@ const Paywall = ({
                 enableIndicator={handling}
                 // enableIndicator={true}
 
-                style={style.upgradeBtn}
+                style={style.laterBtn}
 
                 title={timeLeft > 0 ? timeLeft.toString() : texts.later}
 
