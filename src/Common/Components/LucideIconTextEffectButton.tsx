@@ -7,6 +7,8 @@ import { LucideIcon, LucideIconProps } from './LucideIcon'
 import { SafeValue } from '../UtilsTS'
 import { CommonStyles } from '../CommonConstants'
 
+const PressThottleInMs = 100
+
 interface Props extends React.ComponentProps<typeof TouchableOpacity> {
     selectedColorOfTextAndIcon?: ColorValue,
     unselectedColorOfTextAndIcon?: ColorValue,
@@ -125,6 +127,8 @@ const LucideIconTextEffectButton = ({
     const [isSelected, set_isSelected] = useState(false)
 
     const animatedRef = useRef(new Animated.Value(0)).current
+
+    const lastPress = useRef(0)
 
     // memos
 
@@ -343,6 +347,13 @@ const LucideIconTextEffectButton = ({
     }, [effectDuration, effectType, effectDelay])
 
     const onPress = useCallback((e: GestureResponderEvent) => {
+        const now = Date.now()
+
+        if (now - lastPress.current < PressThottleInMs)
+            return
+
+        lastPress.current = now
+
         if (enableIndicator)
             return
 
@@ -426,7 +437,10 @@ const LucideIconTextEffectButton = ({
             {/* icon */}
             {
                 iconProps && !enableIndicator &&
-                <View style={styles.iconView}>
+                <View
+                    style={styles.iconView}
+                    onTouchEnd={onPress}
+                >
                     <LucideIcon  {...iconProps} color={textAndIconColor} />
                 </View>
             }
