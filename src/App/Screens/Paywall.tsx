@@ -109,7 +109,7 @@ const Paywall = ({
 
             upgradeBtn: {
                 borderWidth: 0,
-                borderRadius: BorderRadius.Small,
+                borderRadius: BorderRadius.Medium,
                 padding: Outline.Normal,
                 margin: Outline.Normal,
                 marginTop: Outline.Normal * 2,
