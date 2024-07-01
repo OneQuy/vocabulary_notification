@@ -7,7 +7,7 @@ import { LucideIcon, LucideIconProps } from './LucideIcon'
 import { SafeValue } from '../UtilsTS'
 import { CommonStyles } from '../CommonConstants'
 
-const PressThottleInMs = 100
+const PressThottleInMs = 500
 
 interface Props extends React.ComponentProps<typeof TouchableOpacity> {
     selectedColorOfTextAndIcon?: ColorValue,
