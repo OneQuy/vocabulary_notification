@@ -349,7 +349,7 @@ const LucideIconTextEffectButton = ({
     const onPress = useCallback((e: GestureResponderEvent) => {
         const now = Date.now()
 
-        if (now - lastPress.current < PressThottleInMs)
+        if (now - lastPress.current < PressThottleInMs) // preventing bug recognize 2 touches event at the same time
             return
 
         lastPress.current = now
