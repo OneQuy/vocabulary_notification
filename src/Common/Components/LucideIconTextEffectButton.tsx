@@ -24,7 +24,7 @@ interface Props extends React.ComponentProps<typeof TouchableOpacity> {
     notChangeToSelected?: boolean,
 
     canHandlePressWhenSelected?: boolean,
-    
+
     enableIndicator?: boolean,
 
     effectDuration?: number,
@@ -352,6 +352,8 @@ const LucideIconTextEffectButton = ({
         if (typeof masterRestProps.onPress === 'function')
             masterRestProps.onPress(e)
 
+        // console.log(Date.now())
+
         if (notChangeToSelected)
             return
 
@@ -384,10 +386,12 @@ const LucideIconTextEffectButton = ({
     //     console.log(title)
     // console.log(title, finalPaddingTop, finalMasterStyle)
 
+    const hasBorder = (finalBorderRadius !== undefined || finalBorderWidth !== undefined)
+
     return (
         <TouchableOpacity
             activeOpacity={notChangeToSelected && !enableIndicator ? undefined : 1}
-            onPress={onPress}
+            onPress={hasBorder ? undefined : onPress}
             style={finalMasterStyle}
         >
             {/* effect view */}
@@ -415,8 +419,8 @@ const LucideIconTextEffectButton = ({
 
             {/* border view */}
             {
-                (finalBorderRadius !== undefined || finalBorderWidth !== undefined) &&
-                <View style={styles.borderView} />
+                hasBorder &&
+                <View onTouchEnd={onPress} style={styles.borderView} />
             }
 
             {/* icon */}
@@ -431,6 +435,7 @@ const LucideIconTextEffectButton = ({
             {
                 title && !enableIndicator &&
                 <Text
+                    onPress={onPress}
                     adjustsFontSizeToFit={Platform.OS === 'android' ? false : true}
                     numberOfLines={1}
                     {...titleProps}
