@@ -62,7 +62,7 @@ const Paywall = ({
             !currentLifetimeProduct)
             return
 
-        TrackSimpleWithParam('paywall', 'press_upgrade')
+        TrackSimpleWithParam('paywall', 'press_upgrade', true)
 
         set_handling(true)
 
