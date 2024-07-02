@@ -539,13 +539,19 @@ const SetupScreen = () => {
     }
     else { // error
       let s = lastSetTimestampOrError.errorText ? texts[lastSetTimestampOrError.errorText] : ''
-      const trackFirebase = s !== texts.no_permission
+
+      let trackFirebase =
+        s !== texts.no_permission &&
+        s !== texts.fail_translate
 
       if (lastSetTimestampOrError.error) {
         if (s !== '')
           s += '\n\n'
 
         s += ToCanPrintError(lastSetTimestampOrError.error)
+
+        if (lastSetTimestampOrError.error.message === PleaseSelectTargetLangText)
+          trackFirebase = false
       }
 
       HandleError(s, 'onPressSetNotification', true, trackFirebase)
@@ -572,7 +578,7 @@ const SetupScreen = () => {
     const setToShowPayWallCount = GetAlternativeConfig('setToShowPayWallCount', 3)
 
     // console.log('paywallCount', paywallCount, 'setToShowPayWallCount', setToShowPayWallCount);
-    
+
     if (paywallCount >= setToShowPayWallCount) {
       needToSetNotification.current = true
       set_showPaywall(true)
