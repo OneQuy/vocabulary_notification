@@ -172,7 +172,7 @@ const About = () => {
 
         set_isHandling(false)
 
-        TrackSimpleWithParam('restore_purchase', restoreResultForTracking)
+        TrackSimpleWithParam('restore_purchase', restoreResultForTracking, true)
     }, [texts, onSetSubcribeDataAsync])
 
     const onPressCopyUserId = useCallback(() => {

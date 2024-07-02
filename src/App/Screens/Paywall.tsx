@@ -52,7 +52,7 @@ const Paywall = ({
         if (timeLeft > 0)
             return
 
-        TrackSimpleWithParam('paywall', 'press_later')
+        TrackSimpleWithParam('paywall', 'press_later', true)
         onPressCancel()
     }, [timeLeft, onPressCancel])
 
@@ -165,7 +165,7 @@ const Paywall = ({
 
     useEffect(() => {
         (async () => {
-            TrackSimpleWithParam('paywall', 'show')
+            TrackSimpleWithParam('paywall', 'show', true)
 
             set_handling(true)
 

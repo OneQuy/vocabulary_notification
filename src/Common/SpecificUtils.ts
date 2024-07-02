@@ -41,6 +41,7 @@ export const PressContact = async (
     if (type === 'email') { // email
         Clipboard.setString('onequy@gmail.com')
         Alert.alert(texts.copied)
+        // TrackSimpleWithParam('contact', )
     }
     else if ( // social links
         type === 'twitter_app' ||
@@ -228,5 +229,5 @@ export const PurchaseAndTrackingAsync = async (sku: string, onSetSubcribeDataAsy
         valueTracking = 'error'
     }
 
-    TrackSimpleWithParam('purchase', valueTracking)
+    TrackSimpleWithParam('purchase', valueTracking, true)
 }
