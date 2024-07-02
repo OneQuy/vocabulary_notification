@@ -28,6 +28,14 @@ export const IapProductMax: IAPProduct = {
 
 export const AllIAPProducts: IAPProduct[] = [
     {
+        sku: 'vocaby_pro_best_sale',
+        isConsumable: true,
+    },
+    {
+        sku: 'vocaby_2_usd',
+        isConsumable: true,
+    },
+    {
         sku: 'vocaby_lifetime',
         isConsumable: true,
     },
