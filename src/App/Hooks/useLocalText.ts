@@ -68,6 +68,7 @@ const eng = {
   purchase_success: 'You have just upgraded successfully!\n\nThank you for purchasing. You unlocked all vocabularies and features of Vocaby!',
   and: 'and',
   congrats: 'Congratulations!',
+  contact: 'Contact',
   run_out_push: 'Awesome!! You have learned all the vocabulary from the last setup. Please open the app to re-setup the new words and continue learning!',
   already_set: "You already set notifications until 24/Oct/1994 at 00:00.",
   expired_set: "All vocabulary is shown. Please set your next ones!",
