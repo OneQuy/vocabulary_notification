@@ -175,9 +175,10 @@ const About = () => {
         TrackSimpleWithParam('restore_purchase', restoreResultForTracking)
     }, [texts, onSetSubcribeDataAsync])
 
-    const onPressCheatCopyUserId = useCallback(() => {
+    const onPressCopyUserId = useCallback(() => {
         Clipboard.setString(UserID())
-    }, [])
+        Alert.alert(texts.copied)
+    }, [texts])
 
     const onPressCheatSetDev = useCallback(() => {
         const didSet = CheckTapSetDevPersistence()
@@ -366,8 +367,8 @@ const About = () => {
                             ]}
                         />
 
-                          {/* X (onequy) */}
-                          <WealthText
+                        {/* X (onequy) */}
+                        <WealthText
                             onPressOverall={() => PressContact(texts, 'twitter_onequy')}
                             textConfigs={[
                                 {
@@ -399,8 +400,19 @@ const About = () => {
                     />
                 </View>
 
-                {/* version */}
-                <Text onPress={IsDev() ? onPressCheatCopyUserId : undefined} style={SettingItemPanelStyle.explainTxt}>Version: v{VersionAsNumber}</Text>
+                <WealthText
+                    textConfigs={[
+                        {
+                            text: 'Version: v' + VersionAsNumber + ' - ',
+                            textStyle: SettingItemPanelStyle.explainTxt
+                        },
+                        {
+                            text: 'User ID',
+                            textStyle: style.contactItemContentTxt,
+                            onPress: onPressCopyUserId,
+                        }
+                    ]}
+                />
             </ScrollView>
         </View>
     )
