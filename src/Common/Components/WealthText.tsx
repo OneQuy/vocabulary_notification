@@ -6,7 +6,7 @@ import { View, Text, StyleSheet, StyleProp, TextStyle } from 'react-native';
 export type WealthTextConfig = {
     text?: string,
     textStyle?: StyleProp<TextStyle>,
-    onPress?: () => {},
+    onPress?: () => any,
 }
 
 const WealthText = ({
@@ -14,7 +14,7 @@ const WealthText = ({
     onPressOverall = undefined,
 }: {
     textConfigs?: WealthTextConfig[]
-    onPressOverall?: () => {},
+    onPressOverall?: () => any,
 }) => {
     if (!textConfigs)
         return
