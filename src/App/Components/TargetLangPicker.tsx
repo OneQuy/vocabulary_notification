@@ -1,6 +1,6 @@
 import { View, TextInput, StyleSheet, ScrollView, ActivityIndicator, KeyboardAvoidingView } from 'react-native'
 import React, { useEffect, useMemo, useState } from 'react'
-import { CommonStyles } from '../../Common/CommonConstants'
+import { CommonStyles, WindowSize_Max } from '../../Common/CommonConstants'
 import useLocalText from '../Hooks/useLocalText'
 import { Language } from '../../Common/TranslationApis/TranslationLanguages'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
@@ -43,7 +43,10 @@ const TargetLangPicker = ({
                 maxHeight: '10%',
             },
 
-            searchTxt: { width: '100%', fontSize: FontSize.Normal, color: Color_BG },
+            searchTxt: {
+                width: '100%', fontSize: FontSize.Normal, color: Color_BG,
+                minHeight: WindowSize_Max * 0.1,
+            },
 
             normalBtnTxt: { fontSize: FontSize.Normal, },
 
