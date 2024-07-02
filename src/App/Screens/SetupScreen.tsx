@@ -51,7 +51,7 @@ const ExcludeTimeTrackEventName = 'exclude_time'
 export type SubView =
   'setup' |
   'history' |
-  'about'
+  'pro'
 
 type PopupType =
   'popularity' |
@@ -1228,8 +1228,8 @@ const SetupScreen = () => {
             title={`${texts.pro}${IsDev() ? '.' : ''}`}
             titleProps={{ style: style.normalBtnTxt }}
 
-            manuallySelected={subView === 'about'}
-            onPress={() => onPressSubview('about')}
+            manuallySelected={subView === 'pro'}
+            onPress={() => onPressSubview('pro')}
           />
         </View>
 
@@ -1485,7 +1485,7 @@ const SetupScreen = () => {
         }
 
         {
-          subView === 'about' &&
+          subView === 'pro' &&
           <About
           />
         }

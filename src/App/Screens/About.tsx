@@ -168,7 +168,7 @@ const About = () => {
             Alert.alert(texts.popup_error, texts.restore_purchase_no_products + '\n\n' + ToCanPrintError(products))
         }
         else { // user canceled
-            restoreResultForTracking = 'user_cancel'
+            restoreResultForTracking = 'cancel'
         }
 
         set_isHandling(false)
