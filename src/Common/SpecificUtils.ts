@@ -36,14 +36,24 @@ export const ShareAppAsync = async () => {
 
 export const PressContact = async (
     texts: LocalText,
-    type: 'email' | 'twitter'
+    type: 'email' | 'twitter_app' | 'twitter_onequy'
 ) => {
-    if (type === 'email') {
+    if (type === 'email') { // email
         Clipboard.setString('onequy@gmail.com')
         Alert.alert(texts.copied)
     }
-    else if (type === 'twitter') {
-        const url = GetAlternativeConfig('twitterUrl', TwitterUrl)
+    else if ( // social links
+        type === 'twitter_app' ||
+        type === 'twitter_onequy'
+    ) {
+        let url
+
+        if (type === 'twitter_app')
+            url = GetAlternativeConfig('twitterUrl', TwitterUrl)
+        else if (type === 'twitter_onequy')
+            url = GetAlternativeConfig('twitterOneQuyUrl', 'https://x.com/onequy')
+        else
+            throw new Error('[ne] onPressContact ' + type)
 
         if (await Linking.canOpenURL(url))
             Linking.openURL(url)

@@ -327,8 +327,29 @@ const About = () => {
                 {/* contact */}
                 {
                     <View style={SettingItemPanelStyle.master_Column}>
+                        {/* title community */}
+                        <Text style={SettingItemPanelStyle.titleTxt}>{texts.community}</Text>
+                        <Text adjustsFontSizeToFit numberOfLines={1} style={SettingItemPanelStyle.explainTxt}>{texts.follow_community.replace('###', AppName)}</Text>
+
+                        {/* X */}
+                        <WealthText
+                            onPressOverall={() => PressContact(texts, 'twitter_app')}
+                            textConfigs={[
+                                {
+                                    text: 'Twitter (X): ',
+                                    textStyle: style.contactItemTitleTxt
+                                },
+                                {
+                                    text: '@vocaby_app',
+                                    textStyle: style.contactItemContentTxt
+                                }
+                            ]}
+                        />
+
+                        <View style={{ marginBottom: Gap.Small }} />
+
                         {/* title */}
-                        <Text style={SettingItemPanelStyle.titleTxt}>{texts.contact}</Text>
+                        <Text style={SettingItemPanelStyle.titleTxt}>{texts.contact_dev}</Text>
 
                         {/* email */}
                         <WealthText
@@ -345,16 +366,16 @@ const About = () => {
                             ]}
                         />
 
-                        {/* X */}
-                        <WealthText
-                            onPressOverall={() => PressContact(texts, 'twitter')}
+                          {/* X (onequy) */}
+                          <WealthText
+                            onPressOverall={() => PressContact(texts, 'twitter_onequy')}
                             textConfigs={[
                                 {
                                     text: 'Twitter (X): ',
                                     textStyle: style.contactItemTitleTxt
                                 },
                                 {
-                                    text: '@vocaby_app',
+                                    text: '@onequy',
                                     textStyle: style.contactItemContentTxt
                                 }
                             ]}
