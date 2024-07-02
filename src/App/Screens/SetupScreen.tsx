@@ -540,18 +540,16 @@ const SetupScreen = () => {
     else { // error
       let s = lastSetTimestampOrError.errorText ? texts[lastSetTimestampOrError.errorText] : ''
 
-      let trackFirebase =
+      const trackFirebase =
         s !== texts.no_permission &&
-        s !== texts.fail_translate
+        s !== texts.fail_translate &&
+        s !== PleaseSelectTargetLangText
 
       if (lastSetTimestampOrError.error) {
         if (s !== '')
           s += '\n\n'
 
         s += ToCanPrintError(lastSetTimestampOrError.error)
-
-        if (lastSetTimestampOrError.error.message === PleaseSelectTargetLangText)
-          trackFirebase = false
       }
 
       HandleError(s, 'onPressSetNotification', true, trackFirebase)
