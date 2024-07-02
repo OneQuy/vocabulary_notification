@@ -62,7 +62,7 @@ const About = () => {
 
             purchaseBtn: {
                 borderWidth: 0,
-                borderRadius: BorderRadius.Small,
+                borderRadius: BorderRadius.Medium,
                 maxWidth: '50%',
                 alignSelf: 'center',
                 padding: Outline.Normal,
