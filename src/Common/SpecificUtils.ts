@@ -8,7 +8,7 @@ import { Event, EventType } from "@notifee/react-native"
 import { AppDirName, DelayAsync, SafeValue, ToCanPrint } from "./UtilsTS"
 import { NotificationExtraDataKey_IsLastPush, NotificationExtraDataKey_Mode, NotificationExtraDataKey_PushIndex } from "../App/Handles/SetupNotification"
 import { GenerateNotificationTrackDataAsync } from "./Nofitication"
-import { OnSetSubcribeDataAsyncFunc, VocabyNotificationTrackData } from "./SpecificType"
+import { ContactType, OnSetSubcribeDataAsyncFunc, VocabyNotificationTrackData } from "./SpecificType"
 import { AppendArrayAsync, GetArrayAsync_PickAndRemoveFirstOne } from "./AsyncStorageUtils"
 import { StorageKey_CacheEventNotification } from "../App/Constants/StorageKey"
 import { HandleError, TrackEventNotificationAsync, TrackSimpleWithParam } from "./Tracking"
@@ -34,14 +34,13 @@ export const ShareAppAsync = async () => {
     })
 }
 
-export const PressContact = async (
+export const PressContactAsync = async (
     texts: LocalText,
-    type: 'email' | 'twitter_app' | 'twitter_onequy'
+    type: ContactType,
 ) => {
     if (type === 'email') { // email
         Clipboard.setString('onequy@gmail.com')
         Alert.alert(texts.copied)
-        // TrackSimpleWithParam('contact', )
     }
     else if ( // social links
         type === 'twitter_app' ||
@@ -57,7 +56,7 @@ export const PressContact = async (
             throw new Error('[ne] onPressContact ' + type)
 
         if (await Linking.canOpenURL(url))
-            Linking.openURL(url)
+            await Linking.openURL(url)
         else {
             Clipboard.setString(url)
             Alert.alert(texts.copied)
@@ -65,6 +64,8 @@ export const PressContact = async (
     }
     else
         throw new Error('[ne] onPressContact ' + type)
+
+    TrackSimpleWithParam('contact', type, true)
 }
 
 export async function ClearAllFilesAndStorageAsync(onlyWhenCheatOrForceClear: boolean): Promise<void> {

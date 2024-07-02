@@ -101,6 +101,8 @@ export type User = { // CHANGE OPTIONAL
     [UserProperty_StartUsingAppTick]?: number,
 }
 
+export type ContactType = 'email' | 'twitter_app' | 'twitter_onequy' // MAYBE NO CHANGE
+
 export type OnSetSubcribeDataAsyncFuncParam = string | SubscribedData | undefined // MAYBE NO CHANGE
 export type OnSetSubcribeDataAsyncFunc = (subscribedData: OnSetSubcribeDataAsyncFuncParam) => Promise<void> // MAYBE NO CHANGE
 

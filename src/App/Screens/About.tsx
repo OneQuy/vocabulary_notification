@@ -23,7 +23,8 @@ import Clipboard from '@react-native-clipboard/clipboard'
 import { UserID } from '../../Common/UserID'
 import WealthText, { WealthTextConfig } from '../../Common/Components/WealthText'
 import { GetCurrentLifetimeProduct } from '../Handles/AppUtils'
-import { PressContact, PurchaseAndTrackingAsync } from '../../Common/SpecificUtils'
+import { PressContactAsync, PurchaseAndTrackingAsync } from '../../Common/SpecificUtils'
+import { ContactType } from '../../Common/SpecificType'
 
 const About = () => {
     const texts = useLocalText()
@@ -187,6 +188,17 @@ const About = () => {
             Alert.alert('dev!')
     }, [])
 
+    const onPressUIContactAsync = useCallback(async (type: ContactType) => {
+        if (isHandling)
+            return
+
+        set_isHandling(true)
+
+        await PressContactAsync(texts, type)
+
+        set_isHandling(false)
+    }, [texts, isHandling])
+
     const onPressUpgradeAsync = useCallback(async () => {
         if (isHandling || !isReadyPurchase || !currentLifetimeProduct)
             return
@@ -334,7 +346,7 @@ const About = () => {
 
                         {/* X */}
                         <WealthText
-                            onPressOverall={() => PressContact(texts, 'twitter_app')}
+                            onPressOverall={() => onPressUIContactAsync('twitter_app')}
                             textConfigs={[
                                 {
                                     text: 'Twitter (X): ',
@@ -354,7 +366,7 @@ const About = () => {
 
                         {/* email */}
                         <WealthText
-                            onPressOverall={() => PressContact(texts, 'email')}
+                            onPressOverall={() => onPressUIContactAsync('email')}
                             textConfigs={[
                                 {
                                     text: 'Email: ',
@@ -369,7 +381,7 @@ const About = () => {
 
                         {/* X (onequy) */}
                         <WealthText
-                            onPressOverall={() => PressContact(texts, 'twitter_onequy')}
+                            onPressOverall={() => onPressUIContactAsync('twitter_onequy')}
                             textConfigs={[
                                 {
                                     text: 'Twitter (X): ',
