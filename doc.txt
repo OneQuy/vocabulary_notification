@@ -33,6 +33,7 @@ onequy app json firebase url
 - postHogAutoCapture (false)
 - payWallWaitInSec (3)
 - setToShowPayWallCount (3)
+- twitterUrl (https://x.com/vocaby_app)
 
 - maxDaysToPushAndroid (default 10 days)
 - maxDaysToPushiOS (default 10 days)

@@ -3,13 +3,14 @@
 // Created on 17 may 2024 (Coding Vocaby)
 
 import { createContext } from "react"
-import { AppContextType, SubscribedData } from "./SpecificType"
+import { AppContextType, OnSetSubcribeDataAsyncFuncParam, SubscribedData } from "./SpecificType"
 import { IAPProduct } from "./IAP/IAP"
 
 
 export const AndroidLink = "market://details?id=com.vocabulary_notification"
 export const iOSLink = "https://apps.apple.com/us/app/vocabulary-notification-vocaby/id6502538703"
 export const ShortLink = "https://onelink.to/45p9ky"
+export const TwitterUrl = 'https://x.com/vocaby_app'
 
 export const AppName = 'Vocaby'
 
@@ -38,9 +39,9 @@ export const AllIAPProducts: IAPProduct[] = [
 ]
 
 
-export const DefaultAppContext: AppContextType = {
+export const DefaultAppContext: AppContextType = { // CHANGE OPTIONAL
     subscribedData: undefined,
-    onSetSubcribeDataAsync: async (_: SubscribedData | undefined) => { }
+    onSetSubcribeDataAsync: async (_: OnSetSubcribeDataAsyncFuncParam) => { }, 
 }
 
 export const AppContext = createContext<AppContextType>(DefaultAppContext) // NO CHANGE

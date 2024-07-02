@@ -2,8 +2,8 @@
 //
 // Created on 17 may 2024 (Coding Vocaby)
 
-import { Linking, Platform, Share } from "react-native"
-import { AndroidLink, AppName, ShareAppContent, iOSLink } from "./SpecificConstants"
+import { Alert, Linking, Platform, Share } from "react-native"
+import { AndroidLink, AppName, ShareAppContent, TwitterUrl, iOSLink } from "./SpecificConstants"
 import { Event, EventType } from "@notifee/react-native"
 import { AppDirName, DelayAsync, SafeValue, ToCanPrint } from "./UtilsTS"
 import { NotificationExtraDataKey_IsLastPush, NotificationExtraDataKey_Mode, NotificationExtraDataKey_PushIndex } from "../App/Handles/SetupNotification"
@@ -16,6 +16,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import { DeleteFileAsync, DeleteTempDirAsync } from "./FileUtils"
 import { Cheat } from "./Cheat"
 import { PurchaseAsync } from "./IAP/IAP"
+import Clipboard from "@react-native-clipboard/clipboard"
+import { LocalText } from "../App/Hooks/useLocalText"
+import { GetAlternativeConfig } from "./RemoteConfig"
 
 const IsLog = __DEV__
 
@@ -29,6 +32,28 @@ export const ShareAppAsync = async () => {
         title: AppName,
         message: ShareAppContent,
     })
+}
+
+export const PressContact = async (
+    texts: LocalText,
+    type: 'email' | 'twitter'
+) => {
+    if (type === 'email') {
+        Clipboard.setString('onequy@gmail.com')
+        Alert.alert(texts.copied)
+    }
+    else if (type === 'twitter') {
+        const url = GetAlternativeConfig('twitterUrl', TwitterUrl)
+
+        if (await Linking.canOpenURL(url))
+            Linking.openURL(url)
+        else {
+            Clipboard.setString(url)
+            Alert.alert(texts.copied)
+        }
+    }
+    else
+        throw new Error('[ne] onPressContact ' + type)
 }
 
 export async function ClearAllFilesAndStorageAsync(onlyWhenCheatOrForceClear: boolean): Promise<void> {

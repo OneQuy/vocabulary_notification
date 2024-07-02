@@ -4,7 +4,7 @@ import { SettingItemPanelStyle } from '../Components/SettingItemPanel'
 import useLocalText from '../Hooks/useLocalText'
 import { Gap, Outline } from '../Constants/Constants_Outline'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
-import { Color_BG, Color_BG2, Color_Text } from '../Hooks/useTheme'
+import { Color_BG, Color_BG2, Color_Text, Color_Text2 } from '../Hooks/useTheme'
 import { FontSize } from '../Constants/Constants_FontSize'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { useMyIAP } from '../../Common/IAP/useMyIAP'
@@ -23,7 +23,7 @@ import Clipboard from '@react-native-clipboard/clipboard'
 import { UserID } from '../../Common/UserID'
 import WealthText, { WealthTextConfig } from '../../Common/Components/WealthText'
 import { GetCurrentLifetimeProduct } from '../Handles/AppUtils'
-import { PurchaseAndTrackingAsync } from '../../Common/SpecificUtils'
+import { PressContact, PurchaseAndTrackingAsync } from '../../Common/SpecificUtils'
 
 const About = () => {
     const texts = useLocalText()
@@ -48,6 +48,17 @@ const About = () => {
             priceView: { flexDirection: 'row' },
 
             normalBtnTxt: { fontSize: FontSize.Normal, },
+
+            contactItemTitleTxt: {
+                color: Color_Text,
+                fontSize: FontSize.Small
+            },
+
+            contactItemContentTxt: {
+                color: Color_Text2,
+                fontSize: FontSize.Small,
+                textDecorationLine: 'underline'
+            },
 
             purchaseBtn: {
                 borderWidth: 0,
@@ -310,6 +321,44 @@ const About = () => {
                                 onPress={onPressRestorePurchaseAsync}
                             />
                         }
+                    </View>
+                }
+
+                {/* contact */}
+                {
+                    <View style={SettingItemPanelStyle.master_Column}>
+                        {/* title */}
+                        <Text style={SettingItemPanelStyle.titleTxt}>{texts.contact}</Text>
+
+                        {/* email */}
+                        <WealthText
+                            onPressOverall={() => PressContact(texts, 'email')}
+                            textConfigs={[
+                                {
+                                    text: 'Email: ',
+                                    textStyle: style.contactItemTitleTxt
+                                },
+                                {
+                                    text: 'onequy@gmail.com',
+                                    textStyle: style.contactItemContentTxt
+                                }
+                            ]}
+                        />
+
+                        {/* X */}
+                        <WealthText
+                            onPressOverall={() => PressContact(texts, 'twitter')}
+                            textConfigs={[
+                                {
+                                    text: 'Twitter (X): ',
+                                    textStyle: style.contactItemTitleTxt
+                                },
+                                {
+                                    text: '@vocaby_app',
+                                    textStyle: style.contactItemContentTxt
+                                }
+                            ]}
+                        />
                     </View>
                 }
 
