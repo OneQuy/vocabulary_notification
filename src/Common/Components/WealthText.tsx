@@ -6,12 +6,15 @@ import { View, Text, StyleSheet, StyleProp, TextStyle } from 'react-native';
 export type WealthTextConfig = {
     text?: string,
     textStyle?: StyleProp<TextStyle>,
+    onPress?: () => {},
 }
 
 const WealthText = ({
-    textConfigs
+    textConfigs,
+    onPressOverall = undefined,
 }: {
     textConfigs?: WealthTextConfig[]
+    onPressOverall?: () => {},
 }) => {
     if (!textConfigs)
         return
@@ -20,6 +23,7 @@ const WealthText = ({
         <View style={styles.container}>
             {textConfigs.map((config, index) => (
                 <Text
+                    onPress={onPressOverall ?? config.onPress}
                     key={index}
                     style={config.textStyle}
                 >
