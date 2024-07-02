@@ -278,7 +278,7 @@ const Paywall = ({
 
                 notChangeToSelected
 
-                enableIndicator={handling}
+                enableIndicator={isReadyPurchase && currentLifetimeProduct && handling}
                 // enableIndicator={true}
 
                 style={style.laterBtn}
