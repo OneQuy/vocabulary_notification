@@ -46,11 +46,11 @@ export const HandleBeforeShowPopupPopularityLevelForNoPremiumAsync = async (
             texts.popup_error,
             texts.out_of_trial,
             'OK',
-            texts.lifetime
+            texts.pro
         )
 
         if (!pressedOKOrLifeTime) { //  pressed Lifetime 
-            setSubview('about')
+            setSubview('pro')
         }
 
         return false
@@ -67,11 +67,11 @@ export const HandleBeforeShowPopupPopularityLevelForNoPremiumAsync = async (
                 texts.popularity_level,
                 texts.introduce_trial.replaceAll('##', trialDays.toString()),
                 'OK',
-                texts.lifetime
+                texts.pro
             )
 
             if (!pressedOKOrLifeTime) { // pressed Lifetime 
-                setSubview('about')
+                setSubview('pro')
                 return false
             }
             else // press OK

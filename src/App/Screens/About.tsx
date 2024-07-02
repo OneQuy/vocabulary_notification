@@ -244,7 +244,7 @@ const About = () => {
     return (
         <View pointerEvents={isHandling ? 'none' : 'auto'} style={style.master}>
             <ScrollView contentContainerStyle={style.scrollView}>
-                {/* lifetime upgrade */}
+                {/* pro upgrade */}
                 {
                     !subscribedData &&
                     <View style={SettingItemPanelStyle.master_Column}>
