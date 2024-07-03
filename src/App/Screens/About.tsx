@@ -25,6 +25,9 @@ import WealthText, { WealthTextConfig } from '../../Common/Components/WealthText
 import { GetCurrentLifetimeProduct } from '../Handles/AppUtils'
 import { PressContactAsync, PurchaseAndTrackingAsync } from '../../Common/SpecificUtils'
 import { ContactType } from '../../Common/SpecificType'
+import ScaleUpView from '../../Common/Components/Effects/ScaleUpView'
+
+const EffectScaleUpOffset = 100
 
 const About = () => {
     const texts = useLocalText()
@@ -247,98 +250,102 @@ const About = () => {
                 {/* pro upgrade */}
                 {
                     !subscribedData &&
-                    <View style={SettingItemPanelStyle.master_Column}>
-                        {/* title */}
-                        <Text style={SettingItemPanelStyle.titleTxt}>{texts.vocaby_lifetime}</Text>
+                    <ScaleUpView delay={EffectScaleUpOffset * 0}>
+                        <View style={SettingItemPanelStyle.master_Column}>
+                            {/* title */}
+                            <Text style={SettingItemPanelStyle.titleTxt}>{texts.vocaby_lifetime}</Text>
 
-                        {/* explain */}
-                        <Text style={SettingItemPanelStyle.explainTxt}>{texts.vocaby_lifetime_explain}</Text>
+                            {/* explain */}
+                            <Text style={SettingItemPanelStyle.explainTxt}>{texts.vocaby_lifetime_explain}</Text>
 
-                        {/* price */}
-                        {
-                            renderPriceLine()
-                        }
+                            {/* price */}
+                            {
+                                renderPriceLine()
+                            }
 
-                        {/* expired date */}
-                        {
-                            expiredSaleLine &&
-                            <Text style={SettingItemPanelStyle.explainTxt}>{expiredSaleLine}</Text>
-                        }
+                            {/* expired date */}
+                            {
+                                expiredSaleLine &&
+                                <Text style={SettingItemPanelStyle.explainTxt}>{expiredSaleLine}</Text>
+                            }
 
-                        {/* isHandling */}
-                        {
-                            isHandling &&
-                            <ActivityIndicator color={Color_Text} />
-                        }
+                            {/* isHandling */}
+                            {
+                                isHandling &&
+                                <ActivityIndicator color={Color_Text} />
+                            }
 
-                        {/* erroring */}
-                        {
-                            !isReadyPurchase &&
-                            <Text style={SettingItemPanelStyle.explainTxt}>
-                                {
-                                    '[Not ready to purchase]' +
-                                    (initErrorObj === undefined ? '' : ` ${ToCanPrintError(initErrorObj)}`)
-                                }
-                            </Text>
-                        }
+                            {/* erroring */}
+                            {
+                                !isReadyPurchase &&
+                                <Text style={SettingItemPanelStyle.explainTxt}>
+                                    {
+                                        '[Not ready to purchase]' +
+                                        (initErrorObj === undefined ? '' : ` ${ToCanPrintError(initErrorObj)}`)
+                                    }
+                                </Text>
+                            }
 
-                        {/* btn upgrade*/}
-                        {
-                            !isHandling && isReadyPurchase &&
-                            <LucideIconTextEffectButton
-                                selectedBackgroundColor={Color_Text}
-                                selectedColorOfTextAndIcon={Color_BG}
+                            {/* btn upgrade*/}
+                            {
+                                !isHandling && isReadyPurchase &&
+                                <LucideIconTextEffectButton
+                                    selectedBackgroundColor={Color_Text}
+                                    selectedColorOfTextAndIcon={Color_BG}
 
-                                notChangeToSelected
-                                manuallySelected={true}
-                                canHandlePressWhenSelected
+                                    notChangeToSelected
+                                    manuallySelected={true}
+                                    canHandlePressWhenSelected
 
-                                style={style.purchaseBtn}
+                                    style={style.purchaseBtn}
 
-                                title={texts.upgrade}
-                                titleProps={{ style: style.normalBtnTxt }}
+                                    title={texts.upgrade}
+                                    titleProps={{ style: style.normalBtnTxt }}
 
-                                onPress={onPressUpgradeAsync}
-                            />
-                        }
-                    </View>
+                                    onPress={onPressUpgradeAsync}
+                                />
+                            }
+                        </View>
+                    </ScaleUpView>
                 }
 
                 {/* restore purchase */}
                 {
                     !subscribedData &&
-                    <View style={SettingItemPanelStyle.master}>
-                        {/* title */}
-                        <Text style={SettingItemPanelStyle.titleTxt}>{texts.restore_purchase}</Text>
+                    <ScaleUpView delay={EffectScaleUpOffset * 1}>
+                        <View style={SettingItemPanelStyle.master}>
+                            {/* title */}
+                            <Text style={SettingItemPanelStyle.titleTxt}>{texts.restore_purchase}</Text>
 
-                        {/* isHandling */}
-                        {
-                            isHandling &&
-                            <ActivityIndicator color={Color_Text} />
-                        }
+                            {/* isHandling */}
+                            {
+                                isHandling &&
+                                <ActivityIndicator color={Color_Text} />
+                            }
 
-                        {/* btn restore */}
-                        {
-                            !isHandling &&
-                            <LucideIconTextEffectButton
-                                unselectedColorOfTextAndIcon={Color_Text}
+                            {/* btn restore */}
+                            {
+                                !isHandling &&
+                                <LucideIconTextEffectButton
+                                    unselectedColorOfTextAndIcon={Color_Text}
 
-                                notChangeToSelected
-                                manuallySelected={false}
+                                    notChangeToSelected
+                                    manuallySelected={false}
 
-                                style={style.restoreBtn}
+                                    style={style.restoreBtn}
 
-                                title={texts.restore}
-                                titleProps={{ style: style.normalBtnTxt }}
+                                    title={texts.restore}
+                                    titleProps={{ style: style.normalBtnTxt }}
 
-                                onPress={onPressRestorePurchaseAsync}
-                            />
-                        }
-                    </View>
+                                    onPress={onPressRestorePurchaseAsync}
+                                />
+                            }
+                        </View>
+                    </ScaleUpView>
                 }
 
                 {/* contact */}
-                {
+                <ScaleUpView delay={EffectScaleUpOffset * 2}>
                     <View style={SettingItemPanelStyle.master_Column}>
                         {/* title community */}
                         <Text style={SettingItemPanelStyle.titleTxt}>{texts.community}</Text>
@@ -394,24 +401,27 @@ const About = () => {
                             ]}
                         />
                     </View>
-                }
+                </ScaleUpView>
 
                 {/* onequy apps */}
-                <View style={SettingItemPanelStyle.master_Column}>
-                    {/* title */}
-                    <Text onPress={IsDev() ? onPressCheatSetDev : undefined} style={SettingItemPanelStyle.titleTxt}>{texts.onequy_apps}:</Text>
+                <ScaleUpView delay={EffectScaleUpOffset * 3}>
+                    <View style={SettingItemPanelStyle.master_Column}>
+                        {/* title */}
+                        <Text onPress={IsDev() ? onPressCheatSetDev : undefined} style={SettingItemPanelStyle.titleTxt}>{texts.onequy_apps}:</Text>
 
-                    <OneQuyApp
-                        onEvent={TrackOneQuyApps}
-                        excludeAppName={AppName}
-                        primaryColor={Color_Text}
-                        counterPrimaryColor={Color_BG}
-                        backgroundColor={Color_BG2}
-                        counterBackgroundColor={Color_Text}
-                        fontSize={FontSize.Small}
-                    />
-                </View>
+                        <OneQuyApp
+                            onEvent={TrackOneQuyApps}
+                            excludeAppName={AppName}
+                            primaryColor={Color_Text}
+                            counterPrimaryColor={Color_BG}
+                            backgroundColor={Color_BG2}
+                            counterBackgroundColor={Color_Text}
+                            fontSize={FontSize.Small}
+                        />
+                    </View>
+                </ScaleUpView>
 
+                {/* version + user id */}
                 <WealthText
                     textConfigs={[
                         {

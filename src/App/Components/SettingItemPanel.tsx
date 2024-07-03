@@ -8,6 +8,7 @@ import FlickerView from '../../Common/Components/Effects/FlickerView'
 
 export const SettingItemPanelStyle = StyleSheet.create({
     master: {
+        width: '100%',
         backgroundColor: Color_BG2,
 
         borderColor: Color_Border,

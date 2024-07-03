@@ -261,10 +261,14 @@ const SetupScreen = () => {
   }, [texts, alreadySetInfoTxt])
 
   const onPressSubview = useCallback((type: SubView) => {
+    if (subView === type)
+      return
+
     set_subView(type)
+    set_showMoreSetting(false)
 
     TrackPress(type)
-  }, [])
+  }, [subView])
 
   const onPressMoreSetting = useCallback(() => {
     set_showMoreSetting(v => !v)
