@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, Alert, ActivityIndicator, ViewProps } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Alert, ActivityIndicator, ViewProps, TouchableOpacity } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import { Color_BG, Color_Text, Color_Text2 } from '../Hooks/useTheme'
@@ -32,7 +32,7 @@ import { AppContext, AppName } from '../../Common/SpecificConstants'
 import useSpecificAppContext from '../../Common/Hooks/useSpecificAppContext'
 import { IsDev } from '../../Common/IsDev'
 import HairLine from '../../Common/Components/HairLine'
-import { StartupWindowSize } from '../../Common/CommonConstants'
+import { CommonStyles, StartupWindowSize } from '../../Common/CommonConstants'
 import { HandleBeforeShowPopupPopularityLevelForNoPremiumAsync } from '../Handles/PremiumHandler'
 import { LoopSetValueFirebase } from '../../Common/Firebase/LoopSetValueFirebase'
 import { GetUserPropertyFirebasePath } from '../../Common/UserMan'
@@ -41,6 +41,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import ScaleUpView from '../../Common/Components/Effects/ScaleUpView'
 import Paywall from './Paywall'
 import { GetAlternativeConfig } from '../../Common/RemoteConfig'
+import { IsNewUpdateAvailableAsync, OpenStoreAsync } from '../../Common/SpecificUtils'
 
 const IsLog = false
 
@@ -80,6 +81,8 @@ const SetupScreen = () => {
   const [useEFfectLoaded, set_useEFfectLoaded] = useState(false)
   const [showPopup, set_showPopup] = useState<PopupType>(undefined)
   const [showPaywall, set_showPaywall] = useState(false)
+  const [showUpdateLine, set_showUpdateLine] = useState(false)
+
   const popupCloseCallbackRef = useRef<(onFinished?: () => void) => void>()
   const needToSetNotification = useRef(false)
 
@@ -124,6 +127,12 @@ const SetupScreen = () => {
         borderWidth: 0,
         borderRadius: BorderRadius.Medium,
         padding: Outline.Small,
+      },
+
+      updateLineTxt: {
+        color: Color_Text2,
+        fontSize: FontSize.Small,
+        textDecorationLine: 'underline'
       },
 
       normalBtnTxt: { fontSize: FontSize.Normal, },
@@ -212,8 +221,16 @@ const SetupScreen = () => {
   }, [timestampLastPush, texts])
 
   const onActiveOrUseEffectOnceAsync = useCallback(async (isUseEffectOnceOrOnActive: boolean) => {
+    // update info last set push line
+
     const lastPushTick = await GetNumberIntAsync(StorageKey_LastPushTick)
     set_timestampLastPush(lastPushTick)
+
+    // update update line (may last long, should put as final task)
+
+    set_showUpdateLine(await IsNewUpdateAvailableAsync())
+
+    // log
 
     if (IsLog)
       console.log("[onActiveOrUseEffectOnceAsync] isUseEffectOnceOrOnActive", isUseEffectOnceOrOnActive);
@@ -1200,6 +1217,17 @@ const SetupScreen = () => {
   return (
     <AppContext.Provider value={appContextValue} >
       <View pointerEvents={pointerEvents} style={style.master}>
+
+        {/* update line */}
+        {
+          showUpdateLine &&
+          <TouchableOpacity onPress={OpenStoreAsync} style={CommonStyles.justifyContentCenter_AlignItemsCenter}>
+            <Text style={style.updateLineTxt}>
+              {texts.update_line}
+            </Text>
+          </TouchableOpacity>
+        }
+
         {/* topbar */}
         <View style={style.topbarView}>
           <LucideIconTextEffectButton
