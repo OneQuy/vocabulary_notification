@@ -128,6 +128,8 @@ const SetupScreen = () => {
 
       normalBtnTxt: { fontSize: FontSize.Normal, },
 
+      selectedTopbarBtnTxt: { fontSize: FontSize.Normal, fontWeight: FontBold.Bold },
+
       alreadySetInfoTxt: {
         color: Color_Text2,
         fontSize: FontSize.Small,
@@ -1204,7 +1206,7 @@ const SetupScreen = () => {
             style={style.topbarBtn}
 
             title={texts.history}
-            titleProps={{ style: style.normalBtnTxt }}
+            titleProps={{ style: subView === 'history' ? style.selectedTopbarBtnTxt : style.normalBtnTxt }}
 
             manuallySelected={subView === 'history'}
             onPress={() => onPressSubview('history')}
@@ -1217,7 +1219,7 @@ const SetupScreen = () => {
             style={style.topbarBtn}
 
             title={texts.setup}
-            titleProps={{ style: style.normalBtnTxt }}
+            titleProps={{ style: subView === 'setup' ? style.selectedTopbarBtnTxt : style.normalBtnTxt }}
 
             manuallySelected={subView === 'setup'}
             onPress={() => onPressSubview('setup')}
@@ -1230,7 +1232,7 @@ const SetupScreen = () => {
             style={style.topbarBtn}
 
             title={`${texts.pro}${IsDev() ? '.' : ''}`}
-            titleProps={{ style: style.normalBtnTxt }}
+            titleProps={{ style: subView === 'pro' ? style.selectedTopbarBtnTxt : style.normalBtnTxt }}
 
             manuallySelected={subView === 'pro'}
             onPress={() => onPressSubview('pro')}
