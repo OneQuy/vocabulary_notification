@@ -18,7 +18,8 @@ import { Cheat } from "./Cheat"
 import { PurchaseAsync } from "./IAP/IAP"
 import Clipboard from "@react-native-clipboard/clipboard"
 import { LocalText } from "../App/Hooks/useLocalText"
-import { GetAlternativeConfig } from "./RemoteConfig"
+import { GetAlternativeConfig, GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig"
+import { VersionAsNumber } from "./CommonConstants"
 
 const IsLog = __DEV__
 
@@ -89,6 +90,18 @@ export async function ClearAllFilesAndStorageAsync(onlyWhenCheatOrForceClear: bo
     if (IsLog) {
         console.log('[ClearAllFilesAndStorageAsync] DID CLEAR ALL FILES AND STORAGE!')
     }
+}
+
+export const IsNewUpdateAvailableAsync = async (): Promise<boolean> => {
+    const data = (await GetRemoteConfigWithCheckFetchAsync())?.latestVersion
+
+    if (!data)
+        return false
+
+    if (Platform.OS === 'android')
+        return VersionAsNumber < data.android.version
+    else
+        return VersionAsNumber < data.ios.version
 }
 
 export const OnEventNotification = async (isBackgroundOrForeground: boolean, event: Event): Promise<void> => {
