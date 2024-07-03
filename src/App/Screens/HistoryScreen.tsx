@@ -26,7 +26,6 @@ const HistoryScreen = ({
 
   const [allPushedWordsOrError, set_allPushedWordsOrError] = useState<Error | SavedWordData[]>([])
   const [curPageIdx, set_curPageIdx] = useState(0)
-  const [text, set_text] = useState(0)
 
   // memos
 
