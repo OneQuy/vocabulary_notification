@@ -1222,7 +1222,7 @@ const SetupScreen = () => {
         {
           showUpdateLine &&
           <TouchableOpacity onPress={OpenStoreAsync} style={CommonStyles.justifyContentCenter_AlignItemsCenter}>
-            <Text style={style.updateLineTxt}>
+            <Text adjustsFontSizeToFit numberOfLines={1} style={style.updateLineTxt}>
               {texts.update_line}
             </Text>
           </TouchableOpacity>

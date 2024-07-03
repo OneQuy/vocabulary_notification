@@ -8,6 +8,7 @@ export const RetryText = 'Retry'
 export const NoNotificationPermissionLocalKey = 'no_permission'
 
 const eng = {
+  update_line: "New version! Let's update for the best experience!",
   popularity_level: 'Popularity level',
   popularity_level_explain: "Popularity level of vocabulary words. The higher level, the less common the words are. Choose according to your needs.",
   level: 'Level',
