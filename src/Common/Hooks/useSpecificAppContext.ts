@@ -90,7 +90,7 @@ const useSpecificAppContext = ({
         set_appContextValue(current => {
             return {
                 ...current,
-                isReviewMode: SafeValue(remoteConfig?.isReviewMode, false)
+                isReviewMode: SafeValue(remoteConfig?.isReviewMode, 0)
             }
         })
 
@@ -120,7 +120,7 @@ const useSpecificAppContext = ({
                 ...appContextValue,
                 subscribedData: subscribedDataOrUndefined,
                 onSetSubcribeDataAsync,
-                isReviewMode: SafeValue(remoteConfig?.isReviewMode, false)
+                isReviewMode: SafeValue(remoteConfig?.isReviewMode, 0)
             })
 
             // setup & tracking
