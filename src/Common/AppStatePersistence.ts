@@ -242,7 +242,15 @@ const OnStateChanged = (state: AppStateStatus) => {
 const CheckReloadRemoteConfigAsync = async (setupParams: SetupAppStateAndStartTrackingParams): Promise<undefined | number> => {
     // CHECK ////////////////
 
-    const loadedConfigLastTimeInHour = DateDiff_InHour_WithNow(GetLastTimeFetchedRemoteConfigSuccessAndHandledAlerts())
+    const cheat = Cheat('force_reload_remote_config')
+
+    if (cheat) {
+        console.log('[CheckReloadRemoteConfigAsync] FORCE RELOAD REMOTE CONFIG');
+    }
+
+    const loadedConfigLastTimeInHour = cheat ?
+        Number.MAX_VALUE :
+        DateDiff_InHour_WithNow(GetLastTimeFetchedRemoteConfigSuccessAndHandledAlerts())
 
     if (loadedConfigLastTimeInHour < HowLongToReloadRemoteConfigInHour) {
         if (IsLog)
