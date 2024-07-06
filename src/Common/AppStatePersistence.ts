@@ -14,7 +14,7 @@ import PostHog from "posthog-react-native"
 import { InitTrackingAsync, TrackFirstOpenOfDayOldUserAsync, TrackOnActiveOrUseEffectOnceWithGapAsync, TrackOnNewlyInstallAsync, CheckTrackUpdatedAppAsync, TrackSimpleWithParam } from "./Tracking"
 import { AlertAsync, DateDiff_InHour_WithNow, DateDiff_WithNow, GetDayHourMinSecFromMs_ToString, IsToday, IsValuableArrayOrString } from "./UtilsTS"
 import { ClearUserForcePremiumDataAsync, GetUserForcePremiumDataAsync } from "./UserMan"
-import { SubscribedData } from "./SpecificType"
+import { RemoteConfig, SubscribedData } from "./SpecificType"
 import { UserID } from "./UserID"
 import { AppStateStatus } from "react-native"
 import { RegisterOnChangedState } from "./AppStateMan"
@@ -30,6 +30,7 @@ export type SetupAppStateAndStartTrackingParams = {
     forceSetPremiumAsync: (setOrReset: SubscribedData | undefined) => Promise<void>,
     onActiveOrUseEffectOnceWithGapAsync?: (isUseEffectOnceOrOnActive: boolean) => Promise<void>,
     onActiveOrUseEffectOnceAsync?: (isUseEffectOnceOrOnActive: boolean) => Promise<void>,
+    onReloadedRemoteConfigAsync?: (_: RemoteConfig | undefined) => Promise<void>,
 }
 
 const IsLog = __DEV__
@@ -87,7 +88,7 @@ export const SetupAppStateAndStartTrackingAsync = async (setupParams: SetupAppSt
 const OnActiveAsync = async (setupParams: SetupAppStateAndStartTrackingParams) => {
     // check to show warning alert
 
-    const loadedConfigLastTimeInHour = CheckReloadRemoteConfig()
+    const loadedConfigLastTimeInHour = await CheckReloadRemoteConfigAsync(setupParams)
 
     // onActive or OnceUseEffect
 
@@ -238,7 +239,7 @@ const OnStateChanged = (state: AppStateStatus) => {
 }
 
 /** reload (app remote config + alerts) if app re-active after a period `HowLongToReloadRemoteConfigInHour` */
-const CheckReloadRemoteConfig = (): undefined | number => {
+const CheckReloadRemoteConfigAsync = async (setupParams: SetupAppStateAndStartTrackingParams): Promise<undefined | number> => {
     // CHECK ////////////////
 
     const loadedConfigLastTimeInHour = DateDiff_InHour_WithNow(GetLastTimeFetchedRemoteConfigSuccessAndHandledAlerts())
@@ -252,7 +253,10 @@ const CheckReloadRemoteConfig = (): undefined | number => {
 
     // RELOAD HERE /////////
 
-    GetRemoteConfigWithCheckFetchAsync(false, true)
+    const config = await GetRemoteConfigWithCheckFetchAsync(false, true)
+
+    if (setupParams.onReloadedRemoteConfigAsync)
+        setupParams.onReloadedRemoteConfigAsync(config)
 
     return loadedConfigLastTimeInHour
 }

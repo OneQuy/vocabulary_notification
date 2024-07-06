@@ -4,26 +4,41 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { GetObjectAsync } from '../AsyncStorageUtils'
-import { AppContextType, OnSetSubcribeDataAsyncFunc, OnSetSubcribeDataAsyncFuncParam, SubscribedData, UserPremiumDataProperty } from '../SpecificType'
+import { AppContextType, OnSetSubcribeDataAsyncFunc, OnSetSubcribeDataAsyncFuncParam, RemoteConfig, SubscribedData, UserPremiumDataProperty } from '../SpecificType'
 import { StorageKey_SubscribeData } from '../../App/Constants/StorageKey'
 import PostHog from 'posthog-react-native'
 import { SetupAppStateAndStartTrackingAsync } from '../AppStatePersistence'
 import { DefaultAppContext } from '../SpecificConstants'
 import useLocalText from '../../App/Hooks/useLocalText'
-import { AlertAsync } from '../UtilsTS'
+import { AlertAsync, SafeValue } from '../UtilsTS'
 import { LoopSetValueFirebase } from '../Firebase/LoopSetValueFirebase'
 import { GetUserPropertyFirebasePath } from '../UserMan'
+import { GetRemoteConfigWithCheckFetchAsync } from '../RemoteConfig'
 
 type UseSpecificAppContextParam = {
     posthog: PostHog,
+
+    /**
+     * should [] deps
+     */
     onActiveOrUseEffectOnceWithGapAsync?: (isUseEffectOnceOrOnActive: boolean) => Promise<void>,
+
+    /**
+     * should [] deps
+     */
     onActiveOrUseEffectOnceAsync?: (isUseEffectOnceOrOnActive: boolean) => Promise<void>,
+
+    /**
+     * should [] deps
+     */
+    onReloadedRemoteConfigAsync?: (_: RemoteConfig | undefined) => Promise<void>,
 }
 
 const useSpecificAppContext = ({
     posthog,
     onActiveOrUseEffectOnceAsync,
     onActiveOrUseEffectOnceWithGapAsync,
+    onReloadedRemoteConfigAsync,
 }: UseSpecificAppContextParam) => {
     const [appContextValue, set_appContextValue] = useState<AppContextType>(DefaultAppContext)
     const texts = useLocalText()
@@ -71,6 +86,18 @@ const useSpecificAppContext = ({
         }
     }, [texts])
 
+    const onDidReloadRemoteConfig = useCallback(async (remoteConfig: RemoteConfig | undefined): Promise<void> => {
+        set_appContextValue(current => {
+            return {
+                ...current,
+                isReviewMode: SafeValue(remoteConfig?.isReviewMode, false)
+            }
+        })
+
+        if (onReloadedRemoteConfigAsync)
+            await onReloadedRemoteConfigAsync(remoteConfig)
+    }, []) // should []
+
     // init (make sure called once per open)
 
     useEffect(() => {
@@ -83,12 +110,17 @@ const useSpecificAppContext = ({
 
             const subscribedDataOrUndefined = await GetObjectAsync<SubscribedData>(StorageKey_SubscribeData)
 
+            // remote config
+
+            const remoteConfig = await GetRemoteConfigWithCheckFetchAsync()
+
             // init app context
 
-            set_appContextValue({ // CHANGE HERE 1
+            set_appContextValue({ // CHANGE HERE 1 (OPTIONAL)
                 ...appContextValue,
                 subscribedData: subscribedDataOrUndefined,
                 onSetSubcribeDataAsync,
+                isReviewMode: SafeValue(remoteConfig?.isReviewMode, false)
             })
 
             // setup & tracking
@@ -99,6 +131,7 @@ const useSpecificAppContext = ({
                 forceSetPremiumAsync: onSetSubcribeDataAsync,
                 onActiveOrUseEffectOnceWithGapAsync,
                 onActiveOrUseEffectOnceAsync,
+                onReloadedRemoteConfigAsync: onDidReloadRemoteConfig,
             })
         })()
     }, [])

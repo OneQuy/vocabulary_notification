@@ -49,6 +49,7 @@ export const AllIAPProducts: IAPProduct[] = [
 
 export const DefaultAppContext: AppContextType = { // CHANGE OPTIONAL
     subscribedData: undefined,
+    isReviewMode: false,
     onSetSubcribeDataAsync: async (_: OnSetSubcribeDataAsyncFuncParam) => { }, 
 }
 
