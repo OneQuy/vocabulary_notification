@@ -1474,7 +1474,7 @@ const SetupScreen = () => {
         {/* set notification & test btn */}
 
         {
-          subView === 'setup' &&
+          subView === 'setup' && !appContextValue.isReviewMode &&
           <>
             <View style={style.bottomButtonsView}>
               <LucideIconTextEffectButton
@@ -1512,6 +1512,27 @@ const SetupScreen = () => {
               alreadySetInfoTxt &&
               <Text onPress={onPressStatusInfo} numberOfLines={1} adjustsFontSizeToFit style={style.alreadySetInfoTxt}>{alreadySetInfoTxt}</Text>
             }
+          </>
+        }
+
+        {/* set notification & test btn */}
+
+        {
+          subView === 'setup' && appContextValue.isReviewMode &&
+          <>
+            <View style={style.bottomButtonsView}>
+              <LucideIconTextEffectButton
+                unselectedColorOfTextAndIcon={Color_Text}
+
+                notChangeToSelected
+                style={style.normalBtn}
+
+                title={texts.show_word}
+                titleProps={{ style: style.normalBtnTxt }}
+
+                onPress={onPressTestNotificationAsync}
+              />
+            </View>
           </>
         }
 

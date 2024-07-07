@@ -13,6 +13,7 @@ const eng = {
   popularity_level_explain: "Popularity level of vocabulary words. The higher level, the less common the words are. Choose according to your needs.",
   level: 'Level',
   test_notification: 'Test notification',
+  show_word: 'Show vocabulary',
   translate_to: 'Translation language',
   translate_language_explain: "Which language would you like to translate to?",
   translation_service: 'Translation service',
