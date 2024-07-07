@@ -254,7 +254,6 @@ const About = () => {
                     selectedColorOfTextAndIcon={Color_BG}
                     selectedBackgroundColor={Color_Text}
 
-                    // notChangeToSelected
                     manuallySelected={currentLifetimeProduct?.sku === product.sku}
 
                     style={style.restoreBtn}
