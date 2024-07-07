@@ -13,7 +13,7 @@ import { HandlingType } from "../Screens/SetupScreen";
 import { HandleError } from "../../Common/Tracking";
 import { TranslatedResult } from "../../Common/TranslationApis/TranslationLanguages";
 import { GetAlternativeConfig } from "../../Common/RemoteConfig";
-import { Platform } from "react-native";
+import { Alert, Platform } from "react-native";
 
 const IsLog = __DEV__
 
@@ -304,7 +304,9 @@ export const TestNotificationAsync = async (
 ): Promise<Error | undefined> => {
     // check permission
 
-    const resPermission = await RequestPermissionNotificationAsync(true)
+    const resPermission = isReviewMode ?
+        true :
+        await RequestPermissionNotificationAsync(true)
 
     if (!resPermission) {
         return new Error(NoPermissionText)
@@ -384,7 +386,14 @@ export const TestNotificationAsync = async (
         false,
     )
 
-    DisplayNotificationAsync(noti)
+    if (isReviewMode) {
+        Alert.alert(
+            noti.title,
+            noti.message
+        )
+    }
+    else // user mode
+        DisplayNotificationAsync(noti)
 
     return undefined
 }
