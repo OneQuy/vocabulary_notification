@@ -236,6 +236,14 @@ const SetupScreen = () => {
       console.log("[onActiveOrUseEffectOnceAsync] isUseEffectOnceOrOnActive", isUseEffectOnceOrOnActive);
   }, []) // must []
 
+  const {
+    appContextValue,
+    onSetSubcribeDataAsync
+  } = useSpecificAppContext({
+    posthog,
+    onActiveOrUseEffectOnceAsync
+  })
+
   const generatePushTimeListText = useCallback((lastSetTimestamp: number) => {
     const pushTimesPerDay = CalcNotiTimeListPerDay(displayIntervalInMin, displayExcludedTimePairs)
 
@@ -525,7 +533,7 @@ const SetupScreen = () => {
     if (!dataReady)
       return
 
-    const res = await TestNotificationAsync(set_handlingType)
+    const res = await TestNotificationAsync(set_handlingType, appContextValue.isReviewMode)
 
     if (res?.message) {
       HandleError(res, 'onPressTestNotificationAsync', true, res?.message !== NoPermissionText)
@@ -534,7 +542,7 @@ const SetupScreen = () => {
     if (res === undefined) {
       TrackSimple('test_success')
     }
-  }, [setHandlingAndGetReadyDataAsync])
+  }, [setHandlingAndGetReadyDataAsync, appContextValue.isReviewMode])
 
   const SetNotificationAsync = useCallback(async () => {
     const dataReady = await setHandlingAndGetReadyDataAsync()
@@ -637,14 +645,6 @@ const SetupScreen = () => {
       SetExcludedTimesAsync(obj)
     }
   }, [checkSetInterval, displayExcludedTimePairs])
-
-  const {
-    appContextValue,
-    onSetSubcribeDataAsync
-  } = useSpecificAppContext({
-    posthog,
-    onActiveOrUseEffectOnceAsync
-  })
 
   const onPressShowPopupAsync = useCallback(async (type: PopupType) => {
     let canOpen = true

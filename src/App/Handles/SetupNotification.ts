@@ -298,7 +298,10 @@ export const SetCurrentAllNotificationsAsync = async (currentAllNotifications: S
  * 
  * @returns undefined means success
  */
-export const TestNotificationAsync = async (setHandling: (type: HandlingType) => void): Promise<Error | undefined> => {
+export const TestNotificationAsync = async (
+    setHandling: (type: HandlingType) => void,
+    isReviewMode: boolean
+): Promise<Error | undefined> => {
     // check permission
 
     const resPermission = await RequestPermissionNotificationAsync(true)
@@ -357,7 +360,7 @@ export const TestNotificationAsync = async (setHandling: (type: HandlingType) =>
 
         // success all
 
-        return await TestNotificationAsync(setHandling)
+        return await TestNotificationAsync(setHandling, isReviewMode)
     }
 
     // get display setting
