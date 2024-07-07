@@ -10,7 +10,10 @@ export type RemoteConfig = { // CHANGE OPTIONAL
 
     forceDev: number,
 
-    isReviewMode: number,
+    reviewingVersion: {
+        android: number,
+        ios: number,
+    }
 
     remoteFiles?: object,
 
@@ -112,7 +115,7 @@ export type AppContextType = { // CHANGE OPTIONAL
     // common
 
     subscribedData: SubscribedData | undefined,
-    isReviewMode: number,
+    isReviewMode: boolean,
     onSetSubcribeDataAsync: OnSetSubcribeDataAsyncFunc,
 } // REMERBER: add to DefaultAppContext (src/Common/SpecificConstants.ts)
 

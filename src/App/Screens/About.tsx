@@ -33,7 +33,7 @@ const About = () => {
     const texts = useLocalText()
     const [isHandling, set_isHandling] = useState(false)
     const [expiredSaleLine, set_expiredSaleLine] = useState<undefined | string>(undefined)
-    const { subscribedData, onSetSubcribeDataAsync } = useContext(AppContext)
+    const { subscribedData, onSetSubcribeDataAsync, isReviewMode } = useContext(AppContext)
 
     const [currentLifetimeProduct, set_currentLifetimeProduct] = useState<undefined | IAPProduct>(undefined)
 
@@ -218,6 +218,60 @@ const About = () => {
         currentLifetimeProduct,
     ])
 
+    const renderReviewIAP = useCallback(() => {
+        if (!isReviewMode)
+            return undefined
+
+        const arr = [
+            {
+                sku: 'vocaby_pro_best_sale',
+                name: '1 Month'
+            },
+            {
+                sku: 'vocaby_2_usd',
+                name: '3 Month'
+            },
+            {
+                sku: 'vocaby_lifetime',
+                name: '6 Month'
+            },
+            {
+                sku: 'vocaby_lifetime_pro',
+                name: '12 Month'
+            },
+            {
+                sku: 'vocaby_lifetime_max',
+                name: 'Lifetime'
+            }
+        ]
+
+        return arr.map(product => {
+            return (
+                <LucideIconTextEffectButton
+                    unselectedColorOfTextAndIcon={Color_Text}
+
+                    selectedColorOfTextAndIcon={Color_BG}
+                    selectedBackgroundColor={Color_Text}
+
+                    // notChangeToSelected
+                    manuallySelected={currentLifetimeProduct?.sku === product.sku}
+
+                    style={style.restoreBtn}
+
+                    title={product.name}
+                    titleProps={{ style: style.normalBtnTxt }}
+
+                    onPress={() => {
+                        const prod = AllIAPProducts.find(i => i.sku === product.sku)
+
+                        if (prod)
+                            set_currentLifetimeProduct(prod)
+                    }}
+                />
+            )
+        })
+    }, [isReviewMode, currentLifetimeProduct])
+
     useEffect(() => {
         (async () => {
             set_isHandling(true)
@@ -254,6 +308,16 @@ const About = () => {
                         <View style={SettingItemPanelStyle.master_Column}>
                             {/* title */}
                             <Text style={SettingItemPanelStyle.titleTxt}>{texts.vocaby_lifetime}</Text>
+
+                            {/* cheat review mode */}
+                            {
+                                isReviewMode &&
+                                <View>
+                                    {
+                                        renderReviewIAP()
+                                    }
+                                </View>
+                            }
 
                             {/* explain */}
                             <Text style={SettingItemPanelStyle.explainTxt}>{texts.vocaby_lifetime_explain}</Text>

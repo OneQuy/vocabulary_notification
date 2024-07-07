@@ -10,10 +10,11 @@ import PostHog from 'posthog-react-native'
 import { SetupAppStateAndStartTrackingAsync } from '../AppStatePersistence'
 import { DefaultAppContext } from '../SpecificConstants'
 import useLocalText from '../../App/Hooks/useLocalText'
-import { AlertAsync, SafeValue } from '../UtilsTS'
+import { AlertAsync } from '../UtilsTS'
 import { LoopSetValueFirebase } from '../Firebase/LoopSetValueFirebase'
 import { GetUserPropertyFirebasePath } from '../UserMan'
 import { GetRemoteConfigWithCheckFetchAsync } from '../RemoteConfig'
+import { IsReviewingVersion } from '../SpecificUtils'
 
 type UseSpecificAppContextParam = {
     posthog: PostHog,
@@ -90,7 +91,7 @@ const useSpecificAppContext = ({
         set_appContextValue(current => {
             return {
                 ...current,
-                isReviewMode: SafeValue(remoteConfig?.isReviewMode, 0)
+                isReviewMode: IsReviewingVersion(remoteConfig),
             }
         })
 
@@ -120,7 +121,7 @@ const useSpecificAppContext = ({
                 ...appContextValue,
                 subscribedData: subscribedDataOrUndefined,
                 onSetSubcribeDataAsync,
-                isReviewMode: SafeValue(remoteConfig?.isReviewMode, 0)
+                isReviewMode: IsReviewingVersion(remoteConfig),
             })
 
             // setup & tracking

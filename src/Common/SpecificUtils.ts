@@ -8,7 +8,7 @@ import { Event, EventType } from "@notifee/react-native"
 import { AppDirName, DelayAsync, SafeValue, ToCanPrint } from "./UtilsTS"
 import { NotificationExtraDataKey_IsLastPush, NotificationExtraDataKey_Mode, NotificationExtraDataKey_PushIndex } from "../App/Handles/SetupNotification"
 import { GenerateNotificationTrackDataAsync } from "./Nofitication"
-import { ContactType, OnSetSubcribeDataAsyncFunc, VocabyNotificationTrackData } from "./SpecificType"
+import { ContactType, OnSetSubcribeDataAsyncFunc, RemoteConfig, VocabyNotificationTrackData } from "./SpecificType"
 import { AppendArrayAsync, GetArrayAsync_PickAndRemoveFirstOne } from "./AsyncStorageUtils"
 import { StorageKey_CacheEventNotification } from "../App/Constants/StorageKey"
 import { HandleError, TrackEventNotificationAsync, TrackSimpleWithParam } from "./Tracking"
@@ -90,6 +90,16 @@ export async function ClearAllFilesAndStorageAsync(onlyWhenCheatOrForceClear: bo
     if (IsLog) {
         console.log('[ClearAllFilesAndStorageAsync] DID CLEAR ALL FILES AND STORAGE!')
     }
+}
+
+export const IsReviewingVersion = (remoteConfig: RemoteConfig | undefined): boolean => {
+    const reviewingVersion = SafeValue(
+        Platform.OS === 'android' ?
+            remoteConfig?.reviewingVersion.android :
+            remoteConfig?.reviewingVersion.ios,
+        0)
+
+    return reviewingVersion > 0 && VersionAsNumber >= reviewingVersion
 }
 
 export const IsNewUpdateAvailableAsync = async (): Promise<boolean> => {
