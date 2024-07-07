@@ -248,6 +248,7 @@ const About = () => {
         return arr.map(product => {
             return (
                 <LucideIconTextEffectButton
+                    key={product.sku}
                     unselectedColorOfTextAndIcon={Color_Text}
 
                     selectedColorOfTextAndIcon={Color_BG}
