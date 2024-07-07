@@ -531,7 +531,7 @@ const DataToNotification = (
             arr.push(
                 `[${ToDisplayPartOfSpeech(meaning.partOfSpeech ?? '')}]` +
                 (showDefinitions ? ` ${def.definition}` : '') +
-                (showExample && def.example ? ` (Ex: ${def.example})` : '')
+                (showExample && def.example ? ` (e.g. ${def.example})` : '')
             )
         }
 
