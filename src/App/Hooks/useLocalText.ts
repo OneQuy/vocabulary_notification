@@ -62,6 +62,8 @@ const eng = {
   pro: 'Pro',
   pro_item_content: "Currently, you can choose 1 level for free. Upgrade to unlock all ### vocabulary popularity levels and learn up to @@@ words.",
   restore_purchase: 'Restore purchase',
+  rate_app: 'Rate ### 5-star!',
+  rate: 'Rate',
   restore: 'Restore',
   vocaby_lifetime_explain: "Upgrade once. Unlock all vocabularies and features.",
   current_price: "Current sale price",

@@ -23,7 +23,7 @@ import Clipboard from '@react-native-clipboard/clipboard'
 import { UserID } from '../../Common/UserID'
 import WealthText, { WealthTextConfig } from '../../Common/Components/WealthText'
 import { GetCurrentLifetimeProduct } from '../Handles/AppUtils'
-import { PressContactAsync, PurchaseAndTrackingAsync } from '../../Common/SpecificUtils'
+import { OpenStoreAsync, PressContactAsync, PurchaseAndTrackingAsync } from '../../Common/SpecificUtils'
 import { ContactType } from '../../Common/SpecificType'
 import ScaleUpView from '../../Common/Components/Effects/ScaleUpView'
 
@@ -94,6 +94,7 @@ const About = () => {
                 borderWidth: 0,
                 borderRadius: BorderRadius.Small,
                 padding: Outline.Small,
+                minWidth: '20%',
             },
         })
     }, [SettingItemPanelStyle])
@@ -402,6 +403,40 @@ const About = () => {
                                     titleProps={{ style: style.normalBtnTxt }}
 
                                     onPress={onPressRestorePurchaseAsync}
+                                />
+                            }
+                        </View>
+                    </ScaleUpView>
+                }
+
+                {/* Rate */}
+                {
+                    <ScaleUpView delay={EffectScaleUpOffset * 1}>
+                        <View style={SettingItemPanelStyle.master}>
+                            {/* title */}
+                            <Text style={SettingItemPanelStyle.titleTxt}>{texts.rate_app.replace('###', AppName)}</Text>
+
+                            {/* isHandling */}
+                            {
+                                isHandling &&
+                                <ActivityIndicator color={Color_Text} />
+                            }
+
+                            {/* btn restore */}
+                            {
+                                !isHandling &&
+                                <LucideIconTextEffectButton
+                                    unselectedColorOfTextAndIcon={Color_Text}
+
+                                    notChangeToSelected
+                                    manuallySelected={false}
+
+                                    style={style.restoreBtn}
+
+                                    title={texts.rate}
+                                    titleProps={{ style: style.normalBtnTxt }}
+
+                                    onPress={OpenStoreAsync}
                                 />
                             }
                         </View>
