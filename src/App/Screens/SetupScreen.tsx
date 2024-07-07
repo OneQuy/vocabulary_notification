@@ -1515,7 +1515,7 @@ const SetupScreen = () => {
           </>
         }
 
-        {/* set notification & test btn */}
+        {/* show vocab btn (review mode) */}
 
         {
           subView === 'setup' && appContextValue.isReviewMode &&
