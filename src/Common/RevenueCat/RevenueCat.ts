@@ -1,3 +1,7 @@
+// NUMBER [CHANGE HERE]: 0
+
+// Created July 2024 (coding Vocaby)
+
 import { Platform } from "react-native";
 import Purchases, { LOG_LEVEL, PurchasesStoreProduct } from "react-native-purchases";
 import { CreateError, ExecuteWithTimeoutAsync, SafeArrayLength, TimeOutErrorObject, ToCanPrint, ToCanPrintError, UnknownErrorObject } from "../UtilsTS";
@@ -44,7 +48,6 @@ export class RevenueCat {
         // });
     }
 
-    // Load all offerings a user can (currently) purchase
     static PurchaseAsync = async (sku: string): Promise<Error | undefined | null> => {
         if (IsLog) console.log('[RevenueCat] purchasing....', sku)
         
