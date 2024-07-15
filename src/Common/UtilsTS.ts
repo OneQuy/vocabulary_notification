@@ -22,6 +22,8 @@ import { Buffer as TheBuffer } from 'buffer'
 // const -------------------------
 
 export const TimeOutError = '[time_out]'
+export const TimeOutErrorObject = new Error(TimeOutError)
+export const UnknownErrorObject = new Error('Unknown')
 
 // export const TimeOutStandardInMs = 10000 // 10s
 
