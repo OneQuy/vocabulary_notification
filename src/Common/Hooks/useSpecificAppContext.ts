@@ -76,7 +76,7 @@ const useSpecificAppContext = ({
         set_appContextValue(curValue => {
             return {
                 ...curValue,
-                data,
+                subscribedData: data,
             }
         })
 
