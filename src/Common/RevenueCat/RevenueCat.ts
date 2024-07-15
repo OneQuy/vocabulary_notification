@@ -46,6 +46,8 @@ export class RevenueCat {
 
     // Load all offerings a user can (currently) purchase
     static PurchaseAsync = async (sku: string): Promise<Error | undefined | null> => {
+        if (IsLog) console.log('[RevenueCat] purchasing....', sku)
+        
         // init
 
         this.CheckInit()
