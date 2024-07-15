@@ -24,6 +24,7 @@ import { Buffer as TheBuffer } from 'buffer'
 export const TimeOutError = '[time_out]'
 export const TimeOutErrorObject = new Error(TimeOutError)
 export const UnknownErrorObject = new Error('Unknown')
+export const NotInitedErrorObject = new Error('Not inited yet.')
 
 // export const TimeOutStandardInMs = 10000 // 10s
 
