@@ -1,6 +1,6 @@
 import { Platform } from "react-native";
 import Purchases, { LOG_LEVEL, PurchasesStoreProduct } from "react-native-purchases";
-import { CreateError, ExecuteWithTimeoutAsync, LogStringify, SafeArrayLength, TimeOutErrorObject, ToCanPrint, UnknownErrorObject } from "../UtilsTS";
+import { CreateError, ExecuteWithTimeoutAsync, SafeArrayLength, TimeOutErrorObject, ToCanPrint, ToCanPrintError, UnknownErrorObject } from "../UtilsTS";
 import { RevenueCat_Android, RevenueCat_iOS } from "../../../Keys";
 import { GetArrayAsync, SetArrayAsync } from "../AsyncStorageUtils";
 import { StorageKey_RevenueCatPackages } from "../../App/Constants/StorageKey";
@@ -76,15 +76,16 @@ export class RevenueCat {
             return undefined // success
         }
         catch (e) {
-            if (IsLog) console.log('[RevenueCat] purchased fail', ToCanPrint(e))
-
             // @ts-ignore // user cancel
 
             if (e && e.userCancelled) {
+                if (IsLog) console.log('[RevenueCat] purchased canceled')
                 return null
             }
 
-             // other error
+            // other error
+
+            if (IsLog) console.log('[RevenueCat] purchased fail', ToCanPrintError(e))
 
             return CreateError(e)
         }
