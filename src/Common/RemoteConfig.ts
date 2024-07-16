@@ -6,7 +6,7 @@ import { RemoteConfig } from './SpecificType';
 import { HandleAlertUpdateAppAsync } from './HandleAlertUpdateApp';
 import { LocalText, NotLatestConfig } from '../App/Hooks/useLocalText';
 
-const IsLog = false
+const IsLog = __DEV__
 
 const FirebaseDBPath = 'app/config';
 
