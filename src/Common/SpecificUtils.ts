@@ -219,25 +219,26 @@ export const CheckTrackCachedNotification = async (): Promise<void> => {
  * ### usage:
 ```tsx
 set_isHandling(true)
-await UpgradeAsync(sku, onSetSubcribeDataAsync)
+const purchaseSuccess = await PurchaseAndTrackingAsync(sku, onSetSubcribeDataAsync)
 set_isHandling(false)
 ```
  */
-export const PurchaseAndTrackingAsync = async (sku: string, onSetSubcribeDataAsync: OnSetSubcribeDataAsyncFunc) => {
+export const PurchaseAndTrackingAsync = async (sku: string, onSetSubcribeDataAsync: OnSetSubcribeDataAsyncFunc) : Promise<boolean> => {
     let valueTracking = ''
+    let purchaseSuccess = false
 
     const res = await RevenueCat.PurchaseAsync(sku)
 
     // success
 
     if (res === undefined) {
-
         await onSetSubcribeDataAsync({
             id: sku,
             purchasedTick: Date.now()
         })
 
         valueTracking = 'success_' + sku
+        purchaseSuccess = true
     }
 
     // cancel
@@ -254,4 +255,6 @@ export const PurchaseAndTrackingAsync = async (sku: string, onSetSubcribeDataAsy
     }
 
     TrackSimpleWithParam('purchase', valueTracking, true)
+
+    return purchaseSuccess
 }

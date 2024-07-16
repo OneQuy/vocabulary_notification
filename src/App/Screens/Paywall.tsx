@@ -29,9 +29,9 @@ const OffsetEffect = 200
 const DelayStartEffect = 300
 
 const Paywall = ({
-    onPressCancel,
+    closePaywall,
 }: {
-    onPressCancel: () => void
+    closePaywall: () => void
 }) => {
     const texts = useLocalText()
     const [handling, set_handling] = useState(false)
@@ -53,8 +53,8 @@ const Paywall = ({
             return
 
         TrackSimpleWithParam('paywall', 'press_later', true)
-        onPressCancel()
-    }, [timeLeft, onPressCancel])
+        closePaywall()
+    }, [timeLeft, closePaywall])
 
     const onPressUpgradeAsync = useCallback(async () => {
         if (!isReadyPurchase ||
@@ -66,10 +66,14 @@ const Paywall = ({
 
         set_handling(true)
 
-        await PurchaseAndTrackingAsync(currentLifetimeProduct.sku, onSetSubcribeDataAsync)
+        const purchasedSuccess = await PurchaseAndTrackingAsync(currentLifetimeProduct.sku, onSetSubcribeDataAsync)
 
-        set_handling(false)
-    }, [onSetSubcribeDataAsync, isReadyPurchase, handling, currentLifetimeProduct])
+        if (purchasedSuccess) {
+            closePaywall()
+        }
+        else
+            set_handling(false)
+    }, [onSetSubcribeDataAsync, closePaywall, isReadyPurchase, handling, currentLifetimeProduct])
 
     const style = useMemo(() => {
         return StyleSheet.create({
