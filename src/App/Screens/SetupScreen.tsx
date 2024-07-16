@@ -593,7 +593,7 @@ const SetupScreen = () => {
     set_processPercent('')
   }, [texts, setHandlingAndGetReadyDataAsync, generatePushTimeListText, trackAfterSetNotificationSuccessAsync])
 
-  const onPressLaterPaywall = useCallback(() => {
+  const closePaywall = useCallback(() => {
     set_showPaywall(false)
 
     if (needToSetNotification.current) {
@@ -1210,14 +1210,13 @@ const SetupScreen = () => {
 
   if (showPaywall) {
     return (
-      <Paywall onPressCancel={onPressLaterPaywall} />
+      <Paywall closePaywall={closePaywall} />
     )
   }
 
   return (
     <AppContext.Provider value={appContextValue} >
       <View pointerEvents={pointerEvents} style={style.master}>
-
         {/* update line */}
         {
           showUpdateLine &&

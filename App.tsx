@@ -24,10 +24,6 @@ const App = () => {
     })
   }, [])
 
-  const onPressLaterPaywall = useCallback(() => {
-    set_showPaywall(false)
-  }, [])
-
   const onPressStartWelcomeScreen = useCallback(() => {
     SetBooleanAsync(StorageKey_ShowedWelcomeScreen, true)
     set_showWelcomeScreen(false)
@@ -68,7 +64,7 @@ const App = () => {
     return (
       <SafeAreaView style={style.master}>
         <StatusBar backgroundColor={Color_BG} barStyle={'light-content'} />
-        <Paywall onPressCancel={onPressLaterPaywall} />
+        <Paywall closePaywall={() => set_showPaywall(false)} />
       </SafeAreaView>
     )
   }
