@@ -6,8 +6,8 @@ import { AlertAsync, CreateError, IsValuableArrayOrString, PickAndRemoveFirstEle
 import { AppendArrayAsync, GetArrayAsync, SetArrayAsync } from "../AsyncStorageUtils";
 import { StorageKey_LoopSetValueFirebase } from "../../App/Constants/StorageKey";
 
-// const IsLog = __DEV__
-const IsLog = false
+const IsLog = __DEV__
+// const IsLog = false
 
 export type LoopSetValueFirebaseCacheData = {
     firebasePath: string,
@@ -128,7 +128,10 @@ export class LoopSetValueFirebase {
     ): Promise<null | Error> => {
         // save to local first
 
+        if (value !== null && value !== undefined)
         await AsyncStorage.setItem(storageKey, JSON.stringify(value))
+        else
+            await AsyncStorage.removeItem(storageKey)
 
         // save to firebase
 

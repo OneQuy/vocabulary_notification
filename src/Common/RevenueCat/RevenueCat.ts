@@ -12,6 +12,7 @@ import { IAPProduct } from "../IAP/IAP";
 import { FirebaseDatabaseTimeOutMs } from "../Firebase/FirebaseDatabase";
 import { AllIAPProducts } from "../SpecificConstants";
 import { UserID } from "../UserID";
+import { Cheat } from "../Cheat";
 
 const IsLog = __DEV__
 
@@ -49,9 +50,20 @@ export class RevenueCat {
         // });
     }
 
+
+    /**
+     * @returns undefined if success
+     * @returns null if user cancelled
+     * @returns otherwise Error()
+     */
     static PurchaseAsync = async (sku: string): Promise<Error | undefined | null> => {
+        if (Cheat('force_iap_success')) {
+            if (IsLog) console.log('[RevenueCat] CHEAT SUCCESS')
+            return undefined
+        }
+
         if (IsLog) console.log('[RevenueCat] purchasing....', sku)
-        
+
         // init
 
         this.CheckInit()

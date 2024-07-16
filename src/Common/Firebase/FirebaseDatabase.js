@@ -49,6 +49,9 @@ export async function FirebaseDatabase_SetValueAsyncWithTimeOut(relativePath, va
 export async function FirebaseDatabase_SetValueAsync(relativePath, valueObject) { // main 
     CheckAndInit();
 
+    if (valueObject === undefined)
+        valueObject = null
+
     try {
         const reference = ref(db, relativePath);
         await set(reference, valueObject);
