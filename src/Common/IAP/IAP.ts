@@ -97,31 +97,31 @@ export const InitIAPAsync = async (
         }
     }
 
-    purchaseUpdatedListener((purchase: SubscriptionPurchase | ProductPurchase) => {
-        const receipt = purchase?.transactionReceipt
+    // purchaseUpdatedListener((purchase: SubscriptionPurchase | ProductPurchase) => {
+    //     const receipt = purchase?.transactionReceipt
 
-        // console.log('receipt', receipt);
+    //     // console.log('receipt', receipt);
 
-        if (!receipt) {
-            return
-        }
+    //     if (!receipt) {
+    //         return
+    //     }
 
-        // Tell the store that you have delivered what has been paid for.
-        // Failure to do this will result in the purchase being refunded on Android and
-        // the purchase event will reappear on every relaunch of the app until you succeed
-        // in doing the below. It will also be impossible for the user to purchase consumables
-        // again until you do this.
+    //     // Tell the store that you have delivered what has been paid for.
+    //     // Failure to do this will result in the purchase being refunded on Android and
+    //     // the purchase event will reappear on every relaunch of the app until you succeed
+    //     // in doing the below. It will also be impossible for the user to purchase consumables
+    //     // again until you do this.
 
-        const product = products?.find(i => i.sku === purchase.productId)
+    //     const product = products?.find(i => i.sku === purchase.productId)
 
-        if (!product) {
-            // throw new Error('IAP not found product: ' + purchase.productId)
-            console.error('[purchaseUpdatedListener] IAP not found product: ' + purchase.productId)
-        }
-        else {
-            finishTransaction({ purchase, isConsumable: product.isConsumable })
-        }
-    })
+    //     if (!product) {
+    //         // throw new Error('IAP not found product: ' + purchase.productId)
+    //         console.error('[purchaseUpdatedListener] IAP not found product: ' + purchase.productId)
+    //     }
+    //     else {
+    //         finishTransaction({ purchase, isConsumable: product.isConsumable })
+    //     }
+    // })
 
     return undefined
 }
