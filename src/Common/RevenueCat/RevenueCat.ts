@@ -3,7 +3,7 @@
 // Created July 2024 (coding Vocaby)
 
 import { Platform } from "react-native";
-import Purchases, { LOG_LEVEL, PurchasesStoreProduct } from "react-native-purchases";
+import Purchases, { LOG_LEVEL, PRODUCT_CATEGORY, PurchasesStoreProduct } from "react-native-purchases";
 import { CreateError, ExecuteWithTimeoutAsync, SafeArrayLength, TimeOutErrorObject, ToCanPrint, ToCanPrintError, UnknownErrorObject } from "../UtilsTS";
 import { RevenueCat_Android, RevenueCat_iOS } from "../../../Keys";
 import { GetArrayAsync, SetArrayAsync } from "../AsyncStorageUtils";
@@ -11,6 +11,7 @@ import { StorageKey_RevenueCatPackages } from "../../App/Constants/StorageKey";
 import { IAPProduct } from "../IAP/IAP";
 import { FirebaseDatabaseTimeOutMs } from "../Firebase/FirebaseDatabase";
 import { AllIAPProducts } from "../SpecificConstants";
+import { UserID } from "../UserID";
 
 const IsLog = __DEV__
 
@@ -31,20 +32,20 @@ export class RevenueCat {
         this.inited = true
 
         if (Platform.OS === 'android') {
-            Purchases.configure({ apiKey: APIKeys.google });
+            Purchases.configure({ apiKey: APIKeys.google, appUserID: UserID() });
         } else {
-            Purchases.configure({ apiKey: APIKeys.apple });
+            Purchases.configure({ apiKey: APIKeys.apple, appUserID: UserID() });
         }
 
         // Use more logging during debug if want!
         Purchases.setLogLevel(LOG_LEVEL.DEBUG);
 
-        // Listen for customer updates
+        // // Listen for customer updates
         // Purchases.addCustomerInfoUpdateListener(async (info) => {
-        //     // updateCustomerInformation(info);
+        //     // if (IsLog) console.log(info);
 
-        //     if (IsLog) console.log(info);
-
+        //     let s = await Clipboard.getString()
+        //     Clipboard.setString(s + "\n" + "listener: " + ToCanPrint(info))
         // });
     }
 
@@ -109,7 +110,7 @@ export class RevenueCat {
         // get from store
 
         const res = await ExecuteWithTimeoutAsync(
-            async () => await Purchases.getProducts(allIAPProducts.map(i => i.sku)),
+            async () => await Purchases.getProducts(allIAPProducts.map(i => i.sku), PRODUCT_CATEGORY.NON_SUBSCRIPTION),
             FirebaseDatabaseTimeOutMs
         )
 

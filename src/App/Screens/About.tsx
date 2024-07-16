@@ -192,6 +192,10 @@ const About = () => {
             Alert.alert('dev!')
     }, [])
 
+    const onPressCheatResetProDev = useCallback(() => {
+        onSetSubcribeDataAsync(undefined)
+    }, [onSetSubcribeDataAsync])
+
     const onPressUIContactAsync = useCallback(async (type: ContactType) => {
         if (isHandling)
             return
@@ -380,7 +384,11 @@ const About = () => {
                     <ScaleUpView delay={EffectScaleUpOffset * 1}>
                         <View style={SettingItemPanelStyle.master}>
                             {/* title */}
-                            <Text style={SettingItemPanelStyle.titleTxt}>{texts.restore_purchase}</Text>
+                            <Text
+                                style={SettingItemPanelStyle.titleTxt}
+                            >
+                                {texts.restore_purchase}
+                            </Text>
 
                             {/* isHandling */}
                             {
@@ -414,7 +422,12 @@ const About = () => {
                     <ScaleUpView delay={EffectScaleUpOffset * 1}>
                         <View style={SettingItemPanelStyle.master}>
                             {/* title */}
-                            <Text style={SettingItemPanelStyle.titleTxt}>{texts.rate_app.replace('###', AppName)}</Text>
+                            <Text
+                                onPress={IsDev() ? onPressCheatResetProDev : undefined}
+                                style={SettingItemPanelStyle.titleTxt}
+                            >
+                                {texts.rate_app.replace('###', AppName)}
+                            </Text>
 
                             {/* isHandling */}
                             {
