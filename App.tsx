@@ -9,9 +9,10 @@ import { PostHogProvider } from 'posthog-react-native'
 import { PostHogKey_Production } from './Keys'
 import { GetAlternativeConfig } from './src/Common/RemoteConfig'
 import WelcomeScreen from './src/App/Screens/WelcomeScreen'
-import { GetBooleanAsync, SetBooleanAsync } from './src/Common/AsyncStorageUtils'
-import { StorageKey_ShowedWelcomeScreen } from './src/App/Constants/StorageKey'
+import { GetBooleanAsync, GetObjectAsync, SetBooleanAsync } from './src/Common/AsyncStorageUtils'
+import { StorageKey_ShowedWelcomeScreen, StorageKey_SubscribeData } from './src/App/Constants/StorageKey'
 import Paywall from './src/App/Screens/Paywall'
+import { SubscribedData } from './src/Common/SpecificType'
 
 const App = () => {
   const { handled } = useAsyncHandle(async () => SplashScreenLoader());
@@ -29,13 +30,19 @@ const App = () => {
     set_showWelcomeScreen(false)
   }, [])
 
-  // check welcome screen
+  // check to show welcome screen and paywall
 
   useEffect(() => {
     (async () => {
-      const showed = await GetBooleanAsync(StorageKey_ShowedWelcomeScreen)
+      const [
+        showed,
+        subscribedDataOrUndefined
+      ] = await Promise.all([
+        GetBooleanAsync(StorageKey_ShowedWelcomeScreen),
+        GetObjectAsync<SubscribedData>(StorageKey_SubscribeData)
+      ])
 
-      if (!showed) {
+      if (!showed && !subscribedDataOrUndefined) {
         set_showWelcomeScreen(true)
         set_showPaywall(true)
       }
