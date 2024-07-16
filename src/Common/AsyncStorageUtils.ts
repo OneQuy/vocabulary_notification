@@ -329,7 +329,7 @@ export const SetArrayAsync_StringsBySeperator = async (key: string, value: strin
 // array =================
 
 export const SetArrayAsync = async <T>(key: string, arr: T[]): Promise<void> => {
-    if (IsValuableArrayOrString(arr))
+    if (Array.isArray(arr))
         await AsyncStorage.setItem(key, JSON.stringify(arr))
     else
         await AsyncStorage.removeItem(key)
