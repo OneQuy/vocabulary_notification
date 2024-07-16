@@ -182,7 +182,7 @@ const About = () => {
 
     const onPressCopyUserId = useCallback(() => {
         Clipboard.setString(UserID())
-        Alert.alert(texts.copied)
+        Alert.alert(texts.copied + '!', 'Your User ID:\n\n' + UserID())
     }, [texts])
 
     const onPressCheatSetDev = useCallback(() => {
