@@ -528,10 +528,26 @@ const SetupScreen = () => {
   }, [setHandlingAndGetReadyDataAsync])
 
   const onPressTestNotificationAsync = useCallback(async () => {
+    // make sure load lastest config first
+
+    set_handlingType('downloading')
+
+    const fetchedConfigSuccess = await ForceFetchWithAlertIfFailedAsync(texts)
+
+    set_handlingType(undefined)
+
+    if (!fetchedConfigSuccess) {
+      return
+    }
+
+    // check data
+
     const dataReady = await setHandlingAndGetReadyDataAsync()
 
     if (!dataReady)
       return
+
+    // test!
 
     const res = await TestNotificationAsync(set_handlingType, appContextValue.isReviewMode)
 
