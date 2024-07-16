@@ -3,15 +3,12 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import useLocalText, { } from '../Hooks/useLocalText'
 import { Gap, Outline } from '../Constants/Constants_Outline'
 import { SavedWordData } from '../Types'
-import { CapitalizeFirstLetter, DelayAsync, GetElementsOfPageArray, HexToRgb, SafeArrayLength } from '../../Common/UtilsTS'
+import { CapitalizeFirstLetter, DelayAsync, GetElementsOfPageArray, HexToRgb, NumberWithCommas, SafeArrayLength } from '../../Common/UtilsTS'
 import { FontSize } from '../Constants/Constants_FontSize'
 import { HandlingType } from './SetupScreen'
 import { CheckDeserializeLocalizedData, ExtractWordFromWordLang } from '../Handles/AppUtils'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { Color_Text } from '../Hooks/useTheme'
-import { SetBooleanAsync } from '../../Common/AsyncStorageUtils'
-import { StorageKey_ShowedWelcomeScreen, StorageKey_TargetLang } from '../Constants/StorageKey'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { UpdatePushedWordsAndRefreshCurrentNotiWordsAsync } from '../Handles/SetupNotification'
 import { GetLocalizedWordFromDbAsync } from '../Handles/LocalizedWordsTable'
 
@@ -37,6 +34,8 @@ const HistoryScreen = ({
       itemMainLineView: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
 
       historyEmptyTxt: { alignSelf: 'center', marginTop: '70%', fontSize: FontSize.Normal, color: Color_Text },
+
+      countTxt: { fontSize: FontSize.Normal, color: Color_Text, marginLeft: Outline.Normal },
 
       historyItemTxt_Title: { fontSize: FontSize.Normal, color: Color_Text },
       historyItemTxt_Content: { fontSize: FontSize.Normal, color: Color_Text },
@@ -140,6 +139,9 @@ const HistoryScreen = ({
 
   return (
     <View style={style.master}>
+      {/* count */}
+      <Text adjustsFontSizeToFit numberOfLines={1} style={style.countTxt}>{texts.count_push.replace('###', NumberWithCommas(SafeArrayLength(allPushedWordsOrError)))}</Text>
+
       {/* list */}
       <FlatList
         contentContainerStyle={style.flatlistView}

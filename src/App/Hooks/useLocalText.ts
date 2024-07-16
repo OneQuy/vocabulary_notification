@@ -71,6 +71,7 @@ const eng = {
   purchase_success: 'You have just upgraded successfully!\n\nThank you for purchasing. You unlocked all vocabularies and features of Vocaby!',
   and: 'and',
   about: 'About',
+  count_push: "The number of vocabulary pushed: ###.",
   congrats: 'Congratulations!',
   contact_dev: 'Contact the developer',
   community: 'Community',
