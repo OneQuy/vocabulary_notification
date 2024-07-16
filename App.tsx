@@ -65,17 +65,6 @@ const App = () => {
     )
   }
 
-  // paywall
-
-  if (showPaywall) {
-    return (
-      <SafeAreaView style={style.master}>
-        <StatusBar backgroundColor={Color_BG} barStyle={'light-content'} />
-        <Paywall closePaywall={() => set_showPaywall(false)} />
-      </SafeAreaView>
-    )
-  }
-
   // main app render
 
   const postHogAutocapture = GetAlternativeConfig('postHogAutoCapture', false)
@@ -84,7 +73,7 @@ const App = () => {
     <PostHogProvider apiKey={PostHogKey_Production} autocapture={postHogAutocapture}>
       <SafeAreaView style={style.master}>
         <StatusBar backgroundColor={Color_BG} barStyle={'light-content'} />
-        <SetupScreen />
+        <SetupScreen showPaywallFirstTime={showPaywall} />
       </SafeAreaView>
     </PostHogProvider>
   )
