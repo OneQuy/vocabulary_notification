@@ -46,7 +46,7 @@ var initedProducts: IAPProduct[]
 
 var fetchedProductsFromCached: Product[] | undefined = undefined
 
-export var fetchedProducts: Product[] = []
+var fetchedProducts: Product[] = []
 
 /**
  * @returns success: return undefined
@@ -143,35 +143,35 @@ const LoadFetchedProductsFromCachedAsync = async (): Promise<Product[]> => {
     return fetchedProductsFromCached
 }
 
-const GetIAPProductFromCachedAsync = async (sku: string): Promise<Product | undefined> => {
-    await LoadFetchedProductsFromCachedAsync()
+// const GetIAPProductFromCachedAsync = async (sku: string): Promise<Product | undefined> => {
+//     await LoadFetchedProductsFromCachedAsync()
 
-    if (fetchedProductsFromCached)
-        return fetchedProductsFromCached.find(i => i.productId == sku)
-    else
-        return undefined
-}
+//     if (fetchedProductsFromCached)
+//         return fetchedProductsFromCached.find(i => i.productId == sku)
+//     else
+//         return undefined
+// }
 
-const GetIAPProduct = async (sku: string): Promise<Product | undefined> => {
-    if (!isInited)
-        throw new Error('IAP not inited yet')
+// const GetIAPProduct = async (sku: string): Promise<Product | undefined> => {
+//     if (!isInited)
+//         throw new Error('IAP not inited yet')
 
-    const products = await getProducts({ skus: [sku] })
+//     const products = await getProducts({ skus: [sku] })
 
-    if (!products || products.length < 1)
-        return await GetIAPProductFromCachedAsync(sku)
+//     if (!products || products.length < 1)
+//         return await GetIAPProductFromCachedAsync(sku)
 
-    return products[0]
-}
+//     return products[0]
+// }
 
-export const GetIAPLocalPriceAsync = async (sku: string): Promise<string | undefined> => {
-    const product = await GetIAPProduct(sku)
+// export const GetIAPLocalPriceAsync = async (sku: string): Promise<string | undefined> => {
+//     const product = await GetIAPProduct(sku)
 
-    if (product)
-        return product.localizedPrice
-    else
-        return undefined
-}
+//     if (product)
+//         return product.localizedPrice
+//     else
+//         return undefined
+// }
 
 export const FetchListProductsAsync = async (skus: string[]) => {
     if (fetchedProducts.length > 0) // already fetched
@@ -278,7 +278,7 @@ export const RestorePurchaseAsync = async (): Promise<Purchase[] | Error | null>
     }
 }
 
-export const GetPriceOfProduct = (product: Product) => {
+const GetPriceOfProduct = (product: Product) => {
     const priceOrNaN = SplitNumberInText(product.price)
 
     // console.log(SplitNumberInText('đ260,000'));
