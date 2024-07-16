@@ -199,49 +199,49 @@ export const FetchListProductsAsync = async (skus: string[]) => {
  * @returns null if user cancelled
  * @returns otherwise Error
  */
-export const PurchaseAsync = async (sku: string) => {
-    if (Cheat('force_iap_success'))
-        return undefined
+// export const PurchaseAsync = async (sku: string) => {
+//     if (Cheat('force_iap_success'))
+//         return undefined
 
-    try {
-        if (!isInited)
-            return new Error('[PurchaseAsync] IAP not inited yet')
+//     try {
+//         if (!isInited)
+//             return new Error('[PurchaseAsync] IAP not inited yet')
 
-        if (Platform.OS === 'android' && fetchedProducts.length <= 0) { // need to fetch on android
-            await FetchListProductsAsync(initedProducts.map(i => i.sku))
-        }
+//         if (Platform.OS === 'android' && fetchedProducts.length <= 0) { // need to fetch on android
+//             await FetchListProductsAsync(initedProducts.map(i => i.sku))
+//         }
 
-        const res = await requestPurchase({
-            sku,
-            skus: [sku],
-            andDangerouslyFinishTransactionAutomaticallyIOS: false,
-        })
+//         const res = await requestPurchase({
+//             sku,
+//             skus: [sku],
+//             andDangerouslyFinishTransactionAutomaticallyIOS: false,
+//         })
 
-        if (typeof res === 'object') {
-            let successProduct: ProductPurchase | undefined = undefined
+//         if (typeof res === 'object') {
+//             let successProduct: ProductPurchase | undefined = undefined
 
-            if (Array.isArray(res)) {
-                successProduct = SafeGetArrayElement<ProductPurchase>(res)
-            }
-            else
-                successProduct = res
+//             if (Array.isArray(res)) {
+//                 successProduct = SafeGetArrayElement<ProductPurchase>(res)
+//             }
+//             else
+//                 successProduct = res
 
-            if (successProduct && successProduct.productId === sku) // success
-                return undefined
-            else // fail
-                return new Error('[PurchaseAsync] Invalid product: ' + sku + ', response: ' + ToCanPrint(res))
-        }
-        else
-            return new Error('[PurchaseAsync] Invalid response: ' + sku + ', response: void')
-    } catch (err) {
-        const errIAP = err as PurchaseError
+//             if (successProduct && successProduct.productId === sku) // success
+//                 return undefined
+//             else // fail
+//                 return new Error('[PurchaseAsync] Invalid product: ' + sku + ', response: ' + ToCanPrint(res))
+//         }
+//         else
+//             return new Error('[PurchaseAsync] Invalid response: ' + sku + ', response: void')
+//     } catch (err) {
+//         const errIAP = err as PurchaseError
 
-        if (errIAP && errIAP.code === ErrorCode.E_USER_CANCELLED)
-            return null
-        else
-            return err
-    }
-}
+//         if (errIAP && errIAP.code === ErrorCode.E_USER_CANCELLED)
+//             return null
+//         else
+//             return err
+//     }
+// }
 
 /**
  * @returns success: Purchase[] if  (can be empty []), 
