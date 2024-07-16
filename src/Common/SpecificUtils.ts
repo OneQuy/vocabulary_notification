@@ -231,6 +231,8 @@ export const PurchaseAndTrackingAsync = async (sku: string, onSetSubcribeDataAsy
 
     // success
 
+    console.log('[PurchaseAndTrackingAsync] res', res)
+    
     if (res === undefined) {
         await onSetSubcribeDataAsync({
             id: sku,

@@ -48,6 +48,8 @@ const useSpecificAppContext = ({
      * undefined is to clear premium
      */
     const onSetSubcribeDataAsync: OnSetSubcribeDataAsyncFunc = useCallback(async (subscribedData: OnSetSubcribeDataAsyncFuncParam): Promise<void> => {
+        console.log('[onSetSubcribeDataAsync] subscribedData', subscribedData);
+
         let data: SubscribedData | undefined = undefined
 
         if (typeof subscribedData === 'string') {
@@ -117,11 +119,13 @@ const useSpecificAppContext = ({
 
             // init app context
 
-            set_appContextValue({ // CHANGE HERE 1 (OPTIONAL)
-                ...appContextValue,
-                subscribedData: subscribedDataOrUndefined,
-                onSetSubcribeDataAsync,
-                isReviewMode: IsReviewingVersion(remoteConfig),
+            set_appContextValue(curValue => { // CHANGE HERE 1 (OPTIONAL)
+                return {
+                    ...curValue,
+                    subscribedData: subscribedDataOrUndefined,
+                    onSetSubcribeDataAsync,
+                    isReviewMode: IsReviewingVersion(remoteConfig),
+                }
             })
 
             // setup & tracking
@@ -139,7 +143,6 @@ const useSpecificAppContext = ({
 
     return {
         appContextValue,
-        onSetSubcribeDataAsync,
     }
 }
 
