@@ -603,7 +603,10 @@ const SetupScreen = () => {
   }, [SetNotificationAsync])
 
   const onPressSetNotification = useCallback(async () => {
-    const paywallCount = await IncreaseNumberAsync(StorageKey_ShouldShowPaywallCount)
+    const paywallCount = appContextValue.subscribedData ?
+      -1 :
+      await IncreaseNumberAsync(StorageKey_ShouldShowPaywallCount)
+
     const setToShowPayWallCount = GetAlternativeConfig('setToShowPayWallCount', 3)
 
     // console.log('paywallCount', paywallCount, 'setToShowPayWallCount', setToShowPayWallCount);
@@ -615,7 +618,7 @@ const SetupScreen = () => {
     }
 
     SetNotificationAsync()
-  }, [SetNotificationAsync])
+  }, [SetNotificationAsync, appContextValue.subscribedData])
 
   const checkSetInterval = useCallback((minutes: number) => {
     if (minutes < MinimumIntervalInMin) {
