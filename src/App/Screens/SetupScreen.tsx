@@ -1293,7 +1293,7 @@ const SetupScreen = () => {
 
             style={style.topbarBtn}
 
-            title={`${texts.pro}${IsDev() ? '.' : ''}`}
+            title={`${appContextValue.subscribedData ? texts.about : texts.pro}${IsDev() ? '.' : ''}`}
             titleProps={{ style: subView === 'pro' ? style.selectedTopbarBtnTxt : style.normalBtnTxt }}
 
             manuallySelected={subView === 'pro'}
