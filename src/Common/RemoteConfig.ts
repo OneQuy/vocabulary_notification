@@ -1,9 +1,10 @@
 // NUMBER OF [CHANGE HERE]: 0
 
-import { DateDiff_InHour_WithNow, ExecuteWithTimeoutAsync, SafeValue, ToCanPrint, ToCanPrintError } from './UtilsTS'
+import { AlertAsync, DateDiff_InHour_WithNow, DateDiff_InMinute_WithNow, ExecuteWithTimeoutAsync, SafeValue, ToCanPrint, ToCanPrintError } from './UtilsTS'
 import { FirebaseDatabaseTimeOutMs, FirebaseDatabase_GetValueAsync } from "./Firebase/FirebaseDatabase"
 import { RemoteConfig } from './SpecificType';
 import { HandleAlertUpdateAppAsync } from './HandleAlertUpdateApp';
+import { LocalText, NotLatestConfig } from '../App/Hooks/useLocalText';
 
 const IsLog = false
 
@@ -141,8 +142,16 @@ export const GetAlternativeConfig = <T>(property: string, defaultValue: T): T =>
     return SafeValue(config.alternativeValue[property], defaultValue)
 }
 
+/**
+ * 
+ * @returns in ms
+ */
 export const GetLastTimeFetchedRemoteConfigSuccessAndHandledAlerts = () => lastTimeFetchedSuccessAndHandledAlerts
 
+/**
+ * 
+ * @returns true if hour diff from last loaded config less than (<) **HowLongToReloadRemoteConfigInHour**
+ */
 export const IsRemoteConfigLoadedRecently = () => {
     const hourDiff = DateDiff_InHour_WithNow(lastTimeFetchedSuccess)
 
@@ -150,4 +159,27 @@ export const IsRemoteConfigLoadedRecently = () => {
         console.log('[IsRemoteConfigLoadedRecently] ?', hourDiff < HowLongToReloadRemoteConfigInHour)
 
     return hourDiff < HowLongToReloadRemoteConfigInHour
+}
+
+/**
+ * ### note: alert if loaded has alert udpate,... and do alert loaded failed
+ * @returns true if config ••available** and minute diff from last config less than (<) **1 minute**
+ */
+export const ForceFetchWithAlertIfFailedAsync = async (texts: LocalText): Promise<boolean> => {
+    await GetRemoteConfigWithCheckFetchAsync(false, true)
+
+    if (!remoteConfig)
+        return false
+
+    const minDiff = DateDiff_InMinute_WithNow(lastTimeFetchedSuccessAndHandledAlerts)
+    const isLastest = minDiff < 1
+
+    if (IsLog)
+        console.log('[ForceFetchWithAlertIfFailedAsync] isLastest?', isLastest)
+
+    if (!isLastest) {
+        await AlertAsync(texts.popup_error, NotLatestConfig)
+    }
+
+    return isLastest
 }
