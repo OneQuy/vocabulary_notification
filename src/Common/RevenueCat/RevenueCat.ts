@@ -3,7 +3,7 @@
 // Created July 2024 (coding Vocaby)
 
 import { Platform } from "react-native";
-import Purchases, { LOG_LEVEL, PRODUCT_CATEGORY, PurchasesStoreProduct } from "react-native-purchases";
+import Purchases, { PRODUCT_CATEGORY, PurchasesStoreProduct } from "react-native-purchases";
 import { CreateError, ExecuteWithTimeoutAsync, SafeArrayLength, TimeOutErrorObject, ToCanPrint, ToCanPrintError, UnknownErrorObject } from "../UtilsTS";
 import { RevenueCat_Android, RevenueCat_iOS } from "../../../Keys";
 import { GetArrayAsync, SetArrayAsync } from "../AsyncStorageUtils";
@@ -38,7 +38,7 @@ export class RevenueCat {
         }
 
         // Use more logging during debug if want!
-        Purchases.setLogLevel(LOG_LEVEL.DEBUG);
+        // Purchases.setLogLevel(LOG_LEVEL.DEBUG);
 
         // // Listen for customer updates
         // Purchases.addCustomerInfoUpdateListener(async (info) => {
