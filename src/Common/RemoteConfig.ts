@@ -168,11 +168,8 @@ export const IsRemoteConfigLoadedRecently = () => {
 export const ForceFetchWithAlertIfFailedAsync = async (texts: LocalText): Promise<boolean> => {
     await GetRemoteConfigWithCheckFetchAsync(false, true)
 
-    if (!remoteConfig)
-        return false
-
     const minDiff = DateDiff_InMinute_WithNow(lastTimeFetchedSuccessAndHandledAlerts)
-    const isLastest = minDiff < 1
+    const isLastest = remoteConfig !== undefined && minDiff < 1
 
     if (IsLog)
         console.log('[ForceFetchWithAlertIfFailedAsync] isLastest?', isLastest)
