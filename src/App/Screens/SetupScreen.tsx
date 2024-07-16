@@ -40,7 +40,7 @@ import { UserSelectedPopularityIndexProperty } from '../../Common/SpecificType'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import ScaleUpView from '../../Common/Components/Effects/ScaleUpView'
 import Paywall from './Paywall'
-import { GetAlternativeConfig } from '../../Common/RemoteConfig'
+import { ForceFetchWithAlertIfFailedAsync, GetAlternativeConfig } from '../../Common/RemoteConfig'
 import { IsNewUpdateAvailableAsync, OpenStoreAsync } from '../../Common/SpecificUtils'
 
 const IsLog = false
@@ -942,7 +942,7 @@ const SetupScreen = () => {
     }
   }, [])
 
-  const onPressOpenPopupChangeTranslationService = useCallback(() => {
+  const onPressOpenPopupChangeTranslationServiceAsync = useCallback(async () => {
     if (!displayTargetLang) {
       Alert.alert(
         texts.popup_error,
@@ -954,6 +954,19 @@ const SetupScreen = () => {
 
       return
     }
+
+    // make sure load lastesst config first
+
+    set_handlingType('downloading')
+
+    const fetchedSuccess = await ForceFetchWithAlertIfFailedAsync(texts)
+
+    set_handlingType(undefined)
+
+    if (!fetchedSuccess)
+      return
+
+    // open popup
 
     onPressShowPopupAsync('translation_service')
   }, [displayTargetLang, onPressShowPopupAsync, texts])
@@ -1450,7 +1463,7 @@ const SetupScreen = () => {
             {
               showMoreSetting &&
               <SettingItemPanel
-                onPress={onPressOpenPopupChangeTranslationService}
+                onPress={onPressOpenPopupChangeTranslationServiceAsync}
                 title={texts.translation_service}
                 explain={texts.services_explain}
                 value={displayTranslationService.split(' ')[0]}
