@@ -550,9 +550,18 @@ const SetupScreen = () => {
     // test!
 
     const res = await TestNotificationAsync(set_handlingType, appContextValue.isReviewMode)
+    const s = res?.message
 
-    if (res?.message) {
-      HandleError(res, 'onPressTestNotificationAsync', true, res?.message !== NoPermissionText)
+    if (s) {
+      const trackFirebase =
+        s !== texts.no_permission &&
+        s !== texts.fail_translate &&
+        s !== PleaseSelectTargetLangText &&
+        !s.includes('exceeded') &&
+        !s.includes('many requests') &&
+        !s.includes('source language cannot be the same as target language')
+
+      HandleError(res, 'onPressTestNotificationAsync', true, trackFirebase)
     }
 
     if (res === undefined) {
