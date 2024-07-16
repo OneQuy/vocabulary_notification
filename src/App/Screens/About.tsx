@@ -357,7 +357,7 @@ const About = () => {
 
                             {/* btn upgrade*/}
                             {
-                                !isHandling && isReadyPurchase &&
+                                !isHandling && isReadyPurchase && currentLifetimeProduct &&
                                 <LucideIconTextEffectButton
                                     selectedBackgroundColor={Color_Text}
                                     selectedColorOfTextAndIcon={Color_BG}
