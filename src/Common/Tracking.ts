@@ -24,7 +24,7 @@ import Aptabase, { trackEvent as AptabaseTrack } from "@aptabase/react-native";
 import { IsDev } from "./IsDev";
 import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig";
 import { ApatabaseKey_Dev, ApatabaseKey_Production } from "../../Keys"
-import { DateDiff_WithNow, DayName, DelayAsync, ExecuteWithTimeoutAsync, FilterOnlyLetterAndNumberFromString, FromMsTo_TodayDays, GetDayHourMinSecFromMs_ToString, GetTodayStringUnderscore, IsNumType, IsValuableArrayOrString, RemoveEmptyAndFalsyFromObject, RoundWithDecimal, SafeValue, ToCanPrint } from "./UtilsTS";
+import { DateDiff_WithNow, DayName, DelayAsync, ExecuteWithTimeoutAsync, FilterOnlyLetterAndNumberFromString, FromMsTo_TodayDays, GetDayHourMinSecFromMs_ToString, GetTodayStringUnderscore, IsNumType, IsValuableArrayOrString, RemoveEmptyAndFalsyFromObject, RoundWithDecimal, SafeValue, ToCanPrintError } from "./UtilsTS";
 import { FirebaseDatabase_IncreaseNumberAsync, FirebaseDatabase_SetValueAsync } from "./Firebase/FirebaseDatabase";
 import PostHog from "posthog-react-native";
 import { GetAndSetInstalledDaysCountAsync, GetAndSetLastFreshlyOpenAppToNowAsync, GetAndSetLastInstalledVersionAsync, GetAndClearPressUpdateObjectAsync, SetupAppStateAndStartTrackingParams } from "./AppStatePersistence";
@@ -626,7 +626,7 @@ export const TrackFirstOpenOfDayOldUserAsync = async () => {
  * Usage: HandleError(resOrError, 'DataToNotification', false)
  */
 export const HandleError = (error: any, root: string, alert = true, trackFirebase = true) => {
-    const sError = SafeValue(error?.message, '' + ToCanPrint(error))
+    const sError = SafeValue(error?.message, '' + ToCanPrintError(error))
 
     // tracking firebase
 
