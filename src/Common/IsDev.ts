@@ -3,10 +3,17 @@
 import { StorageKey_ForceDev } from "../App/Constants/StorageKey"
 import { GetBooleanAsync, SetBooleanAsync } from "./AsyncStorageUtils"
 import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig"
+import { UserID } from "./UserID"
 
 var isDev = false
 var inited = false
 var tapSetDevPersistenceCount = 0
+
+const DevDevices = [
+    '2BD27B3C-F044-4AB6-A2F1-15F9F5172C7E', // iphone 6 timo
+    // '05073BCD-4B4A-4CF9-B4ED-055241D45573', // emulator iphone SE
+    '0ea1c473e9c9535d', // samsung s8
+]
 
 /**
  * @usage: can call this after handle app config.
@@ -28,7 +35,9 @@ export const CheckIsDevAsync = async (forceReload?: boolean): Promise<void> => {
 
     const isDevSaved = await GetBooleanAsync(StorageKey_ForceDev)
 
-    if (__DEV__ || isDevSaved)
+    if (__DEV__ ||
+        DevDevices.includes(UserID()) ||
+        isDevSaved)
         isDev = true
     else {
         const config = await GetRemoteConfigWithCheckFetchAsync()

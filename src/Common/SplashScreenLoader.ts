@@ -32,7 +32,7 @@ export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
 
     await Promise.all([
         // check is dev (for initting PostHogProvider, trackings)
-        CheckIsDevAsync(), // (must after GetRemoteConfigWithCheckFetchAsync)
+        CheckIsDevAsync(), // (must after GetRemoteConfigWithCheckFetchAsync, InitUserIDAsync)
     ])
 
     // app specific: fetch newly user data (premium,...)
