@@ -102,7 +102,7 @@ const OnBackgroundAsync = async () => {
  * first open of the day
  * (on first freshly open app OR first active of the day)
  */
-const CheckFirstOpenAppOfTheDayAsync = async (setupParams: SetupAppStateAndStartTrackingParams) => {
+const CheckFirstOpenAppOfTheDayAsync = async (isUseEffectOnceOrOnActive: boolean, setupParams: SetupAppStateAndStartTrackingParams) => {
     if (isHandling_CheckAndTriggerFirstOpenAppOfTheDayAsync) {
         return
     }
@@ -147,7 +147,8 @@ const CheckFirstOpenAppOfTheDayAsync = async (setupParams: SetupAppStateAndStart
 
         // CheckForcePremiumDataAsync
 
-        await CheckForcePremiumDataAsync(setupParams)
+        if (!isUseEffectOnceOrOnActive)
+            await CheckForcePremiumDataAsync(setupParams)
     }
 }
 
@@ -281,7 +282,12 @@ const OnActiveOrUseEffectOnceAsync = async (
 ) => {
     // first Open App Of The Day
 
-    await CheckFirstOpenAppOfTheDayAsync(setupParams)
+    await CheckFirstOpenAppOfTheDayAsync(isUseEffectOnceOrOnActive, setupParams)
+
+    // CheckForcePremiumDataAsync
+
+    if (isUseEffectOnceOrOnActive)
+        await CheckForcePremiumDataAsync(setupParams)
 
     // callbacks
 
