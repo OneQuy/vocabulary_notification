@@ -1,15 +1,16 @@
 // NUMBER OF [CHANGE HERE]: 1
 
-import { SplashScreenLoaderResult, UserSelectedPopularityIndexProperty } from "./SpecificType";
+import { SplashScreenLoaderResult, SubscribedData, UserSelectedPopularityIndexProperty } from "./SpecificType";
 import { FirebaseInit } from "./Firebase/Firebase";
 import { CheckIsDevAsync } from "./IsDev";
 import { GetRemoteConfigWithCheckFetchAsync } from "./RemoteConfig";
 import { InitUserIDAsync } from "./UserID";
 import { CheckSetStartUsingAppTickAsync } from "../App/Handles/PremiumHandler";
 import { FetchUserDataOnNewlyInstall } from "./FetchUserDataOnNewlyInstall";
-import { StorageKey_PopularityIndex } from "../App/Constants/StorageKey";
+import { StorageKey_PopularityIndex, StorageKey_SubscribeData } from "../App/Constants/StorageKey";
 import { GetUserPropertyFirebasePath } from "./UserMan";
 import { ClearAllFilesAndStorageAsync } from "./SpecificUtils";
+import { GetObjectAsync } from "./AsyncStorageUtils";
 
 export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
     // firebase init (for retrieving remote config, firebase db,...)
@@ -44,6 +45,8 @@ export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
         }
     ]) // ND // alert_priority_fetch_error_user_newly_install (doc)
 
+    const subscribedDataOrUndefined = await GetObjectAsync<SubscribedData>(StorageKey_SubscribeData) // must after: FetchUserDataOnNewlyInstall.CheckFetchAsync
+
     // app specific: set start using app
 
     await CheckSetStartUsingAppTickAsync() // alert_priority_set_start_using_app (doc)
@@ -51,6 +54,8 @@ export async function SplashScreenLoader(): Promise<SplashScreenLoaderResult> {
     // return
 
     return {
+        subscribedDataOrUndefined
+        
         // someVariable: 7,
     } as SplashScreenLoaderResult
 }

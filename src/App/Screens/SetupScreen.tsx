@@ -70,9 +70,9 @@ export type HandlingType =
   undefined
 
 const SetupScreen = ({
-  showPaywallFirstTime,
+  shouldShowPaywallFirstTime,
 }: {
-  showPaywallFirstTime: boolean,
+  shouldShowPaywallFirstTime: boolean,
 }) => {
   const posthog = usePostHog()
   const texts = useLocalText()
@@ -84,7 +84,7 @@ const SetupScreen = ({
   const [pushTimeListText, set_pushTimeListText] = useState('')
   const [useEFfectLoaded, set_useEFfectLoaded] = useState(false)
   const [showPopup, set_showPopup] = useState<PopupType>(undefined)
-  const [showPaywall, set_showPaywall] = useState(showPaywallFirstTime)
+  const [showPaywall, set_showPaywall] = useState(shouldShowPaywallFirstTime)
   const [showUpdateLine, set_showUpdateLine] = useState(false)
 
   const popupCloseCallbackRef = useRef<(onFinished?: () => void) => void>()

@@ -1,5 +1,5 @@
 import { SafeAreaView, StyleSheet, StatusBar } from 'react-native'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import SetupScreen from './src/App/Screens/SetupScreen'
 import { Color_BG } from './src/App/Hooks/useTheme'
 import useAsyncHandle from './src/Common/Hooks/useAsyncHandle'
@@ -9,15 +9,13 @@ import { PostHogProvider } from 'posthog-react-native'
 import { PostHogKey_Production } from './Keys'
 import { GetAlternativeConfig } from './src/Common/RemoteConfig'
 import WelcomeScreen from './src/App/Screens/WelcomeScreen'
-import { GetBooleanAsync, GetObjectAsync, SetBooleanAsync } from './src/Common/AsyncStorageUtils'
-import { StorageKey_ShowedWelcomeScreen, StorageKey_SubscribeData } from './src/App/Constants/StorageKey'
-import Paywall from './src/App/Screens/Paywall'
-import { SubscribedData } from './src/Common/SpecificType'
+import { GetBooleanAsync, SetBooleanAsync } from './src/Common/AsyncStorageUtils'
+import { StorageKey_ShowedWelcomeScreen } from './src/App/Constants/StorageKey'
 
 const App = () => {
-  const { handled } = useAsyncHandle(async () => SplashScreenLoader());
+  const { handled, result } = useAsyncHandle(async () => SplashScreenLoader());
   const [showWelcomeScreen, set_showWelcomeScreen] = useState(false)
-  const [showPaywall, set_showPaywall] = useState(false)
+  const didShowedWelcomeScreenRef = useRef(false)
 
   const style = useMemo(() => {
     return StyleSheet.create({
@@ -30,33 +28,28 @@ const App = () => {
     set_showWelcomeScreen(false)
   }, [])
 
-  // check to show welcome screen and paywall
+  // check to show welcome screen
 
   useEffect(() => {
     (async () => {
-      const [
-        showed,
-        subscribedDataOrUndefined
-      ] = await Promise.all([
-        GetBooleanAsync(StorageKey_ShowedWelcomeScreen),
-        GetObjectAsync<SubscribedData>(StorageKey_SubscribeData)
-      ])
+      const showedWelcomeScreen = await GetBooleanAsync(StorageKey_ShowedWelcomeScreen)
 
-      if (!showed && !subscribedDataOrUndefined) {
+      if (!showedWelcomeScreen) {
         set_showWelcomeScreen(true)
-        set_showPaywall(true)
       }
     })()
   }, [])
 
   // splash screen
 
-  if (!handled)
+  if (!result)
     return <SplashScreen />
 
   // welcome screen
 
-  if (showWelcomeScreen) {
+  if (showWelcomeScreen && !result.subscribedDataOrUndefined) {
+    didShowedWelcomeScreenRef.current = true
+
     return (
       <SafeAreaView style={style.master}>
         <StatusBar backgroundColor={Color_BG} barStyle={'light-content'} />
@@ -72,8 +65,13 @@ const App = () => {
   return (
     <PostHogProvider apiKey={PostHogKey_Production} autocapture={postHogAutocapture}>
       <SafeAreaView style={style.master}>
+        {/* status bar */}
         <StatusBar backgroundColor={Color_BG} barStyle={'light-content'} />
-        <SetupScreen showPaywallFirstTime={showPaywall} />
+
+        {/* main UI app */}
+        <SetupScreen
+          shouldShowPaywallFirstTime={didShowedWelcomeScreenRef.current && !result.subscribedDataOrUndefined}
+        />
       </SafeAreaView>
     </PostHogProvider>
   )

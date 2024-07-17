@@ -78,7 +78,9 @@ type LatestVersionConfig = { // MAYBE NO CHANGE
 
 
 export type SplashScreenLoaderResult = { // CHANGE OPTIONAL
-    someVariable?: number,
+    // common
+    
+    subscribedDataOrUndefined: SubscribedData | undefined,
 }
 
 
