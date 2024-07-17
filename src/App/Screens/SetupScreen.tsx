@@ -654,7 +654,7 @@ const SetupScreen = ({
     else if (actionAfterClosePaywall.current === 'delay_show_target_lang_on_top') {
       setTimeout(() => {
         set_doneDelayShowTargetLangOnTop(true)
-      }, displayTargetLang ? 0 : ShowTargetLangOnTopDelayTimeMs)
+      }, displayTargetLang ? 0 : ShowTargetLangOnTopDelayTimeMs * 3)
     }
 
     actionAfterClosePaywall.current = undefined
