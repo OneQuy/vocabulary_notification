@@ -714,7 +714,8 @@ const SetupScreen = ({
 
       canOpen = await HandleBeforeShowPopupPopularityLevelForNoPremiumAsync(
         set_subView,
-        texts
+        texts,
+        displayPopularityLevelIdx
       )
 
       set_pointerEvents(undefined)
@@ -726,7 +727,7 @@ const SetupScreen = ({
     set_showPopup(type)
 
     TrackSimpleWithParam('show_popup', type as string)
-  }, [texts, appContextValue])
+  }, [texts, displayPopularityLevelIdx, appContextValue])
 
   // noti display
 

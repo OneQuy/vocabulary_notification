@@ -16,8 +16,9 @@ import { GetBooleanAsync, GetNumberIntAsync, SetBooleanAsync } from "../../Commo
 import { LocalFirstThenFirebaseValue } from "../../Common/Firebase/LocalFirstThenFirebaseValue"
 import { GetAlternativeConfig } from "../../Common/RemoteConfig"
 import { UserProperty_StartUsingAppTick } from "../../Common/SpecificType"
+import { TrackingAsync } from "../../Common/Tracking"
 import { GetUserPropertyFirebasePath } from "../../Common/UserMan"
-import { AlertAsync, DateDiff_WithNow } from "../../Common/UtilsTS"
+import { AlertAsync, DateDiff_WithNow, RoundWithDecimal } from "../../Common/UtilsTS"
 import { StorageKey_ShowedIntroTrial, StorageKey_StartUsingAppTick } from "../Constants/StorageKey"
 import { CanNotSetupUserData, LocalText, PopupTitleError, RetryText } from "../Hooks/useLocalText"
 import { SubView } from "../Screens/SetupScreen"
@@ -27,6 +28,7 @@ const IsLog = __DEV__
 export const HandleBeforeShowPopupPopularityLevelForNoPremiumAsync = async (
     setSubview: (type: SubView) => void,
     texts: LocalText,
+    currentPopularityIdx: number,
 ): Promise<boolean> => {
     const startUsingAppTick = await GetNumberIntAsync(StorageKey_StartUsingAppTick, 0) // note: startUsingAppTick must be valid, cuz this did set before enter app!
 
@@ -42,6 +44,22 @@ export const HandleBeforeShowPopupPopularityLevelForNoPremiumAsync = async (
     }
 
     if (diffDays >= trialDays) { // no premium & exceeded the trial
+        // track
+
+        TrackingAsync(
+            'expired_popularity',
+            [
+                `total/expired_popularity/current_level_idx/x${currentPopularityIdx}`,
+                `total/expired_popularity/diff_days/x${diffDays.toFixed()}`,
+            ],
+            {
+                diffDays: RoundWithDecimal(diffDays),
+                currentPopularityIdx,
+            }
+        )
+
+        // show alert
+
         const pressedOKOrLifeTime = await AlertAsync(
             texts.popup_error,
             texts.out_of_trial,
