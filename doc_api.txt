@@ -3,13 +3,14 @@ Microsoft (Super)
 2,000,000 chars / month
 
 Dashboard: https://portal.azure.com/#@onequygmail.onmicrosoft.com/dashboard/private/343276dd-8f54-48d7-8a4e-aa09561e57a7
+(https://portal.azure.com/#view/Microsoft_Azure_MonitoringMetrics/Metrics.ReactView/ResourceId/%2Fsubscriptions%2F3952d4d4-641f-4014-a32e-a1737e788663%2FresourceGroups%2FTranslateResourceGroup%2Fproviders%2FMicrosoft.CognitiveServices%2Faccounts%2FRegionSouthEastAsia/TimeContext~/%7B%22relative%22%3A%7B%22duration%22%3A2592000000%7D%2C%22options%22%3A%7B%22grain%22%3A1%2C%22showUTCTime%22%3Afalse%7D%7D/Chart~/%7B%22metrics%22%3A%5B%7B%22resourceMetadata%22%3A%7B%22id%22%3A%22%2Fsubscriptions%2F3952d4d4-641f-4014-a32e-a1737e788663%2FresourceGroups%2FTranslateResourceGroup%2Fproviders%2FMicrosoft.CognitiveServices%2Faccounts%2FRegionSouthEastAsia%22%7D%2C%22name%22%3A%22TextCharactersTranslated%22%2C%22namespace%22%3A%22microsoft.cognitiveservices%2Faccounts%22%2C%22metricVisualization%22%3A%7B%22displayName%22%3A%22Text%20Characters%20Translated%22%7D%2C%22aggregationType%22%3A1%2C%22thresholds%22%3A%5B%5D%7D%5D%2C%22filterCollection%22%3A%7B%22filters%22%3A%5B%5D%7D%2C%22grouping%22%3Anull%2C%22visualization%22%3A%7B%22chartType%22%3A2%2C%22legendVisualization%22%3A%7B%22isVisible%22%3Atrue%2C%22position%22%3A2%2C%22hideHoverCard%22%3Afalse%2C%22hideLabelNames%22%3Atrue%7D%2C%22axisVisualization%22%3A%7B%22x%22%3A%7B%22isVisible%22%3Atrue%2C%22axisType%22%3A2%7D%2C%22y%22%3A%7B%22isVisible%22%3Atrue%2C%22axisType%22%3A1%7D%7D%2C%22disablePinning%22%3Atrue%7D%2C%22title%22%3A%22Sum%20Text%20Characters%20Translated%20for%20RegionSouthEastAsia%22%2C%22titleKind%22%3A1%2C%22timespan%22%3A%7B%22relative%22%3A%7B%22duration%22%3A2592000000%7D%2C%22showUTCTime%22%3Afalse%2C%22grain%22%3A1%7D%2C%22ariaLabel%22%3Anull%7D/openInEditMode~/true)
 
 Key:
 	+ onequy: a21a54ac6b8c4280aef549f9874cba38
 
 ===============
 
-DEVISTY (Weak)
+DEVISTY (text-translator2) (Weak)
 
 https://rapidapi.com/dickyagustin/api/text-translator2/pricing
 
@@ -20,6 +21,18 @@ Requests: 1,000 / month. 1000 requests per hour
 Key: 
 	+ onequy: 693dd75456msh921c376e306158cp12c5dbjsn32ff82c9294a
 	+ vocaby: 44d6647a3dmsh0432826a60f7777p152f60jsn82169dd026b5
+	+ minhquyyo: 9af334491emsh4253d4ef8822689p18a1cbjsnb6906d6c2d28
+	+ gooday: e90fd14ac1msh887b2d048c1f271p1b217fjsn0aa9cfd53c20
+	+ styleshot: a92fced849mshd84aeed59934057p1e4882jsnc5e3f7f2be47
+	+ timo: b7ff7578a6msh53e71e00145d5a5p1e0fc1jsn789a6564259f
+	+ vanden: 7b1b2bbb7fmsh21250f9ada23cf3p15e189jsnd499cb78cfd2
+	+ melody: c1376ba46dmshef599c0106ea350p115971jsn962df699e053
+	+ imchinh: 4bf84b3358msh8d9931c555afe6fp13e812jsn0a1050dad51f
+	+ mytucute: 0d0342ec0bmsh9a993dc0f857931p1f1a7djsn234de7ea153a
+	+ luffy: 8535fd6638msh4cd0ba88ab0f36ep13b1fbjsne8e7c2e2e087
+	+ ti94thi: 72eda83971mshba3c4e642550379p1b980djsna4ab8f6e5846
+	+ zorojinbe: 3e7010ab97mshe3a261bae9c9607p184e86jsnb6124c49067e
+	+ philosolve: 66708d3bf7mshdb2a1b3edd7a8ecp16898fjsn133acfa1cd99
 
 ===============
 
@@ -33,7 +46,18 @@ Requests: 500,000 / month. 1000 requests per hour
 
 Key: 
 	+ onequy: 693dd75456msh921c376e306158cp12c5dbjsn32ff82c9294a
-
+	+ quynm@: cb787495e0msh402608403c87171p1d1da6jsn08135e305d01
+	+ gooday: e90fd14ac1msh887b2d048c1f271p1b217fjsn0aa9cfd53c20
+	+ styleshot: a92fced849mshd84aeed59934057p1e4882jsnc5e3f7f2be47
+	+ timo: b7ff7578a6msh53e71e00145d5a5p1e0fc1jsn789a6564259f
+	+ vanden: 7b1b2bbb7fmsh21250f9ada23cf3p15e189jsnd499cb78cfd2
+	+ melody: c1376ba46dmshef599c0106ea350p115971jsn962df699e053
+	+ imchinh: 4bf84b3358msh8d9931c555afe6fp13e812jsn0a1050dad51f	
+	+ mytucute: 0d0342ec0bmsh9a993dc0f857931p1f1a7djsn234de7ea153a
+	+ luffy: 8535fd6638msh4cd0ba88ab0f36ep13b1fbjsne8e7c2e2e087
+	+ ti94thi: 72eda83971mshba3c4e642550379p1b980djsna4ab8f6e5846
+	+ zorojinbe: 3e7010ab97mshe3a261bae9c9607p184e86jsnb6124c49067e
+	+ philosolve: 66708d3bf7mshdb2a1b3edd7a8ecp16898fjsn133acfa1cd99
 
 ===============
 
@@ -45,14 +69,24 @@ https://lingvanex.com/account/#b2b
 
 Key:
 	+ onequy: a_9M0jCdDtDlBx7kQiyvlxO2TWPaEc9aK27FkM90PyzDkq3dbw7Ho2yMEYv37XaRdq45rMB9UxKrSmaR3l
+	+ minhquyyo: a_HInbYdGkHPasZQTOgf9Evfdjxd8tYDOusf0i5S8ThFCcWQxlIykLGlnHoCbJ3nVbg1KK3InR0BqcCNYm
 
 ===============
 
 Systran (Super? Monthly or once?)
 
 https://trs.systran.net/dashboard/usage	
+https://trs.systran.net/information
 
 Characters: 500,000 / month
 
 Key:
 	+ onequy: 12c94236-dbb3-4234-9639-7dd42c1c4964
+	+ quynm@: c3e8c6f0-c772-4ae8-9b13-e1ac2f71ec97
+
+
+===============
+
+Aptabase
+	+ vocaby@: A-EU-7816997585
+	+ luffy@: A-EU-4198389607
