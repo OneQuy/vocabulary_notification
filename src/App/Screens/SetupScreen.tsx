@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, ScrollView, Alert, ActivityIndicator, ViewProps
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FontBold, FontSize } from '../Constants/Constants_FontSize'
 import { Color_BG, Color_Text, Color_Text2 } from '../Hooks/useTheme'
-import useLocalText, { NoPermissionText, PleaseSelectTargetLangText } from '../Hooks/useLocalText'
+import useLocalText, { PleaseSelectTargetLangText } from '../Hooks/useLocalText'
 import LucideIconTextEffectButton from '../../Common/Components/LucideIconTextEffectButton'
 import { BorderRadius } from '../Constants/Constants_BorderRadius'
 import { Gap, Outline } from '../Constants/Constants_Outline'
@@ -47,7 +47,11 @@ const IsLog = false
 
 const EffectScaleUpOffset = 100
 
+const ShowTargetLangOnTopDelayTimeMs = 500
+
 const ExcludeTimeTrackEventName = 'exclude_time'
+
+type ActionAfterClosePaywallType = undefined | 'set_noti' | 'delay_show_target_lang_on_top'
 
 export type SubView =
   'setup' |
@@ -82,13 +86,13 @@ const SetupScreen = ({
   const [processPercent, set_processPercent] = useState<'' | `${number}%`>('')
   const [subView, set_subView] = useState<SubView>('setup')
   const [pushTimeListText, set_pushTimeListText] = useState('')
-  const [useEFfectLoaded, set_useEFfectLoaded] = useState(false)
+  const [doneDelayShowTargetLangOnTop, set_doneDelayShowTargetLangOnTop] = useState(false)
   const [showPopup, set_showPopup] = useState<PopupType>(undefined)
-  const [showPaywall, set_showPaywall] = useState(shouldShowPaywallFirstTime)
+  const [isShowPaywall, set_isShowPaywall] = useState(shouldShowPaywallFirstTime)
   const [showUpdateLine, set_showUpdateLine] = useState(false)
 
   const popupCloseCallbackRef = useRef<(onFinished?: () => void) => void>()
-  const needToSetNotification = useRef(false)
+  const actionAfterClosePaywall = useRef<ActionAfterClosePaywallType>(undefined)
 
   const [displayPopularityLevelIdx, set_displayPopularityLevelIdx] = useState(0)
   const [displayIntervalInMin, set_displayIntervalInMin] = useState<number>(DefaultIntervalInMin)
@@ -636,14 +640,25 @@ const SetupScreen = ({
     set_processPercent('')
   }, [texts, setHandlingAndGetReadyDataAsync, generatePushTimeListText, trackAfterSetNotificationSuccessAsync])
 
-  const closePaywall = useCallback(() => {
-    set_showPaywall(false)
+  const showPaywall = useCallback((actionClose: ActionAfterClosePaywallType) => {
+    actionAfterClosePaywall.current = actionClose
+    set_isShowPaywall(true)
+  }, [])
 
-    if (needToSetNotification.current) {
-      needToSetNotification.current = false
+  const closePaywall = useCallback(() => {
+    set_isShowPaywall(false)
+
+    if (actionAfterClosePaywall.current === 'set_noti') {
       SetNotificationAsync()
     }
-  }, [SetNotificationAsync])
+    else if (actionAfterClosePaywall.current === 'delay_show_target_lang_on_top') {
+      setTimeout(() => {
+        set_doneDelayShowTargetLangOnTop(true)
+      }, displayTargetLang ? 0 : ShowTargetLangOnTopDelayTimeMs)
+    }
+
+    actionAfterClosePaywall.current = undefined
+  }, [displayTargetLang, SetNotificationAsync])
 
   const onPressSetNotification = useCallback(async () => {
     const paywallCount = appContextValue.subscribedData ?
@@ -655,8 +670,7 @@ const SetupScreen = ({
     // console.log('paywallCount', paywallCount, 'setToShowPayWallCount', setToShowPayWallCount);
 
     if (paywallCount >= setToShowPayWallCount) {
-      needToSetNotification.current = true
-      set_showPaywall(true)
+      showPaywall('set_noti')
       return
     }
 
@@ -1212,6 +1226,14 @@ const SetupScreen = ({
 
   useEffect(() => {
     (async () => {
+      // check show paywall
+
+      if (shouldShowPaywallFirstTime) {
+        showPaywall('delay_show_target_lang_on_top')
+      }
+
+      // load settings
+
       const [
         levelPopularity,
         intervalInMin,
@@ -1257,20 +1279,22 @@ const SetupScreen = ({
       set_displaySettting_Example(showExample);
       set_displaySettting_ShowPartOfSpeech(showPartOfSpeech);
 
-      // show target lang on top
+      // check delay show target lang on top
 
-      setTimeout(() => {
-        set_useEFfectLoaded(true)
-      }, targetLang ? 0 : 500);
+      if (!shouldShowPaywallFirstTime) {
+        setTimeout(() => {
+          set_doneDelayShowTargetLangOnTop(true)
+        }, targetLang ? 0 : ShowTargetLangOnTopDelayTimeMs)
+      }
     })()
-  }, [])
+  }, []) // should []
 
   // render
 
   return (
     <AppContext.Provider value={appContextValue} >
       {
-        showPaywall ?
+        isShowPaywall ?
           <Paywall closePaywall={closePaywall} /> :
           <View pointerEvents={pointerEvents} style={style.master}>
             {/* update line */}
@@ -1334,7 +1358,7 @@ const SetupScreen = ({
                 {/* target lang */}
 
                 {
-                  !displayTargetLang && useEFfectLoaded &&
+                  !displayTargetLang && doneDelayShowTargetLangOnTop &&
                   <ScaleUpView delay={EffectScaleUpOffset * 0}>
                     <SettingItemPanel
                       onPress={() => onPressShowPopupAsync('target_lang')}
