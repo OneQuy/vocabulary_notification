@@ -58,6 +58,8 @@ onequy app json firebase url
 
 key urls
 systranUrl (https://api-translate.systran.net/translation/text/translate?key=@KEY&target=@TO&source=@FROM)
+microsoftUrl (https://api.cognitive.microsofttranslator.com)
+microsoftApiVer ("3.0")
 
 key apis
 - microsoft

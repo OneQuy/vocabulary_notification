@@ -13,10 +13,11 @@
 import axios from "axios";
 import { CreateError, SafeGetArrayElement, SafeValue } from "../UtilsTS"
 import { Language, TranslatedResult } from "./TranslationLanguages";
+import { GetAlternativeConfig } from "../RemoteConfig";
 
 const Location = "southeastasia"; // change your location (region) here. Required if you're using a multi-service or regional (not global) resource. It can be found in the Azure portal on the Keys and Endpoint page. (https://portal.azure.com/#@onequygmail.onmicrosoft.com/resource/subscriptions/3952d4d4-641f-4014-a32e-a1737e788663/resourceGroups/TranslateResourceGroup/providers/Microsoft.CognitiveServices/accounts/RegionSouthEastAsia/cskeys)
 
-const endpoint = "https://api.cognitive.microsofttranslator.com";
+const API_URL = "https://api.cognitive.microsofttranslator.com";
 
 /**
  * @returns success: TranslatedResult[] translated (even word is unavailable to translate). but both cases full enough length.
@@ -34,9 +35,14 @@ export const MicrosoftTranslateAsync = async (
     const from = fromLang ? (typeof fromLang === 'object' ? fromLang.language : fromLang) : 'en'
     const to = typeof toLang === 'object' ? toLang.language : toLang
 
+    const apiUrl = GetAlternativeConfig('microsoftUrl', API_URL)
+    const apiVer = GetAlternativeConfig('microsoftApiVer', '3.0')
+
+    // console.log(apiUrl, apiVer);
+    
     try {
         const res = await axios({
-            baseURL: endpoint,
+            baseURL: apiUrl,
             url: '/translate',
             method: 'post',
             headers: {
@@ -45,7 +51,7 @@ export const MicrosoftTranslateAsync = async (
                 'Content-type': 'application/json',
             },
             params: {
-                'api-version': '3.0',
+                'api-version': apiVer,
                 from,
                 to,
             },
