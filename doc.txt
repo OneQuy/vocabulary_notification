@@ -43,7 +43,7 @@ alternativeValue:
 onequy app json firebase url
 - onequyApps
 
-- trialDays (7)
+- trialDays (10)
 - postHogAutoCapture (false)
 - payWallWaitInSec (3)
 - setToShowPayWallCount (3)

@@ -34,7 +34,7 @@ export const HandleBeforeShowPopupPopularityLevelForNoPremiumAsync = async (
 
     const diffDays = DateDiff_WithNow(startUsingAppTick)
 
-    const trialDays = GetAlternativeConfig('trialDays', 7)
+    const trialDays = GetAlternativeConfig('trialDays', 10)
 
     if (IsLog) {
         console.log(
