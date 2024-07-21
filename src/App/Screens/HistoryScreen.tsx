@@ -89,12 +89,6 @@ const HistoryScreen = ({
 
   useEffect(() => {
     (async () => {
-      // SetBooleanAsync(StorageKey_ShowedWelcomeScreen, false)
-      // AsyncStorage.removeItem(StorageKey_TargetLang)
-
-
-
-
       await DelayAsync(200)
 
       setHandling('loading_local')
