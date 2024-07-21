@@ -9,9 +9,9 @@ import { Language, TranslatedResult } from "../../Common/TranslationApis/Transla
 import { CapitalizeFirstLetter, IsValuableArrayOrString, SafeArrayLength, ToCanPrint } from "../../Common/UtilsTS"
 import { NotLatestConfig } from "../Hooks/useLocalText"
 import { SavedWordData, TranslationService } from "../Types"
-import { ToWordLangString } from "./AppUtils"
+import { CheckCapabilityLanguage_ByCodeLang, ToWordLangString } from "./AppUtils"
 import { AddOrUpdateLocalizedWordsToDbAsync } from "./LocalizedWordsTable"
-import { GetSourceLangAsync, GetTranslationServiceAsync } from "./Settings"
+import { GetSourceLangAsync, GetTargetLangAsync, GetTranslationServiceAsync, SetTargetLangAsyncAsync } from "./Settings"
 
 const IsLog = __DEV__
 
@@ -58,6 +58,49 @@ const RedirectTranslationServiceAsync = async (service: TranslationService): Pro
     }
 
     return service
+}
+
+export const CheckResetTargetLangIfNeedRedirectTranslationServiceAsync = async (): Promise<boolean> => {
+    const [
+        currentService,
+        currentTargetLang,
+    ] = await Promise.all([
+        GetTranslationServiceAsync(),
+        GetTargetLangAsync(),
+    ]);
+
+    if (!currentTargetLang) {
+        if (IsLog)
+            console.log('[CheckResetTargetLangIfNeedRedirectTranslationServiceAsync] not reset due to target lang null currently');
+
+        return false
+    }
+
+    var redirectService = await RedirectTranslationServiceAsync(currentService)
+
+    if (redirectService === currentService) {
+        if (IsLog)
+            console.log('[CheckResetTargetLangIfNeedRedirectTranslationServiceAsync] not reset due to not redirect service');
+
+        return false
+    }
+
+    const suit = await GetCurrentTranslationServiceSuitAsync(redirectService)
+
+    if (CheckCapabilityLanguage_ByCodeLang(currentTargetLang, suit.supportedLanguages)) {
+        if (IsLog)
+            console.log('[CheckResetTargetLangIfNeedRedirectTranslationServiceAsync] not reset due to target lang SUPPORTED');
+
+        return false
+    }
+    else { // not suppport => reset
+        if (IsLog)
+            console.log('[CheckResetTargetLangIfNeedRedirectTranslationServiceAsync] RESET due to NOT supported');
+
+        await SetTargetLangAsyncAsync(undefined)
+
+        return true
+    }
 }
 
 /**

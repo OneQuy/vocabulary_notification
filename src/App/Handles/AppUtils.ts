@@ -27,6 +27,17 @@ export const GetCurrentLifetimeProduct = (remoteConfig: RemoteConfig | undefined
     return AllIAPProducts[AllIAPProducts.length - 1]
 }
 
+export const CheckCapabilityLanguage_ByCodeLang = (currentLangCode: string, supportedLangs: Language[]): Language | undefined => {
+    const find = supportedLangs.find(i =>
+        i.language.toLowerCase() === currentLangCode.toLowerCase()
+    )
+
+    if (IsLog)
+        console.log('[CheckCapabilityLanguage_ByCodeLang] current lang', currentLangCode, 'found?', find !== undefined);
+
+    return find
+}
+
 export const CheckCapabilityLanguage = (currentLang: Language, supportedLangs: Language[]): Language | undefined => {
     const find = supportedLangs.find(i =>
         i.language.toLowerCase() === currentLang.language.toLowerCase() ||
@@ -37,18 +48,6 @@ export const CheckCapabilityLanguage = (currentLang: Language, supportedLangs: L
         console.log('[CheckCapabilityLanguage] current lang', currentLang, 'found?', find !== undefined);
 
     return find
-
-    // // find lang name
-
-    // const find = supportedLangs.find(i =>
-    //     i.name.toLowerCase().includes(currentLang.name.toLowerCase()) ||
-    //     currentLang.name.toLowerCase().includes(i.name.toLowerCase())
-    // )
-
-    // if (IsLog)
-    //     console.log('[CheckCapabilityLanguage] current lang', currentLang, 'find NOT Exactly:', find)
-
-    // return find
 }
 
 export const ClearDbAndNotificationsAsync = async () => {
