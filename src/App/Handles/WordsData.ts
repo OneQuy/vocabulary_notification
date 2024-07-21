@@ -6,7 +6,8 @@ import { StorageKey_UsedWordIndex } from "../Constants/StorageKey"
 import { Word } from "../Types"
 import { GetPopularityLevelIndexAsync } from "./Settings"
 
-const IsLog = __DEV__
+// const IsLog = __DEV__
+const IsLog = false
 
 const FileUrlPattern = 'https://firebasestorage.googleapis.com/v0/b/vocanoti.appspot.com/o/words%2Findex-#.json?alt=media&token=@'
 

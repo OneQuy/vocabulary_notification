@@ -10,7 +10,7 @@ import { IAPProduct } from "../../Common/IAP/IAP"
 import { AllIAPProducts } from "../../Common/SpecificConstants"
 import { RemoteConfig } from "../../Common/SpecificType"
 
-const IsLog = true
+const IsLog = false
 
 export const GetCurrentLifetimeProduct = (remoteConfig: RemoteConfig | undefined): IAPProduct => {
     // config
