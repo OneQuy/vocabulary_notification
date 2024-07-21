@@ -317,6 +317,8 @@ const SetupScreen = ({
     if (!text)
       return
 
+    TrackPress('status_text')
+
     Alert.alert(AppName, text)
   }, [texts, alreadySetInfoTxt])
 
@@ -331,8 +333,10 @@ const SetupScreen = ({
   }, [subView])
 
   const onPressMoreSetting = useCallback(() => {
+    TrackPress('optionals_' + (showMoreSetting ? 'off' : 'on'))
+    
     set_showMoreSetting(v => !v)
-  }, [displayTargetLang])
+  }, [displayTargetLang, showMoreSetting])
 
   const getExcludeTimesAsStringForTracking = useCallback((): string => {
     if (!IsValuableArrayOrString(displayExcludedTimePairs))

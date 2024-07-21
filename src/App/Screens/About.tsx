@@ -23,7 +23,7 @@ import Clipboard from '@react-native-clipboard/clipboard'
 import { UserID } from '../../Common/UserID'
 import WealthText, { WealthTextConfig } from '../../Common/Components/WealthText'
 import { GetCurrentLifetimeProduct } from '../Handles/AppUtils'
-import { OpenStoreAsync, PressContactAsync, PurchaseAndTrackingAsync } from '../../Common/SpecificUtils'
+import { OpenStoreForRatingAsync, PressContactAsync, PurchaseAndTrackingAsync } from '../../Common/SpecificUtils'
 import { ContactType } from '../../Common/SpecificType'
 import ScaleUpView from '../../Common/Components/Effects/ScaleUpView'
 
@@ -435,7 +435,7 @@ const About = () => {
                                 <ActivityIndicator color={Color_Text} />
                             }
 
-                            {/* btn restore */}
+                            {/* btn rate */}
                             {
                                 !isHandling &&
                                 <LucideIconTextEffectButton
@@ -449,7 +449,7 @@ const About = () => {
                                     title={texts.rate}
                                     titleProps={{ style: style.normalBtnTxt }}
 
-                                    onPress={OpenStoreAsync}
+                                    onPress={OpenStoreForRatingAsync}
                                 />
                             }
                         </View>

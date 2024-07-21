@@ -11,7 +11,7 @@ import { GenerateNotificationTrackDataAsync } from "./Nofitication"
 import { ContactType, OnSetSubcribeDataAsyncFunc, RemoteConfig, VocabyNotificationTrackData } from "./SpecificType"
 import { AppendArrayAsync, GetArrayAsync_PickAndRemoveFirstOne } from "./AsyncStorageUtils"
 import { StorageKey_CacheEventNotification } from "../App/Constants/StorageKey"
-import { HandleError, TrackEventNotificationAsync, TrackSimpleWithParam } from "./Tracking"
+import { HandleError, TrackEventNotificationAsync, TrackPress, TrackSimpleWithParam } from "./Tracking"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { DeleteFileAsync, DeleteTempDirAsync } from "./FileUtils"
 import { Cheat } from "./Cheat"
@@ -27,6 +27,12 @@ const IsLog = false
 export async function OpenStoreAsync() {
     const link = Platform.OS === 'android' ? AndroidLink : iOSLink
     await Linking.openURL(link)
+}
+
+export async function OpenStoreForRatingAsync() {
+    TrackPress('rating')
+
+    await OpenStoreAsync()
 }
 
 export const ShareAppAsync = async () => {
