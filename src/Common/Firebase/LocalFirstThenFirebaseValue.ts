@@ -5,7 +5,8 @@ import { FirebaseDatabaseTimeOutMs, FirebaseDatabase_GetValueAsyncWithTimeOut, F
 import { AlertAsync, CreateError, IsObjectError } from "../UtilsTS";
 import { TruelyValueType } from "../SpecificType";
 
-const IsLog = __DEV__
+// const IsLog = __DEV__
+const IsLog = false
 
 export type FirebasePathAndLocalStorageKey = {
     storageKey: string,

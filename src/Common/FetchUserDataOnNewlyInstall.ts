@@ -9,7 +9,8 @@ import { UserPremiumDataProperty } from "./SpecificType"
 import { GetUserPropertyFirebasePath } from "./UserMan"
 import { IsValuableArrayOrString } from "./UtilsTS"
 
-const IsLog = __DEV__
+// const IsLog = __DEV__
+const IsLog = false
 
 /**
  * only enter app if fetched success (maybe no-data)

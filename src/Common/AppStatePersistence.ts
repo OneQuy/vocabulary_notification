@@ -33,7 +33,8 @@ export type SetupAppStateAndStartTrackingParams = {
     onReloadedRemoteConfigAsync?: (_: RemoteConfig | undefined) => Promise<void>,
 }
 
-const IsLog = __DEV__
+// const IsLog = __DEV__
+const IsLog = false
 
 const HowLongInMinutesToCount2TimesUseAppSeparately = 60 // minute
 
@@ -204,7 +205,8 @@ export const GetAndSetInstalledDaysCountAsync = async () => {
 const CheckForcePremiumDataAsync = async (setupParams: SetupAppStateAndStartTrackingParams) => {
     const data = await GetUserForcePremiumDataAsync()
 
-    console.log('[CheckForcePremiumDataAsync] data', data);
+    if (IsLog)
+        console.log('[CheckForcePremiumDataAsync] data', data);
 
     if (!data)
         return
