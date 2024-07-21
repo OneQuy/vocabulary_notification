@@ -18,6 +18,7 @@ const IsLog = __DEV__
 type GetTranslationServiceSuitResult = {
     key: string,
     supportedLanguages: Language[]
+    name: TranslationService,
 
     translateAsync: (
         key: string,
@@ -172,6 +173,7 @@ export const GetCurrentTranslationServiceSuitAsync = async (service?: Translatio
 
     if (service === 'Google Translation') { // deep
         result = {
+            name: service,
             key: GetAlternativeConfig('deep', DeepTranslateApiKey),
             translateAsync: DeepTranslateAsync,
             supportedLanguages: AllSupportedLanguages_Deep,
@@ -180,6 +182,7 @@ export const GetCurrentTranslationServiceSuitAsync = async (service?: Translatio
 
     else if (service === 'Devisty Translation') {
         result = {
+            name: service,
             key: GetAlternativeConfig('devisty', DevistyTranslateApiKey),
             translateAsync: DevistyTranslateAsync,
             supportedLanguages: AllSupportedLanguages_Devisty,
@@ -188,6 +191,7 @@ export const GetCurrentTranslationServiceSuitAsync = async (service?: Translatio
 
     else if (service === 'Microsoft Translation') {
         result = {
+            name: service,
             key: GetAlternativeConfig('microsoft', MicrosoftTranslateApiKey),
             translateAsync: MicrosoftTranslateAsync,
             supportedLanguages: AllSupportedLanguages_Microsoft,
@@ -196,6 +200,7 @@ export const GetCurrentTranslationServiceSuitAsync = async (service?: Translatio
 
     else if (service === 'Lingvanex Translation') {
         result = {
+            name: service,
             key: GetAlternativeConfig('lingvanex', LingvanexTranslateApiKey),
             translateAsync: LingvanexTranslateApiAsync,
             supportedLanguages: AllSupportedLanguages_Lingvanex,
@@ -204,6 +209,7 @@ export const GetCurrentTranslationServiceSuitAsync = async (service?: Translatio
 
     else if (service === 'Systran Translation') {
         result = {
+            name: service,
             key: GetAlternativeConfig('systran', SystranTranslateApiKey),
             translateAsync: SystranTranslateAsync,
             supportedLanguages: GetAllSupportedLanguages_Systran(await GetSourceLangAsync()),
