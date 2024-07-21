@@ -4,7 +4,8 @@
 // DOC
 // https://docs.systran.net/translateAPI/translation
 
-import { CreateError } from "../UtilsTS"
+import { TranslatedFailText } from "../../App/Hooks/useLocalText"
+import { CreateError, IsValuableArrayOrString } from "../UtilsTS"
 import { GetLanguageFromCode, Language, TranslatedResult } from "./TranslationLanguages"
 
 /**
@@ -31,7 +32,9 @@ export const SystranTranslateAsync = async (
 
         if (Array.isArray(arr)) {
             if (arr.length !== texts.length)
-                return new Error('[SystranTranslateAsync] translated arr not same length with texts length')
+                return new Error(TranslatedFailText + ' (Responses not same length as inputs)')
+            else if (arr.findIndex(translatedWordRes => !IsValuableArrayOrString(translatedWordRes?.output)) >= 0)
+                return new Error(TranslatedFailText + ' (Some values are null)')
             else {
                 return arr.map((translatedWordRes, index) => {
                     return {

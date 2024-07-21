@@ -2,6 +2,7 @@ export const NoPermissionText = "Make sure you have enabled notifications for th
 export const NotLatestConfig = "Can not get the latest config. Please check your internet and try again."
 export const PleaseSelectTargetLangText = 'Please set [Translation language] you wish to translate to firstly.'
 export const CanNotSetupUserData = 'Can not setup data. Please check your internet and try again.'
+export const TranslatedFailText = 'Can not get words translation. Please try again!'
 export const PopupTitleError = 'Error'
 export const RetryText = 'Retry'
 
@@ -112,7 +113,7 @@ They are set up until 24/Oct/1994 at 00:00. Please open the app and set new ones
   popup_error: PopupTitleError,
   [NoNotificationPermissionLocalKey]: NoPermissionText,
   pls_set_target_lang: PleaseSelectTargetLangText,
-  fail_translate: 'Can not get words translation. Please try again!',
+  fail_translate: TranslatedFailText,
   fail_download: 'Fail to download.',
   restore_purchase_no_products: 'No product to restore',
   cannot_setup_data: CanNotSetupUserData
