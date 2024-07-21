@@ -1,10 +1,15 @@
 // aka Google Translation
 // https://rapidapi.com/gatzuma/api/deep-translate1
 
+import { GetAlternativeConfig } from "../RemoteConfig";
 import { PromiseAllWithTrackProgressAsync, SafeValue } from "../UtilsTS";
 import { Language, TranslatedResult } from "./TranslationLanguages";
 
+const API_URL = 'https://deep-translate1.p.rapidapi.com/language/translate/v2'
+const HOST_URL = 'deep-translate1.p.rapidapi.com'
+
 /**
+ * aka GOOGLE
  * @returns text translated if success (even word is unavailable to translate)
  * @returns Error() if api failed
  */
@@ -50,10 +55,16 @@ const DeepTranslateSingleTextAsync = async (
             } as TranslatedResult)
         };
 
-        xhr.open('POST', 'https://deep-translate1.p.rapidapi.com/language/translate/v2');
+        const alterUrL = GetAlternativeConfig('deepUrl', API_URL)
+        const hostUrL = GetAlternativeConfig('deepHostUrl', HOST_URL)
+
+        // console.log(alterUrL);
+        // console.log(hostUrL);
+        
+        xhr.open('POST', alterUrL);
         xhr.setRequestHeader('content-type', 'application/json');
         xhr.setRequestHeader('X-RapidAPI-Key', key);
-        xhr.setRequestHeader('X-RapidAPI-Host', 'deep-translate1.p.rapidapi.com');
+        xhr.setRequestHeader('X-RapidAPI-Host', hostUrL);
 
         xhr.send(data);
     })
