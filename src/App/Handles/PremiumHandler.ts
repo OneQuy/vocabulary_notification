@@ -19,7 +19,7 @@ import { UserProperty_StartUsingAppTick } from "../../Common/SpecificType"
 import { TrackingAsync } from "../../Common/Tracking"
 import { GetUserPropertyFirebasePath } from "../../Common/UserMan"
 import { AlertAsync, DateDiff_WithNow, RoundWithDecimal } from "../../Common/UtilsTS"
-import { StorageKey_ShowedIntroTrial, StorageKey_StartUsingAppTick } from "../Constants/StorageKey"
+import { StorageKey_StartUsingAppTick } from "../Constants/StorageKey"
 import { CanNotSetupUserData, LocalText, PopupTitleError, RetryText } from "../Hooks/useLocalText"
 import { SubView } from "../Screens/SetupScreen"
 
@@ -62,7 +62,9 @@ export const HandleBeforeShowPopupPopularityLevelForNoPremiumAsync = async (
 
         const pressedOKOrLifeTime = await AlertAsync(
             texts.popup_error,
-            texts.out_of_trial,
+            texts.out_of_trial
+                .replaceAll('##', trialDays.toString())
+                .replaceAll('@@', Math.floor(diffDays).toString()),
             'OK',
             texts.pro
         )
@@ -76,35 +78,37 @@ export const HandleBeforeShowPopupPopularityLevelForNoPremiumAsync = async (
     else { // no premium & but still in trial
         // check if showed intro trial?
 
-        const showedIntroTrial = await GetBooleanAsync(StorageKey_ShowedIntroTrial)
+        // const showedIntroTrial = await GetBooleanAsync(StorageKey_ShowedIntroTrial)
 
-        if (!showedIntroTrial) { // not showed trial yet => show
-            SetBooleanAsync(StorageKey_ShowedIntroTrial, true)
+        // if (!showedIntroTrial) { // not showed trial yet => show
+        // SetBooleanAsync(StorageKey_ShowedIntroTrial, true)
 
-            const pressedOKOrLifeTime = await AlertAsync(
-                texts.popularity_level,
-                texts.introduce_trial.replaceAll('##', trialDays.toString()),
-                'OK',
-                texts.pro
-            )
+        const pressedOKOrLifeTime = await AlertAsync(
+            texts.popularity_level,
+            texts.introduce_trial
+                .replaceAll('##', trialDays.toString())
+                .replaceAll('@@', Math.floor(diffDays).toString()),
+            'OK',
+            texts.pro
+        )
 
-            if (!pressedOKOrLifeTime) { // pressed Lifetime 
-                setSubview('pro')
-                return false
-            }
-            else // press OK
-                return true
+        if (!pressedOKOrLifeTime) { // pressed Lifetime 
+            setSubview('pro')
+            return false
         }
-        else // showed intro trial, still in trial
-        {
-            if (IsLog) {
-                console.log('[HandleBeforeShowPopupPopularityLevelForNoPremiumAsync] still in trial',
-                    'diffDays', diffDays,
-                    'trialDays', trialDays)
-            }
-
+        else // press OK
             return true
-        }
+        // }
+        // else // showed intro trial, still in trial
+        // {
+        //     if (IsLog) {
+        //         console.log('[HandleBeforeShowPopupPopularityLevelForNoPremiumAsync] still in trial',
+        //             'diffDays', diffDays,
+        //             'trialDays', trialDays)
+        //     }
+
+        //     return true
+        // }
     }
 }
 
