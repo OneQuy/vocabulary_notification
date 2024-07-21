@@ -1297,6 +1297,10 @@ const SetupScreen = ({
         ? GetLanguageFromCode(targetLang, suit.supportedLanguages)
         : undefined;
 
+      if (targetLang && !targetLanguage) { // reset when redirect lang
+        SetTargetLangAsyncAsync(undefined)
+      }
+
       set_displayTargetLang(targetLanguage);
       set_displayPopularityLevelIdx(levelPopularity);
       set_displayIntervalInMin(intervalInMin);
