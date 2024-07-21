@@ -24,6 +24,20 @@ alert not priority (after alerts above):
 
 =========================================
 
+remote config:
+
+redirectService?: string
+Microsoft Translation=Lingvanex Translation|Systran Translation=Google Translation
+(
+    'Google Translation' |
+    'Microsoft Translation' |
+    'Lingvanex Translation' |
+    'Systran Translation' |
+    'Devisty Translation'
+)
+
+=========================================
+
 alternativeValue:
 
 onequy app json firebase url

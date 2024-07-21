@@ -6,7 +6,7 @@ import { AllSupportedLanguages_Lingvanex, LingvanexTranslateApiAsync } from "../
 import { AllSupportedLanguages_Microsoft, MicrosoftTranslateAsync } from "../../Common/TranslationApis/MicrosoftTranslatorApi"
 import { GetAllSupportedLanguages_Systran, SystranTranslateAsync } from "../../Common/TranslationApis/SystranTranslateApi"
 import { Language, TranslatedResult } from "../../Common/TranslationApis/TranslationLanguages"
-import { CapitalizeFirstLetter } from "../../Common/UtilsTS"
+import { CapitalizeFirstLetter, IsValuableArrayOrString, SafeArrayLength, ToCanPrint } from "../../Common/UtilsTS"
 import { NotLatestConfig } from "../Hooks/useLocalText"
 import { SavedWordData, TranslationService } from "../Types"
 import { ToWordLangString } from "./AppUtils"
@@ -28,6 +28,38 @@ type GetTranslationServiceSuitResult = {
     ) => Promise<TranslatedResult[] | Error>,
 }
 
+const RedirectTranslationServiceAsync = async (service: TranslationService): Promise<TranslationService> => {
+    const remote = await GetRemoteConfigWithCheckFetchAsync()
+
+    const redirectServiceString = remote?.redirectService
+
+    if (!redirectServiceString)
+        return service
+
+    // redirectServiceString = 'Microsoft Translation=Lingvanex Translation|Systran Translation=Google Translation'
+
+    const pairs = redirectServiceString.split('|')
+
+    if (!IsValuableArrayOrString(pairs))
+        return service
+
+    for (let pair of pairs) {
+        const arr = pair.split('=')
+
+        if (SafeArrayLength(arr) !== 2)
+            continue
+
+        if (arr[0] === service) {
+            if (IsLog)
+                console.log('[RedirectTranslationServiceAsync] REDIRECT', ToCanPrint(arr))
+
+            return arr[1] as TranslationService
+        }
+    }
+
+    return service
+}
+
 /**
  * ### each element:
  * * text translated if success (or word is unavailable to translate). but both cases full enough length.
@@ -42,13 +74,13 @@ export const BridgeTranslateMultiWordAsync = async (
     process?: (process: number) => void
 ): Promise<TranslatedResult[] | Error> => {
     // check last update config first 
-    
+
     if (IsLog)
         console.log('[BridgeTranslateMultiWordAsync] check latest config?', IsRemoteConfigLoadedRecently())
-    
+
     if (!IsRemoteConfigLoadedRecently()) {
         await GetRemoteConfigWithCheckFetchAsync(false, true)
-        
+
         if (IsLog)
             console.log('[BridgeTranslateMultiWordAsync] fetched latest config?', IsRemoteConfigLoadedRecently())
 
@@ -86,6 +118,8 @@ export const BridgeTranslateMultiWordAsync = async (
 export const GetCurrentTranslationServiceSuitAsync = async (service?: TranslationService): Promise<GetTranslationServiceSuitResult> => {
     if (service === undefined)
         service = await GetTranslationServiceAsync()
+
+    service = await RedirectTranslationServiceAsync(service)
 
     let result: GetTranslationServiceSuitResult
 
