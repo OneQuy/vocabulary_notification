@@ -15,7 +15,8 @@ import { TranslatedResult } from "../../Common/TranslationApis/TranslationLangua
 import { GetAlternativeConfig } from "../../Common/RemoteConfig";
 import { Alert, Platform } from "react-native";
 
-const IsLog = __DEV__
+// const IsLog = __DEV__
+const IsLog = false
 
 export const NotificationExtraDataKey_Mode = 'mode'
 export const NotificationExtraDataKey_PushIndex = 'pushIdx'

@@ -69,21 +69,16 @@ export const SetExcludedTimesAsync = async (pairs: PairTime[]): Promise<void> =>
 
 
 export const GetDefaultTranslationServiceAsync = async (): Promise<TranslationService> => {
-    for (let i = 0; i < 100; i++) {
-        let pick = PickRandomElement(TranslationServicePresets)
+    const pick = PickRandomElement(TranslationServicePresets)
 
-        if (pick === undefined)
-            continue
+    if (pick === undefined)
+        return 'Microsoft Translation'
 
-        const redirect = await RedirectTranslationServiceAsync(pick)
+    const redirect = await RedirectTranslationServiceAsync(pick)
 
-        console.log(redirect === pick, redirect, pick);
-        
-        if (redirect === pick) // not redirect service
-            return redirect
-    }
+    // console.log(redirect === pick, redirect, pick);
 
-    return PickRandomElement(TranslationServicePresets) ?? 'Microsoft Translation'
+    return redirect
 }
 
 export const GetTranslationServiceAsync = async (): Promise<TranslationService> => {
