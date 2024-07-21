@@ -271,11 +271,15 @@ const CheckReloadRemoteConfigAsync = async (setupParams: SetupAppStateAndStartTr
 
     // track
 
+    const lastLoadedInHour = loadedConfigLastTimeInHour >= Number.MAX_VALUE ?
+        0 :
+        RoundWithDecimal(loadedConfigLastTimeInHour)
+
     await TrackingAsync(
         'reloaded_config',
         [],
         {
-            lastLoadedInHour: RoundWithDecimal(loadedConfigLastTimeInHour)
+            lastLoadedInHour
         }
     )
 
