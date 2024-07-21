@@ -60,6 +60,10 @@ const RedirectTranslationServiceAsync = async (service: TranslationService): Pro
     return service
 }
 
+/**
+ * 
+ * @returns resetedTargetLang true only reseted target lang.
+ */
 export const CheckResetTargetLangIfNeedRedirectTranslationServiceAsync = async (): Promise<boolean> => {
     const [
         currentService,

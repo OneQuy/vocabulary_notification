@@ -165,7 +165,7 @@ export const IsRemoteConfigLoadedRecently = () => {
  * ### note: alert if loaded has alert udpate,... and do alert loaded failed
  * @returns true if config ••available** and minute diff from last config less than (<) **1 minute**
  */
-export const ForceFetchWithAlertIfFailedAsync = async (texts: LocalText): Promise<boolean> => {
+export const CheckForceFetchRemoteConfigWithAlertIfFailedAsync = async (texts: LocalText): Promise<boolean> => {
     let minDiff = DateDiff_InMinute_WithNow(lastTimeFetchedSuccessAndHandledAlerts)
     let isLastest = remoteConfig !== undefined && minDiff < 1
 

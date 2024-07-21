@@ -21,7 +21,7 @@ import { StorageKey_LastPushTick, StorageKey_LastSetSuccessTick, StorageKey_Popu
 import HistoryScreen from './HistoryScreen'
 import { HandleError, TrackPress, TrackSimple, TrackSimpleWithParam, TrackingAsync } from '../../Common/Tracking'
 import { GetLanguageFromCode, Language } from '../../Common/TranslationApis/TranslationLanguages'
-import { BridgeTranslateMultiWordAsync, GetCurrentTranslationServiceSuitAsync } from '../Handles/TranslateBridge'
+import { BridgeTranslateMultiWordAsync, CheckResetTargetLangIfNeedRedirectTranslationServiceAsync, GetCurrentTranslationServiceSuitAsync } from '../Handles/TranslateBridge'
 import ExampleWordView, { ValueAndDisplayText } from './ExampleWordView'
 import { SqlLogAllRowsAsync } from '../../Common/SQLite'
 import TargetLangPicker from '../Components/TargetLangPicker'
@@ -40,7 +40,7 @@ import { UserSelectedPopularityIndexProperty } from '../../Common/SpecificType'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import ScaleUpView from '../../Common/Components/Effects/ScaleUpView'
 import Paywall from './Paywall'
-import { ForceFetchWithAlertIfFailedAsync, GetAlternativeConfig } from '../../Common/RemoteConfig'
+import { CheckForceFetchRemoteConfigWithAlertIfFailedAsync, GetAlternativeConfig } from '../../Common/RemoteConfig'
 import { IsNewUpdateAvailableAsync, OpenStoreAsync } from '../../Common/SpecificUtils'
 
 const IsLog = false
@@ -250,6 +250,31 @@ const SetupScreen = ({
     posthog,
     onActiveOrUseEffectOnceAsync
   })
+
+  /**
+   * make sure latest settings (like target lang, service...) is saved storage before calling this
+   */
+  const makeSureFetchedLatestConfigAndHandlesAsync = useCallback(async (): Promise<{ fetchedConfigSuccess: boolean, resetedTargetLang: boolean }> => {
+    // fetch
+
+    const fetchedSuccess = await CheckForceFetchRemoteConfigWithAlertIfFailedAsync(texts)
+
+    if (!fetchedSuccess) {
+      return {
+        fetchedConfigSuccess: false,
+        resetedTargetLang: false
+      }
+    }
+
+    // handle reset target lang
+
+    const resetedTargetLang = await CheckResetTargetLangIfNeedRedirectTranslationServiceAsync()
+
+    return {
+      fetchedConfigSuccess: true,
+      resetedTargetLang
+    }
+  }, [texts])
 
   const generatePushTimeListText = useCallback((lastSetTimestamp: number) => {
     const pushTimesPerDay = CalcNotiTimeListPerDay(displayIntervalInMin, displayExcludedTimePairs)
@@ -539,7 +564,7 @@ const SetupScreen = ({
 
     set_handlingType('downloading')
 
-    const fetchedConfigSuccess = await ForceFetchWithAlertIfFailedAsync(texts)
+    const { fetchedConfigSuccess } = await makeSureFetchedLatestConfigAndHandlesAsync()
 
     set_handlingType(undefined)
 
@@ -581,7 +606,7 @@ const SetupScreen = ({
 
     set_handlingType('downloading')
 
-    const fetchedConfigSuccess = await ForceFetchWithAlertIfFailedAsync(texts)
+    const { fetchedConfigSuccess } = await makeSureFetchedLatestConfigAndHandlesAsync()
 
     if (!fetchedConfigSuccess) {
       set_handlingType(undefined)
@@ -1005,11 +1030,11 @@ const SetupScreen = ({
 
     set_handlingType('downloading')
 
-    const fetchedSuccess = await ForceFetchWithAlertIfFailedAsync(texts)
+    const { fetchedConfigSuccess } = await makeSureFetchedLatestConfigAndHandlesAsync()
 
     set_handlingType(undefined)
 
-    if (!fetchedSuccess)
+    if (!fetchedConfigSuccess)
       return
 
     // check target lang
