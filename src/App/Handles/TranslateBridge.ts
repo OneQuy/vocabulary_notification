@@ -158,7 +158,7 @@ export const BridgeTranslateMultiWordAsync = async (
     )
 
     if (saveToDbNewWords && Array.isArray(translatedArrOrError))
-        await SaveToDbNewWordsAsync(toLang, translatedArrOrError)
+        await SaveToDbNewWordsAsync(toLang, translatedArrOrError, currentService)
 
     return translatedArrOrError
 }
@@ -226,11 +226,13 @@ export const GetCurrentTranslationServiceSuitAsync = async (service?: Translatio
     return result
 }
 
-const SaveToDbNewWordsAsync = async (toLang: string, translatedResults: TranslatedResult[]) => {
-    const currentService = await GetTranslationServiceAsync()
-
+const SaveToDbNewWordsAsync = async (
+    toLang: string, 
+    translatedResults: TranslatedResult[],
+    service: GetTranslationServiceSuitResult
+) => {
     if (IsLog)
-        console.log('[SaveToDbAsync] just translated by', currentService, ', add new words to db:')
+        console.log('[SaveToDbNewWordsAsync] just translated by', service.name, ', add new words to db:')
 
     await AddOrUpdateLocalizedWordsToDbAsync(translatedResults.map(word => {
         const saved: SavedWordData = {
