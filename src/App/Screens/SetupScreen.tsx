@@ -1030,7 +1030,7 @@ const SetupScreen = ({
 
     set_handlingType('downloading')
 
-    const { fetchedConfigSuccess } = await makeSureFetchedLatestConfigAndHandlesAsync()
+    const { fetchedConfigSuccess, resetedTargetLang } = await makeSureFetchedLatestConfigAndHandlesAsync()
 
     set_handlingType(undefined)
 
@@ -1039,7 +1039,7 @@ const SetupScreen = ({
 
     // check target lang
 
-    if (!displayTargetLang) {
+    if (!displayTargetLang || resetedTargetLang) {
       Alert.alert(
         texts.popup_error,
         texts.pls_set_target_lang, [
