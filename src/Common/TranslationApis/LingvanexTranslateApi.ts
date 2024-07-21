@@ -3,9 +3,11 @@
 // TEST: https://lingvanex.com/translate/
 // FREE TIER: 200,000 chars once register. 5$ for 1,000,000 chars.
 
+import { GetAlternativeConfig } from "../RemoteConfig"
 import { CreateError, SafeValue } from "../UtilsTS"
 import { Language, TranslatedResult } from "./TranslationLanguages"
 
+const API_URL = 'https://api-b2b.backenster.com/b1/api/v3/translate'
 
 /**
  * @returns success: TranslatedResult[] translated (even word is unavailable to translate). but both cases full enough length.
@@ -39,7 +41,11 @@ export const LingvanexTranslateApiAsync = async (
             })
         };
 
-        const res = await fetch('https://api-b2b.backenster.com/b1/api/v3/translate', options)
+        const alterUrl = GetAlternativeConfig('lingvanexUrl', API_URL)
+
+        // console.log(alterUrl);
+        
+        const res = await fetch(alterUrl, options)
 
         const arr = (await res.json()).result
 

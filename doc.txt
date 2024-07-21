@@ -62,7 +62,7 @@ microsoftUrl (https://api.cognitive.microsofttranslator.com)
 microsoftApiVer ("3.0")
 deepUrl (https://deep-translate1.p.rapidapi.com/language/translate/v2)
 deepHostUrl (deep-translate1.p.rapidapi.com)
-
+lingvanexUrl (https://api-b2b.backenster.com/b1/api/v3/translate)
 
 key apis
 - microsoft
