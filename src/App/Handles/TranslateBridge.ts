@@ -83,12 +83,12 @@ export const CheckResetTargetLangIfNeedRedirectTranslationServiceAsync = async (
 
     var redirectService = await RedirectTranslationServiceAsync(currentService)
 
-    if (redirectService === currentService) {
-        if (IsLog)
-            console.log('[CheckResetTargetLangIfNeedRedirectTranslationServiceAsync] not reset due to not redirect service');
+    // if (redirectService === currentService) {
+    //     if (IsLog)
+    //         console.log('[CheckResetTargetLangIfNeedRedirectTranslationServiceAsync] not reset due to not redirect service');
 
-        return false
-    }
+    //     return false
+    // }
 
     const suit = await GetCurrentTranslationServiceSuitAsync(redirectService)
 
