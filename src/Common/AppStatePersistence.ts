@@ -11,8 +11,8 @@ import { GetBooleanAsync, GetDateAsync, GetDateAsync_IsValueExistedAndIsToday, G
 import { VersionAsNumber } from "./CommonConstants"
 import { StorageKey_FirstTimeInstallTick, StorageKey_LastCheckFirstOpenOfTheDay, StorageKey_LastFreshlyOpenApp, StorageKey_LastInstalledVersion, StorageKey_NeedToShowWhatsNewFromVer, StorageKey_OpenAppOfDayCount, StorageKey_OpenAppOfDayCountForDate, StorageKey_OpenAppTotalCount, StorageKey_OpenAt, StorageKey_PressUpdateObject, StorageKey_TrackedNewlyInstall } from "../App/Constants/StorageKey"
 import PostHog from "posthog-react-native"
-import { InitTrackingAsync, TrackFirstOpenOfDayOldUserAsync, TrackOnActiveOrUseEffectOnceWithGapAsync, TrackOnNewlyInstallAsync, CheckTrackUpdatedAppAsync, TrackSimpleWithParam } from "./Tracking"
-import { AlertAsync, DateDiff_InHour_WithNow, DateDiff_WithNow, GetDayHourMinSecFromMs_ToString, IsToday, IsValuableArrayOrString } from "./UtilsTS"
+import { InitTrackingAsync, TrackFirstOpenOfDayOldUserAsync, TrackOnActiveOrUseEffectOnceWithGapAsync, TrackOnNewlyInstallAsync, CheckTrackUpdatedAppAsync, TrackSimpleWithParam, TrackingAsync } from "./Tracking"
+import { AlertAsync, DateDiff_InHour_WithNow, DateDiff_WithNow, GetDayHourMinSecFromMs_ToString, IsToday, IsValuableArrayOrString, RoundWithDecimal } from "./UtilsTS"
 import { ClearUserForcePremiumDataAsync, GetUserForcePremiumDataAsync } from "./UserMan"
 import { RemoteConfig, SubscribedData } from "./SpecificType"
 import { UserID } from "./UserID"
@@ -268,6 +268,16 @@ const CheckReloadRemoteConfigAsync = async (setupParams: SetupAppStateAndStartTr
 
     if (setupParams.onReloadedRemoteConfigAsync)
         setupParams.onReloadedRemoteConfigAsync(config)
+
+    // track
+
+    await TrackingAsync(
+        'reloaded_config',
+        [],
+        {
+            lastLoadedInHour: RoundWithDecimal(loadedConfigLastTimeInHour)
+        }
+    )
 
     return loadedConfigLastTimeInHour
 }
