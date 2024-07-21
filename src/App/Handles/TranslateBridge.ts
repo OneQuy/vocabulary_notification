@@ -220,8 +220,8 @@ export const GetCurrentTranslationServiceSuitAsync = async (service?: Translatio
         throw new Error('[GetTranslationServiceSuitAsync] no service specificed')
     }
 
-    if (IsLog)
-        console.log('[GetTranslationServiceSuitAsync] ' + service, 'key:', result.key);
+    // if (IsLog)
+    //     console.log('[GetTranslationServiceSuitAsync] ' + service, 'key:', result.key);
 
     return result
 }
