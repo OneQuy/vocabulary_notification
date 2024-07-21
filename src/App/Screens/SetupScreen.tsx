@@ -270,6 +270,9 @@ const SetupScreen = ({
 
     const resetedTargetLang = await CheckResetTargetLangIfNeedRedirectTranslationServiceAsync()
 
+    if (resetedTargetLang)
+      set_displayTargetLang(undefined)
+
     return {
       fetchedConfigSuccess: true,
       resetedTargetLang
