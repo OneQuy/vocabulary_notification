@@ -13,7 +13,8 @@ import { CheckCapabilityLanguage_ByCodeLang, ToWordLangString } from "./AppUtils
 import { AddOrUpdateLocalizedWordsToDbAsync } from "./LocalizedWordsTable"
 import { GetSourceLangAsync, GetTargetLangAsync, GetTranslationServiceAsync, SetTargetLangAsyncAsync } from "./Settings"
 
-const IsLog = __DEV__
+// const IsLog = __DEV__
+const IsLog = false
 
 type GetTranslationServiceSuitResult = {
     key: string,
