@@ -386,18 +386,28 @@ const CheckFireOnActiveOrUseEffectOnceWithGapAsync = async (
 }
 
 const CheckShowAlertWhatsNewAsync = async (fromVer: number) => {
+    if (IsLog)
+        console.log('[CheckShowAlertWhatsNewAsync] fromVer', fromVer);
+
     if (!Number.isNaN(fromVer))
         await SetNumberAsync(StorageKey_NeedToShowWhatsNewFromVer, fromVer)
     else
         fromVer = await GetNumberIntAsync(StorageKey_NeedToShowWhatsNewFromVer)
 
-    if (Number.isNaN(fromVer))
-        return
+    if (Number.isNaN(fromVer)) {
+        if (IsLog)
+            console.log('[CheckShowAlertWhatsNewAsync] NOT show cuz fromVer is NaN');
 
+        return
+    }
     const configFromFb = await FirebaseDatabase_GetValueAsyncWithTimeOut('app/whats_new', FirebaseDatabaseTimeOutMs)
 
-    if (!configFromFb.value)
+    if (!configFromFb.value) {
+        if (IsLog)
+            console.log('[CheckShowAlertWhatsNewAsync] NOT show cuz config from Fb is null', configFromFb);
+
         return
+    }
 
     const entries = Object.entries(configFromFb.value)
     let s = ''
@@ -406,13 +416,22 @@ const CheckShowAlertWhatsNewAsync = async (fromVer: number) => {
     for (let i = 0; i < entries.length; i++) {
         var key = entries[i][0]
 
-        if (!key.startsWith('v') || key.length < 4)
+        // if (IsLog)
+        //     console.log('[CheckShowAlertWhatsNewAsync] (debug) key', key);
+
+        if (!key.startsWith('v') || key.length < 2)
             continue
 
         const configVerNum = Number.parseInt(key.substring(1))
 
+        // if (IsLog)
+        //     console.log('[CheckShowAlertWhatsNewAsync] (debug) config vernum', configVerNum);
+
         if (Number.isNaN(configVerNum))
             continue
+
+        // if (IsLog)
+        //     console.log('[CheckShowAlertWhatsNewAsync] (debug) fromver', fromVer, VersionAsNumber);
 
         if (configVerNum <= fromVer || configVerNum > VersionAsNumber)
             continue
@@ -428,12 +447,18 @@ const CheckShowAlertWhatsNewAsync = async (fromVer: number) => {
     AsyncStorage.removeItem(StorageKey_NeedToShowWhatsNewFromVer)
 
     if (s === '') {
+        if (IsLog)
+            console.log('[CheckShowAlertWhatsNewAsync] NOT show cuz content S empty');
+
         return
     }
 
     s = s.replaceAll('@', '\n')
 
     TrackSimpleWithParam('show_whats_new', versionsToTrack, true)
+
+    if (IsLog)
+        console.log('[CheckShowAlertWhatsNewAsync] SHOW!', s);
 
     await AlertAsync(
         "Thank you for updating!",
