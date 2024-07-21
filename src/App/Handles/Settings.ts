@@ -4,6 +4,7 @@ import { GetArrayAsync, GetNumberIntAsync, SetArrayAsync, SetNumberAsync } from 
 import { DefaultExcludedTimePairs, DefaultIntervalInMin, DefaultLimitWords as DefaultLimitWordsPerDay, DefaultNumDaysToPush, TranslationServicePresets } from "../Constants/AppConstants"
 import { PairTime, TranslationService } from "../Types"
 import { PickRandomElement } from "../../Common/UtilsTS"
+import { RedirectTranslationServiceAsync } from "./TranslateBridge"
 
 export const GetSourceLangAsync = async (): Promise<string> => {
     return await AsyncStorage.getItem(StorageKey_SourceLang) || 'en'
@@ -67,7 +68,21 @@ export const SetExcludedTimesAsync = async (pairs: PairTime[]): Promise<void> =>
 }
 
 
-export const GetDefaultTranslationService = (): TranslationService => {
+export const GetDefaultTranslationServiceAsync = async (): Promise<TranslationService> => {
+    for (let i = 0; i < 100; i++) {
+        let pick = PickRandomElement(TranslationServicePresets)
+
+        if (pick === undefined)
+            continue
+
+        const redirect = await RedirectTranslationServiceAsync(pick)
+
+        console.log(redirect === pick, redirect, pick);
+        
+        if (redirect === pick) // not redirect service
+            return redirect
+    }
+
     return PickRandomElement(TranslationServicePresets) ?? 'Microsoft Translation'
 }
 
@@ -75,7 +90,7 @@ export const GetTranslationServiceAsync = async (): Promise<TranslationService> 
     const s = await AsyncStorage.getItem(StorageKey_TranslationService)
 
     if (!s || !TranslationServicePresets.includes(s as TranslationService)) {
-        const service = GetDefaultTranslationService()
+        const service = await GetDefaultTranslationServiceAsync()
 
         await SetTranslationServiceAsync(service)
 

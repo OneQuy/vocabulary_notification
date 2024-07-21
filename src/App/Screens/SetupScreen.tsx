@@ -14,7 +14,7 @@ import { LucideIcon } from '../../Common/Components/LucideIcon'
 import { PairTime, TranslationService } from '../Types'
 import { CalcNotiTimeListPerDay, ClearDbAndNotificationsAsync } from '../Handles/AppUtils'
 import { SetupNotificationAsync, TestNotificationAsync } from '../Handles/SetupNotification'
-import { GetExcludeTimesAsync, GetDefaultTranslationService, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, GetTranslationServiceAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetTranslationServiceAsync, SetTargetLangAsyncAsync, GetSourceLangAsync } from '../Handles/Settings'
+import { GetExcludeTimesAsync, GetIntervalMinAsync, GetLimitWordsPerDayAsync, GetPopularityLevelIndexAsync, GetTargetLangAsync, GetTranslationServiceAsync, SetExcludedTimesAsync, SetIntervalMinAsync, SetLimitWordsPerDayAsync, SetTranslationServiceAsync, SetTargetLangAsyncAsync, GetSourceLangAsync } from '../Handles/Settings'
 import { DownloadWordDataAsync, GetAllWordsDataCurrentLevelAsync, IsCachedWordsDataCurrentLevelAsync } from '../Handles/WordsData'
 import { GetBooleanAsync, GetDateAndSetNowAsync, GetNumberIntAsync, IncreaseNumberAsync, SetBooleanAsync } from '../../Common/AsyncStorageUtils'
 import { StorageKey_LastPushTick, StorageKey_LastSetSuccessTick, StorageKey_PopularityIndex, StorageKey_SetPushSuccessCount, StorageKey_ShouldShowPaywallCount, StorageKey_ShowDefinitions, StorageKey_ShowExample, StorageKey_ShowPartOfSpeech, StorageKey_ShowPhonetic, StorageKey_ShowRankOfWord, StorageKey_StatusText } from '../Constants/StorageKey'
@@ -101,7 +101,7 @@ const SetupScreen = ({
   const [displayTargetLang, set_displayTargetLang] = useState<Language | undefined>()
   const [timestampLastPush, set_timestampLastPush] = useState(0)
 
-  const [displayTranslationService, set_displayTranslationService] = useState<TranslationService>(GetDefaultTranslationService())
+  const [displayTranslationService, set_displayTranslationService] = useState<TranslationService>('Microsoft Translation')
 
   const [displayExcludedTimePairs, set_displayExcludedTimePairs] = useState<PairTime[]>(DefaultExcludedTimePairs)
   const editingExcludeTimePairAndElementIndex = useRef<[PairTime | undefined, number]>([undefined, -1])

@@ -29,7 +29,7 @@ type GetTranslationServiceSuitResult = {
     ) => Promise<TranslatedResult[] | Error>,
 }
 
-const RedirectTranslationServiceAsync = async (service: TranslationService): Promise<TranslationService> => {
+export const RedirectTranslationServiceAsync = async (service: TranslationService): Promise<TranslationService> => {
     const remote = await GetRemoteConfigWithCheckFetchAsync()
 
     const redirectServiceString = remote?.redirectService
