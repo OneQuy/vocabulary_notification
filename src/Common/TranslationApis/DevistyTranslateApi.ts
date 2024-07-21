@@ -1,7 +1,11 @@
 // https://rapidapi.com/dickyagustin/api/text-translator2
 
+import { GetAlternativeConfig } from "../RemoteConfig";
 import { PromiseAllWithTrackProgressAsync, SafeValue } from "../UtilsTS";
 import { Language, TranslatedResult } from "./TranslationLanguages";
+
+const API_URL = 'https://text-translator2.p.rapidapi.com/translate'
+const HOST_URL = 'text-translator2.p.rapidapi.com'
 
 /**
  * @returns text translated if success (even word is unavailable to translate)
@@ -45,10 +49,15 @@ const DevistyTranslateSingleTextAsync = async (
             } as TranslatedResult)
         };
 
-        xhr.open('POST', 'https://text-translator2.p.rapidapi.com/translate');
+        const alterUrl = GetAlternativeConfig('devistyUrl', API_URL)
+        const hostUrl = GetAlternativeConfig('devistyHostUrl', HOST_URL)
+
+        // console.log(alterUrl, hostUrl)
+
+        xhr.open('POST', alterUrl);
         xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
         xhr.setRequestHeader('X-RapidAPI-Key', key);
-        xhr.setRequestHeader('X-RapidAPI-Host', 'text-translator2.p.rapidapi.com');
+        xhr.setRequestHeader('X-RapidAPI-Host', hostUrl);
 
         xhr.send(data);
     })

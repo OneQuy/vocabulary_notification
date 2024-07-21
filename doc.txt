@@ -63,6 +63,8 @@ microsoftApiVer ("3.0")
 deepUrl (https://deep-translate1.p.rapidapi.com/language/translate/v2)
 deepHostUrl (deep-translate1.p.rapidapi.com)
 lingvanexUrl (https://api-b2b.backenster.com/b1/api/v3/translate)
+devistyUrl (https://text-translator2.p.rapidapi.com/translate)
+devistyHostUrl (text-translator2.p.rapidapi.com)
 
 key apis
 - microsoft
