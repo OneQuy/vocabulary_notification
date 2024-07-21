@@ -95,7 +95,7 @@ export const CheckResetTargetLangIfNeedRedirectTranslationServiceAsync = async (
     }
     else { // not suppport => reset
         if (IsLog)
-            console.log('[CheckResetTargetLangIfNeedRedirectTranslationServiceAsync] RESET due to NOT supported');
+            console.log('[CheckResetTargetLangIfNeedRedirectTranslationServiceAsync] RESETED due to NOT supported');
 
         await SetTargetLangAsyncAsync(undefined)
 

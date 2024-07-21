@@ -1001,6 +1001,19 @@ const SetupScreen = ({
   }, [])
 
   const onPressOpenPopupChangeTranslationServiceAsync = useCallback(async () => {
+    // make sure load lastesst config first
+
+    set_handlingType('downloading')
+
+    const fetchedSuccess = await ForceFetchWithAlertIfFailedAsync(texts)
+
+    set_handlingType(undefined)
+
+    if (!fetchedSuccess)
+      return
+
+    // check target lang
+
     if (!displayTargetLang) {
       Alert.alert(
         texts.popup_error,
@@ -1012,17 +1025,6 @@ const SetupScreen = ({
 
       return
     }
-
-    // make sure load lastesst config first
-
-    set_handlingType('downloading')
-
-    const fetchedSuccess = await ForceFetchWithAlertIfFailedAsync(texts)
-
-    set_handlingType(undefined)
-
-    if (!fetchedSuccess)
-      return
 
     // open popup
 
