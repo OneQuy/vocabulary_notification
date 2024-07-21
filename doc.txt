@@ -56,6 +56,9 @@ onequy app json firebase url
 - limitPushsAndroid (default 64 pushs)
 - limitPushsiOS (default 64 pushs)
 
+key urls
+systranUrl (https://api-translate.systran.net/translation/text/translate?key=@KEY&target=@TO&source=@FROM)
+
 key apis
 - microsoft
 - systran
