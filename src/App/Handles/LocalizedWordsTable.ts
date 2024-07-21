@@ -4,7 +4,8 @@ import { SavedWordData } from "../Types"
 import { ToWordLangString } from "./AppUtils"
 import { GetTargetLangAsync } from "./Settings"
 
-const IsLog = __DEV__
+// const IsLog = __DEV__
+const IsLog = false
 
 const DBName = 'LocalizedWordsDB'
 

@@ -21,7 +21,8 @@ import { GetAlternativeConfig, GetRemoteConfigWithCheckFetchAsync } from "./Remo
 import { VersionAsNumber } from "./CommonConstants"
 import { RevenueCat } from "./RevenueCat/RevenueCat"
 
-const IsLog = __DEV__
+// const IsLog = __DEV__
+const IsLog = false
 
 export async function OpenStoreAsync() {
     const link = Platform.OS === 'android' ? AndroidLink : iOSLink
@@ -174,7 +175,8 @@ export const OnEventNotification = async (isBackgroundOrForeground: boolean, eve
         setOrTestMode // my change here
     )
 
-    console.log('[OnEventNotification]', 'tracked and cached (on event):', ToCanPrint(objTrack))
+    if (IsLog)
+        console.log('[OnEventNotification]', 'tracked and cached (on event):', ToCanPrint(objTrack))
 }
 
 /**
@@ -223,7 +225,7 @@ const purchaseSuccess = await PurchaseAndTrackingAsync(sku, onSetSubcribeDataAsy
 set_isHandling(false)
 ```
  */
-export const PurchaseAndTrackingAsync = async (sku: string, onSetSubcribeDataAsync: OnSetSubcribeDataAsyncFunc) : Promise<boolean> => {
+export const PurchaseAndTrackingAsync = async (sku: string, onSetSubcribeDataAsync: OnSetSubcribeDataAsyncFunc): Promise<boolean> => {
     let valueTracking = ''
     let purchaseSuccess = false
 
@@ -232,7 +234,7 @@ export const PurchaseAndTrackingAsync = async (sku: string, onSetSubcribeDataAsy
     // success
 
     console.log('[PurchaseAndTrackingAsync] res', res)
-    
+
     if (res === undefined) {
         await onSetSubcribeDataAsync({
             id: sku,
