@@ -23,8 +23,10 @@ export async function GetInternetTimeAsync(): Promise<number | Error> {
 
         const parse = Date.parse(dateString)
 
-        // console.log(typeof dateString, dateString)
-        // console.log(typeof parse, parse)
+        console.log('fetched', typeof dateString, dateString)
+        console.log('parsed', typeof parse, new Date(parse))
+        console.log('diff ms', Date.now() - parse)
+        console.log('url', url)
 
         return parse
     }
