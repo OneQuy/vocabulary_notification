@@ -136,7 +136,11 @@ export const GetCalbackDeveloperNote = (developerNote: DeveloperNote): undefined
 }
 
 export const GetDeveloperNoteAsync = async (): Promise<undefined | DeveloperNote> => {
-    const developerNote = (await GetRemoteConfigWithCheckFetchAsync())?.developerNote
+    const remoteConfig = await GetRemoteConfigWithCheckFetchAsync()
+
+    const developerNote = Platform.OS === 'android' ?
+        remoteConfig?.developerNote?.android :
+        remoteConfig?.developerNote?.ios
 
     if (!developerNote)
         return undefined

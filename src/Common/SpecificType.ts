@@ -10,7 +10,10 @@ export type RemoteConfig = { // CHANGE OPTIONAL
 
     forceDev: number,
 
-    developerNote?: DeveloperNote,
+    developerNote?: {
+        android?: DeveloperNote,
+        ios?: DeveloperNote,
+    }
 
     reviewingVersion: {
         android: number,
