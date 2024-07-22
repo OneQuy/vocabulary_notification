@@ -3,11 +3,11 @@ import { FetchWithTimeoutAsync } from "./UtilsTS";
 
 const GetInternetTimeError = new Error('Can not fetch time.')
 
-export async function GetInternetTimeAsync(): Promise<number | Error> {
-    const url = 'https://www.google.com';
+const DefaultUrl = 'https://www.microsoft.com'
 
+export async function GetInternetTimeAsync(url?: string): Promise<number | Error> {
     try {
-        const res = await FetchWithTimeoutAsync(url, FirebaseDatabaseTimeOutMs)
+        const res = await FetchWithTimeoutAsync(url ?? DefaultUrl, FirebaseDatabaseTimeOutMs)
 
         if (res?.status !== 200) {
             return GetInternetTimeError
