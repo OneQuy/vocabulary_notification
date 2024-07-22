@@ -242,7 +242,7 @@ const SetupScreen = ({
 
     // log
 
-    console.log("[onActiveOrUseEffectOnceAsync] isUseEffectOnceOrOnActive", isUseEffectOnceOrOnActive);
+    // console.log("[onActiveOrUseEffectOnceAsync] isUseEffectOnceOrOnActive", isUseEffectOnceOrOnActive);
   }, []) // must []
 
   const {

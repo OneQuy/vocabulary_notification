@@ -128,7 +128,7 @@ const useSpecificAppContext = ({
 
         // log
 
-        console.log("[mainOnActiveOrUseEffectOnceAsync] isUseEffectOnceOrOnActive", isUseEffectOnceOrOnActive);
+        // console.log("[mainOnActiveOrUseEffectOnceAsync] isUseEffectOnceOrOnActive", isUseEffectOnceOrOnActive);
     }, []) // must []
 
     // init (make sure called once per open)
