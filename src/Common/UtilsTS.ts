@@ -1546,6 +1546,26 @@ export async function ExecuteWithTimeoutAsync<T>(asyncFunction: () => Promise<T>
 
 /**
  * 
+ * @returns Response if success
+ * @returns undefined if timeout or fail
+ */
+export async function FetchWithTimeoutAsync<T>(url: string, timeoutMs: number) : Promise<Response | undefined> {
+    const res = await ExecuteWithTimeoutAsync(
+        async () => await fetch(url),
+        timeoutMs)
+
+    if (res.isTimeOut || res.result === undefined) {
+        // handle time out or other error here
+        return undefined
+    }
+    else {
+        // handle susccess here
+        return res.result
+    }
+}
+
+/**
+ * 
  * @returns if (typeof anything !== typeof defaultValue) => defaultValue
  * @returns if (typeof anything === typeof defaultValue) => anything
  */
