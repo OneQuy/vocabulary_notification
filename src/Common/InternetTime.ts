@@ -2,14 +2,16 @@
 
 import { FirebaseDatabaseTimeOutMs } from "./Firebase/FirebaseDatabase";
 import { GetAlternativeConfig } from "./RemoteConfig";
-import { FetchWithTimeoutAsync, NoCacheHeaders } from "./UtilsTS";
+import { AlertAsync, FetchWithTimeoutAsync, IsNumType, NoCacheHeaders, ToCanPrintError } from "./UtilsTS";
+
+const IsLog = true
 
 const GetInternetTimeError = new Error('Can not fetch time.')
 
 const DefaultUrl = 'https://www.microsoft.com'
 
 export class InternetTime {
-    async GetInternetTimeAsync(): Promise<number | Error> {
+    static async GetInternetTimeAsync(): Promise<number | Error> {
         try {
             const url = GetAlternativeConfig('internetTimeUrl', DefaultUrl)
 
@@ -35,6 +37,33 @@ export class InternetTime {
         }
         catch (e) {
             return GetInternetTimeError
+        }
+    }
+
+    static LoopFetchTillSucessAsync = async (
+        alertTitleErrorTxt = 'Error',
+        alertContentErrorTxt = 'Can not setup data. Please check your internet and try again.',
+        alertBtnRetryTxt = 'Retry',
+    ): Promise<number> => {
+        while (true) {
+            const value = await this.GetInternetTimeAsync()
+
+            if (IsNumType(value)) {
+                if (IsLog)
+                    console.log('[InternetTime-LoopFetchTillSucessAsync] SUCCESS', value)
+
+                return value
+            }
+            else { // error => need to re-fetch
+                if (IsLog)
+                    console.log('[InternetTime-LoopFetchTillSucessAsync] FAIL', ToCanPrintError(value))
+
+                await AlertAsync(
+                    alertTitleErrorTxt,
+                    alertContentErrorTxt,
+                    alertBtnRetryTxt
+                )
+            }
         }
     }
 }
