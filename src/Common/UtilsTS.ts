@@ -36,6 +36,10 @@ const DayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Frida
 const TimeUnitNames_Short = ['d', 'h', 'm', 's'] as const
 const TimeUnitNames_Full = ['Day', 'Hour', 'Minute', 'Second'] as const
 
+export const NoCacheHeaders = new Headers();
+NoCacheHeaders.append('pragma', 'no-cache');
+NoCacheHeaders.append('cache-control', 'no-cache');
+
 // color ------------------------
 
 export const colorNameToHexDefines = {
@@ -1549,9 +1553,9 @@ export async function ExecuteWithTimeoutAsync<T>(asyncFunction: () => Promise<T>
  * @returns Response if success
  * @returns undefined if timeout or fail
  */
-export async function FetchWithTimeoutAsync<T>(url: string, timeoutMs: number) : Promise<Response | undefined> {
+export async function FetchWithTimeoutAsync<T>(url: string, timeoutMs: number, headers?: HeadersInit_): Promise<Response | undefined> {
     const res = await ExecuteWithTimeoutAsync(
-        async () => await fetch(url),
+        async () => await fetch(url, { headers }),
         timeoutMs)
 
     if (res.isTimeOut || res.result === undefined) {
