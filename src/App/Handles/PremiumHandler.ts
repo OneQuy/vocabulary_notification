@@ -14,6 +14,7 @@
 
 import { GetBooleanAsync, GetNumberIntAsync, SetBooleanAsync } from "../../Common/AsyncStorageUtils"
 import { LocalFirstThenFirebaseValue } from "../../Common/Firebase/LocalFirstThenFirebaseValue"
+import { InternetTime } from "../../Common/InternetTime"
 import { GetAlternativeConfig } from "../../Common/RemoteConfig"
 import { UserProperty_StartUsingAppTick } from "../../Common/SpecificType"
 import { TrackingAsync } from "../../Common/Tracking"
@@ -116,12 +117,14 @@ export const HandleBeforeShowPopupPopularityLevelForNoPremiumAsync = async (
  * make sure did set in order to enter the app!
  */
 export const CheckSetStartUsingAppTickAsync = async (): Promise<void> => {
+    const time = await InternetTime.LoopFetchTillSucessAsync()
+
     const firebasePath = GetUserPropertyFirebasePath(UserProperty_StartUsingAppTick)
 
     await LocalFirstThenFirebaseValue.MakeSureDidSetOrSetNewAsync(
         StorageKey_StartUsingAppTick,
         firebasePath,
-        Date.now(),
+        time,
         PopupTitleError,
         CanNotSetupUserData,
         RetryText
