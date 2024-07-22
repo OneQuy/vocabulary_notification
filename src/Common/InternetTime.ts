@@ -1,13 +1,16 @@
 import { FirebaseDatabaseTimeOutMs } from "./Firebase/FirebaseDatabase";
+import { GetAlternativeConfig } from "./RemoteConfig";
 import { FetchWithTimeoutAsync } from "./UtilsTS";
 
 const GetInternetTimeError = new Error('Can not fetch time.')
 
 const DefaultUrl = 'https://www.microsoft.com'
 
-export async function GetInternetTimeAsync(url?: string): Promise<number | Error> {
+export async function GetInternetTimeAsync(): Promise<number | Error> {
     try {
-        const res = await FetchWithTimeoutAsync(url ?? DefaultUrl, FirebaseDatabaseTimeOutMs)
+        const url = GetAlternativeConfig('internetTimeUrl', DefaultUrl)
+
+        const res = await FetchWithTimeoutAsync(url, FirebaseDatabaseTimeOutMs)
 
         if (res?.status !== 200) {
             return GetInternetTimeError
