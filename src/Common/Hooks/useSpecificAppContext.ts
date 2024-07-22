@@ -4,7 +4,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { GetObjectAsync } from '../AsyncStorageUtils'
-import { AppContextType, OnSetSubcribeDataAsyncFunc, OnSetSubcribeDataAsyncFuncParam, RemoteConfig, SubscribedData, UserPremiumDataProperty } from '../SpecificType'
+import { AppContextType, DeveloperNote, OnSetSubcribeDataAsyncFunc, OnSetSubcribeDataAsyncFuncParam, RemoteConfig, SubscribedData, UserPremiumDataProperty } from '../SpecificType'
 import { StorageKey_SubscribeData } from '../../App/Constants/StorageKey'
 import PostHog from 'posthog-react-native'
 import { SetupAppStateAndStartTrackingAsync } from '../AppStatePersistence'
@@ -14,7 +14,7 @@ import { AlertAsync } from '../UtilsTS'
 import { LoopSetValueFirebase } from '../Firebase/LoopSetValueFirebase'
 import { GetUserPropertyFirebasePath } from '../UserMan'
 import { GetRemoteConfigWithCheckFetchAsync } from '../RemoteConfig'
-import { IsReviewingVersion } from '../SpecificUtils'
+import { GetDeveloperNoteAsync, IsNewUpdateAvailableAsync, IsReviewingVersion } from '../SpecificUtils'
 
 type UseSpecificAppContextParam = {
     posthog: PostHog,
@@ -41,8 +41,11 @@ const useSpecificAppContext = ({
     onActiveOrUseEffectOnceWithGapAsync,
     onReloadedRemoteConfigAsync,
 }: UseSpecificAppContextParam) => {
-    const [appContextValue, set_appContextValue] = useState<AppContextType>(DefaultAppContext)
     const texts = useLocalText()
+
+    const [appContextValue, set_appContextValue] = useState<AppContextType>(DefaultAppContext)
+    const [showUpdateLine, set_showUpdateLine] = useState(false)
+    const [developerNote, set_developerNote] = useState<undefined | DeveloperNote>(undefined)
 
     /**
      * undefined is to clear premium
@@ -101,6 +104,33 @@ const useSpecificAppContext = ({
             await onReloadedRemoteConfigAsync(remoteConfig)
     }, []) // should []
 
+    const mainOnActiveOrUseEffectOnceAsync = useCallback(async (isUseEffectOnceOrOnActive: boolean) => {
+        if (onActiveOrUseEffectOnceAsync)
+            await onActiveOrUseEffectOnceAsync(isUseEffectOnceOrOnActive)
+
+        // load
+
+        const [
+            updateLine,
+            developerNote
+        ] = await Promise.all([
+            IsNewUpdateAvailableAsync(),
+            GetDeveloperNoteAsync()
+        ])
+
+        // update app line
+
+        set_showUpdateLine(updateLine)
+
+        // update app line
+
+        set_developerNote(developerNote)
+
+        // log
+
+        console.log("[mainOnActiveOrUseEffectOnceAsync] isUseEffectOnceOrOnActive", isUseEffectOnceOrOnActive);
+    }, []) // must []
+
     // init (make sure called once per open)
 
     useEffect(() => {
@@ -135,7 +165,7 @@ const useSpecificAppContext = ({
                 subscribedData: subscribedDataOrUndefined,
                 forceSetPremiumAsync: onSetSubcribeDataAsync,
                 onActiveOrUseEffectOnceWithGapAsync,
-                onActiveOrUseEffectOnceAsync,
+                onActiveOrUseEffectOnceAsync: mainOnActiveOrUseEffectOnceAsync,
                 onReloadedRemoteConfigAsync: onDidReloadRemoteConfig,
             })
         })()
@@ -143,6 +173,8 @@ const useSpecificAppContext = ({
 
     return {
         appContextValue,
+        showUpdateLine,
+        developerNote,
     }
 }
 

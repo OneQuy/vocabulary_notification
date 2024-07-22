@@ -121,7 +121,7 @@ export const IsNewUpdateAvailableAsync = async (): Promise<boolean> => {
         return VersionAsNumber < data.ios.version
 }
 
-export const GetDeveloperNoteAsync = async (): Promise<undefined | { data: DeveloperNote, onPress: undefined | (() => void) }> => {
+export const GetDeveloperNoteAsync = async (): Promise<undefined | DeveloperNote> => {
     const developerNote = (await GetRemoteConfigWithCheckFetchAsync())?.developerNote
 
     if (!developerNote)
@@ -137,18 +137,7 @@ export const GetDeveloperNoteAsync = async (): Promise<undefined | { data: Devel
         return undefined
     }
 
-    return {
-        data: developerNote,
-
-        onPress: !developerNote.isPressToOpenStore && !RegexUrl(developerNote.link) ?
-            undefined :
-            () => {
-                if (developerNote.isPressToOpenStore)
-                    OpenStoreAsync()
-                else
-                    Linking.openURL(developerNote.link)
-            }
-    }
+    return developerNote
 }
 
 export const OnEventNotification = async (isBackgroundOrForeground: boolean, event: Event): Promise<void> => {

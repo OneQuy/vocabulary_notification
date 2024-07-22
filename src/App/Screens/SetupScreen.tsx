@@ -36,12 +36,12 @@ import { CommonStyles, StartupWindowSize } from '../../Common/CommonConstants'
 import { HandleBeforeShowPopupPopularityLevelForNoPremiumAsync } from '../Handles/PremiumHandler'
 import { LoopSetValueFirebase } from '../../Common/Firebase/LoopSetValueFirebase'
 import { GetUserPropertyFirebasePath } from '../../Common/UserMan'
-import { UserSelectedPopularityIndexProperty } from '../../Common/SpecificType'
+import { DeveloperNote, UserSelectedPopularityIndexProperty } from '../../Common/SpecificType'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import ScaleUpView from '../../Common/Components/Effects/ScaleUpView'
 import Paywall from './Paywall'
 import { CheckForceFetchRemoteConfigWithAlertIfFailedAsync, GetAlternativeConfig } from '../../Common/RemoteConfig'
-import { IsNewUpdateAvailableAsync, OpenStoreAsync } from '../../Common/SpecificUtils'
+import { OpenStoreAsync } from '../../Common/SpecificUtils'
 
 const IsLog = false
 
@@ -89,7 +89,6 @@ const SetupScreen = ({
   const [doneDelayShowTargetLangOnTop, set_doneDelayShowTargetLangOnTop] = useState(false)
   const [showPopup, set_showPopup] = useState<PopupType>(undefined)
   const [isShowPaywall, set_isShowPaywall] = useState(shouldShowPaywallFirstTime)
-  const [showUpdateLine, set_showUpdateLine] = useState(false)
 
   const popupCloseCallbackRef = useRef<(onFinished?: () => void) => void>()
   const actionAfterClosePaywall = useRef<ActionAfterClosePaywallType>(undefined)
@@ -229,23 +228,27 @@ const SetupScreen = ({
   }, [timestampLastPush, texts])
 
   const onActiveOrUseEffectOnceAsync = useCallback(async (isUseEffectOnceOrOnActive: boolean) => {
+    // load
+
+    const [
+      lastPushTick
+    ] = await Promise.all([
+      GetNumberIntAsync(StorageKey_LastPushTick),
+    ])
+
     // update info last set push line
 
-    const lastPushTick = await GetNumberIntAsync(StorageKey_LastPushTick)
     set_timestampLastPush(lastPushTick)
-
-    // update update line (may last long, should put as final task)
-
-    set_showUpdateLine(await IsNewUpdateAvailableAsync())
 
     // log
 
-    if (IsLog)
-      console.log("[onActiveOrUseEffectOnceAsync] isUseEffectOnceOrOnActive", isUseEffectOnceOrOnActive);
+    console.log("[onActiveOrUseEffectOnceAsync] isUseEffectOnceOrOnActive", isUseEffectOnceOrOnActive);
   }, []) // must []
 
   const {
-    appContextValue
+    appContextValue,
+    showUpdateLine,
+    developerNote,
   } = useSpecificAppContext({
     posthog,
     onActiveOrUseEffectOnceAsync
@@ -334,7 +337,7 @@ const SetupScreen = ({
 
   const onPressMoreSetting = useCallback(() => {
     TrackPress('optionals_' + (showMoreSetting ? 'off' : 'on'))
-    
+
     set_showMoreSetting(v => !v)
   }, [displayTargetLang, showMoreSetting])
 
