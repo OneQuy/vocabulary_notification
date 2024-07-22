@@ -5,10 +5,10 @@
 import { Alert, Linking, Platform, Share } from "react-native"
 import { AndroidLink, AppName, ShareAppContent, TwitterUrl, iOSLink } from "./SpecificConstants"
 import { Event, EventType } from "@notifee/react-native"
-import { AppDirName, DelayAsync, SafeValue, ToCanPrint } from "./UtilsTS"
+import { AppDirName, DelayAsync, IsValuableArrayOrString, RegexUrl, SafeValue, ToCanPrint } from "./UtilsTS"
 import { NotificationExtraDataKey_IsLastPush, NotificationExtraDataKey_Mode, NotificationExtraDataKey_PushIndex } from "../App/Handles/SetupNotification"
 import { GenerateNotificationTrackDataAsync } from "./Nofitication"
-import { ContactType, OnSetSubcribeDataAsyncFunc, RemoteConfig, VocabyNotificationTrackData } from "./SpecificType"
+import { ContactType, DeveloperNote, OnSetSubcribeDataAsyncFunc, RemoteConfig, VocabyNotificationTrackData } from "./SpecificType"
 import { AppendArrayAsync, GetArrayAsync_PickAndRemoveFirstOne } from "./AsyncStorageUtils"
 import { StorageKey_CacheEventNotification } from "../App/Constants/StorageKey"
 import { HandleError, TrackEventNotificationAsync, TrackPress, TrackSimpleWithParam } from "./Tracking"
@@ -119,6 +119,36 @@ export const IsNewUpdateAvailableAsync = async (): Promise<boolean> => {
         return VersionAsNumber < data.android.version
     else
         return VersionAsNumber < data.ios.version
+}
+
+export const GetDeveloperNoteAsync = async (): Promise<undefined | { data: DeveloperNote, onPress: undefined | (() => void) }> => {
+    const developerNote = (await GetRemoteConfigWithCheckFetchAsync())?.developerNote
+
+    if (!developerNote)
+        return undefined
+
+    const maxVersion = typeof developerNote.maxVersion === 'number' ? developerNote.maxVersion : 0
+
+    if (VersionAsNumber > maxVersion) {
+        return undefined
+    }
+
+    if (!IsValuableArrayOrString(developerNote.content)) {
+        return undefined
+    }
+
+    return {
+        data: developerNote,
+
+        onPress: !developerNote.isPressToOpenStore && !RegexUrl(developerNote.link) ?
+            undefined :
+            () => {
+                if (developerNote.isPressToOpenStore)
+                    OpenStoreAsync()
+                else
+                    Linking.openURL(developerNote.link)
+            }
+    }
 }
 
 export const OnEventNotification = async (isBackgroundOrForeground: boolean, event: Event): Promise<void> => {

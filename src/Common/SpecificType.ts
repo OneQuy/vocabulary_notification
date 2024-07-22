@@ -10,6 +10,8 @@ export type RemoteConfig = { // CHANGE OPTIONAL
 
     forceDev: number,
 
+    developerNote?: DeveloperNote,
+
     reviewingVersion: {
         android: number,
         ios: number,
@@ -39,13 +41,6 @@ export type RemoteConfig = { // CHANGE OPTIONAL
     // ads: {
     //     newDayFree: number,
     //     loop: number,
-    // },
-
-    // notice?: {
-    //     maxVersion: number,
-    //     content: string,
-    //     link: string,
-    //     isPressToOpenStore: boolean,
     // },
 
     // startupAlert?: {
@@ -81,9 +76,18 @@ type LatestVersionConfig = { // MAYBE NO CHANGE
 }
 
 
+export type DeveloperNote = { // MAYBE NO CHANGE
+    maxVersion: number,
+    isPressToOpenStore: number,
+    content: string,
+    color: string,
+    link: string,
+}
+
+
 export type SplashScreenLoaderResult = { // CHANGE OPTIONAL
     // common
-    
+
     subscribedDataOrUndefined: SubscribedData | undefined,
 }
 
