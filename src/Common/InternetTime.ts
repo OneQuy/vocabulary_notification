@@ -42,7 +42,7 @@ export class InternetTime {
 
     static LoopFetchTillSucessAsync = async (
         alertTitleErrorTxt = 'Error',
-        alertContentErrorTxt = 'Can not setup data. Please check your internet and try again.',
+        alertContentErrorTxt = 'Can not fetch server time. Please check your internet and try again.',
         alertBtnRetryTxt = 'Retry',
     ): Promise<number> => {
         while (true) {
