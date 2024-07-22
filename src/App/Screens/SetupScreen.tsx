@@ -141,6 +141,14 @@ const SetupScreen = ({
         fontSize: FontSize.Small,
         textDecorationLine: 'underline'
       },
+      
+      devNoteTxt: {
+        color: Color_Text2,
+        fontSize: FontSize.Small,
+        width: '100%',
+        margin: Outline.Normal,
+        textAlign: 'center',
+      },
 
       normalBtnTxt: { fontSize: FontSize.Normal, },
 
@@ -1355,10 +1363,8 @@ const SetupScreen = ({
               developerNote &&
               <TouchableOpacity activeOpacity={callbackDeveloperNote ? 0.2 : 1} onPress={callbackDeveloperNote} style={CommonStyles.justifyContentCenter_AlignItemsCenter}>
                 <Text
-                  // adjustsFontSizeToFit
-                  // numberOfLines={1}
                   style={[
-                    style.updateLineTxt, // default style
+                    style.devNoteTxt, // default style
                     IsValuableArrayOrString(developerNote.color) ? { color: developerNote.color } : undefined, // override color
                     { textDecorationLine: callbackDeveloperNote ? 'underline' : 'none' }, // override underline
                   ]}
