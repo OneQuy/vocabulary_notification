@@ -36,7 +36,7 @@ import { CommonStyles, StartupWindowSize } from '../../Common/CommonConstants'
 import { HandleBeforeShowPopupPopularityLevelForNoPremiumAsync } from '../Handles/PremiumHandler'
 import { LoopSetValueFirebase } from '../../Common/Firebase/LoopSetValueFirebase'
 import { GetUserPropertyFirebasePath } from '../../Common/UserMan'
-import { DeveloperNote, UserSelectedPopularityIndexProperty } from '../../Common/SpecificType'
+import { UserSelectedPopularityIndexProperty } from '../../Common/SpecificType'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import ScaleUpView from '../../Common/Components/Effects/ScaleUpView'
 import Paywall from './Paywall'
@@ -249,6 +249,7 @@ const SetupScreen = ({
     appContextValue,
     showUpdateLine,
     developerNote,
+    callbackDeveloperNote
   } = useSpecificAppContext({
     posthog,
     onActiveOrUseEffectOnceAsync
@@ -1345,6 +1346,24 @@ const SetupScreen = ({
               <TouchableOpacity onPress={OpenStoreAsync} style={CommonStyles.justifyContentCenter_AlignItemsCenter}>
                 <Text adjustsFontSizeToFit numberOfLines={1} style={style.updateLineTxt}>
                   {texts.update_line}
+                </Text>
+              </TouchableOpacity>
+            }
+
+            {/* dev note line */}
+            {
+              developerNote &&
+              <TouchableOpacity activeOpacity={callbackDeveloperNote ? 0.2 : 1} onPress={callbackDeveloperNote} style={CommonStyles.justifyContentCenter_AlignItemsCenter}>
+                <Text
+                  // adjustsFontSizeToFit
+                  // numberOfLines={1}
+                  style={[
+                    style.updateLineTxt, // default style
+                    IsValuableArrayOrString(developerNote.color) ? { color: developerNote.color } : undefined, // override color
+                    { textDecorationLine: callbackDeveloperNote ? 'underline' : 'none' }, // override underline
+                  ]}
+                >
+                  {developerNote.content}
                 </Text>
               </TouchableOpacity>
             }

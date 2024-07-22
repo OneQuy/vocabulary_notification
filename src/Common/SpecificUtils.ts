@@ -121,6 +121,20 @@ export const IsNewUpdateAvailableAsync = async (): Promise<boolean> => {
         return VersionAsNumber < data.ios.version
 }
 
+export const GetCalbackDeveloperNote = (developerNote: DeveloperNote): undefined | (() => void) => {
+    if (!developerNote.isPressToOpenStore && !RegexUrl(developerNote.link))
+        return undefined
+
+    else {
+        return () => {
+            if (developerNote.isPressToOpenStore)
+                OpenStoreAsync()
+            else
+                Linking.openURL(developerNote.link)
+        }
+    }
+}
+
 export const GetDeveloperNoteAsync = async (): Promise<undefined | DeveloperNote> => {
     const developerNote = (await GetRemoteConfigWithCheckFetchAsync())?.developerNote
 

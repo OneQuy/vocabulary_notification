@@ -14,7 +14,7 @@ import { AlertAsync } from '../UtilsTS'
 import { LoopSetValueFirebase } from '../Firebase/LoopSetValueFirebase'
 import { GetUserPropertyFirebasePath } from '../UserMan'
 import { GetRemoteConfigWithCheckFetchAsync } from '../RemoteConfig'
-import { GetDeveloperNoteAsync, IsNewUpdateAvailableAsync, IsReviewingVersion } from '../SpecificUtils'
+import { GetCalbackDeveloperNote, GetDeveloperNoteAsync, IsNewUpdateAvailableAsync, IsReviewingVersion } from '../SpecificUtils'
 
 type UseSpecificAppContextParam = {
     posthog: PostHog,
@@ -46,6 +46,7 @@ const useSpecificAppContext = ({
     const [appContextValue, set_appContextValue] = useState<AppContextType>(DefaultAppContext)
     const [showUpdateLine, set_showUpdateLine] = useState(false)
     const [developerNote, set_developerNote] = useState<undefined | DeveloperNote>(undefined)
+    const [callbackDeveloperNote, set_callbackDeveloperNote] = useState<undefined | { callback: () => void }>(undefined)
 
     /**
      * undefined is to clear premium
@@ -126,6 +127,11 @@ const useSpecificAppContext = ({
 
         set_developerNote(developerNote)
 
+        if (developerNote) {
+            const callback = GetCalbackDeveloperNote(developerNote)
+            set_callbackDeveloperNote(callback === undefined ? undefined : { callback })
+        }
+
         // log
 
         // console.log("[mainOnActiveOrUseEffectOnceAsync] isUseEffectOnceOrOnActive", isUseEffectOnceOrOnActive);
@@ -175,6 +181,7 @@ const useSpecificAppContext = ({
         appContextValue,
         showUpdateLine,
         developerNote,
+        callbackDeveloperNote: callbackDeveloperNote?.callback,
     }
 }
 
