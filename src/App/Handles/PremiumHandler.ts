@@ -24,7 +24,8 @@ import { StorageKey_StartUsingAppTick } from "../Constants/StorageKey"
 import { CanNotSetupUserData, LocalText, PopupTitleError, RetryText } from "../Hooks/useLocalText"
 import { SubView } from "../Screens/SetupScreen"
 
-const IsLog = __DEV__
+// const IsLog = __DEV__
+const IsLog = false
 
 export const HandleBeforeShowPopupPopularityLevelForNoPremiumAsync = async (
     setSubview: (type: SubView) => void,
