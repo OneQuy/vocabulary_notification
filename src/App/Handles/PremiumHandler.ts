@@ -117,14 +117,12 @@ export const HandleBeforeShowPopupPopularityLevelForNoPremiumAsync = async (
  * make sure did set in order to enter the app!
  */
 export const CheckSetStartUsingAppTickAsync = async (): Promise<void> => {
-    const time = await InternetTime.LoopFetchTillSucessAsync()
-
     const firebasePath = GetUserPropertyFirebasePath(UserProperty_StartUsingAppTick)
 
     await LocalFirstThenFirebaseValue.MakeSureDidSetOrSetNewAsync(
         StorageKey_StartUsingAppTick,
         firebasePath,
-        time,
+        async () => { return await InternetTime.LoopFetchTillSucessAsync() },
         PopupTitleError,
         CanNotSetupUserData,
         RetryText

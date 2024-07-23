@@ -177,7 +177,7 @@ export class LocalFirstThenFirebaseValue {
     static MakeSureDidSetOrSetNewAsync = async <T extends TruelyValueType>(
         storageKey: string,
         firebasePath: string,
-        valueIfSetNew: T,
+        valueOrGetFuncIfSetNew: T | (() => Promise<T>),
         alertTitleErrorTxt = 'Error',
         alertContentErrorTxt = 'Can not setup data. Please check your internet and try again.',
         alertBtnRetryTxt = 'Retry',
@@ -217,17 +217,23 @@ export class LocalFirstThenFirebaseValue {
         // need to set
 
         while (true) {
+            const valueToSetNew = typeof valueOrGetFuncIfSetNew === 'function' ?
+                await valueOrGetFuncIfSetNew() :
+                valueOrGetFuncIfSetNew
+
+            console.log('valueToSetNewwwwww', valueToSetNew, typeof valueOrGetFuncIfSetNew === 'function');
+
             const setRes = await LocalFirstThenFirebaseValue.SetValueAsync(
                 storageKey,
                 firebasePath,
-                valueIfSetNew
+                valueToSetNew
             )
 
             // set success
 
             if (setRes === null) {
                 if (IsLog)
-                    console.log('[LocalFirstThenFirebaseValue-MakeSureDidSetOrSetNewNowAsync] SET success, value', valueIfSetNew, 'key', storageKey);
+                    console.log('[LocalFirstThenFirebaseValue-MakeSureDidSetOrSetNewNowAsync] SET success, value', valueOrGetFuncIfSetNew, 'key', storageKey);
 
                 return
             }
