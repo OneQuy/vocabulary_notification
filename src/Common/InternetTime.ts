@@ -8,14 +8,30 @@ const IsLog = true
 
 const GetInternetTimeError = new Error('Can not fetch time.')
 
-const DefaultUrl = 'https://www.microsoft.com'
+const FetchUrls = [
+    'https://www.google.com',
+    'https://www.microsoft.com',
+    'https://github.com',
+    'https://rapidapi.com',
+    'https://currentmillis.com',
+]
 
 export class InternetTime {
     static async GetInternetTimeAsync(): Promise<number | Error> {
         try {
-            const url = GetAlternativeConfig('internetTimeUrl', DefaultUrl)
+            let res: Response | undefined
+            let curUrl
 
-            const res = await FetchWithTimeoutAsync(url, FirebaseDatabaseTimeOutMs, NoCacheHeaders)
+            for (let url of FetchUrls) {
+                curUrl = url
+
+                res = await FetchWithTimeoutAsync(url, FirebaseDatabaseTimeOutMs, NoCacheHeaders)
+
+                console.log('fetching...', url);
+
+                if (res !== undefined)
+                    break
+            }
 
             if (res?.status !== 200) {
                 return GetInternetTimeError
@@ -28,10 +44,10 @@ export class InternetTime {
 
             const parse = Date.parse(dateString)
 
-            // console.log('fetched', typeof dateString, dateString)
-            // console.log('parsed', typeof parse, new Date(parse))
-            // console.log('diff ms', Date.now() - parse)
-            // console.log('url', url)
+            console.log('fetched', typeof dateString, dateString)
+            console.log('parsed', typeof parse, new Date(parse))
+            console.log('diff ms', Date.now() - parse)
+            console.log('success at url', curUrl)
 
             return parse
         }
