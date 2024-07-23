@@ -1,8 +1,7 @@
 // Created 22 July 2024 (coding Vocaby)
 
 import { FirebaseDatabaseTimeOutMs } from "./Firebase/FirebaseDatabase";
-import { GetAlternativeConfig } from "./RemoteConfig";
-import { AlertAsync, FetchWithTimeoutAsync, IsNumType, NoCacheHeaders, ToCanPrintError } from "./UtilsTS";
+import { AlertAsync, DateDiff_InSeconds_WithNow, FetchWithTimeoutAsync, IsNumType, NoCacheHeaders, ToCanPrintError } from "./UtilsTS";
 
 const IsLog = true
 
@@ -66,7 +65,7 @@ export class InternetTime {
 
             if (IsNumType(value)) {
                 if (IsLog)
-                    console.log('[InternetTime-LoopFetchTillSucessAsync] SUCCESS', value)
+                    console.log('[InternetTime-LoopFetchTillSucessAsync] SUCCESS', value, 'diff with local time in sec', DateDiff_InSeconds_WithNow(value))
 
                 return value
             }
