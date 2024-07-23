@@ -12,8 +12,8 @@ const FetchUrls = [
     'https://www.google.com',
     'https://www.microsoft.com',
     'https://github.com',
-    'https://rapidapi.com',
     'https://currentmillis.com',
+    'https://time.is',
 ]
 
 export class InternetTime {
