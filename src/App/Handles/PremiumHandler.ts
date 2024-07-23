@@ -77,18 +77,14 @@ export const HandleBeforeShowPopupPopularityLevelForNoPremiumAsync = async (
         return false
     }
     else { // no premium & but still in trial
-        // check if showed intro trial?
+        const displayDiffDays = Math.floor(diffDays)
 
-        // const showedIntroTrial = await GetBooleanAsync(StorageKey_ShowedIntroTrial)
-
-        // if (!showedIntroTrial) { // not showed trial yet => show
-        // SetBooleanAsync(StorageKey_ShowedIntroTrial, true)
-
+        // if (displayDiffDays >= 1) { // show from trial day 1
         const pressedOKOrLifeTime = await AlertAsync(
             texts.popularity_level,
             texts.introduce_trial
                 .replaceAll('##', trialDays.toString())
-                .replaceAll('@@', Math.floor(diffDays).toString()),
+                .replaceAll('@@', displayDiffDays.toString()),
             'OK',
             texts.pro
         )
@@ -100,10 +96,10 @@ export const HandleBeforeShowPopupPopularityLevelForNoPremiumAsync = async (
         else // press OK
             return true
         // }
-        // else // showed intro trial, still in trial
+        // else // not show trial day 0
         // {
         //     if (IsLog) {
-        //         console.log('[HandleBeforeShowPopupPopularityLevelForNoPremiumAsync] still in trial',
+        //         console.log('[HandleBeforeShowPopupPopularityLevelForNoPremiumAsync] not show cuz newly install',
         //             'diffDays', diffDays,
         //             'trialDays', trialDays)
         //     }
