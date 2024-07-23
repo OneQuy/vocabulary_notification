@@ -52,7 +52,7 @@ const eng = {
   not_show: 'Excluded time',
   not_show_explain: "Set time ranges during which notifications will not be shown to avoid interruptions during your resting or working time.",
   more_setting: 'Optionals',
-  history_empty: 'History is empty.',
+  history_empty: "History is empty.\n\nVocabulary words that are pushed as notifications will show up here.",
   test: 'Test',
   confirm: 'Confirm',
   other_words: 'Other words',
