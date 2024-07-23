@@ -27,7 +27,7 @@ export class InternetTime {
 
                 res = await FetchWithTimeoutAsync(url, FirebaseDatabaseTimeOutMs, NoCacheHeaders)
 
-                console.log('fetching...', url);
+                // console.log('fetching...', url);
 
                 if (res !== undefined)
                     break
@@ -44,10 +44,10 @@ export class InternetTime {
 
             const parse = Date.parse(dateString)
 
-            console.log('fetched', typeof dateString, dateString)
-            console.log('parsed', typeof parse, new Date(parse))
-            console.log('diff ms', Date.now() - parse)
-            console.log('success at url', curUrl)
+            // console.log('fetched', typeof dateString, dateString)
+            // console.log('parsed', typeof parse, new Date(parse))
+            // console.log('diff ms', Date.now() - parse)
+            // console.log('success at url', curUrl)
 
             return parse
         }
