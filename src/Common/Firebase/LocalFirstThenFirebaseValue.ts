@@ -226,8 +226,6 @@ export class LocalFirstThenFirebaseValue {
                 await valueOrGetFuncIfSetNew() :
                 valueOrGetFuncIfSetNew
 
-            console.log('valueToSetNewwwwww', valueToSetNew, typeof valueOrGetFuncIfSetNew === 'function');
-
             const setRes = await LocalFirstThenFirebaseValue.SetValueAsync(
                 storageKey,
                 firebasePath,
