@@ -12,14 +12,14 @@
 //              - if no, show premium alert
 
 
-import { GetBooleanAsync, GetNumberIntAsync, SetBooleanAsync } from "../../Common/AsyncStorageUtils"
+import { GetNumberIntAsync } from "../../Common/AsyncStorageUtils"
 import { LocalFirstThenFirebaseValue } from "../../Common/Firebase/LocalFirstThenFirebaseValue"
 import { InternetTime } from "../../Common/InternetTime"
 import { GetAlternativeConfig } from "../../Common/RemoteConfig"
 import { UserProperty_StartUsingAppTick } from "../../Common/SpecificType"
 import { TrackingAsync } from "../../Common/Tracking"
 import { GetUserPropertyFirebasePath } from "../../Common/UserMan"
-import { AlertAsync, DateDiff_WithNow, RoundWithDecimal } from "../../Common/UtilsTS"
+import { AlertAsync, DateDiff, RoundWithDecimal } from "../../Common/UtilsTS"
 import { StorageKey_StartUsingAppTick } from "../Constants/StorageKey"
 import { CanNotSetupUserData, LocalText, PopupTitleError, RetryText } from "../Hooks/useLocalText"
 import { SubView } from "../Screens/SetupScreen"
@@ -32,8 +32,10 @@ export const HandleBeforeShowPopupPopularityLevelForNoPremiumAsync = async (
     currentPopularityIdx: number,
 ): Promise<boolean> => {
     const startUsingAppTick = await GetNumberIntAsync(StorageKey_StartUsingAppTick, 0) // note: startUsingAppTick must be valid, cuz this did set before enter app!
+    
+    const tickNow = await InternetTime.LoopFetchTillSucessAsync()
 
-    const diffDays = DateDiff_WithNow(startUsingAppTick)
+    const diffDays = DateDiff(startUsingAppTick, tickNow)
 
     const trialDays = GetAlternativeConfig('trialDays', 10)
 
