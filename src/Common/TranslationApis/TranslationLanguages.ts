@@ -11,8 +11,13 @@ export type Language = {
 }
 
 export type TranslatedResult = {
+    /**
+     * origin english word
+     */
     text: string,
+
     translated?: string,
+    
     error?: Error,
 }
 
