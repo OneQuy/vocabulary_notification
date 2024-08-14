@@ -10,8 +10,11 @@ var inited = false
 var tapSetDevPersistenceCount = 0
 
 const DevDevices = [
-    '2BD27B3C-F044-4AB6-A2F1-15F9F5172C7E', // iphone 6 timo
     // '05073BCD-4B4A-4CF9-B4ED-055241D45573', // emulator iphone SE
+    
+    '2BD27B3C-F044-4AB6-A2F1-15F9F5172C7E', // iphone 6 timo
+    '8E3C624D-FD5F-4AF3-9DA7-F0D95C11DA98', // ip 15
+    
     '0ea1c473e9c9535d', // samsung s8
 ]
 
